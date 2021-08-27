@@ -1,2 +1,2 @@
 # bug-finder
-A library aimed at providing automated bug detection capability to state fuzzing frameworks.
+A library aimed at providing automatic bug finding capability to state fuzzing frameworks.
