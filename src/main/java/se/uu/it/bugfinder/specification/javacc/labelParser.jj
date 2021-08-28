@@ -1,0 +1,489 @@
+/* adder.jj Adding up numbers */
+options {
+    STATIC = false;
+}
+PARSER_BEGIN(LabelParser)
+package se.uu.it.bugfinder.specification.javacc;
+
+import se.uu.it.bugfinder.specification.*;
+import java.util.*;
+
+class LabelParser extends AbstractLabelParser {
+    
+}
+PARSER_END(LabelParser)
+
+SKIP : { "\n" | "\r" | "\r\n" }
+// set operations
+TOKEN : { < DIFFERENCE : "-" > }
+TOKEN : { < UNION : "U" > }
+
+//SKIP : { " " }
+TOKEN : { < SEP : " " > }
+TOKEN : { < WHERE : "where" > }
+//TOKEN : { < DO : "do" > }
+
+TOKEN : { < INPUT : "I_"(["a"-"z","A"-"Z","_",",","(",")"])+ > }
+TOKEN : { < OUTPUT : "O_"(["a"-"z","A"-"Z","_",",","(",")"])+ > }
+TOKEN : { < FILTER : "F_"(["a"-"z","A"-"Z","0"-"9","_",",","(",")","*",".","|","\\","+","!","?"])+ >}
+TOKEN : { < OTHER : "other" > }
+TOKEN : { < OTHER_INPUT : "other_input" > }
+TOKEN : { < OTHER_OUTPUT : "other_output" > }
+
+TOKEN : { < INV_START : ("(") > }
+TOKEN : { < INV_SEP : ","(" ")+ > }
+TOKEN : { < INV_END : (")") > }
+
+//logical operators
+TOKEN : { < AND : ("and") > }
+TOKEN : { < OR : ("or") > }
+
+// relational operators
+TOKEN : { < EQUAL : ("==") > }
+TOKEN : { < NOT_EQUAL : ("!=") > }
+TOKEN : { < IN : ("in") > }
+TOKEN : { < NOT_IN : ("!in") > }
+
+// update operators
+TOKEN : { < ASSIGN : (":=") > }
+
+
+TOKEN : { < ID : (["a"-"z","A"-"Z","_"])+ > }
+
+
+
+TOKEN : { < ENUM_START : "{" >: ENUM_STATE }
+< ENUM_STATE > TOKEN : { < INPUT_ELEMENT_PREFIX : "I_" >: ELEMENT_STATE } 
+< ENUM_STATE > TOKEN : { < OUTPUT_ELEMENT_PREFIX : "O_" >: ELEMENT_STATE }
+< ELEMENT_STATE > TOKEN : { < ELEMENT : (["a"-"z","A"-"Z","_",",","(",")"])+["a"-"z","A"-"Z","_","(",")"] >: ENUM_STATE }
+< ENUM_STATE > TOKEN : { < ENUM_SEP : ","(" ")+ > }
+< ENUM_STATE > TOKEN : { < ENUM_END : "}" >: DEFAULT }
+
+SpecificationLabel label():
+{
+    DescriptionToken description;
+    Guard guard = Guard.trueGuard();
+    BooleanExpression expr;
+    Update update = Update.emptyUpdate();
+}
+{
+    (        description = description()
+        (
+			[
+			    "["
+			      (
+			          LOOKAHEAD(2)
+                    (                                                update = update()
+                    ) |
+                    (                        
+                        expr = restrictedExpression()
+                        {
+                            guard = new Guard(expr);
+                        }
+                    )
+                  )  
+			    "]"
+			]
+			[
+			    < SEP >
+			    < WHERE >
+			    < SEP >
+			    guard = guard()
+			]
+        )
+    )
+    < EOF >
+    {
+        return new SpecificationLabel(description, guard, update);
+    }
+}
+
+Update update():
+{
+     List<Assignment> assignments = new ArrayList<Assignment >();
+     Assignment assignment;
+     Update update; 
+}
+{
+    assignment = assignment()
+    {
+        assignments.add(assignment);
+    }
+    (        
+        ";"
+        < SEP >
+        assignment = assignment()
+        {
+            assignments.add(assignment);
+        }            
+    )*
+    {
+        update = new Update(assignments);
+        return update;
+    }
+}
+
+
+BooleanExpression restrictedExpression():
+{
+    Token fieldToken, valToken;
+}
+{
+    fieldToken = < ID >
+    < EQUAL >
+    valToken = < ID >
+    {
+        return new RelationalExpression(resolveField(fieldToken.image),  RelationalOperator.EQUAL, resolveConstant(valToken.image) );
+    }
+}
+
+Assignment assignment():
+{
+    Token varToken, fieldToken;
+}
+{
+    varToken = < ID >
+    < ASSIGN >
+    fieldToken = < ID >
+    {
+        return new Assignment(resolveVariable(varToken.image), resolveField(fieldToken.image) );
+    }
+}
+
+//Guard earlyGuard():
+//{
+//    Token fieldToken, constToken;
+//}
+//{
+//    fieldToken = < ID >
+//    < EQUAL >
+//    constToken = < ID >
+//    {
+//        BinaryBooleanExpression expr = new BinaryBooleanExpression(
+//        return new Assignment(resolveVariable(varToken.image), resolveField(fieldToken.image) );
+//    }
+//}
+
+Guard guard():
+{
+    BooleanExpression expr;
+}
+{
+    expr = booleanExpression()
+    {
+        return new Guard(expr);
+    }
+}
+
+BooleanExpression booleanExpression():
+{
+    BooleanExpression left, right;
+    LogicalOperator op;
+}
+{
+    (        left = relationalExpression()
+        (            < SEP >
+            (
+		        (		            < AND >
+		            { op = LogicalOperator.AND; }
+		        ) |
+		        (
+		            < OR >		            { op = LogicalOperator.OR; }
+		        )
+	        )
+	        < SEP >
+	        right = relationalExpression()
+	        {
+                left = new BinaryBooleanExpression(left, op, right);
+	        }
+	    )* 
+    )
+    {
+        return left;
+    }
+}
+
+RelationalExpression relationalExpression():
+{
+    ValueExpression left = null, right = null;
+    RelationalOperator op;
+}
+{
+    (
+        left = valueExpression()
+        (
+            < SEP >
+            (
+                (
+                    < EQUAL >
+                    { op = RelationalOperator.EQUAL; }
+                ) |
+                (
+                    < NOT_EQUAL >
+                    { op = RelationalOperator.NOT_EQUAL; }
+                ) |
+                (
+                    < IN >
+                    { op = RelationalOperator.IN; }
+                ) |
+                (
+                    < NOT_IN >
+                    { op = RelationalOperator.NOT_IN; }
+                )
+            )
+            < SEP >
+        ) 
+        right = valueExpression() 
+    )
+    {
+        return new RelationalExpression(left, op, right);
+    }
+}
+
+ValueExpression valueExpression():
+{
+    Token idToken, argToken;
+    ValueExpression expression = null, argument = null;
+}
+{
+    idToken = < ID >
+    [
+        < INV_START >
+        { 
+            java.util.List<ValueExpression> arguments = new java.util.ArrayList<ValueExpression>();
+        }
+        [
+            argument = valueExpression()
+            //argToken = < ID >
+            {
+                //arguments.add(new Variable(argToken.image));
+                arguments.add(argument);
+            }
+            (
+                < INV_SEP >
+//                argToken = < ID >
+//                {
+//                    arguments.add(new Variable(argToken.image));
+//                }
+                argument = valueExpression()
+                {
+                    arguments.add(argument);
+                }    
+            )*
+        ]
+        < INV_END >
+        {
+            Function fun = resolveFunction(idToken.image);
+            expression = new FunctionInvocation(fun, arguments);
+        }
+    ]
+    {
+        if (expression == null) {
+            expression = resolveValueExpression(idToken.image);
+        }        
+        return expression;
+    }
+}
+
+FunctionInvocation invocation():
+{
+    Token idToken;
+    Function fun;
+    List<ValueExpression> parameters = new ArrayList<ValueExpression >(); 
+}
+{
+    idToken = < ID >
+    {
+        fun = resolveFunction(idToken.image);
+    }
+    [
+	    < INV_START >
+	    [
+            idToken = < ID >
+            {
+                parameters.add(new Variable(idToken.image));
+            }
+            (
+                < INV_SEP >
+	            idToken = < ID >
+	            {
+	                parameters.add(new Variable(idToken.image));
+	            }                )*
+	    ]
+	    < INV_END >
+    ]
+    {
+        return new FunctionInvocation(fun, parameters);
+    }
+}
+
+DescriptionToken description():
+{
+    DescriptionToken left = null;
+    SetOperator op = null;
+    DescriptionToken right = null;
+}
+{
+    
+    ( left = symbol() | 
+      left = enumtoken() |
+      left = regex() |
+      left = other()
+    )
+    (
+        LOOKAHEAD(2) 
+        < SEP >
+        (
+            op = setOperator()
+        )
+        < SEP >
+        (
+            right = symbol() |
+            right = regex() |
+            right = enumtoken() 
+        )
+        {
+            left = new SetExpressionToken(left, op, right);
+        }
+    )*
+    {
+       return left;
+    }
+}
+
+SymbolToken symbol():
+{
+    SymbolToken s;
+}
+{
+    (
+        s = input() |
+        s = output()    )
+    {
+        return s;
+    }
+}
+
+SymbolToken input():
+{
+    Token msgToken;
+}
+{
+    msgToken = < INPUT >
+    {
+        return new SymbolToken(true, msgToken.image.substring(2));
+    }
+}
+
+SymbolToken output():
+{
+    Token msgToken;
+}
+{
+    msgToken = < OUTPUT >
+    {
+        return new SymbolToken(false, msgToken.image.substring(2));
+    }
+}
+
+RegexToken regex():
+{
+    Token regexToken;
+}
+{
+    regexToken = < FILTER >
+    {
+        return new RegexToken(regexToken.image.substring(2)); 
+    }
+}
+
+OtherToken other():
+{
+    OtherTokenType otherType = null;
+}
+{
+    (
+	    (
+	        < OTHER >
+	    { 
+	        otherType = OtherTokenType.ALL;
+	    }	    ) | (
+	        < OTHER_INPUT >
+	    { 
+	        otherType = OtherTokenType.INPUT;
+	    }
+	    ) | (
+	        < OTHER_OUTPUT >
+	    { 
+	        otherType = OtherTokenType.OUTPUT;
+	    }
+	    ) 
+    )
+    {
+        return new OtherToken(otherType);
+    }
+}
+
+EnumerationToken enumtoken():
+{
+    java.util.List<SymbolToken> symbols = new java.util.ArrayList<SymbolToken>();
+    SymbolToken symbol;
+}
+{
+    < ENUM_START >
+    symbol=element()
+    {
+        symbols.add(symbol);
+    }
+    (
+        < ENUM_SEP >
+        symbol = element()
+        {
+            symbols.add(symbol);
+        }
+    )*
+    < ENUM_END >
+    {
+        return new EnumerationToken(symbols);
+    }
+}
+
+SymbolToken element():
+{
+    boolean input;
+    Token msgToken;
+}
+{   
+    (        (
+            < INPUT_ELEMENT_PREFIX >            msgToken = < ELEMENT >
+            { input = true;
+
+            }
+        ) | (
+            < OUTPUT_ELEMENT_PREFIX >            msgToken = < ELEMENT >
+            { input = false; }
+        )
+    ) 
+    {
+        return new SymbolToken(input, msgToken.image);
+    }
+}
+
+SetOperator setOperator():
+{
+    SetOperator op;
+}
+{
+    (
+        (
+            < DIFFERENCE >
+            { op = SetOperator.DIFFERENCE; }
+        ) | (
+            < UNION >
+            { op = SetOperator.UNION; }
+        )
+    )
+    {
+        return op;
+    }
+}
