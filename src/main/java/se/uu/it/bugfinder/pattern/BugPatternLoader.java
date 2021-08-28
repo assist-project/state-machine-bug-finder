@@ -23,15 +23,7 @@ import org.apache.logging.log4j.Logger;
 
 import net.automatalib.automata.fsa.impl.FastDFA;
 import se.uu.it.bugfinder.dfa.DfaAdapter;
-import se.uu.it.dtlsfuzzer.ClientCertAuth;
-import se.uu.it.dtlsfuzzer.config.BugPatternSpecificationConfig;
-import se.uu.it.dtlsfuzzer.config.BugPatternSpecificationServerConfig;
-import se.uu.it.dtlsfuzzer.specification.SpecificationLabel;
-import se.uu.it.dtlsfuzzer.specification.SpecificationLanguageParser;
-import se.uu.it.dtlsfuzzer.specification.dtls.DtlsSymbolMapping;
-import se.uu.it.dtlsfuzzer.specification.dtls.DtlsLanguageAdapter;
-import se.uu.it.dtlsfuzzer.specification.dtls.DtlsLanguageAdapterBuilder;
-import se.uu.it.dtlsfuzzer.specification.dtls.DtlsParsingContext;
+import se.uu.it.bugfinder.specification.SpecificationLabel;
 
 public class BugPatternLoader {
 	private static final Logger LOGGER = LogManager.getLogger(BugPatternLoader.class);
@@ -50,7 +42,7 @@ public class BugPatternLoader {
 			throws JAXBException, IOException {
 		if (context == null) {
 			context = JAXBContext.newInstance(BugPatterns.class,
-					AbstractBugPattern.class, ClientCertAuth.class);
+					AbstractBugPattern.class);
 		}
 		return context;
 	}
@@ -120,8 +112,8 @@ public class BugPatternLoader {
 	}
 
 	private static void preparePatterns(BugPatterns bugPatterns, URI location, BugPatternSpecificationConfig config, DtlsSymbolMapping mapping) {
-		SpecificationLanguageParser specParser = new SpecificationLanguageParser(new DtlsParsingContext());
-		Function<String, DtlsLanguageAdapter> loadLanguage = p -> loadLanguage(p, location, specParser, mapping, config.isClient());
+		SpecificationDfaParser specParser = new SpecificationDfaParser(new DtlsParsingContext());
+		Function<String, DtlsLanguageAdapter> loadLanguage = p -> loadDfa(p, location, specParser, mapping, config.isClient());
 		
 		DtlsLanguageAdapter validHandshakeLanguage = loadLanguage.apply(bugPatterns.getSpecificationLanguagePath());
 		bugPatterns.setSpecificationLanguage(validHandshakeLanguage);
@@ -132,7 +124,7 @@ public class BugPatternLoader {
 		}
 	}
 	
-	private static DfaAdapter loadLanguage(String languagePath, URI location, SpecificationLanguageParser specParser, DtlsSymbolMapping mapping, boolean client) {
+	private static DfaAdapter loadDfa(String languagePath, URI location, SpecificationDfaParser specParser, DtlsSymbolMapping mapping, boolean client) {
 		LOGGER.info("Loading language at path: {}", languagePath);
 		URI languageLocation = location.resolve(languagePath);
 		InputStream languageStream = BugPatternLoader.class.getResourceAsStream(languageLocation.getPath());

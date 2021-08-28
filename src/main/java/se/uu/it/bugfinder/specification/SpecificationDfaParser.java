@@ -15,12 +15,12 @@ import se.uu.it.bugfinder.specification.javacc.LabelParserFacade;
 import se.uu.it.bugfinder.specification.javacc.ParseException;
 import se.uu.it.bugfinder.specification.javacc.TokenMgrError;
 
-public class SpecificationLanguageParser {
+public class SpecificationDfaParser {
 	private static final Logger LOGGER = LogManager.getLogger(SpecificationTS.class.getName());
 
 	private DFADotParser<SpecificationLabel> dotParser;
 
-	public SpecificationLanguageParser(ParsingContext context) {
+	public SpecificationDfaParser(ParsingContext context) {
 		this.dotParser = new DFADotParser<SpecificationLabel>( new SpecificationLabelProcessor(context));
 	}
 	
