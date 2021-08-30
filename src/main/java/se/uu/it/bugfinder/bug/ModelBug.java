@@ -5,25 +5,21 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
-import se.uu.it.bugfinder.bug.Bug;
-import se.uu.it.bugfinder.bug.BugSeverity;
-import se.uu.it.bugfinder.bug.BugValidationStatus;
 import se.uu.it.bugfinder.dfa.SymbolTrace;
 import se.uu.it.bugfinder.pattern.AbstractBugPattern;
-import se.uu.it.bugfinder.pattern.BugPattern;
 
 public class ModelBug extends Bug{
 	
 	private List<AbstractBugPattern> bugPatterns;
 	private SymbolTrace counterexample;
 	
-	public ModelBug(SymbolTrace flow, List<AbstractBugPattern> bugPatterns) {
-		super(flow);
+	public ModelBug(SymbolTrace trace, List<AbstractBugPattern> bugPatterns) {
+		super(trace);
 		if (bugPatterns.isEmpty()) {
 			throw new InternalError("There should be at least one pattern");
 		}
-		if (flow == null) {
-			throw new InternalError("Flow cannot be null");
+		if (trace == null) {
+			throw new InternalError("Trace cannot be null");
 		}
 		this.bugPatterns = new ArrayList<>(bugPatterns);
 		Collections.sort(bugPatterns, (b1, b2) -> b1.getShortenedName().compareTo(b2.getShortenedName()));
@@ -56,7 +52,7 @@ public class ModelBug extends Bug{
 		}
 		sb.append(getTrace().toCompactString())
 		.append(System.lineSeparator());
-		sb.append("Verification Status: ")
+		sb.append("Validation Status: ")
 		.append(getStatus()).append(System.lineSeparator());
 		if (getStatus() == BugValidationStatus.VALIDATION_FAILED) {
 			sb.append("Counterexample: ").append(counterexample.toCompactString());

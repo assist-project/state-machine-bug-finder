@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.function.Consumer;
@@ -84,22 +83,12 @@ public class DfaAdapterBuilder {
 		return unfoldedDfa.minimize();
 	}
 	
-	private FastDFA<Symbol> unfold(DFA<?, SpecificationLabel> specification, Collection<SpecificationLabel> labels, Collection<Symbol> symbols) {
+	private <S> FastDFA<Symbol> unfold(DFA<S, SpecificationLabel> specification, Collection<SpecificationLabel> labels, Collection<Symbol> symbols) {
 		Alphabet<Symbol> alphabet = new ListAlphabet<>(new ArrayList<>(symbols));
 		FastDFA<Symbol> unfoldedSpecification = new FastDFA<>(alphabet);
-		SpecificationTS<FastDFAState> dtlsLabelTS = new SpecificationTS<FastDFAState>(specification, labels);
-		TSCopy.copy(TSTraversalMethod.DEPTH_FIRST, dtlsLabelTS, -1, labels, unfoldedSpecification);
-		return unfoldedSpecification;
-	}
-	
-	private FastDFA<Symbol> unfold(FastDFA<SpecificationLabel> dtlsSpecification, Collection<Symbol> supportedLabels, TokenMatcher tokenMatcher) {
-		Alphabet<Symbol> alphabet = new ListAlphabet<>(new ArrayList<>(symbols));
-		FastDFA<Symbol> unfoldedSpecification = new FastDFA<>(alphabet);
-		Mapping<FastDFAState,Collection<SpecificationLabel>> stateLabelMapping = s -> dtlsSpecification.getLocalInputs(s);
-		FastDFAState sink = dtlsSpecification.addState(false);
-		SpecificationTS<FastDFAState> dtlsLabelTS = new SpecificationTS<>(dtlsSpecification, sink, stateLabelMapping, supportedLabels);
-		dtlsLabelTS.setTokenMatcher(tokenMatcher);
-		TSCopy.copy(TSTraversalMethod.DEPTH_FIRST, dtlsLabelTS, -1, supportedLabels, unfoldedSpecification);
+		SpecificationTS<S> specificationTS = new SpecificationTS<S>(specification, labels);
+		specificationTS.setTokenMatcher(tokenMatcher);
+		TSCopy.copy(TSTraversalMethod.DEPTH_FIRST, specificationTS, -1, symbols, unfoldedSpecification);
 		return unfoldedSpecification;
 	}
 }

@@ -2,7 +2,7 @@ package se.uu.it.bugfinder.dfa;
 
 public final class InputSymbol extends Symbol {
 
-	InputSymbol(String name) {
+	public InputSymbol(String name) {
 		super(name);
 	}
 

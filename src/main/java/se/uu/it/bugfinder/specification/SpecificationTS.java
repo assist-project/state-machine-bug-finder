@@ -17,7 +17,7 @@ import net.automatalib.automata.fsa.DFA;
 import net.automatalib.ts.acceptors.DeterministicAcceptorTS;
 import se.uu.it.bugfinder.dfa.Symbol;
 
-public class SpecificationTS<S> implements DeterministicAcceptorTS<RegisterState<S>, Symbol> {
+public class SpecificationTS <S> implements DeterministicAcceptorTS<RegisterState<S>, Symbol> {
 		private static final Logger LOGGER = LogManager.getLogger(SpecificationTS.class.getName());
 		
 		private Map<String, Pattern> patternCache;
@@ -32,7 +32,7 @@ public class SpecificationTS<S> implements DeterministicAcceptorTS<RegisterState
 		public SpecificationTS(DFA<S, SpecificationLabel> specification, Collection<SpecificationLabel> labels) {
 			this.specification = specification;
 			this.initial = new RegisterState<S>(specification.getInitialState(), new Valuation());
-			this.sink = new RegisterState<S> (specification.getInitialState(), null);
+			this.sink = new RegisterState<S>(specification.getInitialState(), null);
 			this.patternCache = new HashMap<>();
 			this.tokenMatcher = new DefaultTokenMatcher();
 			this.labels = labels;
@@ -174,12 +174,16 @@ public class SpecificationTS<S> implements DeterministicAcceptorTS<RegisterState
 
 		@Override
 		public Boolean getStateProperty(RegisterState<S> state) {
-			return specification.getStateProperty(state.getState());
+			return isAccepting(specification, state);
 		}
+		
+		private boolean isAccepting(DFA<S, SpecificationLabel> specification, RegisterState<S> state ) {
+			return specification.isAccepting( state.getState());
+		} 
 
 		@Override
 		public Void getTransitionProperty(RegisterState<S> transition) {
-			return specification.getTransitionProperty(transition.getState());
+			return null;
 		}
 
 		@Override
@@ -187,7 +191,7 @@ public class SpecificationTS<S> implements DeterministicAcceptorTS<RegisterState
 			if (state.equals(sink)) {
 				return false;
 			} else {
-				return specification.isAccepting(state.getState());
+				return isAccepting(specification, state);
 			}
 		}
 }

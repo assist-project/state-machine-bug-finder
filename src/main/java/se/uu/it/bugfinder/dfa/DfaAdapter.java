@@ -32,6 +32,10 @@ public class DfaAdapter {
 		return dfa;
 	}
 	
+	public List<Symbol> getSymbols() {
+		return symbols;
+	}
+	
 	private FastDFA<Symbol>  newDfa() {
 		return new FastDFA<>(new ListAlphabet<Symbol>(symbols));
 	}
