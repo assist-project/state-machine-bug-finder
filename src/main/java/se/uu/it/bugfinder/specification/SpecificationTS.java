@@ -14,7 +14,6 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.automatalib.automata.fsa.DFA;
-import net.automatalib.commons.util.mappings.Mapping;
 import net.automatalib.ts.acceptors.DeterministicAcceptorTS;
 import se.uu.it.bugfinder.dfa.Symbol;
 
@@ -24,21 +23,19 @@ public class SpecificationTS<S> implements DeterministicAcceptorTS<RegisterState
 		private Map<String, Pattern> patternCache;
 		
 		private DFA<S, SpecificationLabel> specification;
-		private Mapping<S,Collection<SpecificationLabel>> stateLabelsMapping;
 		private RegisterState<S> initial;
 		private RegisterState<S> sink;
 		private TokenMatcher tokenMatcher;
+		private Collection<SpecificationLabel> labels;
 		
 
-		public SpecificationTS(DFA<S, SpecificationLabel> specification, S sink, 
-				Mapping<S,Collection<SpecificationLabel>> specificationLabels, 
-				Collection<Symbol> symbols) {
+		public SpecificationTS(DFA<S, SpecificationLabel> specification, Collection<SpecificationLabel> labels) {
 			this.specification = specification;
-			this.stateLabelsMapping = specificationLabels;
 			this.initial = new RegisterState<S>(specification.getInitialState(), new Valuation());
-			this.sink = new RegisterState<S> (sink, null);
+			this.sink = new RegisterState<S> (specification.getInitialState(), null);
 			this.patternCache = new HashMap<>();
 			this.tokenMatcher = new DefaultTokenMatcher();
+			this.labels = labels;
 		}
 		
 		public void setTokenMatcher(TokenMatcher tokenMatcher) {
@@ -65,14 +62,17 @@ public class SpecificationTS<S> implements DeterministicAcceptorTS<RegisterState
 				return sink;
 			} else {
 				S dfaState = state.getState();
-				Collection<SpecificationLabel> localSpecificationLabels = stateLabelsMapping.get(dfaState);
 				List<SpecificationLabel> otherLabels = new LinkedList<>();
 				
 				// variables used to check for non-determinism/inconsistency in the specification
 				RegisterState<S> nextState = null, nextStateCandidate = null;
 				SpecificationLabel previouslyMatchedLabel = null;
 				
-				for (SpecificationLabel specificationLabel : localSpecificationLabels) {
+				for (SpecificationLabel specificationLabel : labels) {
+					if (specification.getSuccessor(dfaState, specificationLabel) == null) {
+						continue;
+					}
+					
 					// we start by attempting to match the symbol against a non-other label 
 					if (requiresOtherComputation(symbol, specificationLabel)) {
 						otherLabels.add(specificationLabel);
@@ -118,10 +118,6 @@ public class SpecificationTS<S> implements DeterministicAcceptorTS<RegisterState
 				}
 			}
 		}
-//		
-//		throw new RuntimeSpecificationException(
-//				String.format("Multiple other-dependent transitions from state %s, causing ambiguity. \n"
-//						+ "Other transitions: %s and %s", dfaState, otherLabel, specificationLabel));
 		
 		private boolean requiresOtherComputation(Symbol symbol, SpecificationLabel specificationLabel) {
 			DescriptionToken matchingToken = tokenMatcher.matchingAtomicToken(symbol, specificationLabel.getDescription());
@@ -149,76 +145,8 @@ public class SpecificationTS<S> implements DeterministicAcceptorTS<RegisterState
 					nextState = new RegisterState<S>(nextSpecificationState, nextValuation);
 				}
 			}
-//			
-//			switch(symbolDescription.getType()) {
-//			case EL:
-//				if (specificationLabel.equals(messageLabel)) {
-//					nextState =  new RegisterState<S> (nextSpecificationState, nextValuation);
-//				}
-//				break;
-//				
-//			case FILTER:
-//				FilterLabel filterLabel = (FilterLabel) specificationLabel;
-//				String regex = filterLabel.getRegexFilter();
-//				String resolvedRegex = resolveBackRefs(state.getValuation(), regex);
-//				Pattern pattern = patternCache.get(resolvedRegex);
-//				if (pattern == null) {
-//					pattern = Pattern.compile(resolvedRegex);
-//					patternCache.put(resolvedRegex, pattern);
-//				}
-//				Matcher matcher = pattern.matcher(messageLabel.toString());
-//				
-//				if (matcher.matches()) {
-//					for (int i=1; i<=matcher.groupCount(); i++) {
-//						nextValuation.put(captureGroupVariable(i), new Value(matcher.group(i)));
-//					}
-//					nextState = new RegisterState<S> (nextSpecificationState, nextValuation);
-//				}
-//				break;
-//			
-//			case ENUMERATION:
-//				EnumerationLabel enumerationLabel = (EnumerationLabel) specificationLabel;
-//				if (enumerationLabel.containsLabel(messageLabel)) {
-//					nextState = new RegisterState<S> (nextSpecificationState, nextValuation);
-//				}
-//				break;
-//				
-//			case OTHER:
-//				nextState = new RegisterState<S> (nextSpecificationState, nextValuation);
-//				break;
-//
-//			case BINARY_EXPRESSION:
-//				BinaryExpressionLabel expressionLabel = (BinaryExpressionLabel) specificationLabel;
-//				BinarySetOperation operation = expressionLabel.getOperation();
-//				Supplier<RegisterState<S>> nextStateLeft = () -> transition(state, messageLabel, expressionLabel.getLeft(), nextSpecificationState);
-//				Supplier<RegisterState<S>> nextStateRight = getElements;
-//				switch (operation) {
-//				case DIFFERENCE:
-//					if (nextStateLeft.get() != null && nextStateRight.get() == null) {
-//						nextState = new RegisterState<S> (nextSpecificationState, nextValuation);
-//					}
-//					break;
-//				case UNION:
-//					if (nextStateLeft.get() != null || nextStateRight.get() != null) {
-//						return nextState = new RegisterState<S> (nextSpecificationState, nextValuation);
-//					}
-//					break;
-//				default:
-//					throw new RuntimeSpecificationException(String.format("Unsupported binary operation type %s", specificationLabel.getType().name()));
-//				}
-//				break;
-//			case SPECIFICATION:
-//				SpecificationLabel specLabel = (SpecificationLabel) specificationLabel;
-//				specLabel.getDescription()
-//			default:
-//				throw new RuntimeSpecificationException(String.format("Unsupported label type %s", specificationLabel.getType().name())); 
-//			}
 			return nextState;
 		}
-		
-//		private Valuation storeCaptureGroups() {
-//			
-//		}
 		
 		private Variable captureGroupVariable(int index) {
 			return new Variable("cg" + index);

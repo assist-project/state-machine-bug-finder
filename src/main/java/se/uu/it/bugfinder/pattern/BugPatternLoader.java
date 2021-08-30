@@ -23,6 +23,8 @@ import org.apache.logging.log4j.Logger;
 
 import net.automatalib.automata.fsa.impl.FastDFA;
 import se.uu.it.bugfinder.dfa.DfaAdapter;
+import se.uu.it.bugfinder.specification.ParsingContext;
+import se.uu.it.bugfinder.specification.SpecificationDfaParser;
 import se.uu.it.bugfinder.specification.SpecificationLabel;
 
 public class BugPatternLoader {
@@ -112,14 +114,14 @@ public class BugPatternLoader {
 	}
 
 	private static void preparePatterns(BugPatterns bugPatterns, URI location, BugPatternSpecificationConfig config, DtlsSymbolMapping mapping) {
-		SpecificationDfaParser specParser = new SpecificationDfaParser(new DtlsParsingContext());
-		Function<String, DtlsLanguageAdapter> loadLanguage = p -> loadDfa(p, location, specParser, mapping, config.isClient());
+		SpecificationDfaParser specParser = new SpecificationDfaParser(new ParsingContext());
+		Function<String, DfaAdapter> loadLanguage = p -> loadDfa(p, location, specParser, mapping, config.isClient());
 		
-		DtlsLanguageAdapter validHandshakeLanguage = loadLanguage.apply(bugPatterns.getSpecificationLanguagePath());
+		DfaAdapter validHandshakeLanguage = loadLanguage.apply(bugPatterns.getSpecificationLanguagePath());
 		bugPatterns.setSpecificationLanguage(validHandshakeLanguage);
 		
 		for (BugPattern bugPattern : bugPatterns.getBugPatterns()) {
-			DtlsLanguageAdapter bugLanguage = loadLanguage.apply(bugPattern.getBugLanguagePath());
+			DfaAdapter bugLanguage = loadLanguage.apply(bugPattern.getBugLanguagePath());
 			bugPattern.setBugLanguage(bugLanguage);
 		}
 	}
