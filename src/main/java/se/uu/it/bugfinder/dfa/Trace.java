@@ -1,8 +1,12 @@
 package se.uu.it.bugfinder.dfa;
 
+import java.util.Iterator;
+import java.util.stream.Stream;
+
+import net.automatalib.commons.util.Pair;
 import net.automatalib.words.Word;
 
-public class Trace <I,O> {
+public class Trace <I,O> implements Iterable<Pair<I,O>>{
 	private Word<I> inputWord;
 	private Word<O> outputWord;
 	
@@ -11,7 +15,6 @@ public class Trace <I,O> {
 		this.inputWord = inputs;
 		this.outputWord = outputs;
 	}
-	
 
 	public Word<I> getInputWord() {
 		return inputWord;
@@ -22,6 +25,18 @@ public class Trace <I,O> {
 	
 	public int getLength() {
 		return inputWord.length();
+	}
+	
+	public Stream<Pair<I,O>> getInputOutputStream() {
+		Stream.Builder<Pair<I,O>> builder = Stream.builder();
+		for (int i=0; i<getLength(); i++) {
+			builder.add(Pair.of(inputWord.getSymbol(i), outputWord.getSymbol(i)));
+		}
+		return builder.build();
+	}
+	
+	public Iterator<Pair<I,O>> iterator() {
+		return getInputOutputStream().iterator();
 	}
 	
 	public String toCompactString() {

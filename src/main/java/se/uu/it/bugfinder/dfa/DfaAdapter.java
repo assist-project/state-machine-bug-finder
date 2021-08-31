@@ -13,6 +13,7 @@ import net.automatalib.util.automata.copy.AutomatonCopyMethod;
 import net.automatalib.util.automata.copy.AutomatonLowLevelCopy;
 import net.automatalib.util.automata.fsa.DFAs;
 import net.automatalib.util.ts.acceptors.AcceptanceCombiner;
+import net.automatalib.words.Word;
 import net.automatalib.words.impl.ListAlphabet;
 import se.uu.it.bugfinder.utils.DFAUtils;
 
@@ -100,5 +101,9 @@ public class DfaAdapter {
 		FastDFA<Symbol> fullySpecifiedDfa = newDfa();
 		DFAs.complete(dfa, symbols, fullySpecifiedDfa);
 		return new DfaAdapter(fullySpecifiedDfa, fullySpecifiedDfa.getInputAlphabet());
+	}
+	
+	public boolean accepts(Word<Symbol> sequence) {
+		return dfa.accepts(sequence);
 	}
 }
