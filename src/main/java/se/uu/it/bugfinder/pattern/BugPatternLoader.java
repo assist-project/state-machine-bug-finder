@@ -24,10 +24,10 @@ import net.automatalib.automata.fsa.impl.FastDFA;
 import se.uu.it.bugfinder.dfa.DfaAdapter;
 import se.uu.it.bugfinder.dfa.DfaAdapterBuilder;
 import se.uu.it.bugfinder.dfa.Symbol;
-import se.uu.it.bugfinder.specification.ParsingContext;
-import se.uu.it.bugfinder.specification.SpecificationDfaParser;
-import se.uu.it.bugfinder.specification.SpecificationLabel;
-import se.uu.it.bugfinder.specification.javacc.ParseException;
+import se.uu.it.bugfinder.encoding.EncodedDfaParser;
+import se.uu.it.bugfinder.encoding.Label;
+import se.uu.it.bugfinder.encoding.ParsingContext;
+import se.uu.it.bugfinder.encoding.javacc.ParseException;
 
 public class BugPatternLoader {
 	private static final Logger LOGGER = LogManager.getLogger(BugPatternLoader.class);
@@ -42,7 +42,7 @@ public class BugPatternLoader {
 		return context;
 	}
 	
-	public static BugPatterns loadPatterns(String patternsFile, boolean resource, DfaAdapterBuilder builder, Collection<Symbol> symbols) throws BugPatternLoadingException {
+	public static BugPatterns loadPatterns(String patternsFile, boolean resource, DfaDecoder builder, Collection<Symbol> symbols) throws BugPatternLoadingException {
 		BugPatterns bugPatterns = null;
 		LOGGER.info("Loading bug patterns");
 		InputStream patternsStream;
@@ -84,9 +84,9 @@ public class BugPatternLoader {
 
 	}
 
-	private static void preparePatterns(BugPatterns bugPatterns, URI location, DfaAdapterBuilder builder, Collection<Symbol> symbols) {
-		SpecificationDfaParser specParser = new SpecificationDfaParser(new ParsingContext());
-		Function<String, DfaAdapter> loadSpecification = p -> loadDfa(p, location, specParser, builder, symbols);
+	private static void preparePatterns(BugPatterns bugPatterns, URI location, DfaDecoder decompresser, Collection<Symbol> symbols) {
+		EncodedDfaParser specParser = new EncodedDfaParser(new ParsingContext());
+		Function<String, DfaAdapter> loadSpecification = p -> loadDfa(p, location, specParser, decompresser, symbols);
 		
 		DfaAdapter validHandshakeLanguage = loadSpecification.apply(bugPatterns.getSpecificationLanguagePath());
 		bugPatterns.setSpecificationLanguage(validHandshakeLanguage);
@@ -97,17 +97,17 @@ public class BugPatternLoader {
 		}
 	}
 	
-	private static DfaAdapter loadDfa(String specificationPath, URI location, SpecificationDfaParser specParser, DfaAdapterBuilder builder, Collection<Symbol> symbols){
+	private static DfaAdapter loadDfa(String specificationPath, URI location, EncodedDfaParser specParser, DfaDecoder decompresser, Collection<Symbol> symbols){
 		LOGGER.info("Loading specification at path: {}", specificationPath);
 		URI specificationLocation = location.resolve(specificationPath);
 		InputStream specificationStream = BugPatternLoader.class.getResourceAsStream(specificationLocation.getPath());
 		if (specificationStream == null) {
 			throw new BugPatternLoadingException("Could not find specification at path " + specificationLocation.getPath());
 		}
-		FastDFA<SpecificationLabel> bugSpec;
+		FastDFA<Label> bugSpec;
 		try {
-			bugSpec = specParser.parseDfaModel(new InputStreamReader(specificationStream));
-			DfaAdapter specAdapter = builder.fromSpecification(bugSpec, bugSpec.getInputAlphabet(), symbols);
+			bugSpec = specParser.parseEncodedDfa(new InputStreamReader(specificationStream));
+			DfaAdapter specAdapter = decompresser.decode(bugSpec, bugSpec.getInputAlphabet(), symbols);
 			return specAdapter;
 		} catch (FileNotFoundException e) {
 			throw new BugPatternLoadingException("Could not find specification at path " + specificationLocation.getPath(), e);

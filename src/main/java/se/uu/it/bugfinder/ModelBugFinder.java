@@ -1,8 +1,5 @@
 package se.uu.it.bugfinder;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.ArrayDeque;
 import java.util.Arrays;
 import java.util.Collection;
@@ -20,12 +17,11 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import net.automatalib.automata.fsa.DFA;
-import net.automatalib.automata.fsa.impl.FastDFAState;
 import net.automatalib.automata.transducers.MealyMachine;
 import net.automatalib.words.Word;
 import se.uu.it.bugfinder.bug.ModelBug;
 import se.uu.it.bugfinder.dfa.DfaAdapter;
-import se.uu.it.bugfinder.dfa.DfaAdapterBuilder;
+import se.uu.it.bugfinder.dfa.MealyToDfaConverter;
 import se.uu.it.bugfinder.dfa.Symbol;
 import se.uu.it.bugfinder.dfa.SymbolMapping;
 import se.uu.it.bugfinder.dfa.Trace;
@@ -34,16 +30,16 @@ import se.uu.it.bugfinder.pattern.BugPattern;
 import se.uu.it.bugfinder.pattern.BugPatterns;
 import se.uu.it.bugfinder.pattern.GeneralBugPattern;
 import se.uu.it.bugfinder.witness.ModelExplorer;
+import se.uu.it.bugfinder.witness.SUT;
 import se.uu.it.bugfinder.witness.SearchConfig;
 import se.uu.it.bugfinder.witness.SearchOrder;
-import se.uu.it.bugfinder.witness.SequenceExecutor;
 import se.uu.it.bugfinder.witness.SequenceGenerator;
 import se.uu.it.bugfinder.witness.SequenceGeneratorFactory;
 import se.uu.it.bugfinder.witness.WitnessFinder;
 
 public class ModelBugFinder<I,O> {
 	private static final Logger LOGGER = LogManager.getLogger(ModelBugFinder.class);
-	private DfaAdapterBuilder builder;
+	private MealyToDfaConverter coverter;
 	private boolean validate;
 	private ModelBugFinderConfig config;
 	private StatisticsTracker tracker;
@@ -52,7 +48,7 @@ public class ModelBugFinder<I,O> {
 	public ModelBugFinder(ModelBugFinderConfig config) {
 		this.validate = config.isValidate();
 		this.config = config;
-		this.builder = new DfaAdapterBuilder();
+		this.coverter = new MealyToDfaConverter();
 		if (config.getOutputDir() == null) {
 			this.exporter = (dfa,name) -> {};
 		} else {
@@ -66,15 +62,15 @@ public class ModelBugFinder<I,O> {
 	
 	/**
 	 * 
-	 * @param builder
+	 * @param converter
 	 */
-	public void setDfaAdapterBuilder(DfaAdapterBuilder builder) {
-		this.builder = builder;
+	public void setConverter(MealyToDfaConverter converter) {
+		this.coverter = converter;
 	}
 	
-	public Statistics findBugs(BugPatterns patterns, MealyMachine<?,I,?,O> mealy, Collection<I> inputs, SymbolMapping<I,O> mapping, @Nullable SequenceExecutor<I,O> executor, List<ModelBug> bugs) {
+	public Statistics findBugs(BugPatterns patterns, MealyMachine<?,I,?,O> mealy, Collection<I> inputs, SymbolMapping<I,O> mapping, @Nullable SUT<I,O> sut, List<ModelBug> bugs) {
 		tracker = new StatisticsTracker(config);
-		DfaAdapter sutLanguage = builder.fromSystemModel(mealy, inputs, mapping);
+		DfaAdapter sutLanguage = coverter.convert(mealy, inputs, mapping);
 		exporter.exportDfa(sutLanguage, "sutLanguage.dot");
 		List<BugPattern> detectedPatterns = new LinkedList<>(); 
 
@@ -101,7 +97,7 @@ public class ModelBugFinder<I,O> {
 					SequenceGenerator<Symbol> sequenceGenerator = SequenceGeneratorFactory.buildGenerator(config.getWitnessGenerationStrategy(), config.getSearchConfig(), null);
 					WitnessFinder witnessFinder = new WitnessFinder(sequenceGenerator, config.getBound()); 
 					tracker.startValidation(bugPattern);
-					Trace<I,O> witness = witnessFinder.findWitness(executor, mapping, sutBugLanguage);
+					Trace<I,O> witness = witnessFinder.findWitness(sut, mapping, sutBugLanguage);
 					tracker.endValidation(bugPattern);
 					if (witness != null) {
 						ModelBug bug = new ModelBug(witness, Arrays.asList(bugPattern));
@@ -110,7 +106,7 @@ public class ModelBugFinder<I,O> {
 						LOGGER.info("Found valid witness {}", witness.toCompactString());
 					} else {
 						// could not validate bug
-						Trace<I,O> counterexample = witnessFinder.findCounterexample(executor, mapping, sutBugLanguage);
+						Trace<I,O> counterexample = witnessFinder.findCounterexample(sut, mapping, sutBugLanguage);
 						ModelBug bug = new ModelBug(counterexample, Arrays.asList(bugPattern));
 						bug.validationFailed(counterexample);
 						bugs.add(bug);

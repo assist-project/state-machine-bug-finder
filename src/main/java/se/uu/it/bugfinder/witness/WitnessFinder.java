@@ -18,21 +18,21 @@ public class WitnessFinder {
 		this.bound = bound;
 	}
 	
-	public <I,O>  Trace<I,O> findWitness(SequenceExecutor<I,O> sutOracle, SymbolMapping<I,O> mapping, DfaAdapter sutBugLanguage) {
-		return findWitness(sutOracle, mapping, sutBugLanguage, true);
+	public <I,O>  Trace<I,O> findWitness(SUT<I,O> sut, SymbolMapping<I,O> mapping, DfaAdapter sutBugLanguage) {
+		return findWitness(sut, mapping, sutBugLanguage, true);
 	}
 	
-	public <I,O>  Trace<I,O> findCounterexample(SequenceExecutor<I,O> sutOracle, SymbolMapping<I,O> mapping, DfaAdapter sutBugLanguage) {
-		return findWitness(sutOracle, mapping, sutBugLanguage, false);
+	public <I,O>  Trace<I,O> findCounterexample(SUT<I,O> sut, SymbolMapping<I,O> mapping, DfaAdapter sutBugLanguage) {
+		return findWitness(sut, mapping, sutBugLanguage, false);
 	}
 	
-	private <I,O> Trace<I,O> findWitness(SequenceExecutor<I,O> sutOracle, SymbolMapping<I,O> mapping, DfaAdapter sutBugLanguage, boolean desiredValidationOutcome) {
+	private <I,O> Trace<I,O> findWitness(SUT<I,O> sut, SymbolMapping<I,O> mapping, DfaAdapter sutBugLanguage, boolean desiredValidationOutcome) {
 		int count = 0;
 		for (Word<Symbol> sequence : generator.generateSequences(sutBugLanguage.getDfa(), sutBugLanguage.getSymbols())) {
 			WordBuilder<I> inputWordBuilder = new WordBuilder<I>();
 			sequence.stream().filter(s -> s instanceof InputSymbol).forEach(s -> inputWordBuilder.add( mapping.toInput((InputSymbol) s)));
 			Word<I> inputWord = inputWordBuilder.toWord();
-			Word<O> outputWord = sutOracle.execute(inputWord);
+			Word<O> outputWord = sut.execute(inputWord);
 			Trace<I,O> trace = new Trace<I,O> (inputWord, outputWord);
 			Word<Symbol> actualSequence= mapping.fromExecutionTrace(trace);
 			boolean exhibitsBug = sutBugLanguage.accepts(actualSequence);

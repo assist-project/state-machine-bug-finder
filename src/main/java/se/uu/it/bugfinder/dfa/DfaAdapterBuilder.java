@@ -21,10 +21,10 @@ import net.automatalib.util.ts.copy.TSCopy;
 import net.automatalib.util.ts.traversal.TSTraversalMethod;
 import net.automatalib.words.Alphabet;
 import net.automatalib.words.impl.ListAlphabet;
-import se.uu.it.bugfinder.specification.DefaultTokenMatcher;
-import se.uu.it.bugfinder.specification.SpecificationLabel;
-import se.uu.it.bugfinder.specification.SpecificationTS;
-import se.uu.it.bugfinder.specification.TokenMatcher;
+import se.uu.it.bugfinder.encoding.DecodingTS;
+import se.uu.it.bugfinder.encoding.DefaultTokenMatcher;
+import se.uu.it.bugfinder.encoding.Label;
+import se.uu.it.bugfinder.encoding.TokenMatcher;
 import se.uu.it.bugfinder.utils.DFAUtils;
 import se.uu.it.bugfinder.utils.MealyUtils;
 
@@ -79,7 +79,7 @@ public class DfaAdapterBuilder {
 		return new DfaAdapter(dfa, symbols).minimize();
 	}
 	
-	public DfaAdapter fromSpecification(DFA<?, SpecificationLabel> specification, Collection<SpecificationLabel> labels, 
+	public DfaAdapter fromSpecification(DFA<?, Label> specification, Collection<Label> labels, 
 			Collection<Symbol> symbols) {
 		FastDFA<Symbol> unfoldedSpec = unfold(specification, labels, symbols);
 		FastDFA<Symbol> inputCompleteSpec = new FastDFA<Symbol>(new ListAlphabet<Symbol>(new ArrayList<>(symbols)));
@@ -88,10 +88,10 @@ public class DfaAdapterBuilder {
 		return unfoldedDfa.minimize();
 	}
 	
-	private <S> FastDFA<Symbol> unfold(DFA<S, SpecificationLabel> specification, Collection<SpecificationLabel> labels, Collection<Symbol> symbols) {
+	private <S> FastDFA<Symbol> unfold(DFA<S, Label> specification, Collection<Label> labels, Collection<Symbol> symbols) {
 		Alphabet<Symbol> alphabet = new ListAlphabet<>(new ArrayList<>(symbols));
 		FastDFA<Symbol> unfoldedSpecification = new FastDFA<>(alphabet);
-		SpecificationTS<S> specificationTS = new SpecificationTS<S>(specification, labels);
+		DecodingTS<S> specificationTS = new DecodingTS<S>(specification, labels);
 		specificationTS.setTokenMatcher(tokenMatcher);
 		TSCopy.copy(TSTraversalMethod.DEPTH_FIRST, specificationTS, -1, symbols, unfoldedSpecification);
 		return unfoldedSpecification;

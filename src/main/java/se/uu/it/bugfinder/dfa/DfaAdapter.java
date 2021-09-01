@@ -27,7 +27,7 @@ public class DfaAdapter {
 	private DFA<?, Symbol> dfa;
 	private List<Symbol> symbols;
 
-	DfaAdapter(DFA<?, Symbol> dfa, Collection<Symbol> symbols) {
+	public DfaAdapter(DFA<?, Symbol> dfa, Collection<Symbol> symbols) {
 		this.dfa = dfa;
 		this.symbols = new ArrayList<>(symbols);
 	}
