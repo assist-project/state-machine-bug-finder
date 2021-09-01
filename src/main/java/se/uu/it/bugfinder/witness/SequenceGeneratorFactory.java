@@ -57,10 +57,6 @@ public class SequenceGeneratorFactory {
 		}
 
 		public <S> Iterable<Word<I>> generateSequences(DFA<S, I> bugLanguage, Collection<I> alphabet) {
-			return generateSequencesTyped(bugLanguage, alphabet);
-		}
-		
-		private <S> Iterable<Word<I>> generateSequencesTyped(DFA<S,I> bugLanguage, Collection<I> alphabet) {
 			Set<S> acceptingStates = bugLanguage.getStates().stream().filter(s -> bugLanguage.isAccepting(s)).collect(Collectors.toSet());
 			ModelExplorer<S,I> explorer = new ModelExplorer<>(bugLanguage, alphabet);
 			return explorer.wordsToTargetStates(acceptingStates, config);

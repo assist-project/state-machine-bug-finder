@@ -3,8 +3,6 @@ package se.uu.it.bugfinder.pattern;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.apache.commons.lang3.NotImplementedException;
-
 import se.uu.it.bugfinder.bug.BugSeverity;
 import se.uu.it.bugfinder.dfa.DfaAdapter;
 

@@ -6,14 +6,15 @@ import java.util.Collections;
 import java.util.List;
 
 import se.uu.it.bugfinder.dfa.SymbolTrace;
+import se.uu.it.bugfinder.dfa.Trace;
 import se.uu.it.bugfinder.pattern.AbstractBugPattern;
 
 public class ModelBug extends Bug{
 	
 	private List<AbstractBugPattern> bugPatterns;
-	private SymbolTrace counterexample;
+	private Trace<?,?> counterexample;
 	
-	public ModelBug(SymbolTrace trace, List<AbstractBugPattern> bugPatterns) {
+	public ModelBug(Trace<?,?>  trace, List<AbstractBugPattern> bugPatterns) {
 		super(trace);
 		if (bugPatterns.isEmpty()) {
 			throw new InternalError("There should be at least one pattern");
@@ -27,8 +28,8 @@ public class ModelBug extends Bug{
 		setSeverity(maxSeverity);
 	}
 
-	public ModelBug(SymbolTrace flow, AbstractBugPattern pattern) {
-		super(flow);
+	public ModelBug(Trace<?,?>  trace, AbstractBugPattern pattern) {
+		super(trace);
 		this.bugPatterns = Arrays.asList(pattern);
 		setSeverity(pattern.getSeverity());
 	}
@@ -62,12 +63,12 @@ public class ModelBug extends Bug{
 	}
 	
 	
-	public void verificationFailed(SymbolTrace counterexample) {
+	public void validationFailed(Trace<?,?> counterexample) {
 		setStatus(BugValidationStatus.VALIDATION_FAILED);
 		this.counterexample = counterexample;
 	}
 	
-	public void verificationSuccessful() {
+	public void validationSuccessful() {
 		setStatus(BugValidationStatus.VALIDATION_SUCCESSFUL);
 	}
 	

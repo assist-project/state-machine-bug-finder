@@ -3,8 +3,8 @@ package se.uu.it.bugfinder.witness;
 public class SearchConfig {
 	private int stateVisitBound = 1;
 	private SearchOrder order = SearchOrder.MIN_VISIT_MIN_STATE;
-	
 	private boolean visitTargetStates = true;
+	private int bound = -1;
 	
 	public void setStateVisitBound(int stateVisitBound) {
 		this.stateVisitBound = stateVisitBound;

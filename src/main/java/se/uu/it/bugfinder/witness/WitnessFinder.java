@@ -8,38 +8,25 @@ import se.uu.it.bugfinder.dfa.Symbol;
 import se.uu.it.bugfinder.dfa.SymbolMapping;
 import se.uu.it.bugfinder.dfa.Trace;
 
-public class WitnessFinder <I,O> {
+public class WitnessFinder {
 	
-	private SequenceExecutor<I,O> sutOracle;
-	private SymbolMapping<I,O> mapping;
 	private int bound;
 	private SequenceGenerator<Symbol> generator;
-	
-	public WitnessFinder(SequenceExecutor<I,O> sutOracle, SymbolMapping<I,O> mapping,
-			 SequenceGenerator<Symbol> generator) {
-		this.sutOracle = sutOracle;
-		this.mapping = mapping;
-		this.generator = generator;
-		this.bound = -1;
-	}
 
-	public WitnessFinder(SequenceExecutor<I,O> sutOracle, SymbolMapping<I,O> mapping,
-			 SequenceGenerator<Symbol> generator, int bound) {
-		this.sutOracle = sutOracle;
-		this.mapping = mapping;
+	public WitnessFinder(SequenceGenerator<Symbol> generator, int bound) {
 		this.generator = generator;
 		this.bound = bound;
 	}
 	
-	public Trace<I,O> findWitness(DfaAdapter sutBugLanguage) {
-		return findWitness(sutBugLanguage, true);
+	public <I,O>  Trace<I,O> findWitness(SequenceExecutor<I,O> sutOracle, SymbolMapping<I,O> mapping, DfaAdapter sutBugLanguage) {
+		return findWitness(sutOracle, mapping, sutBugLanguage, true);
 	}
 	
-	public Trace<I,O> findCounterexample(DfaAdapter sutBugLanguage) {
-		return findWitness(sutBugLanguage, false);
+	public <I,O>  Trace<I,O> findCounterexample(SequenceExecutor<I,O> sutOracle, SymbolMapping<I,O> mapping, DfaAdapter sutBugLanguage) {
+		return findWitness(sutOracle, mapping, sutBugLanguage, false);
 	}
 	
-	private Trace<I,O> findWitness(DfaAdapter sutBugLanguage, boolean desiredValidationOutcome) {
+	private <I,O> Trace<I,O> findWitness(SequenceExecutor<I,O> sutOracle, SymbolMapping<I,O> mapping, DfaAdapter sutBugLanguage, boolean desiredValidationOutcome) {
 		int count = 0;
 		for (Word<Symbol> sequence : generator.generateSequences(sutBugLanguage.getDfa(), sutBugLanguage.getSymbols())) {
 			WordBuilder<I> inputWordBuilder = new WordBuilder<I>();

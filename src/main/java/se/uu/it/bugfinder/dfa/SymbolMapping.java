@@ -2,6 +2,7 @@ package se.uu.it.bugfinder.dfa;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 
 import net.automatalib.commons.util.Pair;
@@ -63,5 +64,26 @@ public interface SymbolMapping <I,O> {
 			builder.addAll(fromOutput(io.getSecond()));
 		}
 		return builder.toWord();
+	}
+	
+	default Trace<I,O> toExecutionTrace(Word<Symbol> symbolWord) {
+		WordBuilder<I> inputWordBuilder = new WordBuilder<I>();
+		WordBuilder<O> outputWordBuilder = new WordBuilder<O>();
+		List<OutputSymbol> outputSymbols = new LinkedList<>();
+		for (Symbol symbol : symbolWord) {
+			if (symbol instanceof InputSymbol) {
+				if (!outputSymbols.isEmpty()) {
+					outputWordBuilder.append(toOutput(outputSymbols));
+					outputSymbols.clear();
+				}
+				inputWordBuilder.add( toInput( (InputSymbol) symbol) );
+			} else {
+				outputSymbols.add((OutputSymbol) symbol);
+			}
+		}
+		Word<I> inputWord = inputWordBuilder.toWord();
+		Word<O> outputWord = outputWordBuilder.toWord(); 
+		Trace<I,O> trace = new Trace<I,O> (inputWord, outputWord);
+		return trace;
 	}
 }

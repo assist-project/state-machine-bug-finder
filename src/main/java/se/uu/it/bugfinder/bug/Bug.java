@@ -1,6 +1,6 @@
 package se.uu.it.bugfinder.bug;
 
-import se.uu.it.bugfinder.dfa.SymbolTrace;
+import se.uu.it.bugfinder.dfa.Trace;
 
 public abstract class Bug {
 	private static int BUG_COUNT;
@@ -9,12 +9,12 @@ public abstract class Bug {
 		return ++BUG_COUNT;
 	}
 	
-	private SymbolTrace trace;
+	private Trace<?,?>  trace;
 	private Integer id;
 	private BugSeverity severity;
 	private BugValidationStatus status;
 	
-	public Bug(SymbolTrace trace) {
+	public Bug(Trace<?,?>  trace) {
 		this.trace = trace;
 		id = getFreshBugId();
 		severity = getDefaultSeverity();
@@ -47,7 +47,7 @@ public abstract class Bug {
 		return id;
 	}
 	
-	protected SymbolTrace getTrace() {
+	protected Trace<?,?>  getTrace() {
 		return trace;
 	}
 	

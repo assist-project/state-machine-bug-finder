@@ -28,6 +28,11 @@ import se.uu.it.bugfinder.specification.TokenMatcher;
 import se.uu.it.bugfinder.utils.DFAUtils;
 import se.uu.it.bugfinder.utils.MealyUtils;
 
+/**
+ * Implements two backbone operations which both result in DFAs.
+ * First is conversion of a Mealy machine to a DFA.
+ * Second is generating a DFA from a condensed specification of a bug pattern. 
+ */
 public class DfaAdapterBuilder {
 	private Consumer<MutableDFA<?,Symbol>> systemDfaPostProcessor = a -> {};
 	private TokenMatcher tokenMatcher = new DefaultTokenMatcher();

@@ -1,5 +1,7 @@
 package se.uu.it.bugfinder.dfa;
 
+import java.io.IOException;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -9,6 +11,7 @@ import net.automatalib.automata.fsa.DFA;
 import net.automatalib.automata.fsa.impl.FastDFA;
 import net.automatalib.automata.fsa.impl.FastDFAState;
 import net.automatalib.automata.fsa.impl.compact.CompactDFA;
+import net.automatalib.serialization.dot.GraphDOT;
 import net.automatalib.util.automata.copy.AutomatonCopyMethod;
 import net.automatalib.util.automata.copy.AutomatonLowLevelCopy;
 import net.automatalib.util.automata.fsa.DFAs;
@@ -105,5 +108,23 @@ public class DfaAdapter {
 	
 	public boolean accepts(Word<Symbol> sequence) {
 		return dfa.accepts(sequence);
+	}
+	
+	/**
+	 * True if the specification is equivalent to the empty language.
+	 */
+	public boolean isEmpty() {
+		return DFAs.acceptsEmptyLanguage(dfa);
+	}
+	
+	/**
+	 * Generates a shortest accepting sequence.
+	 */
+	public Word<Symbol> getShortestAcceptingSequence() {
+		return DFAUtils.findShortestAcceptingWord(dfa, symbols);
+	}
+	
+	public void export(Writer writer) throws IOException {
+		GraphDOT.write(dfa, symbols, writer);
 	}
 }
