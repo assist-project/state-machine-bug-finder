@@ -27,7 +27,7 @@ public class BinaryBooleanExpression implements BooleanExpression {
 			result = leftTrue || rightTrue;
 			break;
 		default:
-			throw new RuntimeSpecificationException(String.format("Operator %s not supported", op.name()));
+			throw new RuntimeDecodingException(String.format("Operator %s not supported", op.name()));
 		}
 		
 		return result;

@@ -22,7 +22,6 @@ import org.apache.logging.log4j.Logger;
 
 import net.automatalib.automata.fsa.impl.FastDFA;
 import se.uu.it.bugfinder.dfa.DfaAdapter;
-import se.uu.it.bugfinder.dfa.DfaAdapterBuilder;
 import se.uu.it.bugfinder.dfa.Symbol;
 import se.uu.it.bugfinder.encoding.EncodedDfaParser;
 import se.uu.it.bugfinder.encoding.Label;
@@ -42,7 +41,7 @@ public class BugPatternLoader {
 		return context;
 	}
 	
-	public static BugPatterns loadPatterns(String patternsFile, boolean resource, DfaDecoder builder, Collection<Symbol> symbols) throws BugPatternLoadingException {
+	public static BugPatterns loadPatterns(String patternsFile, boolean resource, DfaDecoder decoder, Collection<Symbol> symbols) throws BugPatternLoadingException {
 		BugPatterns bugPatterns = null;
 		LOGGER.info("Loading bug patterns");
 		InputStream patternsStream;
@@ -65,7 +64,7 @@ public class BugPatternLoader {
 			throw new BugPatternLoadingException("Failed to load patterns from patterns XML file from file " + patternsFile, e);
 		}
 		
-		preparePatterns(bugPatterns, patternsURI, builder, symbols);
+		preparePatterns(bugPatterns, patternsURI, decoder, symbols);
 		LOGGER.info("Successfully loaded {} bug patterns from file {}", bugPatterns.getBugPatterns().size(), patternsFile);
 		return bugPatterns;
 	}
@@ -84,9 +83,9 @@ public class BugPatternLoader {
 
 	}
 
-	private static void preparePatterns(BugPatterns bugPatterns, URI location, DfaDecoder decompresser, Collection<Symbol> symbols) {
+	private static void preparePatterns(BugPatterns bugPatterns, URI location, DfaDecoder decoder, Collection<Symbol> symbols) {
 		EncodedDfaParser specParser = new EncodedDfaParser(new ParsingContext());
-		Function<String, DfaAdapter> loadSpecification = p -> loadDfa(p, location, specParser, decompresser, symbols);
+		Function<String, DfaAdapter> loadSpecification = p -> loadDfa(p, location, specParser, decoder, symbols);
 		
 		DfaAdapter validHandshakeLanguage = loadSpecification.apply(bugPatterns.getSpecificationLanguagePath());
 		bugPatterns.setSpecificationLanguage(validHandshakeLanguage);

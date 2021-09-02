@@ -80,7 +80,7 @@ public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>,
 						nextStateCandidate = transition(state, symbol, label);
 						if (nextStateCandidate != null) {
 							if (previouslyMatchedLabel != null) {
-									throw new RuntimeSpecificationException(
+									throw new RuntimeDecodingException(
 											String.format("Non-determinism in state %s. \n"
 											+ "The concrete label %s can trigger two transitions: %s and %s.", 
 											dfaState, symbol, previouslyMatchedLabel, label) );
@@ -99,7 +99,7 @@ public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>,
 						nextStateCandidate = transition(state, symbol, otherLabel);
 						if (nextStateCandidate != null) {
 							if (previouslyMatchedLabel != null) {
-								throw new RuntimeSpecificationException(
+								throw new RuntimeDecodingException(
 										String.format("Non-determinism in state %s. \n"
 										+ "The concrete label %s can trigger two transitions: %s and %s.", 
 										dfaState, symbol, previouslyMatchedLabel, otherLabel) );
@@ -126,10 +126,10 @@ public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>,
 		
 		private RegisterState<S> transition(RegisterState<S> state, Symbol symbol, Label label) {
 			S encodedDfaState = state.getState();
-			S nextCompressedDfaState = encodedDfa.getTransition(encodedDfaState, label);
+			S nextEncodedDfaState = encodedDfa.getTransition(encodedDfaState, label);
 			RegisterState<S> nextState = null;
-			if (nextCompressedDfaState != null) {
-				nextState = transition(state, symbol, label, nextCompressedDfaState);
+			if (nextEncodedDfaState != null) {
+				nextState = transition(state, symbol, label, nextEncodedDfaState);
 			}
 			return nextState;
 		}

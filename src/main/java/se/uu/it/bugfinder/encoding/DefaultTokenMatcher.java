@@ -52,7 +52,7 @@ public class DefaultTokenMatcher implements TokenMatcher {
 				}
 				break;
 			default:
-				throw new RuntimeSpecificationException(String.format("Unsupported binary operation type %s", operation.name()));
+				throw new RuntimeDecodingException(String.format("Unsupported binary operation type %s", operation.name()));
 			}
 			break;
 			
@@ -82,11 +82,11 @@ public class DefaultTokenMatcher implements TokenMatcher {
 				}
 				break;
 			default:
-				throw new RuntimeSpecificationException(String.format("Unsupported other token type %s", otherToken.getOtherTokenType().name()));
+				throw new RuntimeDecodingException(String.format("Unsupported other token type %s", otherToken.getOtherTokenType().name()));
 			}
 			break;
 		default:
-			throw new RuntimeSpecificationException(String.format("Unsupported symbol description type %s", description.getType().name())); 
+			throw new RuntimeDecodingException(String.format("Unsupported symbol description type %s", description.getType().name())); 
 			
 		}
 		

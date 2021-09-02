@@ -39,7 +39,7 @@ public class RelationalExpression  implements BooleanExpression {
 				return !contains;
 			}
 		default:
-			throw new RuntimeSpecificationException(String.format("Operation %s not supported", op.name()));
+			throw new RuntimeDecodingException(String.format("Operation %s not supported", op.name()));
 		}
 	}
 	

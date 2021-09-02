@@ -16,7 +16,7 @@ public abstract class Function {
 	
 	public Value invoke(Symbol symbol, Value ... arguments) {
 		if (arguments.length != numArgs) {
-			throw new RuntimeSpecificationException(String.format("Function %s invoked with an invalid number of arguments (%d instead of %d)", name, arguments.length, numArgs));
+			throw new RuntimeDecodingException(String.format("Function %s invoked with an invalid number of arguments (%d instead of %d)", name, arguments.length, numArgs));
 		}
 		
 		return doInvoke(symbol, arguments);
@@ -61,7 +61,7 @@ public abstract class Function {
 	}
 
 	protected void invalidInvocation(Value ... arguments) {
-		throw new RuntimeSpecificationException(String.format("Function %s was invoked with invalid arguments %s", this.getName(), Arrays.toString(arguments)));
+		throw new RuntimeDecodingException(String.format("Function %s was invoked with invalid arguments %s", this.getName(), Arrays.toString(arguments)));
 	}
 	
 }

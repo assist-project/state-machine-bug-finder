@@ -23,7 +23,7 @@ public abstract class Field implements ValueExpression {
 	protected abstract Value getValue(Symbol symbol);
 	
 	protected Value undefined(Symbol symbol) {
-		throw new RuntimeSpecificationException(String.format("Field %s is undefined for symbol %s", name, symbol.name()));
+		throw new RuntimeDecodingException(String.format("Field %s is undefined for symbol %s", name, symbol.name()));
 	}
 
 }
