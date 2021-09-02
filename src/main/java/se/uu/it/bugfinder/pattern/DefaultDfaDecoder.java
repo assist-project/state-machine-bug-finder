@@ -31,19 +31,19 @@ public class DefaultDfaDecoder implements DfaDecoder {
 	
 	public DfaAdapter decode(EncodedDfaHolder encodedDfaHolder, 
 			Collection<Symbol> symbols) {
-		FastDFA<Symbol> unfoldedSpec = unfold(encodedDfaHolder.getEncodedDfa(), encodedDfaHolder.getLabels(), symbols);
+		FastDFA<Symbol> unfoldedSpec = decode(encodedDfaHolder.getEncodedDfa(), encodedDfaHolder.getLabels(), symbols);
 		FastDFA<Symbol> inputCompleteSpec = new FastDFA<Symbol>(new ListAlphabet<Symbol>(new ArrayList<>(symbols)));
 		DFAs.complete(unfoldedSpec, inputCompleteSpec.getInputAlphabet(), inputCompleteSpec);
 		DfaAdapter unfoldedDfa = new DfaAdapter(unfoldedSpec, unfoldedSpec.getInputAlphabet());
 		return unfoldedDfa.minimize();
 	}
 	
-	private <S> FastDFA<Symbol> unfold(DFA<S, Label> encodedDfa, Collection<Label> labels, Collection<Symbol> symbols) {
+	private <S> FastDFA<Symbol> decode(DFA<S, Label> encodedDfa, Collection<Label> labels, Collection<Symbol> symbols) {
 		Alphabet<Symbol> alphabet = new ListAlphabet<>(new ArrayList<>(symbols));
-		FastDFA<Symbol> unfoldedSpecification = new FastDFA<>(alphabet);
-		DecodingTS<S> specificationTS = new DecodingTS<S>(encodedDfa, labels);
-		specificationTS.setTokenMatcher(tokenMatcher);
-		TSCopy.copy(TSTraversalMethod.DEPTH_FIRST, specificationTS, -1, symbols, unfoldedSpecification);
-		return unfoldedSpecification;
+		FastDFA<Symbol> decodedDfa = new FastDFA<>(alphabet);
+		DecodingTS<S> decodingTS = new DecodingTS<S>(encodedDfa, labels);
+		decodingTS.setTokenMatcher(tokenMatcher);
+		TSCopy.copy(TSTraversalMethod.DEPTH_FIRST, decodingTS, -1, symbols, decodedDfa);
+		return decodedDfa;
 	}
 }
