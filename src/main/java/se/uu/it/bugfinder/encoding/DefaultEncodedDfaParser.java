@@ -1,25 +1,17 @@
 package se.uu.it.bugfinder.encoding;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.Reader;
 import java.util.HashMap;
 import java.util.Map;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import com.pfg666.dotparser.fsm.dfa.AbstractDFAProcessor;
-import com.pfg666.dotparser.fsm.dfa.DFADotParser;
-
-import net.automatalib.automata.fsa.impl.FastDFA;
 import net.automatalib.automata.fsa.impl.compact.CompactDFA;
-import net.automatalib.commons.util.mappings.Mapping;
 import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
-import net.automatalib.words.impl.ListAlphabet;
 import se.uu.it.bugfinder.encoding.javacc.LabelParserFacade;
 import se.uu.it.bugfinder.encoding.javacc.TokenMgrError;
 
@@ -65,23 +57,4 @@ public class DefaultEncodedDfaParser implements EncodedDfaParser {
 		} 
 	}
 
-	
-	static class LabelProcessor extends AbstractDFAProcessor<Label>{
-		private ParsingContext context;
-
-		public LabelProcessor(ParsingContext context) {
-			this.context = context;
-		}
-
-		@Override
-		protected Label processDFALabel(String labelString) {
-			labelString = labelString.replace("\\\\", "\\");
-			try {
-				Label label = LabelParserFacade.parseLabelString(labelString, context);
-				return label;
-			} catch (se.uu.it.bugfinder.encoding.javacc.ParseException | TokenMgrError e) {
-				throw new InvalidLabelException(labelString, e);
-			} 
-		}
-	}
 }

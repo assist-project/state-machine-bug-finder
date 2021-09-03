@@ -73,13 +73,18 @@
 			<artifactId>automata-serialization-dot</artifactId>
 			<version>${automatalib.version}</version>
 		</dependency>
-
+		
 		<dependency>
-			<groupId>com.pfg666.dotparser</groupId>
-			<artifactId>dot-parser</artifactId>
-			<version>0.2.4</version>
-		</dependency>
-
+            <groupId>net.automatalib</groupId>
+            <artifactId>automata-util</artifactId>
+            <version>${automatalib.version}</version>
+        </dependency>
+		
+		<dependency>
+		  <artifactId>annotations</artifactId>
+          <groupId>com.google.code.findbugs</groupId>
+            <version>2.0.1</version>
+        </dependency>
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
