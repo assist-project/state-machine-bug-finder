@@ -29,8 +29,11 @@ import se.uu.it.bugfinder.pattern.AbstractBugPattern;
 import se.uu.it.bugfinder.pattern.BugPattern;
 import se.uu.it.bugfinder.pattern.BugPatterns;
 import se.uu.it.bugfinder.pattern.GeneralBugPattern;
+import se.uu.it.bugfinder.sut.Counter;
+import se.uu.it.bugfinder.sut.InputCountingSUT;
+import se.uu.it.bugfinder.sut.ResetCountingSUT;
+import se.uu.it.bugfinder.sut.SUT;
 import se.uu.it.bugfinder.witness.ModelExplorer;
-import se.uu.it.bugfinder.witness.SUT;
 import se.uu.it.bugfinder.witness.SearchConfig;
 import se.uu.it.bugfinder.witness.SearchOrder;
 import se.uu.it.bugfinder.witness.SequenceGenerator;
@@ -63,9 +66,22 @@ public class ModelBugFinder<I,O> {
 		this.coverter = converter;
 	}
 	
+	/**
+	 * @param exporter
+	 */
+	public void setExporter(DfaExporter exporter) {
+		this.exporter = exporter;
+	}
+	
 	public Statistics findBugs(BugPatterns patterns, MealyMachine<?,I,?,O> mealy, Collection<I> inputs, SymbolMapping<I,O> mapping, @Nullable SUT<I,O> sut, List<ModelBug> bugs) {
 		tracker = new StatisticsTracker(config, patterns);
-		tracker.startModelBugFinding();
+		tracker.startModelBugFinding(inputs);
+		if (validate) {
+			ResetCountingSUT<I, O> resetCountingSut = new ResetCountingSUT<I, O>(sut, new Counter("resets"));
+			InputCountingSUT<I, O> inputCountingSut = new InputCountingSUT<I, O>(resetCountingSut, new Counter("inputs"));
+			sut = inputCountingSut;
+			tracker.setSutTracking(inputCountingSut.getCounter(), resetCountingSut.getCounter());
+		}
 		DfaAdapter sutLanguage = coverter.convert(mealy, inputs, mapping);
 		exporter.exportDfa(sutLanguage, "sutLanguage.dot");
 		List<BugPattern> detectedPatterns = new LinkedList<>(); 
@@ -122,9 +138,12 @@ public class ModelBugFinder<I,O> {
 			handleGeneralBugPatterns(bugPattern, sutLanguage, detectedPatterns, mapping, bugs);
 		}
 		
-		// check for the existence of unidentified specification bugs
 		DfaAdapter spec = patterns.getSpecificationLanguage();
-		handleUncategorizedSpecificationBugs(spec, sutLanguage, detectedPatterns, mealy, mapping, bugs);
+		if (spec != null) {
+			// check for the existence of unidentified specification bugs
+			handleUncategorizedSpecificationBugs(spec, sutLanguage, detectedPatterns, mealy, mapping, bugs);
+		}
+		tracker.finishModelBugFinding(bugs);
 		return tracker.generateStatistics();
 	}
 	

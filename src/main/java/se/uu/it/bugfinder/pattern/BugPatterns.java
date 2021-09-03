@@ -17,7 +17,7 @@ import se.uu.it.bugfinder.dfa.DfaAdapter;
 @XmlRootElement(name = "bugPatterns")
 public class BugPatterns {
 	
-	@XmlElement(name = "specificationLanguage", required = true)
+	@XmlElement(name = "specificationLanguage", required = false)
 	private String specificationLanguagePath;
 	
 	@XmlTransient

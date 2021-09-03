@@ -78,8 +78,10 @@ public class BugPatternLoader {
 	private void preparePatterns(BugPatterns bugPatterns, URI location, Collection<Symbol> symbols) {
 		Function<String, DfaAdapter> loadSpecification = p -> loadDfa(p, location, symbols);
 		
-		DfaAdapter validHandshakeLanguage = loadSpecification.apply(bugPatterns.getSpecificationLanguagePath());
-		bugPatterns.setSpecificationLanguage(validHandshakeLanguage);
+		if (bugPatterns.getSpecificationLanguagePath() != null) {
+			DfaAdapter conformanceLanguage = loadSpecification.apply(bugPatterns.getSpecificationLanguagePath());
+			bugPatterns.setSpecificationLanguage(conformanceLanguage);
+		}
 		
 		for (BugPattern bugPattern : bugPatterns.getBugPatterns()) {
 			DfaAdapter bugLanguage = loadSpecification.apply(bugPattern.getBugLanguagePath());
@@ -88,11 +90,11 @@ public class BugPatternLoader {
 	}
 	
 	private DfaAdapter loadDfa(String encodedDfaPath, URI location, Collection<Symbol> symbols){
-		LOGGER.info("Loading specification at path: {}", encodedDfaPath);
+		LOGGER.info("Loading DFA at path: {}", encodedDfaPath);
 		URI encodedDfaLocation = location.resolve(encodedDfaPath);
-		InputStream specificationStream = getResourceAsStream(encodedDfaLocation.getPath()); 
+		InputStream encodedDfaStream = getResourceAsStream(encodedDfaLocation.getPath()); 
 		try {
-			DfaAdapter dfaAdapter = dfaDecoder.decode(new InputStreamReader(specificationStream), symbols);
+			DfaAdapter dfaAdapter = dfaDecoder.decode(encodedDfaStream, symbols);
 			return dfaAdapter;
 		} catch (Exception e) {
 			throw new BugPatternLoadingException("Error handling encoded dfa at path " + encodedDfaLocation.getPath(), e);
@@ -100,21 +102,21 @@ public class BugPatternLoader {
 	}
 	
 	private InputStream getResourceAsStream(String resourcePath) {
-		InputStream specificationStream = BugPatternLoader.class.getResourceAsStream(resourcePath);
-		if (specificationStream == null) {
+		InputStream encodedDfaStream = BugPatternLoader.class.getResourceAsStream(resourcePath);
+		if (encodedDfaStream == null) {
 			File file = new File(resourcePath);
 			if (file.exists()) {
 				try {
-					specificationStream = new FileInputStream(file);
+					encodedDfaStream = new FileInputStream(file);
 				} catch (FileNotFoundException e) {
 					throw new BugPatternLoadingException("Failed to load resource at path " + resourcePath, e);
 				}
 			}
 		}
-		if (specificationStream == null) {
+		if (encodedDfaStream == null) {
 			throw new BugPatternLoadingException("Could not find resource at path " + resourcePath);
 		}
 		
-		return specificationStream;
+		return encodedDfaStream;
 	}
 }

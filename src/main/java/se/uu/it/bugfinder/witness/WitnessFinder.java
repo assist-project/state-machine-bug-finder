@@ -7,6 +7,7 @@ import se.uu.it.bugfinder.dfa.InputSymbol;
 import se.uu.it.bugfinder.dfa.Symbol;
 import se.uu.it.bugfinder.dfa.SymbolMapping;
 import se.uu.it.bugfinder.dfa.Trace;
+import se.uu.it.bugfinder.sut.SUT;
 
 public class WitnessFinder {
 	

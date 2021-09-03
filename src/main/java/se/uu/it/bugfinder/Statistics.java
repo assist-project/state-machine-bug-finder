@@ -59,7 +59,7 @@ public class Statistics extends ExportableResult {
 		section("Model Bug Finder", out);
 		printCollection("Bug patterns loaded", loadedBugPatterns, AbstractBugPattern::getName, out);
 		printCollection("Bug patterns found", foundBugPatterns, AbstractBugPattern::getName, out);
-		printCollection("Bug patterns verified successfully", verifiedBugPatterns, AbstractBugPattern::getName, out);
+		printCollection("Bug patterns validated successfully", verifiedBugPatterns, AbstractBugPattern::getName, out);
 		if (config.isValidate() && bpInputCount != null) {
 			printCounterMap("Validation Inputs per Bug Pattern", bpInputCount, AbstractBugPattern::getName, out);
 			printCounterMap("Validation Resets per Bug Pattern", bpResetCount, AbstractBugPattern::getName, out);

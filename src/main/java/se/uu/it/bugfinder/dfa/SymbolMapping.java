@@ -38,7 +38,6 @@ public interface SymbolMapping <I,O> {
 	
 	default void toInputs(Collection<InputSymbol> inputSymbols, Collection<? super I> inputs) {
 		inputSymbols.forEach(sym -> inputs.add(toInput(sym)));
-		
 	}
 	
 	default List<I> toInputs(Collection<InputSymbol> inputSymbols) {
@@ -81,6 +80,7 @@ public interface SymbolMapping <I,O> {
 				outputSymbols.add((OutputSymbol) symbol);
 			}
 		}
+		outputWordBuilder.append(toOutput(outputSymbols));
 		Word<I> inputWord = inputWordBuilder.toWord();
 		Word<O> outputWord = outputWordBuilder.toWord(); 
 		Trace<I,O> trace = new Trace<I,O> (inputWord, outputWord);

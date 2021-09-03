@@ -1,7 +1,7 @@
 package se.uu.it.bugfinder.encoding;
 
-import java.io.Reader;
+import java.io.InputStream;
 
 public interface EncodedDfaParser {
-	public EncodedDfaHolder parseEncodedDfa(Reader specSource) throws Exception;
+	public EncodedDfaHolder parseEncodedDfa(InputStream encodedDfaStream) throws Exception;
 }

@@ -1,23 +1,24 @@
 package se.uu.it.bugfinder;
 
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
-import java.util.concurrent.atomic.AtomicLong;
 
 import se.uu.it.bugfinder.bug.BugValidationStatus;
 import se.uu.it.bugfinder.bug.ModelBug;
 import se.uu.it.bugfinder.pattern.AbstractBugPattern;
 import se.uu.it.bugfinder.pattern.BugPatterns;
+import se.uu.it.bugfinder.sut.Counter;
 
 
 public class StatisticsTracker {
 	
-	private AtomicLong inputCounter;
-	private AtomicLong resetCounter;
+	private Counter inputCounter;
+	private Counter resetCounter;
 	private long startTime;
 	private long totalTime;
 	private long totalBugs;
@@ -33,6 +34,7 @@ public class StatisticsTracker {
 	private Map<AbstractBugPattern, Long> bugPatternValidationResetCount;
 	
 	private ModelBugFinderConfig config;
+	private Collection<?> inputAlphabet;
 	
 	public StatisticsTracker(ModelBugFinderConfig config, BugPatterns bugPatterns) {
 		this.config = config;
@@ -49,14 +51,16 @@ public class StatisticsTracker {
 	}
 	
 
-	public void setSutTracking(AtomicLong inputCounter, AtomicLong resetCounter) {
+	public void setSutTracking(Counter inputCounter, Counter resetCounter) {
 		this.inputCounter = inputCounter;
 		this.resetCounter = resetCounter;
 	}
 	
 	
-	public void startModelBugFinding() {
+	public void startModelBugFinding(Collection<?> inputAlphabet) {
 		startTime = System.currentTimeMillis();
+		this.inputAlphabet = inputAlphabet;
+		
 	}
 	
 	/**
@@ -92,6 +96,7 @@ public class StatisticsTracker {
 	
 	public Statistics generateStatistics() {
 		Statistics statistics = new Statistics(config);
+		statistics.setInputAlphabet(inputAlphabet);
 		
 		if (inputCounter != null) {
 			statistics.setInputs(inputCounter.get());

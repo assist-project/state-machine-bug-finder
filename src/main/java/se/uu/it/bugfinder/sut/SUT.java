@@ -1,4 +1,4 @@
-package se.uu.it.bugfinder.witness;
+package se.uu.it.bugfinder.sut;
 
 import net.automatalib.words.Word;
 

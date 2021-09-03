@@ -36,14 +36,11 @@ public class MealyToDfaConverter {
 			return new ArrayList<Symbol>(mapping.fromOutput(pair.getSecond()));
 		};
 		
-		List<InputSymbol> inputSymbols = mapping.fromInputs(inputs);
-		List<OutputSymbol> outputSymbols = mapping.fromOutputs(outputs);
+		Set<Symbol> symbols = new LinkedHashSet<>();
+		mapping.fromInputs(inputs, symbols);
+		mapping.fromOutputs(outputs, symbols);
 		
-		List<Symbol> symbols = new ArrayList<Symbol>(inputs.size() + outputSymbols.size());
-		symbols.addAll(inputSymbols);
-		symbols.addAll(outputSymbols);
-		
-		Alphabet<Symbol> alphabet = new ListAlphabet<>(symbols);
+		Alphabet<Symbol> alphabet = new ListAlphabet<>(new ArrayList<>(symbols));
 		FastDFA<Symbol> dfa = new FastDFA<>(alphabet);
 		
 		DFAUtils.convertMealyToDFA(mealy, inputs, symbols, inputMapping, outputMapping, new LinkedHashMap<>(), dfa);

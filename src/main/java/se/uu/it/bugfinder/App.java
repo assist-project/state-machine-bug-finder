@@ -23,13 +23,15 @@ import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
 import se.uu.it.bugfinder.bug.ModelBug;
 import se.uu.it.bugfinder.dfa.InputSymbol;
+import se.uu.it.bugfinder.dfa.MealyToDfaSymbolExtractor;
 import se.uu.it.bugfinder.dfa.OutputSymbol;
 import se.uu.it.bugfinder.dfa.Symbol;
 import se.uu.it.bugfinder.dfa.SymbolMapping;
 import se.uu.it.bugfinder.encoding.DefaultDfaDecoder;
 import se.uu.it.bugfinder.pattern.BugPatternLoader;
 import se.uu.it.bugfinder.pattern.BugPatterns;
-import se.uu.it.bugfinder.utils.MealyUtils;
+import se.uu.it.bugfinder.sut.SUT;
+import se.uu.it.bugfinder.sut.SimulatedMealySUT;
 
 public class App {
 
@@ -52,12 +54,18 @@ public class App {
 	}
 	
 	private String ask(String msg) throws IOException{
+		return ask(msg, true);
+	}
+	
+	private String ask(String msg, boolean required) throws IOException{
 		out.println(msg);
 		if (!commands.isEmpty()) {
-			return commands.remove();
+			String command = commands.remove();
+			out.println(command);
+			return command;
 		}
 		String newCommands; 
-		while ( (newCommands =  in.readLine().trim()).isEmpty());
+		while ( (newCommands =  in.readLine().trim()).isEmpty() && required);
 		String[] commandSplit = newCommands.split("\\s");
 		if (commandSplit.length > 1) {
 			Arrays.stream(commandSplit, 1, commandSplit.length).forEach(cmd -> commands.add(cmd));
@@ -66,7 +74,7 @@ public class App {
 	}
 	
 	private String askOrDefault(String msg, String def) throws IOException {
-		String input = ask(msg);
+		String input = ask(msg, false);
 		if (input.length() == 0) {
 			input = def;
 			out.println("Using (default): " + def);
@@ -76,8 +84,8 @@ public class App {
 	
 	
 	private void displayIntro() {
-		System.out.println("Welcome to the bug-finder demo. ");
-		System.out.println("The purpose is to showcase how the bug-finder works on user-supplied models/bug patterns.");
+		out.println("Welcome to the bug-finder demo. ");
+		out.println("The purpose is to showcase how the bug-finder works on user-supplied models/bug patterns.");
 	}
 	
 	public void run() throws IOException {
@@ -85,8 +93,11 @@ public class App {
 		String sutModel = ask("SUT Model Path: ");
 		String patterns = ask("Bug Patterns .xml Path: ");
 		String sep = askOrDefault("Mealy output separator: ", ",");
+		String validationModel = askOrDefault("Validation Model Path: ", sutModel);
+		
 		InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
-		InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> modelData = mealyParser.readModel(new File(sutModel));
+		InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(new File(sutModel));
+		
 		BugPatternLoader loader = new BugPatternLoader(new DefaultDfaDecoder());
 		
 		SymbolMapping<String, String> symbolMapping = new SymbolMapping<String, String>() {
@@ -120,17 +131,21 @@ public class App {
 			}
 		};
 		List<Symbol> allSymbols = new ArrayList<>();
-		symbolMapping.fromInputs(modelData.alphabet, allSymbols);
-		List<String> outputs = new ArrayList<>();
-		MealyUtils.reachableOutputs(modelData.model, modelData.alphabet, outputs);
-		symbolMapping.fromOutputs(outputs, allSymbols);
+		SUT<String,String> sut = null;
+		MealyToDfaSymbolExtractor.extractSymbols(sutModelData.model, sutModelData.alphabet, symbolMapping, allSymbols);
 		BugPatterns bp = loader.loadPatterns(patterns, allSymbols);
-		
 		ModelBugFinderConfig config = new ModelBugFinderConfig();
-		config.setValidate(false);
+		if (validationModel.isEmpty()) {
+			config.setValidate(false);
+		} else {
+			config.setValidate(true);
+			InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> validationModelPath = mealyParser.readModel(new File(validationModel));
+			sut = new SimulatedMealySUT<String, String>(validationModelPath.model);
+		}
 		ModelBugFinder<String, String> modelBugFinder = new ModelBugFinder<String, String>(config);
+		modelBugFinder.setExporter(new DfaExporter.StreamDfaExporter(System.out));
 		List<ModelBug> modelBugs = new ArrayList<>();
-		Statistics stats = modelBugFinder.findBugs(bp, modelData.model, modelData.alphabet, symbolMapping, null, modelBugs);
+		Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
 		stats.doExport(new PrintWriter(new OutputStreamWriter(System.out)));
 	}
 	
@@ -138,6 +153,7 @@ public class App {
 
 	public static void main(String args []) throws IOException {
 		App app = new App();
+		app.bufferCommands(Arrays.asList(args));
 		app.run();
 	}
 }

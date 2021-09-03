@@ -1,6 +1,6 @@
 package se.uu.it.bugfinder.encoding;
 
-import java.io.Reader;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -30,8 +30,8 @@ public class DefaultDfaDecoder implements DfaDecoder {
 		this.tokenMatcher = tokenMatcher;
 	}
 	
-	public DfaAdapter decode(Reader reader, Collection<Symbol> symbols) throws Exception  {
-		EncodedDfaHolder encodedDfaHolder = parser.parseEncodedDfa(reader);
+	public DfaAdapter decode(InputStream encodedDfaStream, Collection<Symbol> symbols) throws Exception  {
+		EncodedDfaHolder encodedDfaHolder = parser.parseEncodedDfa(encodedDfaStream);
 		DfaAdapter decodedDfa = decode(encodedDfaHolder, symbols);
 		return decodedDfa;
 	}
