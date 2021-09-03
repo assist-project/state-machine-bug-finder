@@ -22,11 +22,8 @@ import org.apache.logging.log4j.Logger;
 
 import se.uu.it.bugfinder.dfa.DfaAdapter;
 import se.uu.it.bugfinder.dfa.Symbol;
-import se.uu.it.bugfinder.encoding.DefaultEncodedDfaParser;
-import se.uu.it.bugfinder.encoding.EncodedDfaHolder;
-import se.uu.it.bugfinder.encoding.EncodedDfaParser;
-import se.uu.it.bugfinder.encoding.ParsingContextFactory;
-import se.uu.it.bugfinder.encoding.javacc.ParseException;
+import se.uu.it.bugfinder.dfa.SymbolMapping;
+import se.uu.it.bugfinder.encoding.DfaDecoder;
 
 public class BugPatternLoader {
 	private static final Logger LOGGER = LogManager.getLogger(BugPatternLoader.class);
@@ -42,45 +39,24 @@ public class BugPatternLoader {
 	}
 	
 	private DfaDecoder dfaDecoder;
-	private EncodedDfaParser encodedDfaParser;
 	
-	public BugPatternLoader() {
-		dfaDecoder = new DefaultDfaDecoder();
-		encodedDfaParser = new DefaultEncodedDfaParser(ParsingContextFactory.EMPTY);
-	}
-	
-	public void setDfaDecoder(DfaDecoder dfaDecoder) {
+	public BugPatternLoader(DfaDecoder dfaDecoder) {
 		this.dfaDecoder = dfaDecoder;
 	}
 	
-	public void setEncodedDfaParser(EncodedDfaParser encodedDfaParser) {
-		this.encodedDfaParser = encodedDfaParser;
-	}
-	
-	public BugPatterns loadPatterns(String patternsFile, boolean resource, Collection<Symbol> symbols) throws BugPatternLoadingException {
+	public BugPatterns loadPatterns(String patternsFile, Collection<Symbol> symbols) throws BugPatternLoadingException {
 		BugPatterns bugPatterns = null;
 		LOGGER.info("Loading bug patterns");
-		InputStream patternsStream;
-		URI patternsURI = new File(patternsFile).getParentFile().toURI(); 
-		if (!resource) {
-			try {
-				patternsStream = new FileInputStream(patternsFile);
-			} catch (FileNotFoundException e) {
-				throw new BugPatternLoadingException("Failed to load patterns from patterns XML file from file " + patternsFile, e);
-			}
-		} else {
-			patternsStream = BugPatternLoader.class.getResourceAsStream(patternsURI.getPath());
-			if (patternsStream == null) {
-				throw new BugPatternLoadingException("Could not find patterns XML at path " + patternsStream);
-			}
-		}
+		InputStream patternsStream = null;
+		URI patternsURI = new File(patternsFile).getParentFile().toURI();
+		patternsStream = getResourceAsStream(patternsFile);
 		try {
 			bugPatterns = loadPatterns(patternsStream);
 		} catch (Exception e) {
 			throw new BugPatternLoadingException("Failed to load patterns from patterns XML file from file " + patternsFile, e);
 		}
 		
-		preparePatterns(bugPatterns, patternsURI, dfaDecoder, symbols);
+		preparePatterns(bugPatterns, patternsURI, symbols);
 		LOGGER.info("Successfully loaded {} bug patterns from file {}", bugPatterns.getBugPatterns().size(), patternsFile);
 		return bugPatterns;
 	}
@@ -99,8 +75,8 @@ public class BugPatternLoader {
 
 	}
 
-	private void preparePatterns(BugPatterns bugPatterns, URI location, DfaDecoder decoder, Collection<Symbol> symbols) {
-		Function<String, DfaAdapter> loadSpecification = p -> loadDfa(p, location, encodedDfaParser, decoder, symbols);
+	private void preparePatterns(BugPatterns bugPatterns, URI location, Collection<Symbol> symbols) {
+		Function<String, DfaAdapter> loadSpecification = p -> loadDfa(p, location, symbols);
 		
 		DfaAdapter validHandshakeLanguage = loadSpecification.apply(bugPatterns.getSpecificationLanguagePath());
 		bugPatterns.setSpecificationLanguage(validHandshakeLanguage);
@@ -111,23 +87,34 @@ public class BugPatternLoader {
 		}
 	}
 	
-	private DfaAdapter loadDfa(String specificationPath, URI location, EncodedDfaParser encodedDfaParser, DfaDecoder decoder, Collection<Symbol> symbols){
-		LOGGER.info("Loading specification at path: {}", specificationPath);
-		URI specificationLocation = location.resolve(specificationPath);
-		InputStream specificationStream = BugPatternLoader.class.getResourceAsStream(specificationLocation.getPath());
-		if (specificationStream == null) {
-			throw new BugPatternLoadingException("Could not find specification at path " + specificationLocation.getPath());
-		}
+	private DfaAdapter loadDfa(String encodedDfaPath, URI location, Collection<Symbol> symbols){
+		LOGGER.info("Loading specification at path: {}", encodedDfaPath);
+		URI encodedDfaLocation = location.resolve(encodedDfaPath);
+		InputStream specificationStream = getResourceAsStream(encodedDfaLocation.getPath()); 
 		try {
-			EncodedDfaHolder encodedDfaHolder = encodedDfaParser.parseEncodedDfa(new InputStreamReader(specificationStream));
-			DfaAdapter specAdapter = decoder.decode(encodedDfaHolder, symbols);
-			return specAdapter;
-		} catch (FileNotFoundException e) {
-			throw new BugPatternLoadingException("Could not find specification at path " + specificationLocation.getPath(), e);
-		} catch (ParseException | com.alexmerz.graphviz.ParseException e) {
-			throw new BugPatternLoadingException("Error parsing specification at path " + specificationLocation.getPath(), e);
+			DfaAdapter dfaAdapter = dfaDecoder.decode(new InputStreamReader(specificationStream), symbols);
+			return dfaAdapter;
 		} catch (Exception e) {
-			throw new BugPatternLoadingException("Error handling specification at path " + specificationLocation.getPath(), e);
+			throw new BugPatternLoadingException("Error handling encoded dfa at path " + encodedDfaLocation.getPath(), e);
 		}
+	}
+	
+	private InputStream getResourceAsStream(String resourcePath) {
+		InputStream specificationStream = BugPatternLoader.class.getResourceAsStream(resourcePath);
+		if (specificationStream == null) {
+			File file = new File(resourcePath);
+			if (file.exists()) {
+				try {
+					specificationStream = new FileInputStream(file);
+				} catch (FileNotFoundException e) {
+					throw new BugPatternLoadingException("Failed to load resource at path " + resourcePath, e);
+				}
+			}
+		}
+		if (specificationStream == null) {
+			throw new BugPatternLoadingException("Could not find resource at path " + resourcePath);
+		}
+		
+		return specificationStream;
 	}
 }

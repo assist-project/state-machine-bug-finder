@@ -56,12 +56,7 @@ public class ModelBugFinder<I,O> {
 		}
 	}
 	
-	public void setDfaExporter(DfaExporter exporter) {
-		this.exporter = exporter;
-	}
-	
 	/**
-	 * 
 	 * @param converter
 	 */
 	public void setConverter(MealyToDfaConverter converter) {
@@ -69,7 +64,8 @@ public class ModelBugFinder<I,O> {
 	}
 	
 	public Statistics findBugs(BugPatterns patterns, MealyMachine<?,I,?,O> mealy, Collection<I> inputs, SymbolMapping<I,O> mapping, @Nullable SUT<I,O> sut, List<ModelBug> bugs) {
-		tracker = new StatisticsTracker(config);
+		tracker = new StatisticsTracker(config, patterns);
+		tracker.startModelBugFinding();
 		DfaAdapter sutLanguage = coverter.convert(mealy, inputs, mapping);
 		exporter.exportDfa(sutLanguage, "sutLanguage.dot");
 		List<BugPattern> detectedPatterns = new LinkedList<>(); 

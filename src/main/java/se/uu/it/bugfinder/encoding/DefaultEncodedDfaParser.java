@@ -22,6 +22,11 @@ public class DefaultEncodedDfaParser implements EncodedDfaParser {
 		this.factory = factory;
 	}
 	
+
+	public DefaultEncodedDfaParser() {
+		this(ParsingContextFactory.EMPTY);
+	}
+	
 	public EncodedDfaHolder parseEncodedDfa(Reader specSource) throws FileNotFoundException, com.alexmerz.graphviz.ParseException {
 		ParsingContext context = factory.newContext();
 		DFADotParser<Label> dotParser = new DFADotParser<Label>( new LabelProcessor(context));

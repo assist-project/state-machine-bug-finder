@@ -17,7 +17,7 @@ public class MealyUtils extends AutomatonUtils{
 	 * @param inputs
 	 * @param reachableOutputs
 	 */
-	public static <S,I,O> void reachableOutputs(MealyMachine<S, I, ?, O> automaton, Collection<I> inputs, Collection<O> reachableOutputs) {
+	public static <S,I,O> void reachableOutputs(MealyMachine<S, I, ?, O> automaton, Collection<I> inputs, Collection<? super O> reachableOutputs) {
 		Queue<S> reachableStates = new ArrayDeque<S>();
 		Set<O> outputs = new HashSet<O>();
 		reachableStates(automaton, inputs, reachableStates);

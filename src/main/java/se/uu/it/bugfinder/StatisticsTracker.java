@@ -1,8 +1,6 @@
 package se.uu.it.bugfinder;
 
-import java.util.Collection;
 import java.util.Comparator;
-import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -13,7 +11,7 @@ import java.util.concurrent.atomic.AtomicLong;
 import se.uu.it.bugfinder.bug.BugValidationStatus;
 import se.uu.it.bugfinder.bug.ModelBug;
 import se.uu.it.bugfinder.pattern.AbstractBugPattern;
-import se.uu.it.bugfinder.pattern.BugPattern;
+import se.uu.it.bugfinder.pattern.BugPatterns;
 
 
 public class StatisticsTracker {
@@ -36,9 +34,10 @@ public class StatisticsTracker {
 	
 	private ModelBugFinderConfig config;
 	
-	public StatisticsTracker(ModelBugFinderConfig config) {
+	public StatisticsTracker(ModelBugFinderConfig config, BugPatterns bugPatterns) {
 		this.config = config;
 		loadedBugPatterns = new TreeSet<>(bpComp());
+		loadedBugPatterns.addAll(bugPatterns.getBugPatterns());
 		foundBugPatterns = new TreeSet<>(bpComp());
 		validatedBugPatterns = new TreeSet<>(bpComp());
 		bugPatternValidationInputCount = new TreeMap<>(bpComp());
@@ -65,10 +64,6 @@ public class StatisticsTracker {
 	 */
 	public long currentTimeMillis() {
 		return System.currentTimeMillis() - startTime;
-	}
-	
-	public void loadBugPatterns(Collection<BugPattern> bugPatterns) {
-		loadedBugPatterns = new LinkedHashSet<>(bugPatterns);
 	}
 	
 	public void finishModelBugFinding(List<ModelBug> bugs) {

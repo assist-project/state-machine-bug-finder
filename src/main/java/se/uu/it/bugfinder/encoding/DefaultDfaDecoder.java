@@ -1,5 +1,6 @@
-package se.uu.it.bugfinder.pattern;
+package se.uu.it.bugfinder.encoding;
 
+import java.io.Reader;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -12,30 +13,36 @@ import net.automatalib.words.Alphabet;
 import net.automatalib.words.impl.ListAlphabet;
 import se.uu.it.bugfinder.dfa.DfaAdapter;
 import se.uu.it.bugfinder.dfa.Symbol;
-import se.uu.it.bugfinder.encoding.DecodingTS;
-import se.uu.it.bugfinder.encoding.DefaultTokenMatcher;
-import se.uu.it.bugfinder.encoding.EncodedDfaHolder;
-import se.uu.it.bugfinder.encoding.Label;
-import se.uu.it.bugfinder.encoding.TokenMatcher;
 
 public class DefaultDfaDecoder implements DfaDecoder {
 	private TokenMatcher tokenMatcher = new DefaultTokenMatcher();
+	private EncodedDfaParser parser;
+	
+	public DefaultDfaDecoder(EncodedDfaParser parser) {
+		this.parser = parser;
+	}
 	
 	public DefaultDfaDecoder() {
-		
+		this(new DefaultEncodedDfaParser());
 	}
 	
 	public void setTokenMatcher(TokenMatcher tokenMatcher) {
 		this.tokenMatcher = tokenMatcher;
 	}
 	
+	public DfaAdapter decode(Reader reader, Collection<Symbol> symbols) throws Exception  {
+		EncodedDfaHolder encodedDfaHolder = parser.parseEncodedDfa(reader);
+		DfaAdapter decodedDfa = decode(encodedDfaHolder, symbols);
+		return decodedDfa;
+	}
+	
 	public DfaAdapter decode(EncodedDfaHolder encodedDfaHolder, 
 			Collection<Symbol> symbols) {
-		FastDFA<Symbol> unfoldedSpec = decode(encodedDfaHolder.getEncodedDfa(), encodedDfaHolder.getLabels(), symbols);
-		FastDFA<Symbol> inputCompleteSpec = new FastDFA<Symbol>(new ListAlphabet<Symbol>(new ArrayList<>(symbols)));
-		DFAs.complete(unfoldedSpec, inputCompleteSpec.getInputAlphabet(), inputCompleteSpec);
-		DfaAdapter unfoldedDfa = new DfaAdapter(unfoldedSpec, unfoldedSpec.getInputAlphabet());
-		return unfoldedDfa.minimize();
+		FastDFA<Symbol> decodedDfa = decode(encodedDfaHolder.getEncodedDfa(), encodedDfaHolder.getLabels(), symbols);
+		FastDFA<Symbol> inputCompleteDfa = new FastDFA<Symbol>(new ListAlphabet<Symbol>(new ArrayList<>(symbols)));
+		DFAs.complete(decodedDfa, inputCompleteDfa.getInputAlphabet(), inputCompleteDfa);
+		DfaAdapter dfaAdapter = new DfaAdapter(decodedDfa, decodedDfa.getInputAlphabet());
+		return dfaAdapter.minimize();
 	}
 	
 	private <S> FastDFA<Symbol> decode(DFA<S, Label> encodedDfa, Collection<Label> labels, Collection<Symbol> symbols) {

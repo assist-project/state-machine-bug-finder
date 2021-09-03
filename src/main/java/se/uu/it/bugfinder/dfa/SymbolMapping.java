@@ -12,7 +12,7 @@ import net.automatalib.words.WordBuilder;
 public interface SymbolMapping <I,O> {
 	I toInput(InputSymbol symbol);
 	O toOutput(OutputSymbol symbol);
-	O toOutput(List<OutputSymbol> symbols);
+	O toOutput(Collection<OutputSymbol> symbols);
 	InputSymbol fromInput(I input);
 	List<OutputSymbol> fromOutput(O output);
 	
@@ -22,7 +22,7 @@ public interface SymbolMapping <I,O> {
 		return outputSymbols;
 	}
 	
-	default void fromOutputs(Collection<O> outputs, Collection<OutputSymbol> outputSymbols) {
+	default void fromOutputs(Collection<O> outputs, Collection<? super OutputSymbol> outputSymbols) {
 		outputs.stream().forEach(o -> outputSymbols.addAll(fromOutput(o)));
 	}
 	
@@ -32,11 +32,11 @@ public interface SymbolMapping <I,O> {
 		return inputSymbols;
 	}
 	
-	default void fromInputs(Collection<I> inputs, Collection<InputSymbol> inputSymbols) {
+	default void fromInputs(Collection<I> inputs, Collection<? super InputSymbol> inputSymbols) {
 		inputs.stream().forEach(i -> inputSymbols.add(fromInput(i)));
 	}
 	
-	default void toInputs(Collection<InputSymbol> inputSymbols, Collection<I> inputs) {
+	default void toInputs(Collection<InputSymbol> inputSymbols, Collection<? super I> inputs) {
 		inputSymbols.forEach(sym -> inputs.add(toInput(sym)));
 		
 	}
@@ -47,7 +47,7 @@ public interface SymbolMapping <I,O> {
 		return inputs;
 	}
 	
-	default void toOutputs(Collection<OutputSymbol> outputSymbols, Collection<O> outputs) {
+	default void toOutputs(Collection<OutputSymbol> outputSymbols, Collection<? super O> outputs) {
 		outputSymbols.forEach(sym -> outputs.add(toOutput(sym)));
 	}
 	

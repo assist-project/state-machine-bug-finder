@@ -21,7 +21,7 @@ public class ModelBugFinderConfig {
 	private String outputDir = null;
 	
 	public ModelBugFinderConfig() {
-		searchConfig = new SearchConfig();	
+		searchConfig = new SearchConfig();
 	}
 	
 	public GenerationStrategy getWitnessGenerationStrategy() {
