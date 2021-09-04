@@ -9,11 +9,6 @@ import java.util.Collection;
 
 import org.junit.Assert;
 
-import com.alexmerz.graphviz.ParseException;
-import com.pfg666.dotparser.fsm.dfa.BasicStringDFAProcessor;
-import com.pfg666.dotparser.fsm.dfa.DFADotParser;
-import com.pfg666.dotparser.fsm.dfa.DFAProcessor;
-
 import net.automatalib.automata.Automaton;
 import net.automatalib.automata.fsa.DFA;
 import net.automatalib.automata.fsa.impl.FastDFA;
@@ -41,18 +36,5 @@ public class TestUtils {
 		DFAs.complete(dfa, simpleAlphabet, complementModel);
 		return complementModel;
 		
-	}
-	
-	public static <I> DFA<?, I> loadDFA(String dfaString, DFAProcessor<I> processor) {
-		DFADotParser<I> parser = new DFADotParser<I>(processor);
-		try {
-			return parser.parseAutomaton(new StringReader("")).get(0);
-		} catch (FileNotFoundException | ParseException e) {
-			throw new RuntimeException("Failed to load DFA", e);
-		}
-	}
-	
-	public static DFA<?, String> loadDFA(String dfaString) {
-		return loadDFA(dfaString, new BasicStringDFAProcessor());
 	}
 }

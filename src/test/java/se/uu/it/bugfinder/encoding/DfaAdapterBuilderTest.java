@@ -1,4 +1,4 @@
-package se.uu.it.bugfinder.specification;
+package se.uu.it.bugfinder.encoding;
 
 import java.util.Arrays;
 import java.util.Collection;
@@ -19,6 +19,20 @@ import se.uu.it.bugfinder.dfa.DfaAdapterBuilder;
 import se.uu.it.bugfinder.dfa.InputSymbol;
 import se.uu.it.bugfinder.dfa.OutputSymbol;
 import se.uu.it.bugfinder.dfa.Symbol;
+import se.uu.it.bugfinder.encoding.Assignment;
+import se.uu.it.bugfinder.encoding.Field;
+import se.uu.it.bugfinder.encoding.Guard;
+import se.uu.it.bugfinder.encoding.Label;
+import se.uu.it.bugfinder.encoding.OtherToken;
+import se.uu.it.bugfinder.encoding.OtherTokenType;
+import se.uu.it.bugfinder.encoding.RelationalExpression;
+import se.uu.it.bugfinder.encoding.RelationalOperator;
+import se.uu.it.bugfinder.encoding.SetExpressionToken;
+import se.uu.it.bugfinder.encoding.SetOperator;
+import se.uu.it.bugfinder.encoding.SymbolToken;
+import se.uu.it.bugfinder.encoding.Update;
+import se.uu.it.bugfinder.encoding.Value;
+import se.uu.it.bugfinder.encoding.Variable;
 import se.uu.it.bugfinder.utils.TestUtils;
 
 /*
@@ -261,14 +275,14 @@ public class DfaAdapterBuilderTest {
 		Symbol o1 = new OutputSymbol("o1");
 		Symbol o2 = new OutputSymbol("o2");
 		
-		SpecificationLabel aOrO1 = new SpecificationLabel(new SetExpressionToken(new SymbolToken(a), SetOperator.UNION, new SymbolToken(o1)), Guard.trueGuard(), Update.emptyUpdate());
-		SpecificationLabel otherOutput = new SpecificationLabel(new OtherToken(OtherTokenType.OUTPUT), Guard.trueGuard(), Update.emptyUpdate());
-		SpecificationLabel otherInput = new SpecificationLabel(new OtherToken(OtherTokenType.INPUT), Guard.trueGuard(), Update.emptyUpdate());
-		SpecificationLabel other = new SpecificationLabel(new OtherToken(OtherTokenType.ALL), Guard.trueGuard(), Update.emptyUpdate());
+		Label aOrO1 = new Label(new SetExpressionToken(new SymbolToken(a), SetOperator.UNION, new SymbolToken(o1)), Guard.trueGuard(), Update.emptyUpdate());
+		Label otherOutput = new Label(new OtherToken(OtherTokenType.OUTPUT), Guard.trueGuard(), Update.emptyUpdate());
+		Label otherInput = new Label(new OtherToken(OtherTokenType.INPUT), Guard.trueGuard(), Update.emptyUpdate());
+		Label other = new Label(new OtherToken(OtherTokenType.ALL), Guard.trueGuard(), Update.emptyUpdate());
 		
-		List<SpecificationLabel> specLabels = Arrays.asList(aOrO1, otherOutput, otherInput, other);
+		List<Label> specLabels = Arrays.asList(aOrO1, otherOutput, otherInput, other);
 		
-		FastDFA<SpecificationLabel> spec = new FastDFA<>(new ListAlphabet<>(specLabels));
+		FastDFA<Label> spec = new FastDFA<>(new ListAlphabet<>(specLabels));
 		
 		FastDFAState s0 = spec.addInitialState(false);
 		FastDFAState s1 = spec.addState(true);
@@ -308,15 +322,15 @@ public class DfaAdapterBuilderTest {
 		
 		Variable a = new Variable("a");
 		
-		SpecificationLabel chAssign = new SpecificationLabel(ch, Guard.trueGuard(), new Update(
+		Label chAssign = new Label(ch, Guard.trueGuard(), new Update(
 				new Assignment(a, kex)));
-		SpecificationLabel chEquals = new SpecificationLabel(ch, new Guard(new RelationalExpression(a, RelationalOperator.EQUAL, kex)), Update.emptyUpdate());
-		SpecificationLabel chNotEquals = new SpecificationLabel(ch, new Guard(new RelationalExpression(a, RelationalOperator.NOT_EQUAL, kex)), Update.emptyUpdate());
-		SpecificationLabel chTrue = new SpecificationLabel(ch);
+		Label chEquals = new Label(ch, new Guard(new RelationalExpression(a, RelationalOperator.EQUAL, kex)), Update.emptyUpdate());
+		Label chNotEquals = new Label(ch, new Guard(new RelationalExpression(a, RelationalOperator.NOT_EQUAL, kex)), Update.emptyUpdate());
+		Label chTrue = new Label(ch);
 		
-		List<SpecificationLabel> specLabels = Arrays.asList(chAssign, chEquals, chNotEquals, chTrue);
+		List<Label> specLabels = Arrays.asList(chAssign, chEquals, chNotEquals, chTrue);
 		
-		FastDFA<SpecificationLabel> spec = new FastDFA<>(new ListAlphabet<>(specLabels));
+		FastDFA<Label> spec = new FastDFA<>(new ListAlphabet<>(specLabels));
 		
 		FastDFAState s0 = spec.addInitialState(false);
 		FastDFAState s1 = spec.addState(false);
@@ -359,7 +373,7 @@ public class DfaAdapterBuilderTest {
 		assertEquivalent(expectedDfa, actualDfa, symbols, spec, specLabels);
 	}
 	
-	private void assertEquivalent(DFA<?, Symbol> expected, DFA<?, Symbol> actual, Collection<Symbol> messageLabels, DFA<?, SpecificationLabel> spec, Collection<SpecificationLabel> specLabels) {
+	private void assertEquivalent(DFA<?, Symbol> expected, DFA<?, Symbol> actual, Collection<Symbol> messageLabels, DFA<?, Label> spec, Collection<Label> specLabels) {
 		Word<Symbol> sepWord = Automata.findSeparatingWord(expected, actual, messageLabels);
 		Assert.assertNull(String.format("The DFA resulting from the unfolding of a test specification differs from what is expected. \n"
 				+ "Specification: %s\n Expected: %s\n Actual: %s\n SepWord: %s\n",
