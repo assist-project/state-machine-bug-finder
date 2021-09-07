@@ -1,8 +1,6 @@
 package se.uu.it.smbugfinder.utils;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Collection;

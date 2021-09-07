@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.function.Function;
 
@@ -22,7 +24,6 @@ import org.apache.logging.log4j.Logger;
 
 import se.uu.it.smbugfinder.dfa.DfaAdapter;
 import se.uu.it.smbugfinder.dfa.Symbol;
-import se.uu.it.smbugfinder.dfa.SymbolMapping;
 import se.uu.it.smbugfinder.encoding.DfaDecoder;
 
 public class BugPatternLoader {
@@ -48,7 +49,7 @@ public class BugPatternLoader {
 		BugPatterns bugPatterns = null;
 		LOGGER.info("Loading bug patterns");
 		InputStream patternsStream = null;
-		URI patternsURI = new File(patternsFile).getParentFile().toURI();
+		URI patternsURI = URI.create(patternsFile.substring(0, patternsFile.lastIndexOf(File.separator) + 1)); 
 		patternsStream = getResourceAsStream(patternsFile);
 		try {
 			bugPatterns = loadPatterns(patternsStream);

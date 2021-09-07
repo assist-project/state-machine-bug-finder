@@ -32,6 +32,7 @@ public class Statistics extends ExportableResult {
 		foundBugPatterns = Collections.emptyList();
 		loadedBugPatterns = Collections.emptyList();
 		verifiedBugPatterns = Collections.emptyList();
+		validationEnabled = config.isValidate();
 	}
 	
 	

@@ -1,12 +1,15 @@
 package se.uu.it.smbugfinder;
 
 import java.io.BufferedReader;
-import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.net.URL;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -33,6 +36,11 @@ import se.uu.it.smbugfinder.pattern.BugPatterns;
 import se.uu.it.smbugfinder.sut.SUT;
 import se.uu.it.smbugfinder.sut.SimulatedMealySUT;
 
+/**
+ * An interactive demo application showcasing how the state-machine-bug-finder works.
+ * A user is requested first a SUT model, then patterns and finally, a model used for validation.
+ * Each request may be skipped, in which case, default input is used. 
+ */
 public class Demo {
 
 	private BufferedReader in;
@@ -88,15 +96,23 @@ public class Demo {
 		out.println("The purpose is to showcase how the bug-finder works on user-supplied models/bug patterns.");
 	}
 	
+	private InputStream getResource(String path) throws FileNotFoundException {
+		InputStream resource = Demo.class.getResourceAsStream(path);
+		if (resource == null) {
+			resource = new FileInputStream(path);
+		} 
+		return resource;
+	}
+	
 	public void run() throws IOException {
 		displayIntro();
-		String sutModel = ask("SUT Model Path: ");
-		String patterns = ask("Bug Patterns .xml Path: ");
-		String sep = askOrDefault("Mealy output separator: ", ",");
+		String sutModel = askOrDefault("SUT Model Path: ", "/dtls_model.dot");
+		String patterns = askOrDefault("Bug Patterns .xml Path: ", "/patterns.xml");
+		String sep = askOrDefault("Mealy output separator: ", "\\|");
 		String validationModel = askOrDefault("Validation Model Path: ", sutModel);
 		
 		InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
-		InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(new File(sutModel));
+		InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(getResource(sutModel));
 		
 		BugPatternLoader loader = new BugPatternLoader(new DefaultDfaDecoder());
 		
@@ -139,7 +155,7 @@ public class Demo {
 			config.setValidate(false);
 		} else {
 			config.setValidate(true);
-			InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> validationModelPath = mealyParser.readModel(new File(validationModel));
+			InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> validationModelPath = mealyParser.readModel(getResource(validationModel));
 			sut = new SimulatedMealySUT<String, String>(validationModelPath.model);
 		}
 		StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<String, String>(config);
