@@ -33,19 +33,19 @@ import se.uu.it.smbugfinder.pattern.BugPatterns;
 import se.uu.it.smbugfinder.sut.SUT;
 import se.uu.it.smbugfinder.sut.SimulatedMealySUT;
 
-public class App {
+public class Demo {
 
 	private BufferedReader in;
 	private PrintStream out;
 	private Deque<String> commands;
 	
-	public App(BufferedReader in, PrintStream out) {
+	public Demo(BufferedReader in, PrintStream out) {
 		this.in = in;
 		this.out = out;
 		this.commands = new ArrayDeque<String>();
 	}
 	
-	public App() {
+	public Demo() {
 		this(new BufferedReader(new InputStreamReader(System.in)), System.out);
 	}
 	
@@ -84,7 +84,7 @@ public class App {
 	
 	
 	private void displayIntro() {
-		out.println("Welcome to the bug-finder demo. ");
+		out.println("Welcome to the state-machine-bug-finder demo. ");
 		out.println("The purpose is to showcase how the bug-finder works on user-supplied models/bug patterns.");
 	}
 	
@@ -152,8 +152,8 @@ public class App {
 	
 
 	public static void main(String args []) throws IOException {
-		App app = new App();
-		app.bufferCommands(Arrays.asList(args));
-		app.run();
+		Demo demo = new Demo();
+		demo.bufferCommands(Arrays.asList(args));
+		demo.run();
 	}
 }

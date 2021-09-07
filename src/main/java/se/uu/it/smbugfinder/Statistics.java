@@ -56,7 +56,7 @@ public class Statistics extends ExportableResult {
 		out.println("Number of bugs: " + totalBugs);
 		out.println("Time bug-checking took (ms): " + totalTime);
 		
-		section("Model Bug Finder", out);
+		section("State Machine Bug Finder", out);
 		printCollection("Bug patterns loaded", loadedBugPatterns, AbstractBugPattern::getName, out);
 		printCollection("Bug patterns found", foundBugPatterns, AbstractBugPattern::getName, out);
 		printCollection("Bug patterns validated successfully", verifiedBugPatterns, AbstractBugPattern::getName, out);
@@ -80,7 +80,7 @@ public class Statistics extends ExportableResult {
 	}
 	
 	public void generateRunDescription(PrintWriter out, StateMachineBugFinderConfig config, Collection<?> alphabet) {
-		section("Model Bug Finding Parameters", out);
+		section("State Machine Bug Finding Parameters", out);
 		out.println("Alphabet: " + alphabet);
 		
 		out.println(String.format("Loaded Bug Patterns (%d): %s", loadedBugPatterns.size(), 

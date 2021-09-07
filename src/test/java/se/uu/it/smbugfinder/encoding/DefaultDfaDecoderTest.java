@@ -15,7 +15,6 @@ import net.automatalib.words.Alphabet;
 import net.automatalib.words.Word;
 import net.automatalib.words.impl.ListAlphabet;
 import se.uu.it.smbugfinder.dfa.DfaAdapter;
-import se.uu.it.smbugfinder.dfa.DfaAdapterBuilder;
 import se.uu.it.smbugfinder.dfa.InputSymbol;
 import se.uu.it.smbugfinder.dfa.OutputSymbol;
 import se.uu.it.smbugfinder.dfa.Symbol;
@@ -38,7 +37,7 @@ import se.uu.it.smbugfinder.utils.TestUtils;
 /*
  * TODO It would be better if our inputs for specs/expected automata were .dot files, as it would allow us to reduce the code/create better tests.
  */
-public class DfaAdapterBuilderTest {
+public class DefaultDfaDecoderTest {
 //
 //	@Test
 //	public void testUnfoldOtherNonCapturingFilter() {
@@ -301,9 +300,9 @@ public class DfaAdapterBuilderTest {
 		expectedMut.addTransition(s0, o2, s1);
 		
 		DFA<?, Symbol> expectedDfa = TestUtils.completeDFA(expectedMut, alphabet);
-		DfaAdapterBuilder dfaBuilder = new DfaAdapterBuilder();
+		DefaultDfaDecoder dfaDecoder = new DefaultDfaDecoder();
+		DfaAdapter actualDfa = dfaDecoder.decode(new EncodedDfaHolder(spec, specLabels), symbols);
 		
-		DfaAdapter actualDfa = dfaBuilder.fromSpecification(spec, specLabels, symbols);
 		assertEquivalent(expectedDfa, actualDfa.getDfa(), symbols, spec, specLabels);
 	}
 	
@@ -365,12 +364,10 @@ public class DfaAdapterBuilderTest {
 		expectedDfa.addTransition(sink, cha, sink);
 		expectedDfa.addTransition(sink, chb, sink);
 		
-		DfaAdapterBuilder builder = new DfaAdapterBuilder();
+		DefaultDfaDecoder dfaDecoder = new DefaultDfaDecoder();
+		DfaAdapter actualDfa = dfaDecoder.decode(new EncodedDfaHolder(spec, specLabels), symbols);
 		
-		DfaAdapter dfaAdapter = builder.fromSpecification(spec, specLabels, symbols);
-		DFA<?, Symbol> actualDfa = dfaAdapter.getDfa();
-		
-		assertEquivalent(expectedDfa, actualDfa, symbols, spec, specLabels);
+		assertEquivalent(expectedDfa, actualDfa.getDfa(), symbols, spec, specLabels);
 	}
 	
 	private void assertEquivalent(DFA<?, Symbol> expected, DFA<?, Symbol> actual, Collection<Symbol> messageLabels, DFA<?, Label> spec, Collection<Label> specLabels) {

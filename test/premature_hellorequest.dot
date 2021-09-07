@@ -1,0 +1,19 @@
+digraph G {
+label=""
+init [color="red"]
+bug [shape="doublecircle"]
+
+init -> hr [label="I_HELLO_REQUEST"]
+init -> fin [label="I_FINISHED"]
+init -> init [label="other"]
+
+fin -> init [label="I_HELLO_REQUEST"]
+fin -> fin [label="other"]
+
+hr -> bug [label="O_CLIENT_HELLO"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}
