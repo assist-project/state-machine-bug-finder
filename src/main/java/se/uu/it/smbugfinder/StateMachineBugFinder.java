@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import net.automatalib.automata.fsa.DFA;
 import net.automatalib.automata.transducers.MealyMachine;
@@ -41,7 +41,7 @@ import se.uu.it.smbugfinder.witness.SequenceGeneratorFactory;
 import se.uu.it.smbugfinder.witness.WitnessFinder;
 
 public class StateMachineBugFinder<I,O> {
-	private static final Logger LOGGER = LogManager.getLogger(StateMachineBugFinder.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(StateMachineBugFinder.class);
 	private MealyToDfaConverter coverter;
 	private boolean validate;
 	private StateMachineBugFinderConfig config;

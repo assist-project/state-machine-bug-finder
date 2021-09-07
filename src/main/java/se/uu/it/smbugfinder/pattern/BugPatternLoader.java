@@ -17,15 +17,15 @@ import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamReader;
 
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import se.uu.it.smbugfinder.dfa.DfaAdapter;
 import se.uu.it.smbugfinder.dfa.Symbol;
 import se.uu.it.smbugfinder.encoding.DfaDecoder;
 
 public class BugPatternLoader {
-	private static final Logger LOGGER = LogManager.getLogger(BugPatternLoader.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(BugPatternLoader.class);
 	private static JAXBContext context;
 	
 	private static final String PATTERNS_FILE = "patterns.xml";
