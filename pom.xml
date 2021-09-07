@@ -6,8 +6,8 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>se.uu.it.bugfinder</groupId>
-	<artifactId>bug-finder</artifactId>
+	<groupId>se.uu.it.smbugfinder</groupId>
+	<artifactId>state-machine-bug-finder</artifactId>
 	<version>0.1-SNAPSHOT</version>
 
 	<name>bug-finder</name>
