@@ -106,8 +106,8 @@ public class Demo {
 	
 	public void run() throws IOException {
 		displayIntro();
-		String sutModel = askOrDefault("SUT Model Path: ", "/dtls_model.dot");
-		String patterns = askOrDefault("Bug Patterns .xml Path: ", "/patterns.xml");
+		String sutModel = askOrDefault("SUT Model Path: ", "/patterns/dtls/dtls_model.dot");
+		String patternsDir = askOrDefault("Bug Patterns Directory: ", "/patterns/dtls/");
 		String sep = askOrDefault("Mealy output separator: ", "\\|");
 		String validationModel = askOrDefault("Validation Model Path: ", sutModel);
 		
@@ -149,7 +149,7 @@ public class Demo {
 		List<Symbol> allSymbols = new ArrayList<>();
 		SUT<String,String> sut = null;
 		MealyToDfaSymbolExtractor.extractSymbols(sutModelData.model, sutModelData.alphabet, symbolMapping, allSymbols);
-		BugPatterns bp = loader.loadPatterns(patterns, allSymbols);
+		BugPatterns bp = loader.loadPatterns(patternsDir, allSymbols);
 		StateMachineBugFinderConfig config = new StateMachineBugFinderConfig();
 		if (validationModel.isEmpty()) {
 			config.setValidate(false);

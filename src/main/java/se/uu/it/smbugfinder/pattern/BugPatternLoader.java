@@ -7,8 +7,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Collection;
 import java.util.function.Function;
 
@@ -29,6 +27,8 @@ import se.uu.it.smbugfinder.encoding.DfaDecoder;
 public class BugPatternLoader {
 	private static final Logger LOGGER = LogManager.getLogger(BugPatternLoader.class);
 	private static JAXBContext context;
+	
+	private static final String PATTERNS_FILE = "patterns.xml";
 
 	private static synchronized JAXBContext getJAXBContext()
 			throws JAXBException, IOException {
@@ -45,20 +45,21 @@ public class BugPatternLoader {
 		this.dfaDecoder = dfaDecoder;
 	}
 	
-	public BugPatterns loadPatterns(String patternsFile, Collection<Symbol> symbols) throws BugPatternLoadingException {
+	public BugPatterns loadPatterns(String patternsDirectory, Collection<Symbol> symbols) throws BugPatternLoadingException {
 		BugPatterns bugPatterns = null;
 		LOGGER.info("Loading bug patterns");
 		InputStream patternsStream = null;
-		URI patternsURI = URI.create(patternsFile.substring(0, patternsFile.lastIndexOf(File.separator) + 1)); 
+		URI patternsURI = URI.create(patternsDirectory);
+		String patternsFile = patternsURI.resolve(PATTERNS_FILE).getPath();
 		patternsStream = getResourceAsStream(patternsFile);
 		try {
 			bugPatterns = loadPatterns(patternsStream);
 		} catch (Exception e) {
-			throw new BugPatternLoadingException("Failed to load patterns from patterns XML file from file " + patternsFile, e);
+			throw new BugPatternLoadingException("Failed to load patterns from patterns XML file from file " + patternsDirectory, e);
 		}
 		
 		preparePatterns(bugPatterns, patternsURI, symbols);
-		LOGGER.info("Successfully loaded {} bug patterns from file {}", bugPatterns.getBugPatterns().size(), patternsFile);
+		LOGGER.info("Successfully loaded {} bug patterns from file {}", bugPatterns.getBugPatterns().size(), patternsDirectory);
 		return bugPatterns;
 	}
 	
