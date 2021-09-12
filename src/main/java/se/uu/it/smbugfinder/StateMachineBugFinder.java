@@ -1,7 +1,6 @@
 package se.uu.it.smbugfinder;
 
 import java.util.ArrayDeque;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashSet;
@@ -42,7 +41,7 @@ import se.uu.it.smbugfinder.witness.WitnessFinder;
 
 public class StateMachineBugFinder<I,O> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(StateMachineBugFinder.class);
-	private MealyToDfaConverter coverter;
+	private MealyToDfaConverter<I,O> coverter;
 	private boolean validate;
 	private StateMachineBugFinderConfig config;
 	private StatisticsTracker tracker;
@@ -51,7 +50,7 @@ public class StateMachineBugFinder<I,O> {
 	public StateMachineBugFinder(StateMachineBugFinderConfig config) {
 		this.validate = config.isValidate();
 		this.config = config;
-		this.coverter = new MealyToDfaConverter();
+		this.coverter = new MealyToDfaConverter<>();
 		if (config.getOutputDir() == null) {
 			this.exporter = (dfa,name) -> {};
 		} else {
@@ -62,7 +61,7 @@ public class StateMachineBugFinder<I,O> {
 	/**
 	 * @param converter
 	 */
-	public void setConverter(MealyToDfaConverter converter) {
+	public void setConverter(MealyToDfaConverter<I,O> converter) {
 		this.coverter = converter;
 	}
 	
@@ -73,7 +72,7 @@ public class StateMachineBugFinder<I,O> {
 		this.exporter = exporter;
 	}
 	
-	public Statistics findBugs(BugPatterns patterns, MealyMachine<?,I,?,O> mealy, Collection<I> inputs, SymbolMapping<I,O> mapping, @Nullable SUT<I,O> sut, List<StateMachineBug> bugs) {
+	public Statistics findBugs(BugPatterns patterns, MealyMachine<?,I,?,O> mealy, Collection<I> inputs, SymbolMapping<I,O> mapping, @Nullable SUT<I,O> sut, List<StateMachineBug<I,O>> bugs) {
 		tracker = new StatisticsTracker(config, patterns);
 		tracker.startStateMachineBugFinding(inputs);
 		if (validate) {
@@ -112,14 +111,14 @@ public class StateMachineBugFinder<I,O> {
 					Trace<I,O> witness = witnessFinder.findWitness(sut, mapping, sutBugLanguage);
 					tracker.endValidation(bugPattern);
 					if (witness != null) {
-						StateMachineBug bug = new StateMachineBug(witness, Arrays.asList(bugPattern));
+						StateMachineBug<I,O> bug = new StateMachineBug<>(witness, bugPattern);
 						bug.validationSuccessful();
 						bugs.add(bug);
 						LOGGER.info("Found valid witness {}", witness.toCompactString());
 					} else {
 						// could not validate bug
 						Trace<I,O> counterexample = witnessFinder.findCounterexample(sut, mapping, sutBugLanguage);
-						StateMachineBug bug = new StateMachineBug(counterexample, Arrays.asList(bugPattern));
+						StateMachineBug<I,O> bug = new StateMachineBug<I,O>(counterexample, bugPattern);
 						bug.validationFailed(counterexample);
 						bugs.add(bug);
 						LOGGER.info("Could not find valid witness, giving counterexample {}", counterexample.toCompactString());
@@ -127,7 +126,7 @@ public class StateMachineBugFinder<I,O> {
 				} else {
 					Word<Symbol> acceptingSequence = sutBugLanguage.getShortestAcceptingSequence();
 					Trace<I,O> trace = mapping.toExecutionTrace(acceptingSequence);
-					StateMachineBug bug = new StateMachineBug(trace, Arrays.asList(bugPattern));
+					StateMachineBug<I,O> bug = new StateMachineBug<I,O>(trace, bugPattern);
 					bugs.add(bug);
 					LOGGER.info("Found witness {}", trace.toCompactString());
 				}
@@ -162,7 +161,7 @@ public class StateMachineBugFinder<I,O> {
 		}
 	}
 	
-	private void handleGeneralBugPatterns(GeneralBugPattern generalBugPattern, DfaAdapter sutLanguage, Collection<BugPattern> specificBugPatterns, SymbolMapping<I,O> mapping, List<StateMachineBug> bugs) {
+	private void handleGeneralBugPatterns(GeneralBugPattern generalBugPattern, DfaAdapter sutLanguage, Collection<BugPattern> specificBugPatterns, SymbolMapping<I,O> mapping, List<StateMachineBug<I,O>> bugs) {
 		LOGGER.info("Checking bug pattern {}", generalBugPattern.getShortenedName());
 		DfaAdapter bugLanguage = generalBugPattern.generateBugLanguage().minimize();
 		exporter.exportDfa(bugLanguage, generalBugPattern.getShortenedName() + "Language.dot");
@@ -185,7 +184,7 @@ public class StateMachineBugFinder<I,O> {
 
 				Trace<I,O> trace = mapping.toExecutionTrace(sequence);
 				
-				StateMachineBug bug = new StateMachineBug(trace, generalBugPattern);
+				StateMachineBug<I,O> bug = new StateMachineBug<>(trace, generalBugPattern);
 				bugs.add(bug);
 				uncategorizedSequences ++;
 				if (uncategorizedSequences >= generalBugPattern.uncategorizedSequenceBound()) {
@@ -203,7 +202,7 @@ public class StateMachineBugFinder<I,O> {
 	}
 
 	private void handleUncategorizedSpecificationBugs(DfaAdapter specLanguage, DfaAdapter sutLanguage, Collection<BugPattern> bugPatterns, 
-			MealyMachine<?,I, ?, O> mealy, SymbolMapping<I,O> mapping, List<StateMachineBug> bugs) {
+			MealyMachine<?,I, ?, O> mealy, SymbolMapping<I,O> mapping, List<StateMachineBug<I,O>> bugs) {
 		exporter.exportDfa(specLanguage, "specificationLanguage.dot");
 		LOGGER.info("Generating specification-violating sequences and checking there are bug patterns capturing them");
 		DfaAdapter specBugLanguage = specLanguage.complement().minimize();
@@ -237,7 +236,7 @@ public class StateMachineBugFinder<I,O> {
 				}
 				
 				Trace<I,O> trace = mapping.toExecutionTrace(sequence);
-				StateMachineBug bug = new StateMachineBug(trace, AbstractBugPattern.uncategorized());
+				StateMachineBug<I,O> bug = new StateMachineBug<>(trace, AbstractBugPattern.uncategorized());
 				bugs.add(bug);
 				uncategorizedFlows ++;
 				if (uncategorizedFlows >= config.getUncategorizedBugBound()) {

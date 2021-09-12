@@ -19,13 +19,24 @@ import net.automatalib.words.impl.ListAlphabet;
 import se.uu.it.smbugfinder.utils.DFAUtils;
 import se.uu.it.smbugfinder.utils.MealyUtils;
 
-public class MealyToDfaConverter {
+public class MealyToDfaConverter<I,O> {
 	
-	public MealyToDfaConverter() {
-		
+	private DfaPostProcessor<I,O> dfaPostProcessor;
+	
+	public MealyToDfaConverter(DfaPostProcessor<I,O> dfaPostProcessor) {
+		this.dfaPostProcessor = dfaPostProcessor; 
 	}
 	
-	public <S, I, O> DfaAdapter convert(MealyMachine<S, I, ?, O> mealy,
+	public MealyToDfaConverter() {
+		this.dfaPostProcessor = new DfaPostProcessor<I, O>() {
+			@Override
+			public <DS, S> void process(MutableDFA<DS, Symbol> dfa, MealyMachine<S, I, ?, O> mealy, Collection<I> inputs,
+					SymbolMapping<I, O> mapping) {
+			}
+		};
+	}
+	
+	public <S> DfaAdapter convert(MealyMachine<S, I, ?, O> mealy,
 			Collection<I> inputs, SymbolMapping<I,O> mapping) {
 		Set<O> outputs = new LinkedHashSet<>();
 		MealyUtils.reachableOutputs(mealy, inputs, outputs);
@@ -39,7 +50,6 @@ public class MealyToDfaConverter {
 		Set<Symbol> symbols = new LinkedHashSet<>();
 		mapping.fromInputs(inputs, symbols);
 		mapping.fromOutputs(outputs, symbols);
-		
 		Alphabet<Symbol> alphabet = new ListAlphabet<>(new ArrayList<>(symbols));
 		FastDFA<Symbol> dfa = new FastDFA<>(alphabet);
 		
@@ -50,12 +60,13 @@ public class MealyToDfaConverter {
 			throw new InternalError("The DFA generated from the learned model is expected to have only one rejecting state");
 		}
 		
-		dfaPostProcessor(dfa, mealy, inputs, mapping);
+		dfaPostProcessor.process(dfa, mealy, inputs, mapping);
 		
-		return new DfaAdapter(dfa, symbols).minimize();
+		return new DfaAdapter(dfa, symbols).complete().minimize();
 	}
 	
-	protected <DS, DI, MS, I, O> void dfaPostProcessor(MutableDFA<DS, DI> dfa, MealyMachine<MS, I, ?, O> mealy,
-			Collection<I> inputs, SymbolMapping<I,O> mapping) {
+	public static interface DfaPostProcessor<I,O> {
+		<DS, S> void process(MutableDFA<DS, Symbol> dfa, MealyMachine<S, I, ?, O> mealy,
+				Collection<I> inputs, SymbolMapping<I,O> mapping);
 	}
 }

@@ -2,19 +2,19 @@ package se.uu.it.smbugfinder.bug;
 
 import se.uu.it.smbugfinder.dfa.Trace;
 
-public abstract class Bug {
+public abstract class Bug<I,O> {
 	private static int BUG_COUNT;
 	
 	private static Integer getFreshBugId() {
 		return ++BUG_COUNT;
 	}
 	
-	private Trace<?,?>  trace;
+	private Trace<I,O>  trace;
 	private Integer id;
 	private BugSeverity severity;
 	private BugValidationStatus status;
 	
-	public Bug(Trace<?,?>  trace) {
+	public Bug(Trace<I,O>  trace) {
 		this.trace = trace;
 		id = getFreshBugId();
 		severity = getDefaultSeverity();
@@ -47,7 +47,7 @@ public abstract class Bug {
 		return id;
 	}
 	
-	protected Trace<?,?>  getTrace() {
+	public Trace<I,O>  getTrace() {
 		return trace;
 	}
 	

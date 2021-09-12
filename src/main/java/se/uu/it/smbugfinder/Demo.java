@@ -9,7 +9,6 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
-import java.net.URL;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -26,7 +25,7 @@ import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
 import se.uu.it.smbugfinder.bug.StateMachineBug;
 import se.uu.it.smbugfinder.dfa.InputSymbol;
-import se.uu.it.smbugfinder.dfa.MealyToDfaSymbolExtractor;
+import se.uu.it.smbugfinder.dfa.MealySymbolExtractor;
 import se.uu.it.smbugfinder.dfa.OutputSymbol;
 import se.uu.it.smbugfinder.dfa.Symbol;
 import se.uu.it.smbugfinder.dfa.SymbolMapping;
@@ -145,10 +144,15 @@ public class Demo {
 			public List<OutputSymbol> fromOutput(String output) {
 				return Arrays.stream(output.split(sep)).map(s -> new OutputSymbol(s)).collect(Collectors.toList());
 			}
+
+			@Override
+			public String emptyOutput() {
+				return "TIMEOUT";
+			}
 		};
 		List<Symbol> allSymbols = new ArrayList<>();
 		SUT<String,String> sut = null;
-		MealyToDfaSymbolExtractor.extractSymbols(sutModelData.model, sutModelData.alphabet, symbolMapping, allSymbols);
+		MealySymbolExtractor.extractSymbols(sutModelData.model, sutModelData.alphabet, symbolMapping, allSymbols);
 		BugPatterns bp = loader.loadPatterns(patternsDir, allSymbols);
 		StateMachineBugFinderConfig config = new StateMachineBugFinderConfig();
 		if (validationModel.isEmpty()) {
@@ -160,7 +164,7 @@ public class Demo {
 		}
 		StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<String, String>(config);
 		modelBugFinder.setExporter(new DfaExporter.StreamDfaExporter(System.out));
-		List<StateMachineBug> modelBugs = new ArrayList<>();
+		List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
 		Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
 		stats.doExport(new PrintWriter(new OutputStreamWriter(System.out)));
 	}

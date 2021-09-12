@@ -3,9 +3,9 @@ options {
     STATIC = false;
 }
 PARSER_BEGIN(LabelParser)
-package se.uu.it.bugfinder.encoding.javacc;
+package se.uu.it.smbugfinder.encoding.javacc;
 
-import se.uu.it.bugfinder.encoding.*;
+import se.uu.it.smbugfinder.encoding.*;
 import java.util.*;
 
 class LabelParser extends AbstractLabelParser {

@@ -70,15 +70,13 @@ public class StatisticsTracker {
 		return System.currentTimeMillis() - startTime;
 	}
 	
-	public void finishStateMachineBugFinding(List<StateMachineBug> bugs) {
+	public <I,O> void finishStateMachineBugFinding(List<StateMachineBug<I,O>> bugs) {
 		totalTime = System.currentTimeMillis() - startTime; 
-		for (StateMachineBug modelBug : bugs) {
-			modelBug.getBugPatterns().forEach(bp -> {
-				foundBugPatterns.add(bp);
-			});
+		for (StateMachineBug<I,O> modelBug : bugs) {
+			foundBugPatterns.add(modelBug.getBugPattern());
 			
 			if (modelBug.getStatus() == BugValidationStatus.VALIDATION_SUCCESSFUL) {
-				validatedBugPatterns.addAll(modelBug.getBugPatterns());
+				validatedBugPatterns.add(modelBug.getBugPattern());
 			}
 		} 
 		totalBugs = bugs.size();

@@ -1,55 +1,37 @@
 package se.uu.it.smbugfinder.bug;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-
 import se.uu.it.smbugfinder.dfa.Trace;
 import se.uu.it.smbugfinder.pattern.AbstractBugPattern;
 
-public class StateMachineBug extends Bug{
+public class StateMachineBug<I,O> extends Bug<I,O>{
 	
-	private List<AbstractBugPattern> bugPatterns;
-	private Trace<?,?> counterexample;
+	private AbstractBugPattern bugPattern;
+	private Trace<I,O> counterexample;
 	
-	public StateMachineBug(Trace<?,?>  trace, List<AbstractBugPattern> bugPatterns) {
+	public StateMachineBug(Trace<I,O>  trace, AbstractBugPattern bugPattern) {
 		super(trace);
-		if (bugPatterns.isEmpty()) {
-			throw new InternalError("There should be at least one pattern");
-		}
 		if (trace == null) {
 			throw new InternalError("Trace cannot be null");
 		}
-		this.bugPatterns = new ArrayList<>(bugPatterns);
-		Collections.sort(bugPatterns, (b1, b2) -> b1.getShortenedName().compareTo(b2.getShortenedName()));
-		BugSeverity maxSeverity = bugPatterns.stream().map(bp -> bp.getSeverity()).max((s1, s2) -> Integer.compare(s1.ordinal(), s2.ordinal())).get();
-		setSeverity(maxSeverity);
-	}
-
-	public StateMachineBug(Trace<?,?>  trace, AbstractBugPattern pattern) {
-		super(trace);
-		this.bugPatterns = Arrays.asList(pattern);
-		setSeverity(pattern.getSeverity());
+		this.bugPattern = bugPattern;
+		setSeverity(bugPattern.getSeverity());
 	}
 	
-	public List<AbstractBugPattern> getBugPatterns() {
-		return bugPatterns;
+	public AbstractBugPattern getBugPattern() {
+		return bugPattern;
 	}
 
 	@Override
 	public String getDescription() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Detected the following bug patterns in flow");
+		sb.append("Detected the following bug pattern in trace");
 		sb.append(System.lineSeparator());
-		for (AbstractBugPattern pattern : bugPatterns) {
-			sb.append("Pattern: ").append(pattern.getName())
+		sb.append("Pattern: ").append(bugPattern.getName())
 			.append(System.lineSeparator())
-			.append("Severity: ").append(pattern.getSeverity())
+			.append("Severity: ").append(bugPattern.getSeverity())
 			.append(System.lineSeparator())
-			.append("Description: ").append(pattern.getDescription())
+			.append("Description: ").append(bugPattern.getDescription())
 			.append(System.lineSeparator());
-		}
 		sb.append(getTrace().toCompactString())
 		.append(System.lineSeparator());
 		sb.append("Validation Status: ")
@@ -62,7 +44,7 @@ public class StateMachineBug extends Bug{
 	}
 	
 	
-	public void validationFailed(Trace<?,?> counterexample) {
+	public void validationFailed(Trace<I,O> counterexample) {
 		setStatus(BugValidationStatus.VALIDATION_FAILED);
 		this.counterexample = counterexample;
 	}
@@ -71,12 +53,6 @@ public class StateMachineBug extends Bug{
 		setStatus(BugValidationStatus.VALIDATION_SUCCESSFUL);
 	}
 	
-	public String getSubType() {
-		return String.join(",", bugPatterns.stream()
-				.map(bp -> bp.getShortenedName())
-				.toArray(String []::new));
-	}
-
 	@Override
 	public BugSeverity getDefaultSeverity() {
 		return BugSeverity.UNKNOWN;
