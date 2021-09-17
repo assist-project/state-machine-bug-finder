@@ -305,70 +305,70 @@ public class DefaultDfaDecoderTest {
 		
 		assertEquivalent(expectedDfa, actualDfa.getDfa(), symbols, spec, specLabels);
 	}
-	
-	@Test
-	public void testBasicGuardAndAssignment() {
-		SymbolToken ch = new SymbolToken(true, "ClientHello");
-		
-		Field kex = new Field("test") {
-
-			@Override
-			protected Value getValue(Symbol symbol) {
-				String kexString = symbol.name().substring(0, 3);
-				return new Value(kexString);
-			}
-		};
-		
-		Variable a = new Variable("a");
-		
-		Label chAssign = new Label(ch, Guard.trueGuard(), new Update(
-				new Assignment(a, kex)));
-		Label chEquals = new Label(ch, new Guard(new RelationalExpression(a, RelationalOperator.EQUAL, kex)), Update.emptyUpdate());
-		Label chNotEquals = new Label(ch, new Guard(new RelationalExpression(a, RelationalOperator.NOT_EQUAL, kex)), Update.emptyUpdate());
-		Label chTrue = new Label(ch);
-		
-		List<Label> specLabels = Arrays.asList(chAssign, chEquals, chNotEquals, chTrue);
-		
-		FastDFA<Label> spec = new FastDFA<>(new ListAlphabet<>(specLabels));
-		
-		FastDFAState s0 = spec.addInitialState(false);
-		FastDFAState s1 = spec.addState(false);
-		FastDFAState s2 = spec.addState(true);
-		FastDFAState sink = spec.addState(false);
-		
-		spec.addTransition(s0, chAssign, s1);
-		spec.addTransition(s1, chEquals, s2);
-		spec.addTransition(s1, chNotEquals, sink);
-		spec.addTransition(s2, chTrue, s2);
-		spec.addTransition(sink, chTrue, sink);
-		
-		Symbol cha = new InputSymbol("PSK_CLIENT_HELLO");
-		Symbol chb = new InputSymbol("RSA_CLIENT_HELLO");
-		List<Symbol> symbols = Arrays.asList(cha, chb); 
-		
-		FastDFA<Symbol> expectedDfa = new FastDFA<>(new ListAlphabet<>(symbols));
-		s0 = expectedDfa.addInitialState(false);
-		s1 = expectedDfa.addState(false);
-		s2 = expectedDfa.addState(false);
-		FastDFAState s3 = expectedDfa.addState(true);
-		sink = expectedDfa.addState(false);
-		
-		expectedDfa.addTransition(s0, cha, s1);
-		expectedDfa.addTransition(s0, chb, s2);
-		expectedDfa.addTransition(s1, cha, s3);
-		expectedDfa.addTransition(s1, chb, sink);
-		expectedDfa.addTransition(s2, cha, sink);
-		expectedDfa.addTransition(s2, chb, s3);
-		expectedDfa.addTransition(s3, cha, s3);
-		expectedDfa.addTransition(s3, chb, s3);
-		expectedDfa.addTransition(sink, cha, sink);
-		expectedDfa.addTransition(sink, chb, sink);
-		
-		DefaultDfaDecoder dfaDecoder = new DefaultDfaDecoder();
-		DfaAdapter actualDfa = dfaDecoder.decode(new EncodedDfaHolder(spec, specLabels), symbols);
-		
-		assertEquivalent(expectedDfa, actualDfa.getDfa(), symbols, spec, specLabels);
-	}
+//	
+//	@Test
+//	public void testBasicGuardAndAssignment() {
+//		SymbolToken ch = new SymbolToken(true, "ClientHello");
+//		
+//		Field kex = new Field("test") {
+//
+//			@Override
+//			protected Value getValue(Symbol symbol) {
+//				String kexString = symbol.name().substring(0, 3);
+//				return new Value(kexString);
+//			}
+//		};
+//		
+//		Variable a = new Variable("a");
+//		
+//		Label chAssign = new Label(ch, Guard.trueGuard(), new Update(
+//				new Assignment(a, kex)));
+//		Label chEquals = new Label(ch, new Guard(new RelationalExpression(a, RelationalOperator.EQUAL, kex)), Update.emptyUpdate());
+//		Label chNotEquals = new Label(ch, new Guard(new RelationalExpression(a, RelationalOperator.NOT_EQUAL, kex)), Update.emptyUpdate());
+//		Label chTrue = new Label(ch);
+//		
+//		List<Label> specLabels = Arrays.asList(chAssign, chEquals, chNotEquals, chTrue);
+//		
+//		FastDFA<Label> spec = new FastDFA<>(new ListAlphabet<>(specLabels));
+//		
+//		FastDFAState s0 = spec.addInitialState(false);
+//		FastDFAState s1 = spec.addState(false);
+//		FastDFAState s2 = spec.addState(true);
+//		FastDFAState sink = spec.addState(false);
+//		
+//		spec.addTransition(s0, chAssign, s1);
+//		spec.addTransition(s1, chEquals, s2);
+//		spec.addTransition(s1, chNotEquals, sink);
+//		spec.addTransition(s2, chTrue, s2);
+//		spec.addTransition(sink, chTrue, sink);
+//		
+//		Symbol cha = new InputSymbol("PSK_CLIENT_HELLO");
+//		Symbol chb = new InputSymbol("RSA_CLIENT_HELLO");
+//		List<Symbol> symbols = Arrays.asList(cha, chb); 
+//		
+//		FastDFA<Symbol> expectedDfa = new FastDFA<>(new ListAlphabet<>(symbols));
+//		s0 = expectedDfa.addInitialState(false);
+//		s1 = expectedDfa.addState(false);
+//		s2 = expectedDfa.addState(false);
+//		FastDFAState s3 = expectedDfa.addState(true);
+//		sink = expectedDfa.addState(false);
+//		
+//		expectedDfa.addTransition(s0, cha, s1);
+//		expectedDfa.addTransition(s0, chb, s2);
+//		expectedDfa.addTransition(s1, cha, s3);
+//		expectedDfa.addTransition(s1, chb, sink);
+//		expectedDfa.addTransition(s2, cha, sink);
+//		expectedDfa.addTransition(s2, chb, s3);
+//		expectedDfa.addTransition(s3, cha, s3);
+//		expectedDfa.addTransition(s3, chb, s3);
+//		expectedDfa.addTransition(sink, cha, sink);
+//		expectedDfa.addTransition(sink, chb, sink);
+//		
+//		DefaultDfaDecoder dfaDecoder = new DefaultDfaDecoder();
+//		DfaAdapter actualDfa = dfaDecoder.decode(new EncodedDfaHolder(spec, specLabels), symbols);
+//		
+//		assertEquivalent(expectedDfa, actualDfa.getDfa(), symbols, spec, specLabels);
+//	}
 	
 	private void assertEquivalent(DFA<?, Symbol> expected, DFA<?, Symbol> actual, Collection<Symbol> messageLabels, DFA<?, Label> spec, Collection<Label> specLabels) {
 		Word<Symbol> sepWord = Automata.findSeparatingWord(expected, actual, messageLabels);
