@@ -136,7 +136,7 @@ public class Demo {
 		Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
 		stats.doExport(new PrintWriter(new OutputStreamWriter(System.out), true));
 		if (outputDirectory != null) {
-			stats.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, "statistics.txt").toFile()))));	
+			stats.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, "statistics.txt").toFile())), true));	
 		}
 		
 		new BugReport(modelBugs).export(new PrintWriter(new OutputStreamWriter(System.out), true));
