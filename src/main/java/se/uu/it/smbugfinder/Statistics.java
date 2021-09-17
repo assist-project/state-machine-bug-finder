@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
+import se.uu.it.smbugfinder.bug.Bug;
 import se.uu.it.smbugfinder.pattern.AbstractBugPattern;
 
 public class Statistics extends ExportableResult {
@@ -49,7 +50,7 @@ public class Statistics extends ExportableResult {
 		generateRunDescription(out, config, inputAlphabet);
 		title("Statistics", out);
 
-		section("General", out);
+		//section("General", out);
 		if (validationEnabled) {
 			out.println("Number of inputs: " + inputs);
 			out.println("Number of resets: " + resets);
@@ -57,7 +58,7 @@ public class Statistics extends ExportableResult {
 		out.println("Number of bugs: " + totalBugs);
 		out.println("Time bug-checking took (ms): " + totalTime);
 		
-		section("State Machine Bug Finder", out);
+		// section("State Machine Bug Finder", out);
 		printCollection("Bug patterns loaded", loadedBugPatterns, AbstractBugPattern::getName, out);
 		printCollection("Bug patterns found", foundBugPatterns, AbstractBugPattern::getName, out);
 		printCollection("Bug patterns validated successfully", verifiedBugPatterns, AbstractBugPattern::getName, out);
@@ -65,8 +66,6 @@ public class Statistics extends ExportableResult {
 			printCounterMap("Validation Inputs per Bug Pattern", bpInputCount, AbstractBugPattern::getName, out);
 			printCounterMap("Validation Resets per Bug Pattern", bpResetCount, AbstractBugPattern::getName, out);
 		}
-		
-		out.close();
 	}
 	
 	private <T,MT> void printCounterMap(String name, Map<T, Long> map, Function<T,MT> mapping, PrintWriter out) {
@@ -84,9 +83,9 @@ public class Statistics extends ExportableResult {
 		section("State Machine Bug Finding Parameters", out);
 		out.println("Alphabet: " + alphabet);
 		
-		out.println(String.format("Loaded Bug Patterns (%d): %s", loadedBugPatterns.size(), 
-					loadedBugPatterns.stream()
-					.map(bp -> bp.getName()).collect(Collectors.toList()).toString()));
+		//out.println(String.format("Loaded Bug Patterns (%d): %s", loadedBugPatterns.size(), 
+		//			loadedBugPatterns.stream()
+		//			.map(bp -> bp.getName()).collect(Collectors.toList()).toString()));
 		out.println("Bug Validation Enabled: " + config.isValidate());
 		out.println("Uncategorized Bug Bound: " + config.getUncategorizedBugBound());
 	}
@@ -134,5 +133,4 @@ public class Statistics extends ExportableResult {
 	public void setInputAlphabet(Collection<?> inputAlphabet) {
 		this.inputAlphabet = inputAlphabet;
 	}
-	
 }

@@ -24,9 +24,7 @@ public class StateMachineBug<I,O> extends Bug<I,O>{
 	@Override
 	public String getDescription() {
 		StringBuilder sb = new StringBuilder();
-		sb.append("Detected the following bug pattern in trace");
-		sb.append(System.lineSeparator());
-		sb.append("Pattern: ").append(bugPattern.getName())
+		sb.append("Bug Pattern: ").append(bugPattern.getName())
 			.append(System.lineSeparator())
 			.append("Severity: ").append(bugPattern.getSeverity())
 			.append(System.lineSeparator())

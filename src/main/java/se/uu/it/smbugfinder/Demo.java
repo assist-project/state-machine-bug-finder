@@ -25,6 +25,7 @@ import net.automatalib.automata.transducers.impl.compact.CompactMealy;
 import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
+import se.uu.it.smbugfinder.bug.Bug;
 import se.uu.it.smbugfinder.bug.StateMachineBug;
 import se.uu.it.smbugfinder.dfa.MealySymbolExtractor;
 import se.uu.it.smbugfinder.dfa.Symbol;
@@ -101,7 +102,7 @@ public class Demo {
 	
 	public void run() throws IOException {
 		displayIntro();
-		String sutModel = askOrDefault("SUT model path: ", "/patterns/dtls/dtls_model.dot");
+		String sutModel = askOrDefault("SUT model path: ", "/models/dtls/MbedTLS.dot");
 		String patternsDir = askOrDefault("Bug patterns directory: ", "/patterns/dtls/");
 		String sep = askOrDefault("Mealy output separator: ", "\\|");
 		String noResp = askOrDefault("Mealy no response output: ", "TIMEOUT");
@@ -133,17 +134,34 @@ public class Demo {
 		}
 		List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
 		Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
-		stats.doExport(new PrintWriter(new OutputStreamWriter(System.out)));
+		stats.doExport(new PrintWriter(new OutputStreamWriter(System.out), true));
 		if (outputDirectory != null) {
 			stats.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, "statistics.txt").toFile()))));	
 		}
+		
+		new BugReport(modelBugs).export(new PrintWriter(new OutputStreamWriter(System.out), true));
 	}
-	
 	
 
 	public static void main(String args []) throws IOException {
 		Demo demo = new Demo();
 		demo.bufferCommands(Arrays.asList(args));
 		demo.run();
+	}
+	
+	static class BugReport extends ExportableResult {
+		private List<? extends Bug<?,?>> bugs;
+		public BugReport(List<? extends Bug<?,?>> bugs) {
+			this.bugs = bugs;
+		}
+
+		@Override
+		protected void doExport(PrintWriter pw) {
+			title("Bug Listing", pw);
+			for (Bug<?,?> bug : bugs) {
+				pw.println(bug.getDescription());
+			}	
+		}
+		
 	}
 }
