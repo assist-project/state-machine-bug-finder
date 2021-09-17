@@ -1,21 +1,23 @@
 package se.uu.it.smbugfinder;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.nio.file.Paths;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
@@ -24,9 +26,7 @@ import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
 import se.uu.it.smbugfinder.bug.StateMachineBug;
-import se.uu.it.smbugfinder.dfa.InputSymbol;
 import se.uu.it.smbugfinder.dfa.MealySymbolExtractor;
-import se.uu.it.smbugfinder.dfa.OutputSymbol;
 import se.uu.it.smbugfinder.dfa.Symbol;
 import se.uu.it.smbugfinder.dfa.SymbolMapping;
 import se.uu.it.smbugfinder.encoding.DefaultDfaDecoder;
@@ -37,7 +37,7 @@ import se.uu.it.smbugfinder.sut.SimulatedMealySUT;
 
 /**
  * An interactive demo application showcasing how the state-machine-bug-finder works.
- * A user is requested first a SUT model, then patterns and finally, a model used for validation.
+ * A user is requested first a SUT model along, the bug patterns and other inputs relevant for bug checking. 
  * Each request may be skipped, in which case, default input is used. 
  */
 public class Demo {
@@ -60,10 +60,6 @@ public class Demo {
 		this.commands.addAll(commands);
 	}
 	
-	private String ask(String msg) throws IOException{
-		return ask(msg, true);
-	}
-	
 	private String ask(String msg, boolean required) throws IOException{
 		out.println(msg);
 		if (!commands.isEmpty()) {
@@ -82,7 +78,7 @@ public class Demo {
 	
 	private String askOrDefault(String msg, String def) throws IOException {
 		String input = ask(msg, false);
-		if (input.length() == 0) {
+		if (input.length() == 0 || input.equals("-")) {
 			input = def;
 			out.println("Using (default): " + def);
 		} 
@@ -105,68 +101,42 @@ public class Demo {
 	
 	public void run() throws IOException {
 		displayIntro();
-		String sutModel = askOrDefault("SUT Model Path: ", "/patterns/dtls/dtls_model.dot");
-		String patternsDir = askOrDefault("Bug Patterns Directory: ", "/patterns/dtls/");
+		String sutModel = askOrDefault("SUT model path: ", "/patterns/dtls/dtls_model.dot");
+		String patternsDir = askOrDefault("Bug patterns directory: ", "/patterns/dtls/");
 		String sep = askOrDefault("Mealy output separator: ", "\\|");
-		String validationModel = askOrDefault("Validation Model Path: ", sutModel);
+		String noResp = askOrDefault("Mealy no response output: ", "TIMEOUT");
+		String validationModel = askOrDefault("Path to Mealy machine used in validation: ", null);
+		String outputDirectory = askOrDefault("Output directory: ", null);
 		
 		InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
 		InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(getResource(sutModel));
 		
 		BugPatternLoader loader = new BugPatternLoader(new DefaultDfaDecoder());
 		
-		SymbolMapping<String, String> symbolMapping = new SymbolMapping<String, String>() {
-			@Override
-			public String toInput(InputSymbol symbol) {
-				return symbol.name();
-			}
-
-			@Override
-			public String toOutput(OutputSymbol symbol) {
-				return symbol.name();
-			}
-
-			@Override
-			public String toOutput(Collection<OutputSymbol> symbols) {
-				StringBuilder builder = new StringBuilder();
-				for (OutputSymbol symbol : symbols) {
-					builder.append(symbol.name() + sep);
-				}
-				return builder.substring(0, builder.length() - sep.length()).toString();
-			}
-
-			@Override
-			public InputSymbol fromInput(String input) {
-				return new InputSymbol(input);
-			}
-
-			@Override
-			public List<OutputSymbol> fromOutput(String output) {
-				return Arrays.stream(output.split(sep)).map(s -> new OutputSymbol(s)).collect(Collectors.toList());
-			}
-
-			@Override
-			public String emptyOutput() {
-				return "TIMEOUT";
-			}
-		};
+		SymbolMapping<String, String> symbolMapping = new StringSymbolMapper(noResp, sep);
 		List<Symbol> allSymbols = new ArrayList<>();
 		SUT<String,String> sut = null;
 		MealySymbolExtractor.extractSymbols(sutModelData.model, sutModelData.alphabet, symbolMapping, allSymbols);
 		BugPatterns bp = loader.loadPatterns(patternsDir, allSymbols);
 		StateMachineBugFinderConfig config = new StateMachineBugFinderConfig();
-		if (validationModel.isEmpty()) {
+		if (validationModel == null) {
 			config.setValidate(false);
 		} else {
 			config.setValidate(true);
 			InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> validationModelPath = mealyParser.readModel(getResource(validationModel));
 			sut = new SimulatedMealySUT<String, String>(validationModelPath.model);
 		}
+		config.setOutputDir(outputDirectory);
 		StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<String, String>(config);
-		modelBugFinder.setExporter(new DfaExporter.StreamDfaExporter(System.out));
+		if (outputDirectory != null) {
+			new File(outputDirectory).mkdirs();
+		}
 		List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
 		Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
 		stats.doExport(new PrintWriter(new OutputStreamWriter(System.out)));
+		if (outputDirectory != null) {
+			stats.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, "statistics.txt").toFile()))));	
+		}
 	}
 	
 	
