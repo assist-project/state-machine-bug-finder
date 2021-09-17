@@ -1,0 +1,16 @@
+digraph G {
+label=""
+start [color="red"]
+bug [shape="doublecircle"]
+
+start -> start [label="other"]
+start -> ua_success [label="O_UA_SUCCESS"]
+
+ua_success -> bug [label="O_UA_SUCCESS"]
+ua_success -> ua_success [label="other"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}

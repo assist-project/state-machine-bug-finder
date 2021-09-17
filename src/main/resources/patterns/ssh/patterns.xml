@@ -1,0 +1,11 @@
+<bugPatterns>
+    <defaultBugSeverity>LOW</defaultBugSeverity>
+    <defaultEnabled>true</defaultEnabled>
+	<bugPattern>
+        <name>Multiple UA_SUCCESS</name>
+        <bugLanguage>multiple_ua_success.dot</bugLanguage>
+        <description>UA_SUCCESS is produced multiple times.</description>
+        <severity>HIGH</severity>   
+    </bugPattern>
+</bugPatterns>
+
