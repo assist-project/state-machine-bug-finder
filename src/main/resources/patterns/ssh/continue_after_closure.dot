@@ -1,0 +1,13 @@
+digraph G {
+label=""
+start [color="red"]
+bug [shape="doublecircle"]
+
+start -> closed [label="O_DISCONNECT"]
+start -> start [label="other"]
+closed -> closed [label="F_I_.*"]
+closed -> bug [label="other - {O_CH_NONE, O_CH_MAX, O_NO_CONN}"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}
