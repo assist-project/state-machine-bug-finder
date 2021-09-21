@@ -4,46 +4,46 @@
 	<bugPattern>
         <name>Multiple UA_SUCCESS</name>
         <bugLanguage>multiple_ua_success.dot</bugLanguage>
-        <description>UA_SUCCESS is produced multiple times.</description>
+        <description>UA_SUCCESS is produced multiple times (Property 10).</description>
         <severity>HIGH</severity>   
     </bugPattern>
     
     <bugPattern>
     	<name>Continue After Closure</name>
     	<bugLanguage>continue_after_closure.dot</bugLanguage>
-    	<description>Server sends data after having received a DISCONNECT.</description>
+    	<description>Server sends data after having received a DISCONNECT (Property 6).</description>
     	<severity>LOW</severity>
     </bugPattern>
     
     <bugPattern>
     	<name>Delayed NEWKEYS</name>
     	<bugLanguage>delayed_newkeys.dot</bugLanguage>
-    	<description>After sending KEXINIT, server sends SR_ACCEPT or another KEXINIT before sending NEWKEYS.</description>
+    	<description>After sending KEXINIT, server sends SR_ACCEPT or another KEXINIT before sending NEWKEYS (Property 7).</description>
     </bugPattern>
     
     <bugPattern>
     	<name>Invalid SR Rejection Response</name>
     	<bugLanguage>invalid_rejection_response.dot</bugLanguage>
-    	<description>Server incorrectly responds to a rejected service request.</description>
+    	<description>Server incorrectly responds to a rejected service request (Property 8).</description>
     	<severity>LOW</severity>
     </bugPattern>
     
     <bugPattern>
     	<name>Invalid Authentication Rejection Response</name>
     	<bugLanguage>invalid_auth_rejection.dot</bugLanguage>
-    	<description>Server does not respond with a UA_FAILURE when rejecting an authentication request.</description>
+    	<description>Server does not respond with a UA_FAILURE when rejecting an authentication request (Property 9).</description>
     </bugPattern>
     
     <bugPattern>
     	<name>Unignored Authentication Request</name>
     	<bugLanguage>auth_not_ignored.dot</bugLanguage>
-    	<description>An authentication request received after a UA_SUCCESS is not ignored.</description>
+    	<description>An authentication request received after a UA_SUCCESS is not ignored (Property 11).</description>
     </bugPattern>
     
     <bugPattern>
     	<name>Invalid Closure Response</name>
     	<bugLanguage>invalid_closure_response.dot</bugLanguage>
-    	<description>Server does not respond to a CH_CLOSE with a CH_CLOSE.</description>
+    	<description>Server does not respond to a CH_CLOSE with a CH_CLOSE (Property 12).</description>
     </bugPattern>
 </bugPatterns>
 
