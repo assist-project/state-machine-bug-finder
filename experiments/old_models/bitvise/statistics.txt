@@ -1,0 +1,23 @@
+
+================================================================================
+Run Description
+================================================================================
+
+
+--------------------------------------------------------------------------------
+State Machine Bug Finding Parameters
+--------------------------------------------------------------------------------
+
+Alphabet: [SERVICE_REQUEST_AUTH, CH_CLOSE, SERVICE_REQUEST_CONN, KEXINIT, KEXINIT_PROCEED, NEWKEYS, CH_REQUEST_PTY, UA_PK_OK, CH_EOF, KEX30, CH_OPEN, CH_DATA, UA_PK_NOK]
+Bug Validation Enabled: false
+Uncategorized Bug Bound: 10
+
+================================================================================
+Statistics
+================================================================================
+
+Number of bugs: 8
+Time bug-checking took (ms): 2724
+Bug patterns loaded (14): [Early Accept, Unauthenticated Client, Continue After Closure, Delayed NEWKEYS, Invalid SR Rejection Response, Invalid Authentication Rejection Response, Multiple UA_SUCCESS, Unignored Authentication Request, Unignored Authentication Request Rekey, Invalid Closure Response, Unfinished Rekey, Unsuccessful Authentication After Rekey, Channel Open Failure After Rekey, Request Failure After Rekey]
+Bug patterns found (8): [Unauthenticated Client, Invalid SR Rejection Response, Invalid Authentication Rejection Response, Unignored Authentication Request, Unignored Authentication Request Rekey, Unfinished Rekey, Channel Open Failure After Rekey, Request Failure After Rekey]
+Bug patterns validated successfully (0): []

@@ -1,0 +1,47 @@
+Bugs found in prior work:
+
+Invalid SR Rejection Response (Property 8)
+Trace: KEXINIT/KEXINIT NEWKEYS/NO_RESP SERVICE_REQUEST_AUTH/NO_RESP 
+
+Unignored Authentication Request (Property 11)
+Trace: KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SERVICE_REQUEST_AUTH/SERVICE_ACCEPT UA_PK_OK/UA_SUCCESS UA_PK_OK/UNIMPLEMENTED 
+
+
+
+
+New bugs:
+
+Invalid Authentication Rejection Response
+Trace: KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SERVICE_REQUEST_AUTH/SERVICE_ACCEPT KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS UA_PK_OK/UA_SUCCESS NEWKEYS/NO_RESP UA_PK_NOK/UNIMPLEMENTED 
+	The UA_PK_NOK should have illicited a UA_FAILURE response.
+
+
+Unfinished Rekey
+Trace: KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SERVICE_REQUEST_AUTH/SERVICE_ACCEPT KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS UA_PK_OK/UA_SUCCESS 
+	Since a rekey was started before authentication, new keys must be exchanged before the client can be authenticated.
+	However, the server successfully authenticates before the client has sent a NEWKEYS.
+
+
+Channel Open Failure After Rekey
+Trace: REKEY/KEXINIT+KEX31+NEWKEYS+NO_RESP SERVICE_REQUEST_AUTH/SERVICE_ACCEPT UA_PW_OK/UA_SUCCESS REKEY/KEXINIT+KEX31+NEWKEYS+NO_RESP KEXINIT/KEXINIT CH_OPEN/DISCONNECT 
+
+Request Failure After Rekey
+Trace: REKEY/KEXINIT+KEX31+NEWKEYS+NO_RESP SERVICE_REQUEST_AUTH/SERVICE_ACCEPT UA_PW_OK/UA_SUCCESS CH_OPEN/CH_OPEN_SUCCESS REKEY/KEXINIT+KEX31+NEWKEYS+NO_RESP KEXINIT/KEXINIT CH_REQUEST_PTY/DISCONNECT 
+
+	These two are symptoms of the same bug.
+	Doing a rekey in the connection layer disrupts the connection, in that
+	the server will disconnect if a client tries to open a channel or
+	request a terminal when a channel was previously opened.
+
+
+Possible bug, needs investigation:
+
+Unauthenticated Client (Property 4)
+Trace: KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SERVICE_REQUEST_AUTH/SERVICE_ACCEPT KEXINIT/KEXINIT UA_PK_OK/NO_RESP KEX30/KEX31+NEWKEYS+BUFFERED CH_OPEN/CH_OPEN_SUCCESS 
+	The output symbol UA_SUCCESS does not appear, even though the channel was opened.
+	It is likely the case UA_SUCCESS exists in the BUFFERED output.
+	Needs further investigation.
+
+
+ALL BUGS UNVALIDATED
+
