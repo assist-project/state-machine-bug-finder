@@ -1,0 +1,18 @@
+digraph G {
+label=""
+start [color="red"]
+bug [shape="doublecircle"]
+
+start -> auth [label="O_UA_SUCCESS"]
+start -> start [label="other"]
+auth -> post_rekey [label="I_REKEY"]
+auth -> auth [label="other - {O_CH_OPEN_SUCCESS, O_NO_CONN, O_DISCONNECT}"]
+
+post_rekey -> open [label="I_CH_OPEN"]
+post_rekey -> auth [label="O_CH_CLOSE"]
+post_rekey -> post_rekey [label="other - {O_NO_CONN, O_DISCONNECT}"]
+open -> bug [label="other - O_CH_OPEN_SUCCESS"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}

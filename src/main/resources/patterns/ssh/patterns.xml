@@ -66,5 +66,30 @@
     	<bugLanguage>invalid_closure_response.dot</bugLanguage>
     	<description>Server does not respond to a CH_CLOSE with a CH_CLOSE (Property 12).</description>
     </bugPattern>
+    
+    <bugPattern>
+    	<name>Unfinished Rekey</name>
+    	<bugLanguage>unfinished_rekey.dot</bugLanguage>
+    	<description>Server proceeds with upper layer in the middle of a rekey.</description>
+    	<severity>MEDIUM</severity>
+    </bugPattern>
+    
+    <bugPattern>
+    	<name>Unsuccessful Authentication After Rekey</name>
+    	<bugLanguage>ua_unsuccessful_after_rekey.dot</bugLanguage>
+    	<description>Following a rekey, client authentication using valid credentials is unsuccessful.</description>
+    </bugPattern>
+    
+    <bugPattern>
+    	<name>Channel Open Failure After Rekey</name>
+    	<bugLanguage>channel_open_unsuccessful_after_rekey.dot</bugLanguage>
+    	<description>Following a rekey, attempt to open channel is not successful.</description>
+    </bugPattern>
+    
+    <bugPattern>
+    	<name>Request Failure After Rekey</name>
+    	<bugLanguage>channel_request_unsuccessful_after_rekey.dot</bugLanguage>
+    	<description>Following a rekey, request to open PTY is not successful.</description>
+    </bugPattern>
 </bugPatterns>
 

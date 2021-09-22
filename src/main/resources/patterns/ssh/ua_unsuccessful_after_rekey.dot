@@ -1,0 +1,24 @@
+digraph G {
+label=""
+start [color="red"]
+bug [shape="doublecircle"]
+
+start -> preauth [label="O_SERVICE_ACCEPT"]
+start -> start [label="other"]
+preauth -> rekey [label="O_KEXINIT"]
+preauth -> preauth [label="other - O_UA_SUCCESSFUL"]
+rekey -> ink [label="I_NEWKEYS"]
+rekey -> onk [label="O_NEWKEYS"]
+rekey -> rekey [label="other"]
+ink -> post_rekey [label="O_NEWKEYS"]
+ink -> ink [label="other"]
+onk -> post_rekey [label="I_NEWKEYS"]
+onk -> onk [label="other"]
+post_rekey -> rekey [label="O_KEXINIT"]
+post_rekey -> authenticate [label="{I_PK_OK, I_PW_OK}"]
+post_rekey -> post_rekey [label="other - {O_UA_FAILURE, O_NO_CONN, O_DISCONNECT}"]
+authenticate -> bug [label="other - O_UA_SUCCESSFUL"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}
