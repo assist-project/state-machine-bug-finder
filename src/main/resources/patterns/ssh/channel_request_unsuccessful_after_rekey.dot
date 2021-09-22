@@ -6,11 +6,16 @@ bug [shape="doublecircle"]
 start -> auth [label="O_CH_OPEN_SUCCESS"]
 start -> start [label="other"]
 auth -> post_rekey [label="I_REKEY"]
-auth -> auth [label="other - {I_KEXINIT, O_CH_SUCCES, I_CH_CLOSE, I_CH_EOF, O_NO_CONN, O_DISCONNECT}"]
+auth -> rekey [label="O_KEXINIT"]
+auth -> auth [label="other - {O_CH_SUCCES, I_CH_CLOSE, I_CH_EOF, O_NO_CONN, O_DISCONNECT}"]
+
+rekey -> onk [label="O_NEWKEYS"]
+rekey -> rekey [label="other"]
+onk -> post_rekey [label="I_NEWKEYS"]
 
 post_rekey -> open [label="I_CH_REQUEST_PTY"]
 post_rekey -> auth [label="O_CH_CLOSE"]
-post_rekey -> post_rekey [label="other - {I_CH_EOF,O_NO_CONN, O_DISCONNECT}"]
+post_rekey -> post_rekey [label="other - {O_CH_EOF, O_NO_CONN, O_DISCONNECT}"]
 open -> bug [label="other - O_CH_SUCCESS"]
 
 __start0 [label="" shape="none" width="0" height="0"];
