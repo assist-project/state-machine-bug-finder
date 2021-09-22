@@ -6,9 +6,18 @@ bug [shape="doublecircle"]
 start -> sr_accept [label="O_SERVICE_ACCEPT"]
 start -> start [label="other - O_UA_SUCCESS"]
 sr_accept -> invalid_authreq [label="{I_UA_PK_NOK, I_UA_PW_NOK, I_UA_NONE}"]
-sr_accept -> sr_accept [label="other - {O_UA_SUCCESS, O_KEXINIT, O_NO_CONN, O_DISCONNECT}"]
+sr_accept -> sr_accept [label="other - {O_UA_SUCCESS, O_NO_CONN, O_DISCONNECT}"]
+sr_accept -> rekey [label="O_KEXINIT"]
 invalid_authreq -> sr_accept [label="O_UA_FAILURE"]
 invalid_authreq -> bug [label="other"]
+
+rekey -> ink [label="I_NEWKEYS"]
+rekey -> onk [label="O_NEWKEYS"]
+rekey -> rekey [label="other"]
+ink -> sr_accept [label="O_NEWKEYS"]
+ink -> ink [label="other"]
+onk -> sr_accept [label="I_NEWKEYS"]
+onk -> onk [label="other"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;

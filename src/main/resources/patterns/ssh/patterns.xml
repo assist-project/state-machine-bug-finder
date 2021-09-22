@@ -1,11 +1,19 @@
 <bugPatterns>
     <defaultBugSeverity>LOW</defaultBugSeverity>
     <defaultEnabled>true</defaultEnabled>
-	<bugPattern>
-        <name>Multiple UA_SUCCESS</name>
-        <bugLanguage>multiple_ua_success.dot</bugLanguage>
-        <description>UA_SUCCESS is produced multiple times (Property 10).</description>
-        <severity>HIGH</severity>   
+    
+    <bugPattern>
+		<name>Early Accept</name>
+		<bugLanguage>early_accept.dot</bugLanguage>
+		<description>Server accepts service request before key exchange has been completed (Property 3).</description>
+		<severity>HIGH</severity>    	
+    </bugPattern>
+    
+    <bugPattern>
+    	<name>Unauthenticated Client</name>
+    	<bugLanguage>unauthenticated_client.dot</bugLanguage>
+    	<description>Server opens a channel with a client whose credentials were not successfully authenticated (Property 4).</description>
+    	<severity>HIGH</severity>
     </bugPattern>
     
     <bugPattern>
@@ -35,9 +43,22 @@
     </bugPattern>
     
     <bugPattern>
+        <name>Multiple UA_SUCCESS</name>
+        <bugLanguage>multiple_ua_success.dot</bugLanguage>
+        <description>UA_SUCCESS is produced multiple times (Property 10).</description>
+        <severity>HIGH</severity>   
+    </bugPattern>
+    
+    <bugPattern>
     	<name>Unignored Authentication Request</name>
     	<bugLanguage>auth_not_ignored.dot</bugLanguage>
     	<description>An authentication request received after a UA_SUCCESS is not ignored (Property 11).</description>
+    </bugPattern>
+    
+    <bugPattern>
+    	<name>Unignored Authentication Request Rekey</name>
+    	<bugLanguage>auth_not_ignored_rekey.dot</bugLanguage>
+    	<description>An authentication request received after a UA_SUCCESS is not ignored, accounting for rekeying (Property 11).</description>
     </bugPattern>
     
     <bugPattern>
