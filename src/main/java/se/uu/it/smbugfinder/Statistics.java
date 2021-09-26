@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.function.Function;
 import java.util.stream.Collectors;
 
-import se.uu.it.smbugfinder.bug.Bug;
 import se.uu.it.smbugfinder.pattern.AbstractBugPattern;
 
 public class Statistics extends ExportableResult {

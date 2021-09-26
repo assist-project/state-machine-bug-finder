@@ -51,11 +51,7 @@ public class StateMachineBugFinder<I,O> {
 		this.validate = config.isValidate();
 		this.config = config;
 		this.coverter = new MealyToDfaConverter<>();
-		if (config.getOutputDir() == null) {
-			this.exporter = (dfa,name) -> {};
-		} else {
-			this.exporter = new DfaExporter.DirectoryDfaExporter(config.getOutputDir());
-		}
+		this.exporter = (dfa, name) -> {};
 	}
 	
 	/**
@@ -144,21 +140,6 @@ public class StateMachineBugFinder<I,O> {
 		}
 		tracker.finishStateMachineBugFinding(bugs);
 		return tracker.generateStatistics();
-	}
-	
-	private void checkSpecification(BugPatterns patterns) {
-		DfaAdapter spec = patterns.getSpecificationLanguage();
-		DfaAdapter specBugLanguage = spec.complement();
-		
-		for (AbstractBugPattern bp : patterns.getBugPatterns()) {
-			if (bp.generateBugLanguage().isEmpty()) {
-				continue;
-			}
-			
-			if (specBugLanguage.intersect(bp.generateBugLanguage()).isEmpty()) {
-				LOGGER.warn("The specification's complement shares no words with the bug pattern {}.", bp.getName());
-			}
-		}
 	}
 	
 	private void handleGeneralBugPatterns(GeneralBugPattern generalBugPattern, DfaAdapter sutLanguage, Collection<BugPattern> specificBugPatterns, SymbolMapping<I,O> mapping, List<StateMachineBug<I,O>> bugs) {

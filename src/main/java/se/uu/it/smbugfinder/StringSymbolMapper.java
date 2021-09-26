@@ -14,6 +14,7 @@ public class StringSymbolMapper implements SymbolMapping<String,String> {
 	
 	private String emptyOutput;
 	private String sep;
+//	private boolean emptyLab
 
 	public StringSymbolMapper(String emptyOutput, String sep) {
 		this.emptyOutput = emptyOutput;

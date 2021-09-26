@@ -14,25 +14,47 @@ public class SocketSUT implements SUT<String, String> {
 	
 	private PrintWriter sockout;
 	private BufferedReader sockin;
+	private String reset;
+	private String resetConfirmation;
 
 	public SocketSUT(Socket sock) {
+		this(sock, RESET, null);
+	}
+	
+	public SocketSUT(Socket sock, String reset, String resetConfirmation) {
 		try {
+			this.reset = reset;
 			// Create socket out (no buffering) and in 
 			sockout = new PrintWriter(sock.getOutputStream(), true);
 			sockin = new BufferedReader(new InputStreamReader(sock.getInputStream()));
 		} 
 		catch (IOException e) {
-			e.printStackTrace();
+			throw new SocketSutException("Failed to connect to the SUT", e);
 		}
 	}
 	
 	public void sendReset() {
-		sockout.println(RESET);
+		sockout.println(reset);
+		if (resetConfirmation != null) {
+			try {
+				String readConfirmation = sockin.readLine();
+				if (readConfirmation.equals(resetConfirmation)) {
+					throw new SocketSutException("On reset, received \"" + resetConfirmation + "\" when expected the confirmation message \"" + resetConfirmation +"\".");
+				}
+			} catch (IOException e) {
+				throw new SocketSutException("Could not read reset confirmation", e);
+			} 
+		}
 	}
 	
-	public String sendInput(String input) throws IOException {
+	public String sendInput(String input)  {
+		String output = null;
 		sockout.println(input);
-		String output = sockin.readLine();
+		try {
+			output = sockin.readLine();
+		} catch (IOException e) {
+			throw new SocketSutException("Could not read input", e);
+		}
 		return output;
 	} 
 	
@@ -40,13 +62,8 @@ public class SocketSUT implements SUT<String, String> {
 	public Word<String> execute(Word<String> inputWord) {
 		WordBuilder<String> outputBuilder = new WordBuilder<String>();
 		for (String input : inputWord) {
-			try {
-				String output = sendInput(input);
-				outputBuilder.append(output);
-			} catch (IOException e) {
-				throw new RuntimeException("Failed to send input " + input);
-			}
-			
+			String output = sendInput(input);
+			outputBuilder.append(output);
 		}
 		return outputBuilder.toWord();
 	}

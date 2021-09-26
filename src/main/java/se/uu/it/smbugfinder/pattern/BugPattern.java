@@ -6,6 +6,11 @@ import javax.xml.bind.annotation.XmlTransient;
 import se.uu.it.smbugfinder.dfa.DfaAdapter;
 
 public class BugPattern extends AbstractBugPattern {
+	BugPattern() {
+		super();
+	}
+	
+	
 
 	@XmlElement(name="bugLanguage", required = true)
 	private String bugLanguagePath;

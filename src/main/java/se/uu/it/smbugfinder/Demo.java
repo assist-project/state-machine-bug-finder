@@ -107,7 +107,7 @@ public class Demo {
 		String sep = askOrDefault("Mealy output separator: ", "\\|");
 		String noResp = askOrDefault("Mealy no response output: ", "TIMEOUT");
 		String validationModel = askOrDefault("Path to Mealy machine used in validation: ", null);
-		String outputDirectory = askOrDefault("Output directory: ", null);
+		String outputDirectory = askOrDefault("Output directory: ", "output");
 		
 		InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
 		InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(getResource(sutModel));
@@ -127,19 +127,15 @@ public class Demo {
 			InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> validationModelPath = mealyParser.readModel(getResource(validationModel));
 			sut = new SimulatedMealySUT<String, String>(validationModelPath.model);
 		}
-		config.setOutputDir(outputDirectory);
 		StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<String, String>(config);
-		if (outputDirectory != null) {
-			new File(outputDirectory).mkdirs();
-		}
+		new File(outputDirectory).mkdirs();
+		modelBugFinder.setExporter(new DfaExporter.DirectoryDfaExporter(outputDirectory));
+		
 		List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
 		Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
-		stats.doExport(new PrintWriter(new OutputStreamWriter(System.out), true));
-		if (outputDirectory != null) {
-			stats.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, "statistics.txt").toFile())), true));	
-		}
-		
-		new BugReport(modelBugs).export(new PrintWriter(new OutputStreamWriter(System.out), true));
+		export(stats, outputDirectory, "statistics.txt");
+		BugReport bugReport = new BugReport(modelBugs);
+		export(bugReport, outputDirectory, "bug_report.txt");
 	}
 	
 
@@ -147,6 +143,11 @@ public class Demo {
 		Demo demo = new Demo();
 		demo.bufferCommands(Arrays.asList(args));
 		demo.run();
+	}
+	
+	private static void export(ExportableResult result, String outputDirectory, String filename) throws FileNotFoundException {
+		result.doExport(new PrintWriter(new OutputStreamWriter(System.out), true));
+		result.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, filename).toFile())), true));	
 	}
 	
 	static class BugReport extends ExportableResult {
