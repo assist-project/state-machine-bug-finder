@@ -6,6 +6,8 @@ import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 
+import javax.annotation.Nullable;
+
 import net.automatalib.words.Word;
 import net.automatalib.words.WordBuilder;
 
@@ -21,7 +23,7 @@ public class SocketSUT implements SUT<String, String> {
 		this(sock, RESET, null);
 	}
 	
-	public SocketSUT(Socket sock, String reset, String resetConfirmation) {
+	public SocketSUT(Socket sock, String reset, @Nullable String resetConfirmation) {
 		try {
 			this.reset = reset;
 			// Create socket out (no buffering) and in 
@@ -39,7 +41,7 @@ public class SocketSUT implements SUT<String, String> {
 			try {
 				String readConfirmation = sockin.readLine();
 				if (readConfirmation.equals(resetConfirmation)) {
-					throw new SocketSutException("On reset, received \"" + resetConfirmation + "\" when expected the confirmation message \"" + resetConfirmation +"\".");
+					throw new SocketSutException("On reset, received \"" + readConfirmation + "\" when expected the confirmation message \"" + resetConfirmation +"\".");
 				}
 			} catch (IOException e) {
 				throw new SocketSutException("Could not read reset confirmation", e);

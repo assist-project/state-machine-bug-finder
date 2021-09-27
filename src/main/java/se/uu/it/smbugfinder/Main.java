@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.beust.jcommander.JCommander;
+import com.beust.jcommander.ParameterException;
 
 import net.automatalib.automata.transducers.impl.compact.CompactMealy;
 import net.automatalib.serialization.InputModelData;
@@ -49,17 +50,26 @@ public class Main {
 		JCommander commander = JCommander.newBuilder()
 				.allowParameterOverwriting(true)
 				.programName("state-machine-bug-finder")
-				.addCommand(config)
+				.addObject(config)
 				.build();
-		commander.parse(args);
-		
-		launchBugFinder(config);
-		
+		if (args.length == 0) {
+			commander.usage();
+		} else {
+			try {
+				commander.parse(args);
+				launchBugFinder(config);
+			} catch(ParameterException exception) {
+				LOGGER.error(exception.getMessage());
+				commander.usage();
+			}
+		}
 	}
 
 	private static void launchBugFinder(StateMachineBugFinderToolConfig config) throws FileNotFoundException, IOException {
+		File dir = new File(config.getOutputDir());
+		dir.mkdirs();
 		InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
-		InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(new FileInputStream(config.getModel()));
+		InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(getResource(config.getModel()));
 		
 		BugPatternLoader loader = new BugPatternLoader(new DefaultDfaDecoder());
 		
@@ -75,12 +85,12 @@ public class Main {
 				String host = hostPort[0];
 				int port = Integer.valueOf(hostPort[1]);
 				Socket socket = new Socket(host, port);
-				sut = new SocketSUT(socket);
+				sut = new SocketSUT(socket, config.getResetMessage(), config.getResetConfirmationMessage());
 			} else if (config.getValidationModel() != null) {
 				InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> validationModelPath = mealyParser.readModel(getResource(config.getValidationModel()));
 				sut = new SimulatedMealySUT<String, String>(validationModelPath.model);
 			} else {
-				throw new ConfigurationException("Unable to validate since neither the address of a test harness not a validation model were provided");
+				throw new ConfigurationException("Unable to validate since neither the address of a test harness nor a validation model were provided");
 			}
 		}
 		

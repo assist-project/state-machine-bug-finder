@@ -114,7 +114,9 @@ public class StateMachineBugFinder<I,O> {
 					} else {
 						// could not validate bug
 						Trace<I,O> counterexample = witnessFinder.findCounterexample(sut, mapping, sutBugLanguage);
-						StateMachineBug<I,O> bug = new StateMachineBug<I,O>(counterexample, bugPattern);
+						Word<O> mealyOutput = mealy.computeOutput(counterexample.getInputWord());
+						Trace<I,O> falseAlarm = new Trace<I,O> (counterexample.getInputWord(), mealyOutput);
+						StateMachineBug<I,O> bug = new StateMachineBug<I,O>(falseAlarm, bugPattern);
 						bug.validationFailed(counterexample);
 						bugs.add(bug);
 						LOGGER.info("Could not find valid witness, giving counterexample {}", counterexample.toCompactString());
