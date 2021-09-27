@@ -1,0 +1,20 @@
+digraph G {
+label=""
+start [color="red"]
+bug [shape="doublecircle"]
+
+start -> sr_accept [label="O_SERVICE_ACCEPT"]
+start -> start [label="other"]
+sr_accept -> kexinit [label="I_KEXINIT"]
+sr_accept -> sr_accept [label="other - {O_NO_CONN, O_DISCONNECT, O_KEXINIT, O_UA_SUCCESS}"]
+kexinit -> okexinit [label="O_KEXINIT"]
+kexinit -> bug [label="other_output"]
+okexinit -> kex30 [label="I_KEX30"]
+kex30 -> okex31 [label="O_KEX31"]
+kex30 -> bug [label="other_output"]
+okex31 -> onewkeys [label="O_NEWKEYS"]
+onewkeys -> bug [label="other_output - {O_NO_RESP}"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}

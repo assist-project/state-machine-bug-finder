@@ -2,18 +2,36 @@
     <defaultBugSeverity>LOW</defaultBugSeverity>
     <defaultEnabled>true</defaultEnabled>
     
+    <!-- Security Properties  -->
+    <!-- Property 3 bug patterns -->
     <bugPattern>
-		<name>Early Accept</name>
-		<bugLanguage>early_accept.dot</bugLanguage>
+		<name>Early Service Accept</name>
+		<bugLanguage>early_service_accept.dot</bugLanguage>
 		<description>Server accepts service request before key exchange has been completed (Property 3).</description>
 		<severity>HIGH</severity>    	
     </bugPattern>
     
+    <!-- Property 4 bug patterns -->
     <bugPattern>
     	<name>Unauthenticated Client</name>
     	<bugLanguage>unauthenticated_client.dot</bugLanguage>
     	<description>Server opens a channel with a client whose credentials were not successfully authenticated (Property 4).</description>
     	<severity>HIGH</severity>
+    </bugPattern>
+    
+    <!-- Property 5 bug patterns -->
+    <bugPattern>
+        <name>Rekey refused pre-authentication</name>
+        <bugLanguage>rekey_refused_post-service_accept_pre-authentication.dot</bugLanguage>
+        <description>Server refuses rekey after a service request is accepted, before authentication.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>Rekey refused post-authentication</name>
+        <bugLanguage>rekey_refused_post-authentication.dot</bugLanguage>
+        <description>Server refuses rekey with an authenticated client.</description>
+        <severity>LOW</severity>
     </bugPattern>
     
     <!-- Property 6 bug patterns -->
@@ -85,29 +103,30 @@
         <enabled>true</enabled>
     </bugPattern>
     
+    <!-- Other Rekey Properties  -->
     <bugPattern>
-    	<name>Unfinished Rekey</name>
-    	<bugLanguage>unfinished_rekey.dot</bugLanguage>
-    	<description>Server proceeds with upper layer in the middle of a rekey.</description>
-    	<severity>MEDIUM</severity>
+        <name>Unfinished Rekey</name>
+        <bugLanguage>unfinished_rekey.dot</bugLanguage>
+        <description>Server proceeds with upper layer in the middle of a rekey.</description>
+        <severity>MEDIUM</severity>
     </bugPattern>
     
     <bugPattern>
-    	<name>Unsuccessful Authentication After Rekey</name>
-    	<bugLanguage>ua_unsuccessful_after_rekey.dot</bugLanguage>
-    	<description>Following a rekey, client authentication using valid credentials is unsuccessful.</description>
+        <name>Unsuccessful Authentication After Rekey</name>
+        <bugLanguage>ua_unsuccessful_after_rekey.dot</bugLanguage>
+        <description>Following a rekey, client authentication using valid credentials is unsuccessful.</description>
     </bugPattern>
     
     <bugPattern>
-    	<name>Channel Open Failure After Rekey</name>
-    	<bugLanguage>channel_open_unsuccessful_after_rekey.dot</bugLanguage>
-    	<description>Following a rekey, attempt to open channel is not successful.</description>
+        <name>Channel Open Failure After Rekey</name>
+        <bugLanguage>channel_open_unsuccessful_after_rekey.dot</bugLanguage>
+        <description>Following a rekey, attempt to open channel is not successful.</description>
     </bugPattern>
     
     <bugPattern>
-    	<name>Request Failure After Rekey</name>
-    	<bugLanguage>channel_request_unsuccessful_after_rekey.dot</bugLanguage>
-    	<description>Following a rekey, request to open PTY is not successful.</description>
+        <name>Request Failure After Rekey</name>
+        <bugLanguage>channel_request_unsuccessful_after_rekey.dot</bugLanguage>
+        <description>Following a rekey, request to open PTY is not successful.</description>
     </bugPattern>
 </bugPatterns>
 

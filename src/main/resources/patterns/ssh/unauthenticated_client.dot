@@ -5,9 +5,9 @@ bug [shape="doublecircle"]
 
 start -> bug [label="O_CH_OPEN_SUCCESS"]
 start -> success [label="O_UA_SUCCESS"]
-start -> start [label="other"]
+start -> start [label="other - {O_BUFFERED}"]
 success -> start [label="O_UA_FAILURE"]
-success -> success [label="other"]
+success -> success [label="other - {O_BUFFERED}"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
