@@ -104,7 +104,7 @@ public class StateMachineBugFinder<I,O> {
 					SequenceGenerator<Symbol> sequenceGenerator = SequenceGeneratorFactory.buildGenerator(config.getWitnessGenerationStrategy(), config.getSearchConfig(), null);
 					WitnessFinder witnessFinder = new WitnessFinder(sequenceGenerator, config.getBound()); 
 					tracker.startValidation(bugPattern);
-					Trace<I,O> witness = witnessFinder.findWitness(sut, mapping, sutBugLanguage);
+					Trace<I,O> witness = witnessFinder.findWitness(sut, mapping, sutBugLanguage, bugPattern.generateBugLanguage());
 					tracker.endValidation(bugPattern);
 					if (witness != null) {
 						StateMachineBug<I,O> bug = new StateMachineBug<>(witness, bugPattern);
@@ -113,7 +113,7 @@ public class StateMachineBugFinder<I,O> {
 						LOGGER.info("Found valid witness {}", witness.toCompactString());
 					} else {
 						// could not validate bug
-						Trace<I,O> counterexample = witnessFinder.findCounterexample(sut, mapping, sutBugLanguage);
+						Trace<I,O> counterexample = witnessFinder.findCounterexample(sut, mapping, sutBugLanguage, bugPattern.generateBugLanguage());
 						Word<O> mealyOutput = mealy.computeOutput(counterexample.getInputWord());
 						Trace<I,O> falseAlarm = new Trace<I,O> (counterexample.getInputWord(), mealyOutput);
 						StateMachineBug<I,O> bug = new StateMachineBug<I,O>(falseAlarm, bugPattern);
