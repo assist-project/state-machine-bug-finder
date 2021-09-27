@@ -16,6 +16,7 @@
     	<severity>HIGH</severity>
     </bugPattern>
     
+    <!-- Property 6 bug patterns -->
     <bugPattern>
     	<name>Continue After Closure</name>
     	<bugLanguage>continue_after_closure.dot</bugLanguage>
@@ -23,48 +24,65 @@
     	<severity>LOW</severity>
     </bugPattern>
     
+    <!-- Property 7 bug patterns [RFC 4253, p. 19] -->
     <bugPattern>
     	<name>Delayed NEWKEYS</name>
     	<bugLanguage>delayed_newkeys.dot</bugLanguage>
-    	<description>After sending KEXINIT, server sends SR_ACCEPT or another KEXINIT before sending NEWKEYS (Property 7).</description>
+    	<description>After sending KEXINIT, server sends SR_ACCEPT or another KEXINIT, before sending NEWKEYS (Property 7).</description>
     </bugPattern>
     
+    <!-- Property 8 bug patterns [RFC 4253, p. 24] -->
     <bugPattern>
-    	<name>Invalid SR Rejection Response</name>
-    	<bugLanguage>invalid_rejection_response.dot</bugLanguage>
-    	<description>Server incorrectly responds to a rejected service request (Property 8).</description>
+    	<name>Invalid SR Response</name>
+    	<bugLanguage>invalid_service_request_response.dot</bugLanguage>
+    	<description>Server incorrectly responds to a service request. Conforming responses are either SR_ACCEPT or SR_DISCONNECT (Property 8).</description>
     	<severity>LOW</severity>
     </bugPattern>
     
+    <!-- Property 9 bug patterns [RFC 4252, p. 6] -->
     <bugPattern>
     	<name>Invalid Authentication Rejection Response</name>
     	<bugLanguage>invalid_auth_rejection.dot</bugLanguage>
     	<description>Server does not respond with a UA_FAILURE when rejecting an authentication request (Property 9).</description>
+    	<enabled>true</enabled>
     </bugPattern>
     
+    <!-- Property 10 bug patterns [RFC 4252, p. 6] -->
     <bugPattern>
         <name>Multiple UA_SUCCESS</name>
         <bugLanguage>multiple_ua_success.dot</bugLanguage>
         <description>UA_SUCCESS is produced multiple times (Property 10).</description>
-        <severity>HIGH</severity>   
+        <severity>HIGH</severity>
     </bugPattern>
     
+    <bugPattern>
+        <name>Missing UA_SUCCESS</name>
+        <bugLanguage>missing_ua_success.dot</bugLanguage>
+        <description>UA_SUCCESS is missing (Property 10).</description>
+        <severity>HIGH</severity>
+    </bugPattern>
+    
+    <!-- Property 11 bug patterns -->
     <bugPattern>
     	<name>Unignored Authentication Request</name>
     	<bugLanguage>auth_not_ignored.dot</bugLanguage>
     	<description>An authentication request received after a UA_SUCCESS is not ignored (Property 11).</description>
+    	<enabled>true</enabled>
     </bugPattern>
     
     <bugPattern>
     	<name>Unignored Authentication Request Rekey</name>
     	<bugLanguage>auth_not_ignored_rekey.dot</bugLanguage>
     	<description>An authentication request received after a UA_SUCCESS is not ignored, accounting for rekeying (Property 11).</description>
+    	<enabled>true</enabled>
     </bugPattern>
     
+    <!-- Property 12 bug patterns -->
     <bugPattern>
     	<name>Invalid Closure Response</name>
     	<bugLanguage>invalid_closure_response.dot</bugLanguage>
     	<description>Server does not respond to a CH_CLOSE with a CH_CLOSE (Property 12).</description>
+        <enabled>true</enabled>
     </bugPattern>
     
     <bugPattern>
