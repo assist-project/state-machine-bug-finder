@@ -1,0 +1,14 @@
+-m 
+/models/ssh/oldver/Dropbear.dot 
+-p 
+/patterns/ssh/ 
+-eo 
+NO_RESP 
+-od 
+output/Dropbear_old 
+-ha 
+localhost:7000 
+-rcm 
+resetok 
+-generationStrategy 
+BFS
