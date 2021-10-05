@@ -21,15 +21,15 @@
     
     <!-- Property 5 bug patterns -->
     <bugPattern>
-        <name>Rekey refused pre-authentication</name>
-        <bugLanguage>rekey_refused_pre-authentication.dot</bugLanguage>
+        <name>Rekey Failure Pre-Authentication</name>
+        <bugLanguage>rekey_failure_pre-authentication.dot</bugLanguage>
         <description>Server refuses rekey after a service request is accepted, before authentication. (Property 5)</description>
         <severity>LOW</severity>
     </bugPattern>
     
     <bugPattern>
-        <name>Rekey refused post-authentication</name>
-        <bugLanguage>rekey_refused_post-authentication.dot</bugLanguage>
+        <name>Rekey Failure Post-Authentication</name>
+        <bugLanguage>rekey_failure_post-authentication.dot</bugLanguage>
         <description>Server refuses rekey with an authenticated client. (Property 5)</description>
         <severity>LOW</severity>
     </bugPattern>
@@ -113,20 +113,20 @@
     </bugPattern>
     
     <bugPattern>
-        <name>Unsuccessful Authentication After Rekey</name>
-        <bugLanguage>ua_unsuccessful_after_rekey.dot</bugLanguage>
+        <name>Authentication Failure After Rekey</name>
+        <bugLanguage>ua_failure_after_rekey.dot</bugLanguage>
         <description>Following a rekey, client authentication using valid credentials is unsuccessful.</description>
     </bugPattern>
     
     <bugPattern>
         <name>Channel Open Failure After Rekey</name>
-        <bugLanguage>channel_open_unsuccessful_after_rekey.dot</bugLanguage>
+        <bugLanguage>channel_open_failure_after_rekey.dot</bugLanguage>
         <description>Following a rekey, attempt to open channel is not successful.</description>
     </bugPattern>
     
     <bugPattern>
         <name>Request Failure After Rekey</name>
-        <bugLanguage>channel_request_unsuccessful_after_rekey.dot</bugLanguage>
+        <bugLanguage>channel_request_failure_after_rekey.dot</bugLanguage>
         <description>Following a rekey, request to open PTY is not successful.</description>
     </bugPattern>
 </bugPatterns>

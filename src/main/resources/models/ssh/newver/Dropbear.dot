@@ -294,4 +294,7 @@ s20 -> s1[label="SR_CONN / NO_CONN"]
 s20 -> s1[label="KEXINIT / NO_CONN"]
 s20 -> s1[label="CH_EOF / NO_CONN"]
 s20 -> s1[label="SR_AUTH / NO_CONN"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> s0;
 }
