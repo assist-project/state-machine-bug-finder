@@ -10,10 +10,12 @@ sr_accept -> sr_accept [label="other - {O_NO_CONN, O_DISCONNECT, O_KEXINIT}"]
 kexinit -> okexinit [label="O_KEXINIT"]
 kexinit -> bug [label="other_output"]
 okexinit -> kex30 [label="I_KEX30"]
-kex30 -> okex31 [label="O_KEX31"]
+kex30 -> kex31 [label="O_KEX31"]
 kex30 -> bug [label="other_output"]
-okex31 -> onewkeys [label="O_NEWKEYS"]
-onewkeys -> bug [label="other_output - {O_NO_RESP}"]
+kex31 -> onewkeys [label="O_NEWKEYS"]
+kex31 -> bug [label="other_output"]
+onewkeys -> inewkeys [label="I_NEWKEYS"]
+inewkeys -> bug [label="other_output - {O_NO_RESP}"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;

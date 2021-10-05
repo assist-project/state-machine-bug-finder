@@ -22,7 +22,7 @@
     <!-- Property 5 bug patterns -->
     <bugPattern>
         <name>Rekey refused pre-authentication</name>
-        <bugLanguage>rekey_refused_post-service_accept_pre-authentication.dot</bugLanguage>
+        <bugLanguage>rekey_refused_pre-authentication.dot</bugLanguage>
         <description>Server refuses rekey after a service request is accepted, before authentication. (Property 5)</description>
         <severity>LOW</severity>
     </bugPattern>
