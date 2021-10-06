@@ -25,22 +25,24 @@ public class SocketSUT implements SUT<String, String> {
 	
 	public SocketSUT(Socket sock, String reset, @Nullable String resetConfirmation) {
 		try {
-			this.reset = reset;
 			// Create socket out (no buffering) and in 
 			sockout = new PrintWriter(sock.getOutputStream(), true);
 			sockin = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+			this.reset = reset;
+			this.resetConfirmation = resetConfirmation;
+			sendReset();
 		} 
 		catch (IOException e) {
 			throw new SocketSutException("Failed to connect to the SUT", e);
 		}
 	}
 	
-	public void sendReset() {
+	private void sendReset() {
 		sockout.println(reset);
 		if (resetConfirmation != null) {
 			try {
 				String readConfirmation = sockin.readLine();
-				if (readConfirmation.equals(resetConfirmation)) {
+				if (!readConfirmation.equals(resetConfirmation)) {
 					throw new SocketSutException("On reset, received \"" + readConfirmation + "\" when expected the confirmation message \"" + resetConfirmation +"\".");
 				}
 			} catch (IOException e) {
@@ -49,7 +51,7 @@ public class SocketSUT implements SUT<String, String> {
 		}
 	}
 	
-	public String sendInput(String input)  {
+	private String sendInput(String input)  {
 		String output = null;
 		sockout.println(input);
 		try {
@@ -67,6 +69,7 @@ public class SocketSUT implements SUT<String, String> {
 			String output = sendInput(input);
 			outputBuilder.append(output);
 		}
+		sendReset();
 		return outputBuilder.toWord();
 	}
 

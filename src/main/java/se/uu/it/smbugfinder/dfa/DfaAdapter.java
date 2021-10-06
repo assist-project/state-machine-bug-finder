@@ -107,7 +107,7 @@ public class DfaAdapter {
 	}
 	
 	public boolean accepts(Word<Symbol> sequence) {
-		return dfa.accepts(sequence);
+		return symbols.containsAll(sequence.asList()) && dfa.accepts(sequence);
 	}
 	
 	/**
