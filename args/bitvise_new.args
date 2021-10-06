@@ -1,0 +1,14 @@
+-m 
+/models/ssh/newver/BitVise.dot 
+-p 
+/patterns/ssh/ 
+-eo 
+NO_RESP 
+-od 
+output/BitVise_new  
+-ha 
+localhost:8001 
+-rcm 
+resetok 
+-generationStrategy 
+BFS

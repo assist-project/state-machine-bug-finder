@@ -1,0 +1,14 @@
+-m 
+/models/ssh/newver/Dropbear.dot 
+-p 
+/patterns/ssh/ 
+-eo 
+NO_RESP 
+-od 
+output/Dropbear_new
+-ha 
+localhost:7000 
+-rcm 
+resetok 
+-generationStrategy 
+BFS
