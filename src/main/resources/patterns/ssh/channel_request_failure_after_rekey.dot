@@ -6,21 +6,21 @@ bug [shape="doublecircle"]
 start -> auth [label="O_CH_OPEN_SUCCESS"]
 start -> start [label="other"]
 
-auth -> okexinit [label="O_KEXINIT"]
+auth -> rekey [label="{I_KEXINIT, I_KEXINIT_PROCEED}"]
 auth -> auth [label="other - {I_CH_REQUEST_PTY, I_CH_CLOSE, I_CH_EOF, O_NO_CONN, O_DISCONNECT}"]
 
-okexinit -> onewkeys [label="O_NEWKEYS"]
-okexinit -> okexinit [label="other"]
-
-onewkeys -> post_rekey [label="I_NEWKEYS"]
-
-
-post_rekey -> okexinit [label="O_KEXINIT"]
-post_rekey -> post_rekey [label="other - {I_CH_CLOSE, I_CH_EOF, O_NO_CONN, O_DISCONNECT}"]
+post_rekey -> rekey [label="{I_KEXINIT, I_KEXINIT_PROCEED}"]
+post_rekey -> post_rekey [label="other - {I_CH_CLOSE, I_CH_EOF, O_NO_CONN, O_DISCONNECT, O_UNIMPL}"]
 
 post_rekey -> chrequestpty [label="I_CH_REQUEST_PTY"]
  
 chrequestpty -> bug [label="other - {O_CH_SUCCESS}"]
+
+rekey -> kexinit [label="O_KEXINIT"]
+kexinit -> kex30 [label="I_KEX30"]
+kex30 -> kex31 [label="O_KEX31"]
+kex31 -> newkeys [label="O_NEWKEYS"]
+newkeys -> post_rekey [label="I_NEWKEYS"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;

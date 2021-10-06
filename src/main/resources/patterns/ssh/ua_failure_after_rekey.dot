@@ -6,23 +6,20 @@ bug [shape="doublecircle"]
 start -> preauth [label="O_SR_ACCEPT"]
 start -> start [label="other"]
 
-preauth -> okexinit [label="O_KEXINIT"]
+preauth -> rekey [label="{I_KEXINIT, I_KEXINIT_PROCEED}"]
 preauth -> preauth [label="other - O_UA_SUCCESSFUL"]
 
-okexinit -> inewkeys [label="I_NEWKEYS"]
-okexinit -> onewkeys [label="O_NEWKEYS"]
-okexinit -> okexinit [label="other"]
-
-inewkeys -> post_rekey [label="O_NEWKEYS"]
-inewkeys -> inewkeys [label="other"]
-onewkeys -> post_rekey [label="I_NEWKEYS"]
-onewkeys -> onewkeys [label="other"]
-
-post_rekey -> okexinit [label="O_KEXINIT"]
+post_rekey -> rekey [label="{I_KEXINIT, I_KEXINIT_PROCEED}"]
 post_rekey -> authenticate [label="{I_PK_OK, I_PW_OK}"]
 post_rekey -> post_rekey [label="other - {O_UA_FAILURE, O_NO_CONN, O_DISCONNECT}"]
 
 authenticate -> bug [label="other - O_UA_SUCCESSFUL"]
+
+rekey -> kexinit [label="O_KEXINIT"]
+kexinit -> kex30 [label="I_KEX30"]
+kex30 -> kex31 [label="O_KEX31"]
+kex31 -> newkeys [label="O_NEWKEYS"]
+newkeys -> post_rekey [label="I_NEWKEYS"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
