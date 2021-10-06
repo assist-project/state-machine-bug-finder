@@ -23,8 +23,8 @@ TOKEN : { < SEP : " " > }
 TOKEN : { < WHERE : "where" > }
 //TOKEN : { < DO : "do" > }
 
-TOKEN : { < INPUT : "I_"(["a"-"z","A"-"Z","_",",","(",")"])+ > }
-TOKEN : { < OUTPUT : "O_"(["a"-"z","A"-"Z","_",",","(",")"])+ > }
+TOKEN : { < INPUT : "I_"(["a"-"z","A"-"Z","_",",","(",")","0"-"9"])+ > }
+TOKEN : { < OUTPUT : "O_"(["a"-"z","A"-"Z","_",",","(",")","0"-"9"])+ > }
 TOKEN : { < FILTER : "F_"(["a"-"z","A"-"Z","0"-"9","_",",","(",")","*",".","|","\\","+","!","?"])+ >}
 TOKEN : { < OTHER : "other" > }
 TOKEN : { < OTHER_INPUT : "other_input" > }
