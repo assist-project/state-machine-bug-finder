@@ -3,7 +3,7 @@ label=""
 start [color="red"]
 bug [shape="doublecircle"]
 
-start -> bug [label="O_SERVICE_ACCEPT"]
+start -> bug [label="O_SR_ACCEPT"]
 start -> start [label="other - O_NEWKEYS"]
 
 __start0 [label="" shape="none" width="0" height="0"];
