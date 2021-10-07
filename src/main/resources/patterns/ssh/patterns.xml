@@ -36,8 +36,8 @@
     
     <!-- Property 6 bug patterns -->
     <bugPattern>
-    	<name>Continue After Closure</name>
-    	<bugLanguage>continue_after_closure.dot</bugLanguage>
+    	<name>Continue After Disconnect</name>
+    	<bugLanguage>continue_after_disconnect.dot</bugLanguage>
     	<description>Server sends data after having received a DISCONNECT (Property 6).</description>
     	<severity>LOW</severity>
     </bugPattern>
@@ -106,9 +106,9 @@
     
     <!-- Other Rekey Properties  -->
     <bugPattern>
-        <name>Unfinished Rekey</name>
-        <bugLanguage>unfinished_rekey.dot</bugLanguage>
-        <description>Server proceeds with upper layer in the middle of a rekey.</description>
+        <name>Missing NEWKEYS</name>
+        <bugLanguage>missing_newkeys.dot</bugLanguage>
+        <description>Server sends upper layer message during a rekey, before receiving NEWKEYS.</description>
         <severity>MEDIUM</severity>
     </bugPattern>
     
