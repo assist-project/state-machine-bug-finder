@@ -5,9 +5,9 @@ bug [shape="doublecircle"]
 
 start -> kexinit [label="O_KEXINIT"]
 start -> start [label="other"]
-kexinit -> bug [label="{O_KEXINIT, O_SR_ACCEPT}"]
+kexinit -> bug [label="other_output - {O_UNIMPL, O_DISCONNECT, O_NO_RESP, O_NO_CONN, O_CH_NONE, O_CH_MAX}"]
 kexinit -> start [label="O_NEWKEYS"]
-kexinit -> kexinit [label="other"]
+kexinit -> kexinit [label="other_input U O_KEX31"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
