@@ -55,7 +55,7 @@ TOKEN : { < ID : (["a"-"z","A"-"Z","_"])+ > }
 TOKEN : { < ENUM_START : "{" >: ENUM_STATE }
 < ENUM_STATE > TOKEN : { < INPUT_ELEMENT_PREFIX : "I_" >: ELEMENT_STATE } 
 < ENUM_STATE > TOKEN : { < OUTPUT_ELEMENT_PREFIX : "O_" >: ELEMENT_STATE }
-< ELEMENT_STATE > TOKEN : { < ELEMENT : (["a"-"z","A"-"Z","_",",","(",")"])+["a"-"z","A"-"Z","_","(",")"] >: ENUM_STATE }
+< ELEMENT_STATE > TOKEN : { < ELEMENT : (["a"-"z","A"-"Z","_",",","(",")","0"-"9"])+["a"-"z","A"-"Z","_","(",")","0"-"9"] >: ENUM_STATE }
 < ENUM_STATE > TOKEN : { < ENUM_SEP : ","(" ")+ > }
 < ENUM_STATE > TOKEN : { < ENUM_END : "}" >: DEFAULT }
 
