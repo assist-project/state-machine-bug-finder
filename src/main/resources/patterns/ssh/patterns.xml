@@ -129,5 +129,17 @@
         <bugLanguage>channel_request_failure_after_rekey.dot</bugLanguage>
         <description>Following a rekey, request to open PTY is not successful.</description>
     </bugPattern>
+    
+    <bugPattern>
+    	<name>Multiple Kexinit</name>
+    	<bugLanguage>multiple_kexinit.dot</bugLanguage>
+    	<description>Server sends an additional KEXINIT during a key-exchange.</description>
+    </bugPattern>
+    
+    <bugPattern>
+    	<name>Termination After UNIMPL</name>
+    	<bugLanguage>termination_after_unimpl.dot</bugLanguage>
+    	<description>Server terminates connection after sending UNIMPL, indicated by a NO_CONN response to CH_DATA.</description>
+    </bugPattern>
 </bugPatterns>
 
