@@ -5,9 +5,9 @@
 -eo 
 NO_RESP 
 -od 
-output/Dropbear_old 
+output/Dropbear-v2014.65 
 -ha 
-localhost:7000 
+localhost:7001
 -rcm 
 resetok 
 -generationStrategy 

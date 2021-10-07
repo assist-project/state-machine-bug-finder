@@ -5,10 +5,10 @@
 -eo 
 NO_RESP 
 -od 
-output/OpenSSH_new  
+output/OpenSSH-8.7p1
 -ha 
-localhost:8001 
+localhost:8000
 -rcm 
 resetok 
 -generationStrategy 
-BFS 
+BFS

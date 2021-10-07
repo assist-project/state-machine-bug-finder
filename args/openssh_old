@@ -5,7 +5,7 @@
 -eo 
 NO_RESP 
 -od 
-output/OpenSSH_old  
+output/OpenSSH-6.9p1
 -ha 
 localhost:8001 
 -rcm 
