@@ -44,7 +44,7 @@
     
     <!-- Property 7 bug patterns [RFC 4253, p. 19] -->
     <bugPattern>
-    	<name>Delayed NEWKEYS</name>
+    	<name>Invalid Response Before NEWKEYS</name>
     	<bugLanguage>delayed_newkeys.dot</bugLanguage>
     	<description>After sending KEXINIT, server sends SR_ACCEPT or another KEXINIT, before sending NEWKEYS (Property 7).</description>
     	<severity>LOW</severity>
