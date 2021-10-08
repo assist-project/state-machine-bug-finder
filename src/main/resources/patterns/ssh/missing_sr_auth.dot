@@ -1,0 +1,13 @@
+digraph G {
+label=""
+start [color="red"]
+bug [shape="doublecircle"]
+
+start -> start [label="other - {I_SR_AUTH}"]
+start -> bug [label="{O_UA_SUCCESS}"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}

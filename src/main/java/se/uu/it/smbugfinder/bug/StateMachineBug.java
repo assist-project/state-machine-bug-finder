@@ -31,6 +31,8 @@ public class StateMachineBug<I,O> extends Bug<I,O>{
 			.append("Description: ").append(bugPattern.getDescription())
 			.append(System.lineSeparator());
 		sb.append(getTrace().toCompactString())
+		.append(System.lineSeparator())
+		.append("Inputs: ").append(getTrace().getInputWord())
 		.append(System.lineSeparator());
 		sb.append("Validation Status: ")
 		.append(getStatus()).append(System.lineSeparator());

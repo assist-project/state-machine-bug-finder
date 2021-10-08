@@ -1,0 +1,54 @@
+digraph G {
+label=""
+start [color="red"]
+bug [shape="doublecircle"]
+
+start -> auth [label="O_UA_SUCCESS"]
+start -> start [label="other"]
+
+auth -> ichopen [label="I_CH_OPEN"]
+auth -> authiki [label="I_KEXINIT"]
+auth -> auth [label="F_I_UA_.*"]
+
+authiki -> authoki [label="O_KEXINIT"]
+authoki -> authik30 [label="I_KEX30"]
+authik30 -> authok31 [label="O_KEX31"]
+authok31 -> authonk [label="O_NEWKEYS"]
+authonk -> authink [label="I_NEWKEYS"]
+authink -> auth [label="O_NO_RESP"]
+
+ichopen -> ochopen [label="O_CH_OPEN_SUCCESS"]
+ichopen -> bug [label="other_output - {O_CH_MAX, O_CH_NONE}"]
+
+ochopen -> ichreqpty [label="I_CH_REQUEST_PTY"]
+ochopen -> ichclose [label="I_CH_CLOSE"]
+ochopen -> ochopen [label="F_I_UA_.*"]
+
+ochopen -> ochopeniki [label="I_KEXINIT"]
+ochopeniki -> ochopenoki [label="O_KEXINIT"]
+ochopenoki -> ochopenik30 [label="I_KEX30"]
+ochopenik30 -> ochopenok31 [label="O_KEX31"]
+ochopenok31 -> ochopenonk [label="O_NEWKEYS"]
+ochopenonk -> ochopenink [label="I_NEWKEYS"]
+ochopenink -> ochopen [label="O_NO_RESP"]
+
+ichreqpty -> ochsucc [label="O_CH_SUCCESS"]
+ichreqpty -> bug [label="other_output"]
+
+ochsucc -> ichclose [label="I_CH_CLOSE"]
+ochsucc -> ochsucciki [label="I_KEXINIT"]
+ochsucc -> ochsucc [label="F_I_UA_.*"]
+
+ochsucciki -> ochsuccoki [label="O_KEXINIT"]
+ochsuccoki -> ochsuccik30 [label="I_KEX30"]
+ochsuccik30 -> ochsuccok31 [label="O_KEX31"]
+ochsuccok31 -> ochsucconk [label="O_NEWKEYS"]
+ochsucconk -> ochsuccink [label="I_NEWKEYS"]
+ochsuccink -> ochsucc [label="O_NO_RESP"]
+
+ichclose -> auth [label="O_CH_CLOSE"]
+ichclose -> bug [label="other_output"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}

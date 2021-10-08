@@ -1,6 +1,6 @@
 <bugPatterns>
     <defaultBugSeverity>LOW</defaultBugSeverity>
-    <defaultEnabled>true</defaultEnabled>
+    <defaultEnabled>false</defaultEnabled>
     
     <!-- Security Properties  -->
     <!-- Property 3 bug patterns -->
@@ -117,7 +117,7 @@
         <bugLanguage>ua_failure_after_rekey.dot</bugLanguage>
         <description>Following a rekey, client authentication using valid credentials is unsuccessful.</description>
     </bugPattern>
-    
+
     <bugPattern>
         <name>Channel Open Failure After Rekey</name>
         <bugLanguage>channel_open_failure_after_rekey.dot</bugLanguage>
@@ -141,5 +141,19 @@
     	<bugLanguage>termination_after_unimpl.dot</bugLanguage>
     	<description>Server terminates connection after sending UNIMPL, indicated by a NO_CONN response to CH_DATA.</description>
     </bugPattern>
+    
+    <bugPattern>
+        <name>Missing SR_AUTH</name>
+        <bugLanguage>missing_sr_auth.dot</bugLanguage>
+        <description>Authentication is performed without SR_AUTH.</description>
+        <enabled>true</enabled>
+    </bugPattern>
+    
+    <generalBugPattern>
+        <name>Connection Layer Bug</name>
+        <bugLanguage>connection_layer_bug.dot</bugLanguage>
+        <description>There is a bug in the connection layer.</description>
+        <severity>UNKNOWN</severity>       
+    </generalBugPattern>
 </bugPatterns>
 
