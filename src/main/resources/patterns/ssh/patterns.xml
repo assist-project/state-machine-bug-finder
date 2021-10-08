@@ -1,6 +1,6 @@
 <bugPatterns>
     <defaultBugSeverity>LOW</defaultBugSeverity>
-    <defaultEnabled>false</defaultEnabled>
+    <defaultEnabled>true</defaultEnabled>
     
     <!-- Security Properties  -->
     <!-- Property 3 bug patterns -->
