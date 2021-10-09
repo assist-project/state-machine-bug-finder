@@ -3,8 +3,24 @@ label=""
 start [color="red"]
 bug [shape="doublecircle"]
 
-start -> bug [label="O_SR_ACCEPT"]
-start -> start [label="other - O_NEWKEYS"]
+start -> okexinit [label="O_KEXINIT"]
+start -> start [label="other - {I_REKEY}"]
+start -> bug [label="{O_KEX31, O_NEWKEYS, O_SR_ACCEPT}"]
+
+okexinit -> ikex30 [label="I_KEX30"]
+okexinit -> okexinit [label="other"]
+okexinit -> bug [label="{O_KEX31, O_NEWKEYS, O_SR_ACCEPT}"]
+
+ikex30 -> okex31 [label="O_KEX31"]
+ikex30 -> ikex30 [label="other"]
+ikex30 -> bug [label="{O_NEWKEYS, O_SR_ACCEPT}"]
+
+okex31 -> onewkeys [label="O_NEWKEYS"]
+okex31 -> okex31 [label="other"]
+okex31 -> bug [label="O_SR_ACCEPT"]
+
+onewkeys -> bug [label="O_SR_ACCEPT"]
+onewkeys -> onewkeys [label="other - {I_NEWKEYS}"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
