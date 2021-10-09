@@ -45,14 +45,14 @@
     <!-- Property 7 bug patterns [RFC 4253, p. 19] -->
     <bugPattern>
     	<name>Invalid Response Before NEWKEYS</name>
-    	<bugLanguage>delayed_newkeys.dot</bugLanguage>
+    	<bugLanguage>invalid_response_before_newkeys.dot</bugLanguage>
     	<description>After sending KEXINIT, server sends SR_ACCEPT or another KEXINIT, before sending NEWKEYS (Property 7).</description>
     	<severity>LOW</severity>
     </bugPattern>
     
     <!-- Property 8 bug patterns [RFC 4253, p. 24] -->
     <bugPattern>
-    	<name>Invalid SR Response</name>
+    	<name>Invalid SR_AUTH Response</name>
     	<bugLanguage>invalid_service_request_response.dot</bugLanguage>
     	<description>Server incorrectly responds to a service request. Conforming responses are either SR_ACCEPT or SR_DISCONNECT (Property 8).</description>
     	<severity>LOW</severity>
@@ -61,7 +61,7 @@
     <!-- Property 9 bug patterns [RFC 4252, p. 6] -->
     <bugPattern>
     	<name>Invalid Authentication Rejection Response</name>
-    	<bugLanguage>invalid_auth_rejection.dot</bugLanguage>
+    	<bugLanguage>invalid_auth_rejection_response.dot</bugLanguage>
     	<description>Server does not respond with a UA_FAILURE when rejecting an authentication request (Property 9).</description>
     	<severity>LOW</severity>
     </bugPattern>
@@ -74,25 +74,11 @@
         <severity>MEDIUM</severity>
     </bugPattern>
     
-    <bugPattern>
-        <name>Missing UA_SUCCESS</name>
-        <bugLanguage>missing_ua_success.dot</bugLanguage>
-        <description>UA_SUCCESS is missing (Property 10).</description>
-        <severity>HIGH</severity>
-    </bugPattern>
-    
     <!-- Property 11 bug patterns -->
     <bugPattern>
     	<name>Unignored Authentication Request</name>
     	<bugLanguage>auth_not_ignored.dot</bugLanguage>
     	<description>An authentication request received after a UA_SUCCESS is not ignored (Property 11).</description>
-    	<severity>MEDIUM</severity>
-    </bugPattern>
-    
-    <bugPattern>
-    	<name>Unignored Authentication Request Rekey</name>
-    	<bugLanguage>auth_not_ignored_rekey.dot</bugLanguage>
-    	<description>An authentication request received after a UA_SUCCESS is not ignored, accounting for rekeying (Property 11).</description>
     	<severity>MEDIUM</severity>
     </bugPattern>
     
@@ -105,12 +91,6 @@
     </bugPattern>
     
     <!-- Other Rekey Properties  -->
-    <bugPattern>
-        <name>Missing NEWKEYS</name>
-        <bugLanguage>missing_newkeys.dot</bugLanguage>
-        <description>Server sends upper layer message during a rekey, before receiving NEWKEYS.</description>
-        <severity>MEDIUM</severity>
-    </bugPattern>
     
     <bugPattern>
         <name>Authentication Failure After Rekey</name>
@@ -130,16 +110,26 @@
         <description>Following a rekey, request to open PTY is not successful.</description>
     </bugPattern>
     
+    <!-- Other Bug Patterns -->
+    
+    <bugPattern>
+        <name>Missing NEWKEYS</name>
+        <bugLanguage>missing_newkeys.dot</bugLanguage>
+        <description>Server sends upper layer message during a rekey, before receiving NEWKEYS.</description>
+        <severity>MEDIUM</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>Missing UA_SUCCESS</name>
+        <bugLanguage>missing_ua_success.dot</bugLanguage>
+        <description>UA_SUCCESS is missing (Property 10).</description>
+        <severity>HIGH</severity>
+    </bugPattern>
+    
     <bugPattern>
     	<name>Multiple Kexinit</name>
     	<bugLanguage>multiple_kexinit.dot</bugLanguage>
     	<description>Server sends an additional KEXINIT during a key-exchange.</description>
-    </bugPattern>
-    
-    <bugPattern>
-    	<name>Termination After UNIMPL</name>
-    	<bugLanguage>termination_after_unimpl.dot</bugLanguage>
-    	<description>Server terminates connection after sending UNIMPL, indicated by a NO_CONN response to CH_DATA.</description>
     </bugPattern>
     
     <bugPattern>
@@ -155,5 +145,14 @@
         <description>There is a bug in the connection layer.</description>
         <severity>UNKNOWN</severity>       
     </generalBugPattern>
+    
+    <!-- Disabled bug patterns due to them being false alarms -->  
+    <bugPattern>
+        <name>Termination After UNIMPL</name>
+        <bugLanguage>termination_after_unimpl.dot</bugLanguage>
+        <description>Server terminates connection after sending UNIMPL, indicated by a NO_CONN response to CH_DATA.</description>
+        <enabled>false</enabled>
+    </bugPattern>
+     
 </bugPatterns>
 
