@@ -3,7 +3,7 @@
     <defaultEnabled>true</defaultEnabled>
     
     <!-- Security Properties  -->
-    <!-- Property 3 bug patterns -->
+    <!-- Property 3 bug pattern -->
     <bugPattern>
 		<name>Early Service Accept</name>
 		<bugLanguage>early_service_accept.dot</bugLanguage>
@@ -11,7 +11,7 @@
 		<severity>HIGH</severity>    	
     </bugPattern>
     
-    <!-- Property 4 bug patterns -->
+    <!-- Property 4 bug pattern -->
     <bugPattern>
     	<name>Unauthenticated Client</name>
     	<bugLanguage>unauthenticated_client.dot</bugLanguage>
@@ -19,7 +19,8 @@
     	<severity>HIGH</severity>
     </bugPattern>
     
-    <!-- Property 5 bug patterns -->
+    <!-- Rekey Properties  -->
+    <!-- Property 5 bug pattern -->
     <bugPattern>
         <name>Rekey Failure Pre-Authentication</name>
         <bugLanguage>rekey_failure_pre-authentication.dot</bugLanguage>
@@ -34,7 +35,8 @@
         <severity>LOW</severity>
     </bugPattern>
     
-    <!-- Property 6 bug patterns -->
+    <!-- Functional Properties  -->
+    <!-- Property 6 bug pattern -->
     <bugPattern>
     	<name>Continue After Disconnect</name>
     	<bugLanguage>continue_after_disconnect.dot</bugLanguage>
@@ -42,7 +44,7 @@
     	<severity>LOW</severity>
     </bugPattern>
     
-    <!-- Property 7 bug patterns [RFC 4253, p. 19] -->
+    <!-- Property 7 bug pattern [RFC 4253, p. 19] -->
     <bugPattern>
     	<name>Invalid Response Before NEWKEYS</name>
     	<bugLanguage>invalid_response_before_newkeys.dot</bugLanguage>
@@ -50,7 +52,7 @@
     	<severity>LOW</severity>
     </bugPattern>
     
-    <!-- Property 8 bug patterns [RFC 4253, p. 24] -->
+    <!-- Property 8 bug pattern [RFC 4253, p. 24] -->
     <bugPattern>
     	<name>Invalid SR_AUTH Response</name>
     	<bugLanguage>invalid_service_request_response.dot</bugLanguage>
@@ -58,7 +60,7 @@
     	<severity>LOW</severity>
     </bugPattern>
     
-    <!-- Property 9 bug patterns [RFC 4252, p. 6] -->
+    <!-- Property 9 bug pattern [RFC 4252, p. 6] -->
     <bugPattern>
     	<name>Invalid Authentication Rejection Response</name>
     	<bugLanguage>invalid_auth_rejection_response.dot</bugLanguage>
@@ -66,7 +68,7 @@
     	<severity>LOW</severity>
     </bugPattern>
     
-    <!-- Property 10 bug patterns [RFC 4252, p. 6] -->
+    <!-- Property 10 bug pattern [RFC 4252, p. 6] -->
     <bugPattern>
         <name>Multiple UA_SUCCESS</name>
         <bugLanguage>multiple_ua_success.dot</bugLanguage>
@@ -74,7 +76,7 @@
         <severity>MEDIUM</severity>
     </bugPattern>
     
-    <!-- Property 11 bug patterns -->
+    <!-- Property 11 bug pattern -->
     <bugPattern>
     	<name>Unignored Authentication Request</name>
     	<bugLanguage>auth_not_ignored.dot</bugLanguage>
@@ -82,7 +84,7 @@
     	<severity>MEDIUM</severity>
     </bugPattern>
     
-    <!-- Property 12 bug patterns -->
+    <!-- Property 12 bug pattern -->
     <bugPattern>
     	<name>Invalid Closure Response</name>
     	<bugLanguage>invalid_closure_response.dot</bugLanguage>
@@ -91,7 +93,6 @@
     </bugPattern>
     
     <!-- Other Rekey Properties  -->
-    
     <bugPattern>
         <name>Authentication Failure After Rekey</name>
         <bugLanguage>ua_failure_after_rekey.dot</bugLanguage>
@@ -111,7 +112,6 @@
     </bugPattern>
     
     <!-- Other Bug Patterns -->
-    
     <bugPattern>
         <name>Missing NEWKEYS</name>
         <bugLanguage>missing_newkeys.dot</bugLanguage>
@@ -136,7 +136,6 @@
         <name>Missing SR_AUTH</name>
         <bugLanguage>missing_sr_auth.dot</bugLanguage>
         <description>Authentication is performed without SR_AUTH.</description>
-        <enabled>true</enabled>
     </bugPattern>
     
     <generalBugPattern>
@@ -146,7 +145,7 @@
         <severity>UNKNOWN</severity>       
     </generalBugPattern>
     
-    <!-- Disabled bug patterns due to them being false alarms -->  
+    <!-- Disabled bug patterns due to them raising false alarms -->  
     <bugPattern>
         <name>Termination After UNIMPL</name>
         <bugLanguage>termination_after_unimpl.dot</bugLanguage>
