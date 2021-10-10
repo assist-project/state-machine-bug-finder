@@ -1,0 +1,32 @@
+digraph G {
+label=""
+start [color="red"]
+bug [shape="doublecircle"]
+
+start -> iki [label="I_KEXINIT"]
+iki -> oki [label="O_KEXINIT"]
+iki -> bug [label="other"]
+
+oki -> k30 [label="I_KEX30"]
+oki -> oki [label="other - {O_UNIMPL, O_NO_CONN, O_DISCONNECT, O_NO_RESP, O_CH_NONE, O_CH_MAX}"]
+
+k30 -> k31 [label="O_KEX31"]
+k30 -> bug [label="other"]
+
+k31 -> onk [label="O_NEWKEYS"]
+k31 -> bug [label="other"]
+
+onk -> ink [label="I_NEWKEYS"]
+onk -> bug [label="other_output - {O_UNIMPL, O_NO_CONN, O_DISCONNECT, O_NO_RESP, O_CH_NONE, O_CH_MAX}"]
+onk -> onk [label="other_input"]
+
+ink -> sra [label="I_SR_AUTH"]
+ink -> iki [label="{I_KEXINIT, I_KEXINIT_PROCEED}"]
+ink -> bug [label="other_output - {O_UNIMPL, O_NO_CONN, O_DISCONNECT, O_NO_RESP, O_CH_NONE, O_CH_MAX}"]
+ink -> ink [label="other_input U {O_NO_RESP}"]
+
+sra -> bug [label="other_output - {O_SR_ACCEPT, O_UNIMPL, O_NO_CONN, O_DISCONNECT, O_NO_RESP, O_CH_NONE, O_CH_MAX}"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}

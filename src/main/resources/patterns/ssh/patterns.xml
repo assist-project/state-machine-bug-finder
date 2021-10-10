@@ -8,7 +8,8 @@
 		<name>Early Service Accept</name>
 		<bugLanguage>early_service_accept.dot</bugLanguage>
 		<description>Server accepts service request before key exchange has been completed (Property 3).</description>
-		<severity>HIGH</severity>    	
+		<severity>HIGH</severity>   
+		<enabled>false</enabled> 	
     </bugPattern>
     
     <!-- Property 4 bug pattern -->
@@ -136,6 +137,7 @@
         <name>Missing SR_AUTH</name>
         <bugLanguage>missing_sr_auth.dot</bugLanguage>
         <description>Authentication is performed without SR_AUTH.</description>
+        <enabled>false</enabled>
     </bugPattern>
     
     <generalBugPattern>
@@ -143,6 +145,13 @@
         <bugLanguage>connection_layer_bug.dot</bugLanguage>
         <description>There is a bug in the connection layer.</description>
         <severity>UNKNOWN</severity>       
+    </generalBugPattern>
+    
+    <generalBugPattern>
+    	<name>Transport Layer Bug</name>
+    	<bugLanguage>transport_layer_bug.dot</bugLanguage>
+    	<description>There is a bug in the transport layer.</description>
+    	<severity>UNKNOWN</severity>
     </generalBugPattern>
     
     <!-- Disabled bug patterns due to them raising false alarms -->  
