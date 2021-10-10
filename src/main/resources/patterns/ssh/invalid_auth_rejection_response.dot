@@ -7,16 +7,16 @@ start -> sr_accept [label="O_SR_ACCEPT"]
 start -> start [label="other - O_UA_SUCCESS"]
 sr_accept -> invalid_authreq [label="{I_UA_PK_NOK, I_UA_PW_NOK, I_UA_NONE}"]
 sr_accept -> sr_accept [label="other - {O_UA_SUCCESS, O_NO_CONN, O_DISCONNECT, O_UNIMPL}"]
-sr_accept -> ikexinit [label="{I_KEXINIT, I_KEXINIT_PROCEED}"]
+
+sr_accept -> rekey [label="{I_KEXINIT, I_KEXINIT_PROCEED}"]
 invalid_authreq -> sr_accept [label="O_UA_FAILURE"]
 invalid_authreq -> bug [label="other"]
 
-ikexinit -> okexinit [label="O_KEXINIT"]
-okexinit -> ikex30 [label="I_KEX30"]
-ikex30 -> okex31 [label="O_KEX31"]
-okex31 -> onewkeys [label="O_NEWKEYS"]
-onewkeys -> inewkeys [label="I_NEWKEYS"]
-inewkeys -> sr_accept [label="O_NO_RESP"]
+rekey -> kexinit [label="O_KEXINIT"]
+kexinit -> kex30 [label="I_KEX30"]
+kex30 -> kex31 [label="O_KEX31"]
+kex31 -> newkeys [label="O_NEWKEYS"]
+newkeys -> sr_accept [label="I_NEWKEYS"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
