@@ -137,7 +137,7 @@
         <name>Missing SR_AUTH</name>
         <bugLanguage>missing_sr_auth.dot</bugLanguage>
         <description>Authentication is performed without SR_AUTH.</description>
-        <enabled>false</enabled>
+        <enabled>true</enabled>
     </bugPattern>
     
     <generalBugPattern>
