@@ -19,7 +19,7 @@ okex31 -> onewkeys [label="O_NEWKEYS"]
 okex31 -> okex31 [label="other"]
 okex31 -> bug [label="O_SR_ACCEPT"]
 
-onewkeys -> onewkeys [label="other - {I_NEWKEYS}"]
+onewkeys -> onewkeys [label="other - I_NEWKEYS"]
 onewkeys -> bug [label="O_SR_ACCEPT"]
 
 __start0 [label="" shape="none" width="0" height="0"];
