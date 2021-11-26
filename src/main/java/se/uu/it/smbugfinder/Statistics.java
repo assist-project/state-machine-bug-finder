@@ -9,6 +9,7 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import se.uu.it.smbugfinder.pattern.AbstractBugPattern;
+import se.uu.it.smbugfinder.pattern.GeneralBugPattern;
 
 public class Statistics extends ExportableResult {
 	private long totalTime;
@@ -24,6 +25,9 @@ public class Statistics extends ExportableResult {
 	
 	private Map<AbstractBugPattern, Long> bpInputCount;
 	private Map<AbstractBugPattern, Long> bpResetCount;
+	private Map<GeneralBugPattern, Long> gbpSequenceCount;
+	private Map<GeneralBugPattern, Long> gbpUncategorizedSequenceCount;
+	
 	private StateMachineBugFinderConfig config;
 	private Collection<?> inputAlphabet;
 	
@@ -65,6 +69,9 @@ public class Statistics extends ExportableResult {
 			printCounterMap("Validation Inputs per Bug Pattern", bpInputCount, AbstractBugPattern::getName, out);
 			printCounterMap("Validation Resets per Bug Pattern", bpResetCount, AbstractBugPattern::getName, out);
 		}
+		
+		printCounterMap("Sequences Generated per General Bug Pattern", gbpSequenceCount, AbstractBugPattern::getName, out);
+		printCounterMap("Uncategorized Sequences Generated per General Bug Pattern", gbpUncategorizedSequenceCount, AbstractBugPattern::getName, out);
 	}
 	
 	private <T,MT> void printCounterMap(String name, Map<T, Long> map, Function<T,MT> mapping, PrintWriter out) {
@@ -127,6 +134,11 @@ public class Statistics extends ExportableResult {
 	public void setBugPatternValidationCounts(Map<AbstractBugPattern, Long> bpInputCount, Map<AbstractBugPattern, Long> bpResetCount) {
 		this.bpInputCount = bpInputCount;
 		this.bpResetCount = bpResetCount;
+	}
+	
+	public void setGeneralBugPatternValidationCounts(Map<GeneralBugPattern, Long> gbpSequenceCount, Map<GeneralBugPattern, Long> gbpUncategorizedSequenceCount) {
+		this.gbpSequenceCount = gbpSequenceCount;
+		this.gbpUncategorizedSequenceCount = gbpUncategorizedSequenceCount;
 	}
 	
 	public void setInputAlphabet(Collection<?> inputAlphabet) {

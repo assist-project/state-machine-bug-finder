@@ -24,6 +24,9 @@ public class StateMachineBugFinderConfig {
 	@Parameter(names = {"-tb", "-testBound"}, required=false, description = "Bound on the number of tests executed to validate bugs.")
 	private int bound = 100;
 	
+	@Parameter(names = {"-d", "-debug"}, required=false, description = "Runs a specific debug mode.")
+	private DebugMode debugMode;
+	
 	public StateMachineBugFinderConfig() {
 		searchConfig = new SearchConfig();
 	}
@@ -40,6 +43,9 @@ public class StateMachineBugFinderConfig {
 		return bound;
 	}
 	
+	public DebugMode getDebugMode() {
+		return debugMode;
+	}
 
 	public boolean isValidate() {
 		return validate;

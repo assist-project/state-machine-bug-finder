@@ -36,7 +36,11 @@ public class BugPattern extends AbstractBugPattern {
 	}
 	
 	public boolean isGeneral() {
-		// TODO Auto-generated method stub
 		return false;
+	}
+	
+	@Override
+	public String toString() {
+		return "BugPattern [name=" + name + "]";
 	}
 }

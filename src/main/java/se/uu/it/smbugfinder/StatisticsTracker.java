@@ -12,6 +12,7 @@ import se.uu.it.smbugfinder.bug.BugValidationStatus;
 import se.uu.it.smbugfinder.bug.StateMachineBug;
 import se.uu.it.smbugfinder.pattern.AbstractBugPattern;
 import se.uu.it.smbugfinder.pattern.BugPatterns;
+import se.uu.it.smbugfinder.pattern.GeneralBugPattern;
 import se.uu.it.smbugfinder.sut.Counter;
 
 
@@ -33,6 +34,10 @@ public class StatisticsTracker {
 	private Map<AbstractBugPattern, Long> bugPatternValidationInputCount;
 	private Map<AbstractBugPattern, Long> bugPatternValidationResetCount;
 	
+	private Map<GeneralBugPattern, Long> generalBugPatternSequenceCount;
+	private Map<GeneralBugPattern, Long> generalBugPatternUncategorizedSequenceCount;
+
+	
 	private StateMachineBugFinderConfig config;
 	private Collection<?> inputAlphabet;
 	
@@ -44,6 +49,8 @@ public class StatisticsTracker {
 		validatedBugPatterns = new TreeSet<>(bpComp());
 		bugPatternValidationInputCount = new TreeMap<>(bpComp());
 		bugPatternValidationResetCount = new TreeMap<>(bpComp());
+		generalBugPatternSequenceCount = new TreeMap<>(bpComp());
+		generalBugPatternUncategorizedSequenceCount = new TreeMap<>(bpComp());
 	}
 	
 	private Comparator<AbstractBugPattern> bpComp() {
@@ -92,6 +99,11 @@ public class StatisticsTracker {
 		bugPatternValidationResetCount.put(bugPattern, resetCounter.get() - validationResetCount);
 	}
 	
+	public void handleGeneralBugPattern(GeneralBugPattern bugPattern, long sequences, long uncategorizedSequences) {
+		generalBugPatternUncategorizedSequenceCount.put(bugPattern, uncategorizedSequences);
+		generalBugPatternSequenceCount.put(bugPattern, sequences);
+	}
+	
 	public Statistics generateStatistics() {
 		Statistics statistics = new Statistics(config);
 		statistics.setInputAlphabet(inputAlphabet);
@@ -105,6 +117,7 @@ public class StatisticsTracker {
 		statistics.setFoundBugPatterns(foundBugPatterns);
 		statistics.setValidationBugPatterns(validatedBugPatterns);
 		statistics.setBugPatternValidationCounts(bugPatternValidationInputCount, bugPatternValidationResetCount);
+		statistics.setGeneralBugPatternValidationCounts(generalBugPatternSequenceCount, generalBugPatternUncategorizedSequenceCount);
 		statistics.setTotalTime(totalTime);
 		
 		return statistics;

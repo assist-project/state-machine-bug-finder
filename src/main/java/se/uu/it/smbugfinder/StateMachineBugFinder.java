@@ -150,40 +150,60 @@ public class StateMachineBugFinder<I,O> {
 		exporter.exportDfa(bugLanguage, generalBugPattern.getShortenedName() + "Language.dot");
 		DfaAdapter sutBugLanguage = sutLanguage.intersect(bugLanguage).minimize();
 		exporter.exportDfa(sutBugLanguage, "sut" + generalBugPattern.getShortenedName() + "Language.dot");
-		Set<String> categorizingBp = new LinkedHashSet<>();
+		Set<BugPattern> categorizingBps = new LinkedHashSet<>();
 		
 		SearchConfig search = new SearchConfig();
 		search.setOrder(SearchOrder.INSERTION);
 		search.setStateVisitBound(1);
 		search.setVisitTargetStates(false);
+		List<BugPattern> specializedBugPatterns = specificBugPatterns.stream().filter(sbp -> !sutBugLanguage.intersect(sbp.generateBugLanguage()).isEmpty()).collect(Collectors.toList());
 		
 		int uncategorizedSequences = 0, generatedSequences = 0;
 
 		for (Word<Symbol> sequence : wordsToAcceptingStates(sutBugLanguage.getDfa(), sutBugLanguage.getSymbols(), search)) {
 			generatedSequences ++;
-			List<BugPattern> capturingBps = specificBugPatterns.stream().filter(bp -> bp.generateBugLanguage().accepts(sequence)).collect(Collectors.toList());
-			capturingBps.forEach(bp -> categorizingBp.add(bp.getName()));
+			List<BugPattern> capturingBps = specializedBugPatterns.stream().filter(bp -> bp.generateBugLanguage().accepts(sequence)).collect(Collectors.toList());
 			if (capturingBps.isEmpty()) {
-
-				Trace<I,O> trace = mapping.toExecutionTrace(sequence);
-				
-				StateMachineBug<I,O> bug = new StateMachineBug<>(trace, generalBugPattern);
-				bugs.add(bug);
 				uncategorizedSequences ++;
 				if (uncategorizedSequences >= generalBugPattern.uncategorizedSequenceBound()) {
 					break;
-				} 				
+				} 
+				if (!DebugMode.ASSESS_BUG_CATALOGUE.isEnabled(config)) {
+					Trace<I,O> trace = mapping.toExecutionTrace(sequence);
+					StateMachineBug<I,O> bug = new StateMachineBug<>(trace, generalBugPattern);
+					bugs.add(bug);
+				}
+			} else {
+				categorizingBps.addAll(capturingBps);
+				if (DebugMode.ASSESS_BUG_CATALOGUE.isEnabled(config)) {
+					if (categorizingBps.size() == specializedBugPatterns.size()) {
+						break;
+					}
+				}
 			}
+			
 			if (generatedSequences > generalBugPattern.generatedSequenceBound()) {
 				break;
 			}
+			
 		}
 		
 		LOGGER.info("Sequences generated: {}", generatedSequences);
 		LOGGER.info("Uncategorized sequences generated: {}", uncategorizedSequences);
-		LOGGER.info("Categorizing bug patterns ({}): {}", categorizingBp.size(), categorizingBp.toString());
+		LOGGER.info("Categorizing bug patterns ({}): {}", categorizingBps.size(), categorizingBps.toString());
+		if (DebugMode.ASSESS_BUG_CATALOGUE.isEnabled(config)) {
+			if (categorizingBps.size() != specializedBugPatterns.size()) {
+				Set<BugPattern> specializedBpsNotCovered = new LinkedHashSet<>(specializedBugPatterns);
+				specializedBpsNotCovered.removeAll(categorizingBps);
+				LOGGER.info("Specialized bug patterns that were not covered by sequence generation ({}): {}", specializedBpsNotCovered.size(), specializedBpsNotCovered.toString());
+			} else {
+				LOGGER.info("All specialized bug patterns have been covered by sequence generation");
+			}
+		}
+		
+		tracker.handleGeneralBugPattern(generalBugPattern, generatedSequences, uncategorizedSequences);
 	}
-
+	
 	private void handleUncategorizedSpecificationBugs(DfaAdapter specLanguage, DfaAdapter sutLanguage, Collection<BugPattern> bugPatterns, 
 			MealyMachine<?,I, ?, O> mealy, SymbolMapping<I,O> mapping, List<StateMachineBug<I,O>> bugs) {
 		exporter.exportDfa(specLanguage, "specificationLanguage.dot");

@@ -1,5 +1,5 @@
 -m 
-/models/ssh/newver/BitVise.dot 
+/models/ssh/BitVise-8.49.dot 
 -p 
 /patterns/ssh/ 
 -eo 
