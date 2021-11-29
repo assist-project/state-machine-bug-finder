@@ -47,6 +47,10 @@ public class StateMachineBugFinderConfig {
 		return debugMode;
 	}
 
+	public void setDebugMode(DebugMode debugMode) {
+		this.debugMode = debugMode;
+	}
+
 	public boolean isValidate() {
 		return validate;
 	}
