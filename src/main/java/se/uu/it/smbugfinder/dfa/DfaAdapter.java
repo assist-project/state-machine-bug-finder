@@ -110,6 +110,13 @@ public class DfaAdapter {
 		return symbols.containsAll(sequence.asList()) && dfa.accepts(sequence);
 	}
 	
+	public boolean acceptsPrefix(Word<Symbol> sequence) {
+		if (symbols.containsAll(sequence.asList())) {
+			return sequence.prefixes(true).stream().anyMatch( p -> dfa.accepts(p));
+		}
+		return false;
+	}
+	
 	/**
 	 * True if the specification is equivalent to the empty language.
 	 */
