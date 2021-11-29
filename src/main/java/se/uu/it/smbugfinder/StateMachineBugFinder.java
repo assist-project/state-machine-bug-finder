@@ -201,10 +201,20 @@ public class StateMachineBugFinder<I,O> {
 		Set<BugPattern> categorizingBps = new LinkedHashSet<>();
 		Set<BugPattern> validatedCategorizingBps = new LinkedHashSet<>();
 		List<BugPattern> specializedBps = specificBugPatterns.stream().filter(sbp -> !sutBugLanguage.intersect(sbp.generateBugLanguage()).isEmpty()).collect(Collectors.toList());
-		SequenceGenerator<Symbol> sequenceGenerator = SequenceGeneratorFactory.buildGenerator(config.getWitnessGenerationStrategy(), config.getSearchConfig(), null);
+//		
+//		specializedBps.forEach(sbp -> { 
+//			DfaAdapter sutSbp = sbp.generateBugLanguage().intersect(sutBugLanguage);
+//			LOGGER.info("{}: {}", sbp.getName(), sutSbp.path(sutSbp.getShortestAcceptingSequence()));
+//		});
+		
+		SearchConfig search = new SearchConfig();
+		search.setOrder(SearchOrder.INSERTION);
+		search.setStateVisitBound(1);
+		search.setVisitTargetStates(false);
+		
 		int uncategorizedSequences = 0, generatedSequences = 0, validatedSequences = 0, validatedUncategorizedSequences = 0;
 
-		for (Word<Symbol> sequence : sequenceGenerator.generateSequences(sutBugLanguage.getDfa(), sutBugLanguage.getSymbols())) {
+		for (Word<Symbol> sequence : wordsToAcceptingStates(sutBugLanguage.getDfa(), sutBugLanguage.getSymbols(), search)) {
 			generatedSequences ++;
 			List<BugPattern> capturingBps = specializedBps.stream().filter(bp -> bp.generateBugLanguage().accepts(sequence)).collect(Collectors.toList());
 			if (capturingBps.isEmpty()) {

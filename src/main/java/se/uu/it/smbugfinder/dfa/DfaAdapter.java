@@ -124,6 +124,25 @@ public class DfaAdapter {
 		return DFAUtils.findShortestAcceptingWord(dfa, symbols);
 	}
 	
+	public String path(Word<Symbol> sequence) {
+		StringBuilder builder = new StringBuilder();
+		Word<Symbol> prefix = Word.epsilon();
+		Object state = dfa.getState(prefix);
+		for (Symbol input : sequence) {
+			builder.append(state);
+			prefix = prefix.append(input);
+			builder.append(" ").append(input).append(" ");
+			state = dfa.getState(prefix);
+			if (state == null) {
+				break;
+			}
+		}
+		if (state != null) {
+			builder.append(state);
+		}
+		return builder.toString();
+	}
+	
 	public void export(Writer writer) throws IOException {
 		GraphDOT.write(dfa, symbols, writer);
 	}
