@@ -156,10 +156,7 @@ public class StateMachineBugFinder<I,O> {
 		exporter.exportDfa(sutBugLanguage, "sut" + generalBugPattern.getShortenedName() + "Language.dot");
 		Set<BugPattern> categorizingBps = new LinkedHashSet<>();
 		
-		SearchConfig search = new SearchConfig();
-		search.setOrder(SearchOrder.INSERTION);
-		search.setStateVisitBound(1);
-		search.setVisitTargetStates(false);
+		SearchConfig search = config.getSearchConfig();
 		List<BugPattern> specializedBugPatterns = specificBugPatterns.stream().filter(sbp -> !sutBugLanguage.intersect(sbp.generateBugLanguage()).isEmpty()).collect(Collectors.toList());
 		
 		int uncategorizedSequences = 0, generatedSequences = 0;
@@ -207,10 +204,7 @@ public class StateMachineBugFinder<I,O> {
 //			LOGGER.info("{}: {}", sbp.getName(), sutSbp.path(sutSbp.getShortestAcceptingSequence()));
 //		});
 		
-		SearchConfig search = new SearchConfig();
-		search.setOrder(SearchOrder.INSERTION);
-		search.setStateVisitBound(1);
-		search.setVisitTargetStates(false);
+		SearchConfig search = config.getSearchConfig();
 		
 		if (validate) {
 			tracker.startValidation(generalBugPattern);

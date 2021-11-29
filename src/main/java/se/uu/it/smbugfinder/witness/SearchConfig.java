@@ -7,8 +7,10 @@ public class SearchConfig {
 	private int stateVisitBound = 1;
 	@Parameter(names = {"-so", "-searchOrder"}, required=false, description = "The order in which states are visited during a search.")
 	private SearchOrder order = SearchOrder.MIN_VISIT_MIN_STATE;
-	private boolean visitTargetStates = true;
-	
+	private boolean visitTargetStates = false;
+	@Parameter(names = {"-qb", "-queueBound"}, required=false, description = "The maximum size of the queue.")
+	private int queueBound = 100000;
+
 	public void setStateVisitBound(int stateVisitBound) {
 		this.stateVisitBound = stateVisitBound;
 	}
@@ -31,5 +33,13 @@ public class SearchConfig {
 	
 	public boolean isVisitTargetStates() {
 		return visitTargetStates;
+	}
+
+	public int getQueueBound() {
+		return queueBound;
+	}
+
+	public void setQueueBound(int queueBound) {
+		this.queueBound = queueBound;
 	}
 }

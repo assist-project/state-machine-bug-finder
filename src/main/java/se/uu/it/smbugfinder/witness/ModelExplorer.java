@@ -27,7 +27,6 @@ import se.uu.it.smbugfinder.utils.AutomatonUtils.*;
  * Generates iterables for exploring ways to get from the initial state to target states.
  */
 public class ModelExplorer<S, I> {
-	private static final int MAX_TOVISIT = 100000;
 	private PredMap<S, I> predMap;
 	private UniversalDeterministicAutomaton<S, I, ?, ?, ?>  model;
 	private Predicate<S> startStateFilter = null;
@@ -68,10 +67,12 @@ public class ModelExplorer<S, I> {
 		private boolean visitTargetStates;
 		private final AtomicLong idGenerator = new AtomicLong();
 		private Set<S> targetStates;
+		private int queueBound;
 
 		private BFSPathToStateIterator(Collection<S> targetStates, SearchConfig options) {
 			this.stateVisit = options.getStateVisitBound();
 			this.visitTargetStates = options.isVisitTargetStates();
+			this.queueBound = options.getQueueBound();
 			SearchOrder order = options.getOrder();
 					
 			switch(order) {
@@ -208,7 +209,7 @@ public class ModelExplorer<S, I> {
 						SearchState potentialState = new SearchState(predStruct.getState(), predStruct.getInput(), searchState);
 						
 						if (potentialState.maxVisited() <= stateVisit && (!visitTargetStates || !targetStates.contains(predStruct.getState()))) {
-							if (toVisit.size() < MAX_TOVISIT) {
+							if (toVisit.size() < queueBound) {
 								toVisit.add(potentialState);
 							}
 							else {
