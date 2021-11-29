@@ -94,6 +94,14 @@ public class StatisticsTracker {
 		validationResetCount = resetCounter.get();
 	}
 	
+	public void found(AbstractBugPattern bugPattern) {
+		foundBugPatterns.add(bugPattern);
+	}
+	
+	public void validated(AbstractBugPattern bugPattern) {
+		validatedBugPatterns.add(bugPattern);
+	}
+	
 	public void endValidation(AbstractBugPattern bugPattern) {
 		bugPatternValidationInputCount.put(bugPattern, inputCounter.get() - validationInputCount);
 		bugPatternValidationResetCount.put(bugPattern, resetCounter.get() - validationResetCount);

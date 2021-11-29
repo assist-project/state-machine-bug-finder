@@ -212,6 +212,10 @@ public class StateMachineBugFinder<I,O> {
 		search.setStateVisitBound(1);
 		search.setVisitTargetStates(false);
 		
+		if (validate) {
+			tracker.startValidation(generalBugPattern);
+		}
+		
 		int uncategorizedSequences = 0, generatedSequences = 0, validatedSequences = 0, validatedUncategorizedSequences = 0;
 
 		for (Word<Symbol> sequence : wordsToAcceptingStates(sutBugLanguage.getDfa(), sutBugLanguage.getSymbols(), search)) {
@@ -249,6 +253,10 @@ public class StateMachineBugFinder<I,O> {
 			
 		}
 		
+		if (generatedSequences > 0) {
+			tracker.found(generalBugPattern);
+		}
+		
 		LOGGER.info("Sequences generated: {}", generatedSequences);
 		LOGGER.info("Uncategorized sequences generated: {}", uncategorizedSequences);
 		LOGGER.info("Specialized bug patterns ({}): {}", specializedBps.size(), specializedBps.toString());
@@ -262,6 +270,10 @@ public class StateMachineBugFinder<I,O> {
 		}
 		
 		if (validate) {
+			if (validatedSequences > 0) {
+				tracker.validated(generalBugPattern);
+			}
+			validatedCategorizingBps.forEach(bp -> tracker.validated(bp));
 			LOGGER.info("Validated sequences: {}", validatedSequences);
 			LOGGER.info("Validated uncategorized sequences: {}", validatedUncategorizedSequences);
 			LOGGER.info("Validated categorizing bug patterns ({}): {}", validatedCategorizingBps.size(), validatedCategorizingBps.toString());
@@ -272,6 +284,7 @@ public class StateMachineBugFinder<I,O> {
 			} else {
 				LOGGER.info("All specialized bug patterns have been validated");
 			}
+			tracker.endValidation(generalBugPattern);
 		}
 		tracker.handleGeneralBugPattern(generalBugPattern, generatedSequences, uncategorizedSequences);
 	}
