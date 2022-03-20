@@ -42,7 +42,7 @@ import se.uu.it.smbugfinder.witness.WitnessFinder;
 
 public class StateMachineBugFinder<I,O> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(StateMachineBugFinder.class);
-	private MealyToDfaConverter<I,O> coverter;
+	private MealyToDfaConverter<I,O> converter;
 	private boolean validate;
 	private StateMachineBugFinderConfig config;
 	private StatisticsTracker tracker;
@@ -51,7 +51,7 @@ public class StateMachineBugFinder<I,O> {
 	public StateMachineBugFinder(StateMachineBugFinderConfig config) {
 		this.validate = config.isValidate();
 		this.config = config;
-		this.coverter = new MealyToDfaConverter<>();
+		this.converter = new MealyToDfaConverter<>();
 		this.exporter = (dfa, name) -> {};
 	}
 	
@@ -59,7 +59,7 @@ public class StateMachineBugFinder<I,O> {
 	 * @param converter
 	 */
 	public void setConverter(MealyToDfaConverter<I,O> converter) {
-		this.coverter = converter;
+		this.converter = converter;
 	}
 	
 	/**
@@ -78,7 +78,7 @@ public class StateMachineBugFinder<I,O> {
 			sut = inputCountingSut;
 			tracker.setSutTracking(inputCountingSut.getCounter(), resetCountingSut.getCounter());
 		}
-		DfaAdapter sutLanguage = coverter.convert(mealy, inputs, mapping);
+		DfaAdapter sutLanguage = converter.convert(mealy, inputs, mapping);
 		exporter.exportDfa(sutLanguage, "sutLanguage.dot");
 		List<BugPattern> detectedPatterns = new LinkedList<>(); 
 

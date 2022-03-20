@@ -36,7 +36,7 @@ public class WitnessFinder {
 			Word<O> outputWord = sut.execute(inputWord);
 			Trace<I,O> trace = new Trace<I,O> (inputWord, outputWord);
 			Word<Symbol> actualSequence= mapping.fromExecutionTrace(trace);
-			boolean exhibitsBug = bugLanguage.accepts(actualSequence);
+			boolean exhibitsBug = bugLanguage.acceptsPrefix(actualSequence);
 			if ( (desiredValidationOutcome && exhibitsBug) || (!desiredValidationOutcome && !exhibitsBug) ) {
 				return trace;
 			}
