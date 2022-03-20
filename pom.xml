@@ -6,13 +6,12 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>se.uu.it.smbugfinder</groupId>
+	<groupId>se.uu.it</groupId>
 	<artifactId>state-machine-bug-finder</artifactId>
 	<version>0.1</version>
 
 	<name>state-machine-bug-finder</name>
-	<!-- FIXME change it to the project's website -->
-	<url>http://www.example.com</url>
+	<url>https://github.com/assist-project/state-machine-bug-finder</url>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
