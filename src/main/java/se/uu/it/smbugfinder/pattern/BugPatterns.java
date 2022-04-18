@@ -12,7 +12,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import se.uu.it.smbugfinder.bug.BugSeverity;
-import se.uu.it.smbugfinder.dfa.DfaAdapter;
+import se.uu.it.smbugfinder.dfa.DFAAdapter;
 
 @XmlRootElement(name = "bugPatterns")
 public class BugPatterns {
@@ -21,7 +21,7 @@ public class BugPatterns {
 	private String specificationLanguagePath;
 	
 	@XmlTransient
-	private DfaAdapter specificationLanguage;
+	private DFAAdapter specificationLanguage;
 	
 	private List<ConformancePattern> conformancePatterns;
 	
@@ -80,11 +80,11 @@ public class BugPatterns {
 		return specificationLanguagePath;
 	}
 
-	public DfaAdapter getSpecificationLanguage() {
+	public DFAAdapter getSpecificationLanguage() {
 		return specificationLanguage;
 	}
 	
-	void setSpecificationLanguage(DfaAdapter specificationLanguage) {
+	void setSpecificationLanguage(DFAAdapter specificationLanguage) {
 		this.specificationLanguage = specificationLanguage;
 	}
 

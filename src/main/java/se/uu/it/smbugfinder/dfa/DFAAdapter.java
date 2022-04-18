@@ -23,11 +23,11 @@ import se.uu.it.smbugfinder.utils.DFAUtils;
 /**
  * DFA adapter class that facilitates performing fundamental DFA operations such as complementing, intersection etc.
  */
-public class DfaAdapter {
+public class DFAAdapter {
 	private DFA<?, Symbol> dfa;
 	private List<Symbol> symbols;
 
-	public DfaAdapter(DFA<?, Symbol> dfa, Collection<Symbol> symbols) {
+	public DFAAdapter(DFA<?, Symbol> dfa, Collection<Symbol> symbols) {
 		this.dfa = dfa;
 		this.symbols = new ArrayList<>(symbols);
 	}
@@ -47,36 +47,36 @@ public class DfaAdapter {
 	/**
 	 * Returns an adapter containing the complement of the underlying DFA.
 	 */
-	public DfaAdapter complement() {
+	public DFAAdapter complement() {
 		FastDFA<Symbol> complementDfa = newDfa();
 		DFAs.complement(dfa, symbols, complementDfa);
-		return new DfaAdapter(complementDfa, symbols);
+		return new DFAAdapter(complementDfa, symbols);
 	}
 	
 	/**
 	 * Returns an adapter containing the intersection between the underlying DFA and the DFA of another adapter.
 	 * It is advisable that this model is reduced/minimized, since it may contain many unreachable states.
 	 */
-	public DfaAdapter intersect(DfaAdapter adapter) {
+	public DFAAdapter intersect(DFAAdapter adapter) {
 		FastDFA<Symbol> intersectionDfa = newDfa();
 		DFAs.combine(adapter.getDfa(), dfa, symbols, intersectionDfa, AcceptanceCombiner.AND);
-		return new DfaAdapter(intersectionDfa, intersectionDfa.getInputAlphabet());
+		return new DFAAdapter(intersectionDfa, intersectionDfa.getInputAlphabet());
 	}
 	
 	/**
 	 * Returns an adapter containing the union between the underlying DFA and the DFA of another adapter.
 	 * It is advisable that this model is reduced/minimized, since it may contain many unreachable states.
 	 */
-	public DfaAdapter union(DfaAdapter adapter) {
+	public DFAAdapter union(DFAAdapter adapter) {
 		FastDFA<Symbol> unionDfa = newDfa();
 		DFAs.combine(adapter.getDfa(), dfa, symbols, unionDfa, AcceptanceCombiner.OR);
-		return new DfaAdapter(unionDfa, unionDfa.getInputAlphabet());
+		return new DFAAdapter(unionDfa, unionDfa.getInputAlphabet());
 	}
 	
 	/**
 	 * Returns an adapter containing a reduced copy of the underlying DFA in which unreachable states are removed.
 	 */
-	public DfaAdapter reduce() {
+	public DFAAdapter reduce() {
 		List<FastDFAState> reachableStates = new ArrayList<>();
 		FastDFA<Symbol> reducedDfa = newDfa(); 
 		AutomatonLowLevelCopy.copy(AutomatonCopyMethod.DFS, dfa, symbols, reducedDfa);
@@ -84,26 +84,26 @@ public class DfaAdapter {
 		List<FastDFAState> statesToRemove = new LinkedList<>(reducedDfa.getStates());
 		statesToRemove.removeAll(reachableStates);
 		statesToRemove.forEach(s -> reducedDfa.removeState(s));
-		return new DfaAdapter(reducedDfa, reducedDfa.getInputAlphabet());
+		return new DFAAdapter(reducedDfa, reducedDfa.getInputAlphabet());
 	}
 	
 	/**
 	 * Returns an adapter containing the DFA resulting from minimizing the underlying DFA using Hopcroft's minimization algorithm.
 	 */
-	public DfaAdapter minimize() {
+	public DFAAdapter minimize() {
 		CompactDFA<Symbol> result = DFAs.minimize(dfa, new ListAlphabet<>(symbols));
 		FastDFA<Symbol> minimizedCopy = newDfa();
 		AutomatonLowLevelCopy.copy(AutomatonCopyMethod.DFS, result, result.getInputAlphabet(), minimizedCopy);
-		return new DfaAdapter(minimizedCopy, minimizedCopy.getInputAlphabet());
+		return new DFAAdapter(minimizedCopy, minimizedCopy.getInputAlphabet());
 	}
 	
 	/**
 	 * Returns an adapter containing the a fully specified copy of the underlying DFA.
 	 */
-	public DfaAdapter complete() {
+	public DFAAdapter complete() {
 		FastDFA<Symbol> fullySpecifiedDfa = newDfa();
 		DFAs.complete(dfa, symbols, fullySpecifiedDfa);
-		return new DfaAdapter(fullySpecifiedDfa, fullySpecifiedDfa.getInputAlphabet());
+		return new DFAAdapter(fullySpecifiedDfa, fullySpecifiedDfa.getInputAlphabet());
 	}
 	
 	public boolean accepts(Word<Symbol> sequence) {

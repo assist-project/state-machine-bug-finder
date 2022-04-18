@@ -20,8 +20,8 @@ import net.automatalib.automata.fsa.DFA;
 import net.automatalib.automata.transducers.MealyMachine;
 import net.automatalib.words.Word;
 import se.uu.it.smbugfinder.bug.StateMachineBug;
-import se.uu.it.smbugfinder.dfa.DfaAdapter;
-import se.uu.it.smbugfinder.dfa.MealyToDfaConverter;
+import se.uu.it.smbugfinder.dfa.DFAAdapter;
+import se.uu.it.smbugfinder.dfa.MealyToDFAConverter;
 import se.uu.it.smbugfinder.dfa.Symbol;
 import se.uu.it.smbugfinder.dfa.SymbolMapping;
 import se.uu.it.smbugfinder.dfa.Trace;
@@ -42,30 +42,30 @@ import se.uu.it.smbugfinder.witness.WitnessFinder;
 
 public class StateMachineBugFinder<I,O> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(StateMachineBugFinder.class);
-	private MealyToDfaConverter<I,O> converter;
+	private MealyToDFAConverter<I,O> converter;
 	private boolean validate;
 	private StateMachineBugFinderConfig config;
 	private StatisticsTracker tracker;
-	private DfaExporter exporter;
+	private DFAExporter exporter;
 	
 	public StateMachineBugFinder(StateMachineBugFinderConfig config) {
 		this.validate = config.isValidate();
 		this.config = config;
-		this.converter = new MealyToDfaConverter<>();
+		this.converter = new MealyToDFAConverter<>();
 		this.exporter = (dfa, name) -> {};
 	}
 	
 	/**
 	 * @param converter
 	 */
-	public void setConverter(MealyToDfaConverter<I,O> converter) {
+	public void setConverter(MealyToDFAConverter<I,O> converter) {
 		this.converter = converter;
 	}
 	
 	/**
 	 * @param exporter
 	 */
-	public void setExporter(DfaExporter exporter) {
+	public void setExporter(DFAExporter exporter) {
 		this.exporter = exporter;
 	}
 	
@@ -78,14 +78,14 @@ public class StateMachineBugFinder<I,O> {
 			sut = inputCountingSut;
 			tracker.setSutTracking(inputCountingSut.getCounter(), resetCountingSut.getCounter());
 		}
-		DfaAdapter sutLanguage = converter.convert(mealy, inputs, mapping);
+		DFAAdapter sutLanguage = converter.convert(mealy, inputs, mapping);
 		exporter.exportDfa(sutLanguage, "sutLanguage.dot");
 		List<BugPattern> detectedPatterns = new LinkedList<>(); 
 
 		// match against each loaded bug pattern 
 		for (BugPattern bugPattern : patterns.getSpecificBugPatterns()) {
 			LOGGER.info("Checking bug pattern {}", bugPattern.getShortenedName());
-			DfaAdapter bugLanguage = bugPattern.generateBugLanguage();
+			DFAAdapter bugLanguage = bugPattern.generateBugLanguage();
 
 			exporter.exportDfa(bugLanguage, bugPattern.getShortenedName() + "Language.dot");
 			if (bugLanguage.isEmpty()) {
@@ -93,7 +93,7 @@ public class StateMachineBugFinder<I,O> {
 				continue;
 			}
 			
-			DfaAdapter sutBugLanguage = bugPattern.generateBugLanguage()
+			DFAAdapter sutBugLanguage = bugPattern.generateBugLanguage()
 					.intersect(sutLanguage)
 					.minimize(); 
 			
@@ -140,7 +140,7 @@ public class StateMachineBugFinder<I,O> {
 			}
 		}
 		
-		DfaAdapter spec = patterns.getSpecificationLanguage();
+		DFAAdapter spec = patterns.getSpecificationLanguage();
 		if (spec != null) {
 			// check for the existence of unidentified specification bugs
 			handleUncategorizedSpecificationBugs(spec, sutLanguage, detectedPatterns, mealy, mapping, bugs);
@@ -149,11 +149,11 @@ public class StateMachineBugFinder<I,O> {
 		return tracker.generateStatistics();
 	}
 	
-	private void handleGeneralBugPattern(GeneralBugPattern generalBugPattern, DfaAdapter sutLanguage, Collection<BugPattern> specificBugPatterns, SymbolMapping<I,O> mapping, List<StateMachineBug<I,O>> bugs) {
+	private void handleGeneralBugPattern(GeneralBugPattern generalBugPattern, DFAAdapter sutLanguage, Collection<BugPattern> specificBugPatterns, SymbolMapping<I,O> mapping, List<StateMachineBug<I,O>> bugs) {
 		LOGGER.info("Checking bug pattern {}", generalBugPattern.getShortenedName());
-		DfaAdapter bugLanguage = generalBugPattern.generateBugLanguage().minimize();
+		DFAAdapter bugLanguage = generalBugPattern.generateBugLanguage().minimize();
 		exporter.exportDfa(bugLanguage, generalBugPattern.getShortenedName() + "Language.dot");
-		DfaAdapter sutBugLanguage = sutLanguage.intersect(bugLanguage).minimize();
+		DFAAdapter sutBugLanguage = sutLanguage.intersect(bugLanguage).minimize();
 		exporter.exportDfa(sutBugLanguage, "sut" + generalBugPattern.getShortenedName() + "Language.dot");
 		Set<BugPattern> categorizingBps = new LinkedHashSet<>();
 		
@@ -189,11 +189,11 @@ public class StateMachineBugFinder<I,O> {
 		tracker.handleGeneralBugPattern(generalBugPattern, generatedSequences, uncategorizedSequences);
 	}
 	
-	private void evaluateSpecificBugPatterns(GeneralBugPattern generalBugPattern, DfaAdapter sutLanguage, Collection<BugPattern> specificBugPatterns, SymbolMapping<I,O> mapping, @Nullable SUT<I,O> sut) {
+	private void evaluateSpecificBugPatterns(GeneralBugPattern generalBugPattern, DFAAdapter sutLanguage, Collection<BugPattern> specificBugPatterns, SymbolMapping<I,O> mapping, @Nullable SUT<I,O> sut) {
 		LOGGER.info("Using the general bug pattern {} to evaluate (the benefit of) the specific bug patterns", generalBugPattern.getShortenedName());
-		DfaAdapter bugLanguage = generalBugPattern.generateBugLanguage().minimize();
+		DFAAdapter bugLanguage = generalBugPattern.generateBugLanguage().minimize();
 		exporter.exportDfa(bugLanguage, generalBugPattern.getShortenedName() + "Language.dot");
-		DfaAdapter sutBugLanguage = sutLanguage.intersect(bugLanguage).minimize();
+		DFAAdapter sutBugLanguage = sutLanguage.intersect(bugLanguage).minimize();
 		exporter.exportDfa(sutBugLanguage, "sut" + generalBugPattern.getShortenedName() + "Language.dot");
 		
 		Set<BugPattern> categorizingBps = new LinkedHashSet<>();
@@ -284,13 +284,13 @@ public class StateMachineBugFinder<I,O> {
 		tracker.handleGeneralBugPattern(generalBugPattern, generatedSequences, uncategorizedSequences);
 	}
 	
-	private void handleUncategorizedSpecificationBugs(DfaAdapter specLanguage, DfaAdapter sutLanguage, Collection<BugPattern> bugPatterns, 
+	private void handleUncategorizedSpecificationBugs(DFAAdapter specLanguage, DFAAdapter sutLanguage, Collection<BugPattern> bugPatterns, 
 			MealyMachine<?,I, ?, O> mealy, SymbolMapping<I,O> mapping, List<StateMachineBug<I,O>> bugs) {
 		exporter.exportDfa(specLanguage, "specificationLanguage.dot");
 		LOGGER.info("Generating specification-violating sequences and checking there are bug patterns capturing them");
-		DfaAdapter specBugLanguage = specLanguage.complement().minimize();
+		DFAAdapter specBugLanguage = specLanguage.complement().minimize();
 		exporter.exportDfa(specBugLanguage, "specificationBugLanguage.dot");
-		DfaAdapter sutSpecBugLanguage = sutLanguage.intersect(specBugLanguage).minimize();
+		DFAAdapter sutSpecBugLanguage = sutLanguage.intersect(specBugLanguage).minimize();
 		exporter.exportDfa(sutSpecBugLanguage, "sutSpecificationBugLanguage.dot");
 		
 		Set<Object> deviantTransitions = new LinkedHashSet<>();
@@ -342,7 +342,7 @@ public class StateMachineBugFinder<I,O> {
 		return explorer.wordsToTargetStates(acceptingStates, search);
 	}
 	
-	private <MS> Object getDeviantTransition(Word<Symbol> sequence, DfaAdapter spec, MealyMachine<MS,I,?,O> mealy,  SymbolMapping<I,O> mapping) {
+	private <MS> Object getDeviantTransition(Word<Symbol> sequence, DFAAdapter spec, MealyMachine<MS,I,?,O> mealy,  SymbolMapping<I,O> mapping) {
 		assert(!spec.accepts(sequence));
 		Set<Symbol> suffixSymbols = new LinkedHashSet<>();
 		Word<Symbol> acceptedPrefix = null;

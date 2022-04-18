@@ -3,7 +3,7 @@ package se.uu.it.smbugfinder.pattern;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import se.uu.it.smbugfinder.dfa.DfaAdapter;
+import se.uu.it.smbugfinder.dfa.DFAAdapter;
 
 /**
  * A pattern of capturing (some aspect of) conformance to the specification.
@@ -13,7 +13,7 @@ public class ConformancePattern extends Pattern {
 	private String conformanceLanguagePath;
 	
 	@XmlTransient
-	private DfaAdapter conformanceLanguage;
+	private DFAAdapter conformanceLanguage;
 	
 	@XmlElement(name="uncategorizedSequenceBound", required = false)
 	private int uncategorizedSequenceBound;
@@ -25,11 +25,11 @@ public class ConformancePattern extends Pattern {
 		return conformanceLanguagePath;
 	}
 
-	public DfaAdapter getConformanceLanguage() {
+	public DFAAdapter getConformanceLanguage() {
 		return conformanceLanguage;
 	}
 
-	void setConformanceLanguage(DfaAdapter conformanceLanguage) {
+	void setConformanceLanguage(DFAAdapter conformanceLanguage) {
 		this.conformanceLanguage = conformanceLanguage;
 	}
 	

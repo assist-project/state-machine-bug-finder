@@ -11,37 +11,37 @@ import net.automatalib.util.ts.copy.TSCopy;
 import net.automatalib.util.ts.traversal.TSTraversalMethod;
 import net.automatalib.words.Alphabet;
 import net.automatalib.words.impl.ListAlphabet;
-import se.uu.it.smbugfinder.dfa.DfaAdapter;
+import se.uu.it.smbugfinder.dfa.DFAAdapter;
 import se.uu.it.smbugfinder.dfa.Symbol;
 
-public class DefaultDfaDecoder implements DfaDecoder {
+public class DefaultDFADecoder implements DFADecoder {
 	private TokenMatcher tokenMatcher = new DefaultTokenMatcher();
-	private EncodedDfaParser parser;
+	private DFAEncodingParser parser;
 	
-	public DefaultDfaDecoder(EncodedDfaParser parser) {
+	public DefaultDFADecoder(DFAEncodingParser parser) {
 		this.parser = parser;
 	}
 	
-	public DefaultDfaDecoder() {
-		this(new DefaultEncodedDfaParser());
+	public DefaultDFADecoder() {
+		this(new DefaultDFAEncodingParser());
 	}
 	
 	public void setTokenMatcher(TokenMatcher tokenMatcher) {
 		this.tokenMatcher = tokenMatcher;
 	}
 	
-	public DfaAdapter decode(InputStream encodedDfaStream, Collection<Symbol> symbols) throws Exception  {
-		EncodedDfaHolder encodedDfaHolder = parser.parseEncodedDfa(encodedDfaStream);
-		DfaAdapter decodedDfa = decode(encodedDfaHolder, symbols);
+	public DFAAdapter decode(InputStream dfaEncodingStream, Collection<Symbol> symbols) throws Exception  {
+		DFAEncoding dfaEncoding = parser.parse(dfaEncodingStream);
+		DFAAdapter decodedDfa = decode(dfaEncoding, symbols);
 		return decodedDfa;
 	}
 	
-	DfaAdapter decode(EncodedDfaHolder encodedDfaHolder, 
+	DFAAdapter decode(DFAEncoding dfaEncoding, 
 			Collection<Symbol> symbols) {
-		FastDFA<Symbol> decodedDfa = decode(encodedDfaHolder.getEncodedDfa(), encodedDfaHolder.getLabels(), symbols);
+		FastDFA<Symbol> decodedDfa = decode(dfaEncoding.getEncodedDfa(), dfaEncoding.getLabels(), symbols);
 		FastDFA<Symbol> inputCompleteDfa = new FastDFA<Symbol>(new ListAlphabet<Symbol>(new ArrayList<>(symbols)));
 		DFAs.complete(decodedDfa, inputCompleteDfa.getInputAlphabet(), inputCompleteDfa);
-		DfaAdapter dfaAdapter = new DfaAdapter(decodedDfa, decodedDfa.getInputAlphabet());
+		DFAAdapter dfaAdapter = new DFAAdapter(decodedDfa, decodedDfa.getInputAlphabet());
 		return dfaAdapter.minimize();
 	}
 	

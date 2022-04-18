@@ -5,7 +5,7 @@ import java.util.Collection;
 import net.automatalib.automata.fsa.DFA;
 import net.automatalib.util.ts.copy.TSCopy;
 
-public class EncodedDfaHolder {
+public class DFAEncoding {
 	/**
 	 * We use a DFA representation (instead of a graph) in order to leverage existing functionality for traversing transition systems which we use to decode the DFA.
 	 * e.g.  {@link TSCopy}
@@ -13,7 +13,7 @@ public class EncodedDfaHolder {
 	private DFA<?, Label> encodedDfa;
 	private Collection<Label> labels;
 	
-	public EncodedDfaHolder(DFA<?, Label> encodedDfa, Collection<Label> labels) {
+	public DFAEncoding(DFA<?, Label> encodedDfa, Collection<Label> labels) {
 		super();
 		this.encodedDfa = encodedDfa;
 		this.labels = labels;

@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import se.uu.it.smbugfinder.bug.BugSeverity;
-import se.uu.it.smbugfinder.dfa.DfaAdapter;
+import se.uu.it.smbugfinder.dfa.DFAAdapter;
 
 public abstract class AbstractBugPattern extends Pattern {
 	private static int CUR_ID = 1;
@@ -13,7 +13,7 @@ public abstract class AbstractBugPattern extends Pattern {
 		if (UNCATEGORIZED == null) {
 			AbstractBugPattern bp = new AbstractBugPattern() {
 				@Override
-				DfaAdapter doGenerateBugLanguage() {
+				DFAAdapter doGenerateBugLanguage() {
 					throw new RuntimeException("Uncategorized bug pattern does not provide a bug language");
 				}
 
@@ -43,20 +43,20 @@ public abstract class AbstractBugPattern extends Pattern {
 	private BugSeverity severity;
 	
 	@XmlTransient
-	private DfaAdapter bugLanguage;
+	private DFAAdapter bugLanguage;
 	
 	/**
 	 * Generates the bug language described by this bug pattern. 
 	 * On first call, it stores the generated language to a variable, allowing for subsequent calls to simply return the variable.
 	 */
-	public DfaAdapter generateBugLanguage() {
+	public DFAAdapter generateBugLanguage() {
 		if (bugLanguage == null) {
 			bugLanguage = doGenerateBugLanguage();
 		}
 		return bugLanguage;
 	}
 	
-	abstract DfaAdapter doGenerateBugLanguage();
+	abstract DFAAdapter doGenerateBugLanguage();
 	
 	public Integer getId() {
 		return id;

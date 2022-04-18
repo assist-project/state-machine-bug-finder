@@ -21,7 +21,7 @@ public class Statistics extends ExportableResult {
 	// Model bug finder
 	private Collection<AbstractBugPattern> foundBugPatterns;
 	private Collection<AbstractBugPattern> loadedBugPatterns;
-	private Collection<AbstractBugPattern> verifiedBugPatterns;
+	private Collection<AbstractBugPattern> validatedBugPatterns;
 	
 	private Map<AbstractBugPattern, Long> bpInputCount;
 	private Map<AbstractBugPattern, Long> bpResetCount;
@@ -39,7 +39,7 @@ public class Statistics extends ExportableResult {
 		this.config = config;
 		foundBugPatterns = Collections.emptyList();
 		loadedBugPatterns = Collections.emptyList();
-		verifiedBugPatterns = Collections.emptyList();
+		validatedBugPatterns = Collections.emptyList();
 		validationEnabled = config.isValidate();
 	}
 	
@@ -70,7 +70,7 @@ public class Statistics extends ExportableResult {
 		// section("State Machine Bug Finder", out);
 		printCollection("Bug patterns loaded", loadedBugPatterns, AbstractBugPattern::getName, out);
 		printCollection("Bug patterns found", foundBugPatterns, AbstractBugPattern::getName, out);
-		printCollection("Bug patterns validated successfully", verifiedBugPatterns, AbstractBugPattern::getName, out);
+		printCollection("Bug patterns validated successfully", validatedBugPatterns, AbstractBugPattern::getName, out);
 		if (config.isValidate() && bpInputCount != null) {
 			printCounterMap("Validation Inputs per Bug Pattern", bpInputCount, AbstractBugPattern::getName, out);
 			printCounterMap("Validation Resets per Bug Pattern", bpResetCount, AbstractBugPattern::getName, out);
@@ -79,11 +79,13 @@ public class Statistics extends ExportableResult {
 			}
 		}
 		
-		printCounterMap("Sequences Generated per General Bug Pattern", gbpSequenceCount, AbstractBugPattern::getName, out);
-		printCounterMap("Uncategorized Sequences Generated per General Bug Pattern", gbpUncategorizedSequenceCount, AbstractBugPattern::getName, out);
-		if (config.isValidate()) {
-			printCounterMap("Validated Sequences Generated per General Bug Pattern", gbpValidatedSequenceCount, AbstractBugPattern::getName, out);
-			printCounterMap("Validated Uncategorized Sequences Generated per General Bug Pattern", gbpValidatedUncategorizedSequenceCount, AbstractBugPattern::getName, out);
+		if  (gbpSequenceCount.size() > 0) {
+    		printCounterMap("Sequences Generated per General Bug Pattern", gbpSequenceCount, AbstractBugPattern::getName, out);
+    		printCounterMap("Uncategorized Sequences Generated per General Bug Pattern", gbpUncategorizedSequenceCount, AbstractBugPattern::getName, out);
+    		if (config.isValidate()) {
+    			printCounterMap("Validated Sequences Generated per General Bug Pattern", gbpValidatedSequenceCount, AbstractBugPattern::getName, out);
+    			printCounterMap("Validated Uncategorized Sequences Generated per General Bug Pattern", gbpValidatedUncategorizedSequenceCount, AbstractBugPattern::getName, out);
+    		}
 		}
 	}
 	
@@ -99,7 +101,7 @@ public class Statistics extends ExportableResult {
 	}
 	
 	public void generateRunDescription(PrintWriter out, StateMachineBugFinderConfig config, Collection<?> alphabet) {
-		section("State Machine Bug Finding Parameters", out);
+		section("State Machine Bug Finder Parameters", out);
 		out.println("Alphabet: " + alphabet);
 		
 		//out.println(String.format("Loaded Bug Patterns (%d): %s", loadedBugPatterns.size(), 
@@ -144,8 +146,8 @@ public class Statistics extends ExportableResult {
 		this.loadedBugPatterns = loadedBugPatterns;
 	}
 	
-	public void setValidationBugPatterns(Collection<AbstractBugPattern> verifiedBugPatterns) {
-		this.verifiedBugPatterns = verifiedBugPatterns;
+	public void setValidationBugPatterns(Collection<AbstractBugPattern> validatedBugPatterns) {
+		this.validatedBugPatterns = validatedBugPatterns;
 	}
 	
 	public void setBugPatternValidationCounts(Map<AbstractBugPattern, Long> bpInputCount, Map<AbstractBugPattern, Long> bpResetCount) {

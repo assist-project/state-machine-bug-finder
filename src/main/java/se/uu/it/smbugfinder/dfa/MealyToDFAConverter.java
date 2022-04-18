@@ -19,16 +19,16 @@ import net.automatalib.words.impl.ListAlphabet;
 import se.uu.it.smbugfinder.utils.DFAUtils;
 import se.uu.it.smbugfinder.utils.MealyUtils;
 
-public class MealyToDfaConverter<I,O> {
+public class MealyToDFAConverter<I,O> {
 	
-	private DfaPostProcessor<I,O> dfaPostProcessor;
+	private DFAPostProcessor<I,O> dfaPostProcessor;
 	
-	public MealyToDfaConverter(DfaPostProcessor<I,O> dfaPostProcessor) {
+	public MealyToDFAConverter(DFAPostProcessor<I,O> dfaPostProcessor) {
 		this.dfaPostProcessor = dfaPostProcessor; 
 	}
 	
-	public MealyToDfaConverter() {
-		this.dfaPostProcessor = new DfaPostProcessor<I, O>() {
+	public MealyToDFAConverter() {
+		this.dfaPostProcessor = new DFAPostProcessor<I, O>() {
 			@Override
 			public <DS, S> void process(MutableDFA<DS, Symbol> dfa, MealyMachine<S, I, ?, O> mealy, Collection<I> inputs,
 					SymbolMapping<I, O> mapping) {
@@ -36,7 +36,7 @@ public class MealyToDfaConverter<I,O> {
 		};
 	}
 	
-	public <S> DfaAdapter convert(MealyMachine<S, I, ?, O> mealy,
+	public <S> DFAAdapter convert(MealyMachine<S, I, ?, O> mealy,
 			Collection<I> inputs, SymbolMapping<I,O> mapping) {
 		Set<O> outputs = new LinkedHashSet<>();
 		MealyUtils.reachableOutputs(mealy, inputs, outputs);
@@ -62,10 +62,10 @@ public class MealyToDfaConverter<I,O> {
 		
 		dfaPostProcessor.process(dfa, mealy, inputs, mapping);
 		
-		return new DfaAdapter(dfa, symbols).complete().minimize();
+		return new DFAAdapter(dfa, symbols).complete().minimize();
 	}
 	
-	public static interface DfaPostProcessor<I,O> {
+	public static interface DFAPostProcessor<I,O> {
 		<DS, S> void process(MutableDFA<DS, Symbol> dfa, MealyMachine<S, I, ?, O> mealy,
 				Collection<I> inputs, SymbolMapping<I,O> mapping);
 	}

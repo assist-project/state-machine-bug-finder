@@ -3,12 +3,9 @@ package se.uu.it.smbugfinder.encoding;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
-import java.util.regex.Pattern;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,8 +16,6 @@ import se.uu.it.smbugfinder.dfa.Symbol;
 
 public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>, Symbol> {
 		private static final Logger LOGGER = LoggerFactory.getLogger(DecodingTS.class.getName());
-		
-		private Map<String, Pattern> patternCache;
 		
 		private DFA<S, Label> encodedDfa;
 		private RegisterState<S> initial;
@@ -33,7 +28,6 @@ public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>,
 			this.encodedDfa = encodedDfa;
 			this.initial = new RegisterState<S>(encodedDfa.getInitialState(), new Valuation());
 			this.sink = new RegisterState<S>(encodedDfa.getInitialState(), null);
-			this.patternCache = new HashMap<>();
 			this.tokenMatcher = new DefaultTokenMatcher();
 			this.labels = labels;
 		}
@@ -148,22 +142,6 @@ public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>,
 			return nextState;
 		}
 		
-		private Variable captureGroupVariable(int index) {
-			return new Variable("cg" + index);
-		}
-		
-		private String resolveBackRefs(Valuation valuation, String regex) {
-			int index = 1;
-			Variable var = captureGroupVariable(index);
-			while (valuation.containsKey(var)) {
-				Value value = valuation.get(var);
-				regex = regex.replace("\\" + index, value.getStoredValue().toString());
-				var = captureGroupVariable(++index);
-			}
-			
-			return regex;
-		}
-
 		@Override
 		public RegisterState<S> getTransition(RegisterState<S> state, Symbol input) {
 			RegisterState<S> successor = getSuccessor(state, input);

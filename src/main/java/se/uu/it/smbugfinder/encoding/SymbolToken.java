@@ -22,7 +22,10 @@ public class SymbolToken extends DescriptionToken {
 		return DescriptionType.SYMBOL;
 	}
 	
-	public boolean isInput() {
+	/**
+	 * @return true if describes a message that should be sent to the SUT, false if it describes a message that should be received by the SUT, null if it can be both.
+	 */
+	public Boolean isInput() {
 		return input;
 	}
 	

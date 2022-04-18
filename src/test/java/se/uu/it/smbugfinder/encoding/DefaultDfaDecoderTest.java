@@ -14,24 +14,10 @@ import net.automatalib.util.automata.Automata;
 import net.automatalib.words.Alphabet;
 import net.automatalib.words.Word;
 import net.automatalib.words.impl.ListAlphabet;
-import se.uu.it.smbugfinder.dfa.DfaAdapter;
+import se.uu.it.smbugfinder.dfa.DFAAdapter;
 import se.uu.it.smbugfinder.dfa.InputSymbol;
 import se.uu.it.smbugfinder.dfa.OutputSymbol;
 import se.uu.it.smbugfinder.dfa.Symbol;
-import se.uu.it.smbugfinder.encoding.Assignment;
-import se.uu.it.smbugfinder.encoding.Field;
-import se.uu.it.smbugfinder.encoding.Guard;
-import se.uu.it.smbugfinder.encoding.Label;
-import se.uu.it.smbugfinder.encoding.OtherToken;
-import se.uu.it.smbugfinder.encoding.OtherTokenType;
-import se.uu.it.smbugfinder.encoding.RelationalExpression;
-import se.uu.it.smbugfinder.encoding.RelationalOperator;
-import se.uu.it.smbugfinder.encoding.SetExpressionToken;
-import se.uu.it.smbugfinder.encoding.SetOperator;
-import se.uu.it.smbugfinder.encoding.SymbolToken;
-import se.uu.it.smbugfinder.encoding.Update;
-import se.uu.it.smbugfinder.encoding.Value;
-import se.uu.it.smbugfinder.encoding.Variable;
 import se.uu.it.smbugfinder.utils.TestUtils;
 
 /*
@@ -300,8 +286,8 @@ public class DefaultDfaDecoderTest {
 		expectedMut.addTransition(s0, o2, s1);
 		
 		DFA<?, Symbol> expectedDfa = TestUtils.completeDFA(expectedMut, alphabet);
-		DefaultDfaDecoder dfaDecoder = new DefaultDfaDecoder();
-		DfaAdapter actualDfa = dfaDecoder.decode(new EncodedDfaHolder(spec, specLabels), symbols);
+		DefaultDFADecoder dfaDecoder = new DefaultDFADecoder();
+		DFAAdapter actualDfa = dfaDecoder.decode(new DFAEncoding(spec, specLabels), symbols);
 		
 		assertEquivalent(expectedDfa, actualDfa.getDfa(), symbols, spec, specLabels);
 	}

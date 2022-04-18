@@ -3,7 +3,7 @@ package se.uu.it.smbugfinder.pattern;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import se.uu.it.smbugfinder.dfa.DfaAdapter;
+import se.uu.it.smbugfinder.dfa.DFAAdapter;
 
 public class BugPattern extends AbstractBugPattern {
 	BugPattern() {
@@ -16,10 +16,10 @@ public class BugPattern extends AbstractBugPattern {
 	private String bugLanguagePath;
 	
 	@XmlTransient
-	private DfaAdapter bugLanguage;
+	private DFAAdapter bugLanguage;
 	
 	@Override
-	DfaAdapter doGenerateBugLanguage() {
+	DFAAdapter doGenerateBugLanguage() {
 		return bugLanguage;
 	}
 	
@@ -27,11 +27,11 @@ public class BugPattern extends AbstractBugPattern {
 		return bugLanguagePath;
 	}
 	
-	void setBugLanguage(DfaAdapter bugLanguage) {
+	void setBugLanguage(DFAAdapter bugLanguage) {
 		this.bugLanguage = bugLanguage;
 	}
 
-	DfaAdapter getBugLanguage() {
+	DFAAdapter getBugLanguage() {
 		return bugLanguage;
 	}
 	

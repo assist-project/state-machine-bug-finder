@@ -4,7 +4,12 @@ import java.util.LinkedHashMap;
 
 public class Fields extends LinkedHashMap<String, Field> {
 	
-	public Fields(Field ... fields) {
+	/**
+     * 
+     */
+    private static final long serialVersionUID = 1L;
+
+    public Fields(Field ... fields) {
 		super();
 		for (Field field : fields) {
 			put(field.getName(), field);

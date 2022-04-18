@@ -30,7 +30,7 @@ import se.uu.it.smbugfinder.bug.StateMachineBug;
 import se.uu.it.smbugfinder.dfa.MealySymbolExtractor;
 import se.uu.it.smbugfinder.dfa.Symbol;
 import se.uu.it.smbugfinder.dfa.SymbolMapping;
-import se.uu.it.smbugfinder.encoding.DefaultDfaDecoder;
+import se.uu.it.smbugfinder.encoding.DefaultDFADecoder;
 import se.uu.it.smbugfinder.pattern.BugPatternLoader;
 import se.uu.it.smbugfinder.pattern.BugPatterns;
 import se.uu.it.smbugfinder.sut.SUT;
@@ -112,7 +112,7 @@ public class Demo {
 		InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
 		InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(getResource(sutModel));
 		
-		BugPatternLoader loader = new BugPatternLoader(new DefaultDfaDecoder());
+		BugPatternLoader loader = new BugPatternLoader(new DefaultDFADecoder());
 		
 		SymbolMapping<String, String> symbolMapping = new StringSymbolMapper(noResp, sep);
 		List<Symbol> allSymbols = new ArrayList<>();
@@ -129,7 +129,7 @@ public class Demo {
 		}
 		StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<String, String>(config);
 		new File(outputDirectory).mkdirs();
-		modelBugFinder.setExporter(new DfaExporter.DirectoryDfaExporter(outputDirectory));
+		modelBugFinder.setExporter(new DFAExporter.DirectoryDFAExporter(outputDirectory));
 		
 		List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
 		Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);

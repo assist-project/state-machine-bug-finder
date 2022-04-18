@@ -15,29 +15,29 @@ import net.automatalib.serialization.dot.DOTParsers;
 import se.uu.it.smbugfinder.encoding.javacc.LabelParserFacade;
 import se.uu.it.smbugfinder.encoding.javacc.TokenMgrError;
 
-public class DefaultEncodedDfaParser implements EncodedDfaParser {
-	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultEncodedDfaParser.class.getName());
+public class DefaultDFAEncodingParser implements DFAEncodingParser {
+	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultDFAEncodingParser.class.getName());
 
 	private ParsingContextFactory factory;
 	private Map<String, Label> cache;
 
-	public DefaultEncodedDfaParser(ParsingContextFactory factory) {
+	public DefaultDFAEncodingParser(ParsingContextFactory factory) {
 		this.factory = factory;
 	}
 	
 
-	public DefaultEncodedDfaParser() {
+	public DefaultDFAEncodingParser() {
 		this(ParsingContextFactory.EMPTY);
 	}
 	
-	public EncodedDfaHolder parseEncodedDfa(InputStream encodedDfaStream) throws IOException {
+	public DFAEncoding parse(InputStream encodedDfaStream) throws IOException {
 		ParsingContext context = factory.newContext();
 		cache = new HashMap<>();
 		InputModelDeserializer<Label, CompactDFA<Label>>  deserializer = DOTParsers.dfa(
 				DOTParsers.DEFAULT_FSA_NODE_PARSER,
 				m -> processDFALabel(DOTParsers.DEFAULT_EDGE_PARSER.apply(m), context));
 		InputModelData<Label, CompactDFA<Label>> inputModel = deserializer.readModel(encodedDfaStream);
-		return new EncodedDfaHolder(inputModel.model, inputModel.alphabet);
+		return new DFAEncoding(inputModel.model, inputModel.alphabet);
 	}
 
 	/*

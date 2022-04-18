@@ -21,7 +21,8 @@ import net.automatalib.commons.util.mappings.MutableMapping;
 import net.automatalib.util.automata.cover.Covers;
 import net.automatalib.words.Word;
 import se.uu.it.smbugfinder.utils.AutomatonUtils;
-import se.uu.it.smbugfinder.utils.AutomatonUtils.*;
+import se.uu.it.smbugfinder.utils.AutomatonUtils.PredMap;
+import se.uu.it.smbugfinder.utils.AutomatonUtils.PredStruct;
 
 /**
  * Generates iterables for exploring ways to get from the initial state to target states.

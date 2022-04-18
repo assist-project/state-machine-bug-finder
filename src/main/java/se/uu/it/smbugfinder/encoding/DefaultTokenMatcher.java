@@ -21,8 +21,10 @@ public class DefaultTokenMatcher implements TokenMatcher {
 		switch(description.getType()) {
 		case SYMBOL:
 			SymbolToken symbolToken = (SymbolToken) description;
-			if ( (symbolToken.isInput() == symbol.isInput()) && symbolToken.getSymbolString().equals(symbol.name()) ) {
-				matchingToken = symbolToken;
+			if (symbolToken.getSymbolString().equals(symbol.name())) {
+			    if (symbolToken.isInput() == null || symbolToken.isInput().booleanValue() == symbol.isInput()) {
+			        matchingToken = symbolToken;
+			    }
 			}
 			break;
 		case FILTER:

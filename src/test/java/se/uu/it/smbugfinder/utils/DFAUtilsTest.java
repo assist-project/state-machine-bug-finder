@@ -21,7 +21,6 @@ import net.automatalib.words.Word;
 import net.automatalib.words.impl.ListAlphabet;
 import se.uu.it.smbugfinder.dfa.InputSymbol;
 import se.uu.it.smbugfinder.dfa.Symbol;
-import se.uu.it.smbugfinder.utils.DFAUtils;
 
 public class DFAUtilsTest {
 

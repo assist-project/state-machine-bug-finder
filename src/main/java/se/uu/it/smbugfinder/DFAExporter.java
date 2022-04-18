@@ -10,21 +10,21 @@ import java.io.PrintWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import se.uu.it.smbugfinder.dfa.DfaAdapter;
+import se.uu.it.smbugfinder.dfa.DFAAdapter;
 
-public interface DfaExporter {
-	static final Logger LOGGER = LoggerFactory.getLogger(DfaExporter.class);
+public interface DFAExporter {
+	static final Logger LOGGER = LoggerFactory.getLogger(DFAExporter.class);
 	
-	public void exportDfa(DfaAdapter spec, String name);
+	public void exportDfa(DFAAdapter spec, String name);
 	
-	public static class DirectoryDfaExporter implements DfaExporter {
+	public static class DirectoryDFAExporter implements DFAExporter {
 		private String outputDir;
 
-		public DirectoryDfaExporter(String outputDir) {
+		public DirectoryDFAExporter(String outputDir) {
 			this.outputDir = outputDir;
 		}
 		
-		public void exportDfa(DfaAdapter spec, String name) {
+		public void exportDfa(DFAAdapter spec, String name) {
 			try {
 				spec.export(new FileWriter(new File(outputDir, name)));
 			} catch (IOException e) {
@@ -34,15 +34,15 @@ public interface DfaExporter {
 		}
 	} 
 	
-	public static class StreamDfaExporter implements DfaExporter {
+	public static class StreamDFAExporter implements DFAExporter {
 		private PrintWriter writer;
 
-		public StreamDfaExporter(OutputStream out) {
+		public StreamDFAExporter(OutputStream out) {
 			this.writer = new PrintWriter(new OutputStreamWriter(out));
 		}
 
 		@Override
-		public void exportDfa(DfaAdapter spec, String name) {
+		public void exportDfa(DFAAdapter spec, String name) {
 			
 			writer.println("============");
 			writer.println("");

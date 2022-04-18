@@ -23,11 +23,11 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.automatalib.automata.transducers.MealyMachine;
-import se.uu.it.smbugfinder.dfa.DfaAdapter;
+import se.uu.it.smbugfinder.dfa.DFAAdapter;
 import se.uu.it.smbugfinder.dfa.MealySymbolExtractor;
 import se.uu.it.smbugfinder.dfa.Symbol;
 import se.uu.it.smbugfinder.dfa.SymbolMapping;
-import se.uu.it.smbugfinder.encoding.DfaDecoder;
+import se.uu.it.smbugfinder.encoding.DFADecoder;
 
 public class BugPatternLoader {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BugPatternLoader.class);
@@ -44,16 +44,16 @@ public class BugPatternLoader {
 		return context;
 	}
 
-	public static <I,O> BugPatterns loadPatterns(String patternsDirectory, DfaDecoder decoder, MealyMachine<?, I, ?, O> mealy, Collection<I> inputs, SymbolMapping<I,O> mapping) {
+	public static <I,O> BugPatterns loadPatterns(String patternsDirectory, DFADecoder decoder, MealyMachine<?, I, ?, O> mealy, Collection<I> inputs, SymbolMapping<I,O> mapping) {
 		Set<Symbol> symbols = new LinkedHashSet<>();
 		MealySymbolExtractor.extractSymbols(mealy, inputs, mapping, symbols);
 		BugPatternLoader loader = new BugPatternLoader(decoder);
 		return loader.loadPatterns(patternsDirectory, symbols);
 	}
 	
-	private DfaDecoder dfaDecoder;
+	private DFADecoder dfaDecoder;
 	
-	public BugPatternLoader(DfaDecoder dfaDecoder) {
+	public BugPatternLoader(DFADecoder dfaDecoder) {
 		this.dfaDecoder = dfaDecoder;
 	}
 	
@@ -90,25 +90,25 @@ public class BugPatternLoader {
 	}
 
 	private void preparePatterns(BugPatterns bugPatterns, URI location, Collection<Symbol> symbols) {
-		Function<String, DfaAdapter> loadSpecification = p -> loadDfa(p, location, symbols);
+		Function<String, DFAAdapter> loadSpecification = p -> loadDfa(p, location, symbols);
 		
 		if (bugPatterns.getSpecificationLanguagePath() != null) {
-			DfaAdapter conformanceLanguage = loadSpecification.apply(bugPatterns.getSpecificationLanguagePath());
+			DFAAdapter conformanceLanguage = loadSpecification.apply(bugPatterns.getSpecificationLanguagePath());
 			bugPatterns.setSpecificationLanguage(conformanceLanguage);
 		}
 		
 		for (BugPattern bugPattern : bugPatterns.getBugPatterns()) {
-			DfaAdapter bugLanguage = loadSpecification.apply(bugPattern.getBugLanguagePath());
+			DFAAdapter bugLanguage = loadSpecification.apply(bugPattern.getBugLanguagePath());
 			bugPattern.setBugLanguage(bugLanguage);
 		}
 	}
 	
-	private DfaAdapter loadDfa(String encodedDfaPath, URI location, Collection<Symbol> symbols){
+	private DFAAdapter loadDfa(String encodedDfaPath, URI location, Collection<Symbol> symbols){
 		LOGGER.info("Loading DFA at path: {}", encodedDfaPath);
 		URI encodedDfaLocation = location.resolve(encodedDfaPath);
 		InputStream encodedDfaStream = getResourceAsStream(encodedDfaLocation.getPath()); 
 		try {
-			DfaAdapter dfaAdapter = dfaDecoder.decode(encodedDfaStream, symbols);
+			DFAAdapter dfaAdapter = dfaDecoder.decode(encodedDfaStream, symbols);
 			return dfaAdapter;
 		} catch (Exception e) {
 			throw new BugPatternLoadingException("Error handling encoded dfa at path " + encodedDfaLocation.getPath(), e);
