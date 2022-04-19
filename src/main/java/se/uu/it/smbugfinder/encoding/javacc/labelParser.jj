@@ -14,14 +14,44 @@ class LabelParser extends AbstractLabelParser {
 PARSER_END(LabelParser)
 
 SKIP : { "\n" | "\r" | "\r\n" }
+
+
+
 // set operations
 TOKEN : { < DIFFERENCE : "-" > }
 TOKEN : { < UNION : "U" > }
 
+// we parse the symbol body (e.g. update/guard) in its own lexical state, in order to avoid matches with the very broad token SYMBOL  
+
 //SKIP : { " " }
 TOKEN : { < SEP : " " > }
-TOKEN : { < WHERE : "where" > }
+
+TOKEN : { < UPDATE_START : "[" >: BODY }
+
+// update operators
+< BODY > TOKEN : { < ASSIGN : (":=") > }
+< BODY > TOKEN : { < UPDATE_SEP : "; " > }
+< BODY > TOKEN : { < UPDATE_END : "]" >: DEFAULT }
+
+
+TOKEN : { < GUARD_START : " where " >: BODY }
 //TOKEN : { < DO : "do" > }
+
+< BODY > TOKEN : { < INV_START : ("(") > }
+< BODY > TOKEN : { < INV_SEP : ","(" ")+ > }
+< BODY > TOKEN : { < INV_END : (")") > }
+
+//logical operators
+< BODY > TOKEN : { < AND : ("and") > }
+< BODY > TOKEN : { < OR : ("or") > }
+
+// relational operators
+< BODY > TOKEN : { < EQUAL : ("==") > }
+< BODY > TOKEN : { < NOT_EQUAL : ("!=") > }
+< BODY > TOKEN : { < IN : ("in") > }
+< BODY > TOKEN : { < NOT_IN : ("!in") > }
+< BODY > TOKEN : { < ID : (["a"-"z","A"-"Z","_"])+ > }
+< BODY > TOKEN : { < BODY_SEP : " " > }
 
 TOKEN : { < INPUT : "I_"(["a"-"z","A"-"Z","_",",","(",")","0"-"9"])+ > }
 TOKEN : { < OUTPUT : "O_"(["a"-"z","A"-"Z","_",",","(",")","0"-"9"])+ > }
@@ -29,33 +59,13 @@ TOKEN : { < FILTER : "F_"(["a"-"z","A"-"Z","0"-"9","_",",","(",")","*",".","|","
 TOKEN : { < OTHER : "other" > }
 TOKEN : { < OTHER_INPUT : "other_input" > }
 TOKEN : { < OTHER_OUTPUT : "other_output" > }
-
-TOKEN : { < INV_START : ("(") > }
-TOKEN : { < INV_SEP : ","(" ")+ > }
-TOKEN : { < INV_END : (")") > }
-
-//logical operators
-TOKEN : { < AND : ("and") > }
-TOKEN : { < OR : ("or") > }
-
-// relational operators
-TOKEN : { < EQUAL : ("==") > }
-TOKEN : { < NOT_EQUAL : ("!=") > }
-TOKEN : { < IN : ("in") > }
-TOKEN : { < NOT_IN : ("!in") > }
-
-// update operators
-TOKEN : { < ASSIGN : (":=") > }
-
-
-TOKEN : { < ID : (["a"-"z","A"-"Z","_"])+ > }
-
+TOKEN : { < SYMBOL : (["a"-"z","A"-"Z","_",",","(",")","0"-"9"])+ > }
 
 
 TOKEN : { < ENUM_START : "{" >: ENUM_STATE }
-< ENUM_STATE > TOKEN : { < INPUT_ELEMENT_PREFIX : "I_" >: ELEMENT_STATE } 
-< ENUM_STATE > TOKEN : { < OUTPUT_ELEMENT_PREFIX : "O_" >: ELEMENT_STATE }
-< ELEMENT_STATE > TOKEN : { < ELEMENT : (["a"-"z","A"-"Z","_",",","(",")","0"-"9"])+["a"-"z","A"-"Z","_","(",")","0"-"9"] >: ENUM_STATE }
+< ENUM_STATE > TOKEN : { < INPUT_ELEMENT : "I_"(["a"-"z","A"-"Z","_",",","(",")","0"-"9"])+["a"-"z","A"-"Z","_","(",")","0"-"9"] >: ENUM_STATE } 
+< ENUM_STATE > TOKEN : { < OUTPUT_ELEMENT : "O_"(["a"-"z","A"-"Z","_",",","(",")","0"-"9"])+["a"-"z","A"-"Z","_","(",")","0"-"9"] >: ENUM_STATE }
+< ENUM_STATE > TOKEN : { < SYMBOL_ELEMENT : (["a"-"z","A"-"Z","_",",","(",")","0"-"9"])+["a"-"z","A"-"Z","_","(",")","0"-"9"] >: ENUM_STATE }
 < ENUM_STATE > TOKEN : { < ENUM_SEP : ","(" ")+ > }
 < ENUM_STATE > TOKEN : { < ENUM_END : "}" >: DEFAULT }
 
@@ -67,29 +77,31 @@ Label label():
     Update update = Update.emptyUpdate();
 }
 {
-    (        description = description()
+    (
+        description = description()
         (
-			[
-			    "["
-			      (
-			          LOOKAHEAD(2)
-                    (                                                update = update()
+            [
+                < UPDATE_START >
+                  (
+                      LOOKAHEAD(2)
+                    (
+                        
+                        update = update()
                     ) |
-                    (                        
+                    (
+                        
                         expr = restrictedExpression()
                         {
                             guard = new Guard(expr);
                         }
                     )
                   )  
-			    "]"
-			]
-			[
-			    < SEP >
-			    < WHERE >
-			    < SEP >
-			    guard = guard()
-			]
+                < UPDATE_END >
+            ]
+            [
+                < GUARD_START >
+                guard = guard()
+            ]
         )
     )
     < EOF >
@@ -109,9 +121,9 @@ Update update():
     {
         assignments.add(assignment);
     }
-    (        
-        ";"
-        < SEP >
+    (
+        
+        < UPDATE_SEP >
         assignment = assignment()
         {
             assignments.add(assignment);
@@ -181,22 +193,26 @@ BooleanExpression booleanExpression():
     LogicalOperator op;
 }
 {
-    (        left = relationalExpression()
-        (            < SEP >
+    (
+        left = relationalExpression()
+        (
+            < BODY_SEP >
             (
-		        (		            < AND >
-		            { op = LogicalOperator.AND; }
-		        ) |
-		        (
-		            < OR >		            { op = LogicalOperator.OR; }
-		        )
-	        )
-	        < SEP >
-	        right = relationalExpression()
-	        {
+                (
+                    < AND >
+                    { op = LogicalOperator.AND; }
+                ) |
+                (
+                    < OR >
+                    { op = LogicalOperator.OR; }
+                )
+            )
+            < BODY_SEP >
+            right = relationalExpression()
+            {
                 left = new BinaryBooleanExpression(left, op, right);
-	        }
-	    )* 
+            }
+        )* 
     )
     {
         return left;
@@ -212,7 +228,7 @@ RelationalExpression relationalExpression():
     (
         left = valueExpression()
         (
-            < SEP >
+            < BODY_SEP >
             (
                 (
                     < EQUAL >
@@ -231,7 +247,7 @@ RelationalExpression relationalExpression():
                     { op = RelationalOperator.NOT_IN; }
                 )
             )
-            < SEP >
+            < BODY_SEP >
         ) 
         right = valueExpression() 
     )
@@ -297,20 +313,21 @@ FunctionInvocation invocation():
         fun = resolveFunction(idToken.image);
     }
     [
-	    < INV_START >
-	    [
+        < INV_START >
+        [
             idToken = < ID >
             {
                 parameters.add(new Variable(idToken.image));
             }
             (
                 < INV_SEP >
-	            idToken = < ID >
-	            {
-	                parameters.add(new Variable(idToken.image));
-	            }                )*
-	    ]
-	    < INV_END >
+                idToken = < ID >
+                {
+                    parameters.add(new Variable(idToken.image));
+                }    
+            )*
+        ]
+        < INV_END >
     ]
     {
         return new FunctionInvocation(fun, parameters);
@@ -325,10 +342,10 @@ DescriptionToken description():
 }
 {
     
-    ( left = symbol() | 
-      left = enumtoken() |
+    ( left = enumtoken() |
       left = regex() |
-      left = other()
+      left = other() |
+      left = symbol()
     )
     (
         LOOKAHEAD(2) 
@@ -338,9 +355,10 @@ DescriptionToken description():
         )
         < SEP >
         (
-            right = symbol() |
             right = regex() |
-            right = enumtoken() 
+            right = enumtoken() |
+            right = symbol()
+            
         )
         {
             left = new SetExpressionToken(left, op, right);
@@ -358,7 +376,9 @@ SymbolToken symbol():
 {
     (
         s = input() |
-        s = output()    )
+        s = output() |
+        s = anySymbol()
+    )
     {
         return s;
     }
@@ -386,6 +406,17 @@ SymbolToken output():
     }
 }
 
+SymbolToken anySymbol():
+{
+    Token msgToken;
+}
+{
+    msgToken = < SYMBOL >
+    {
+        return new SymbolToken(msgToken.image);
+    }
+}
+
 RegexToken regex():
 {
     Token regexToken;
@@ -403,21 +434,22 @@ OtherToken other():
 }
 {
     (
-	    (
-	        < OTHER >
-	    { 
-	        otherType = OtherTokenType.ALL;
-	    }	    ) | (
-	        < OTHER_INPUT >
-	    { 
-	        otherType = OtherTokenType.INPUT;
-	    }
-	    ) | (
-	        < OTHER_OUTPUT >
-	    { 
-	        otherType = OtherTokenType.OUTPUT;
-	    }
-	    ) 
+        (
+            < OTHER >
+        { 
+            otherType = OtherTokenType.ALL;
+        }
+        ) | (
+            < OTHER_INPUT >
+        { 
+            otherType = OtherTokenType.INPUT;
+        }
+        ) | (
+            < OTHER_OUTPUT >
+        { 
+            otherType = OtherTokenType.OUTPUT;
+        }
+        ) 
     )
     {
         return new OtherToken(otherType);
@@ -450,22 +482,25 @@ EnumerationToken enumtoken():
 
 SymbolToken element():
 {
-    boolean input;
-    Token msgToken;
+    Boolean input;
+    Token msgToken = null;
+    String symbolString = null;
 }
 {   
-    (        (
-            < INPUT_ELEMENT_PREFIX >            msgToken = < ELEMENT >
-            { input = true;
-
-            }
+    (
+        (
+            msgToken = < INPUT_ELEMENT >
+            { input = true; symbolString = msgToken.image.substring(2); }
         ) | (
-            < OUTPUT_ELEMENT_PREFIX >            msgToken = < ELEMENT >
-            { input = false; }
+            msgToken = < OUTPUT_ELEMENT >
+            { input = false; symbolString = msgToken.image.substring(2); }
+        ) | (
+            msgToken = < SYMBOL_ELEMENT >
+            { input = null; symbolString = msgToken.image; }
         )
     ) 
     {
-        return new SymbolToken(input, msgToken.image);
+        return new SymbolToken(input, symbolString);
     }
 }
 

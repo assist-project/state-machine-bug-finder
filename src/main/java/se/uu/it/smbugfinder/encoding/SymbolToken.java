@@ -4,12 +4,17 @@ import se.uu.it.smbugfinder.dfa.Symbol;
 
 public class SymbolToken extends DescriptionToken {
 	
-	private boolean input;
+	private Boolean input;
 	private String symbolString;
 	
-	public SymbolToken(boolean input, String symbolString) {
+	public SymbolToken(Boolean input, String symbolString) {
 		this.input = input;
 		this.symbolString = symbolString;
+	}
+	
+	public SymbolToken(String symbolString) {
+	    this.symbolString = symbolString;
+	    this.input = null;
 	}
 	
 	public SymbolToken(Symbol symbol) {
@@ -35,7 +40,7 @@ public class SymbolToken extends DescriptionToken {
 
 	@Override
 	public String toString() {
-		return (input ? "I_" : "O_") + symbolString;
+		return (input != null ? (input.booleanValue() == true ? "I_" : "O_") : "") + symbolString;
 	}
 
 }
