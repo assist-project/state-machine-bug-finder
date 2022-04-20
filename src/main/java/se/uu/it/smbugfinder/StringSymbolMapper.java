@@ -10,6 +10,9 @@ import se.uu.it.smbugfinder.dfa.InputSymbol;
 import se.uu.it.smbugfinder.dfa.OutputSymbol;
 import se.uu.it.smbugfinder.dfa.SymbolMapping;
 
+/**
+ * A basic implementation of the SymbolMapping for when input and output symbols in the Mealy machines are encoded as strings.
+ */
 public class StringSymbolMapper implements SymbolMapping<String,String> {
 	
 	private String emptyOutput;

@@ -12,7 +12,11 @@ import net.automatalib.words.Word;
 import net.automatalib.words.WordBuilder;
 
 /**
+ * 
  * A mapping from the (external) Mealy machine symbols used in model learning, to symbols in which our bug patterns are encoded.
+ *
+ * @param <I> Input symbol implementation. 
+ * @param <O> Output symbol implementation.
  */
 public interface SymbolMapping <I,O> {
 	I toInput(InputSymbol symbol);

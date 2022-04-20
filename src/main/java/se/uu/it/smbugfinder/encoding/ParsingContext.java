@@ -1,5 +1,11 @@
 package se.uu.it.smbugfinder.encoding;
 
+/**
+ * Provides a context for parsing bug patterns encoded as DFAs.
+ * The context contains definitions for message fields, constants and functions, as well as variables.
+ * By default, the context is empty.
+ * Users of the library can tailor the context to the protocol in question.
+ */
 public class ParsingContext {
 	
 	private Constants constants;

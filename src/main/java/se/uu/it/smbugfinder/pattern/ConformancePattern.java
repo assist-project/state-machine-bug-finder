@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import se.uu.it.smbugfinder.dfa.DFAAdapter;
 
 /**
- * A pattern of capturing (some aspect of) conformance to the specification.
+ * TODO A pattern of capturing (some aspect of) conformance to the specification. 
  */
 public class ConformancePattern extends Pattern {
 	@XmlElement(name="conformanceLanguage", required = true)

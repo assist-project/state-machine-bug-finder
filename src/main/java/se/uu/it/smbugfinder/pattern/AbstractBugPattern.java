@@ -6,6 +6,11 @@ import javax.xml.bind.annotation.XmlTransient;
 import se.uu.it.smbugfinder.bug.BugSeverity;
 import se.uu.it.smbugfinder.dfa.DFAAdapter;
 
+/**
+ * Abstract class for bug patterns encoded as DFAs.
+ * Like a pattern, a bug pattern has a name and a description.
+ * In addition, it is equipped with a unique index and a severity level.
+ */
 public abstract class AbstractBugPattern extends Pattern {
 	private static int CUR_ID = 1;
 	private static AbstractBugPattern UNCATEGORIZED;

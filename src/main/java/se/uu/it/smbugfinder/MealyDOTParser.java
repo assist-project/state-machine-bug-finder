@@ -10,7 +10,10 @@ import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
 
-public class MealyDotParser {
+/**
+ * Generates a Mealy machine from a DOT specification.
+ */
+public class MealyDOTParser {
 	public static <I,O, A extends MutableMealyMachine<?, I, ?, O>> InputModelData<I, A> parse(AutomatonCreator<A, I> creator, InputStream inputStream, MealyInputOutputProcessor <I,O> processor) throws IOException {
 		InputModelDeserializer<I, A> parser = DOTParsers.mealy(creator, (map)
 				-> {

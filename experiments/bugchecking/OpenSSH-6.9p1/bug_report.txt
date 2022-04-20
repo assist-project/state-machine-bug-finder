@@ -1,0 +1,40 @@
+
+================================================================================
+Bug Listing
+================================================================================
+
+Bug Pattern: Rekey Failure Pre-Authentication
+Severity: LOW
+Description: Server refuses rekey after a service request is accepted, before authentication. (Property 5)
+Trace: REKEY/KEXINIT+KEX31+NEWKEYS+NO_RESP SR_AUTH/SR_ACCEPT KEXINIT/UNIMPLEMENTED 
+Inputs: REKEY SR_AUTH KEXINIT
+Validation Status: NOT_VALIDATED
+
+Bug Pattern: Invalid SR Response
+Severity: LOW
+Description: Server incorrectly responds to a service request. Conforming responses are either SR_ACCEPT or SR_DISCONNECT (Property 8).
+Trace: REKEY/KEXINIT+KEX31+NEWKEYS+NO_RESP SR_AUTH/SR_ACCEPT UA_PW_OK/UA_SUCCESS SR_AUTH/UNIMPLEMENTED 
+Inputs: REKEY SR_AUTH UA_PW_OK SR_AUTH
+Validation Status: NOT_VALIDATED
+
+Bug Pattern: Invalid Authentication Rejection Response
+Severity: LOW
+Description: Server does not respond with a UA_FAILURE when rejecting an authentication request (Property 9).
+Trace: REKEY/KEXINIT+KEX31+NEWKEYS+NO_RESP SR_AUTH/SR_ACCEPT UA_PW_NOK/UA_FAILURE UA_NONE/DISCONNECT 
+Inputs: REKEY SR_AUTH UA_PW_NOK UA_NONE
+Validation Status: NOT_VALIDATED
+
+Bug Pattern: Unignored Authentication Request
+Severity: MEDIUM
+Description: An authentication request received after a UA_SUCCESS is not ignored (Property 11).
+Trace: REKEY/KEXINIT+KEX31+NEWKEYS+NO_RESP SR_AUTH/SR_ACCEPT UA_PW_OK/UA_SUCCESS UA_PW_OK/UNIMPLEMENTED 
+Inputs: REKEY SR_AUTH UA_PW_OK UA_PW_OK
+Validation Status: NOT_VALIDATED
+
+Bug Pattern: Unignored Authentication Request Rekey
+Severity: MEDIUM
+Description: An authentication request received after a UA_SUCCESS is not ignored, accounting for rekeying (Property 11).
+Trace: REKEY/KEXINIT+KEX31+NEWKEYS+NO_RESP SR_AUTH/SR_ACCEPT UA_PW_OK/UA_SUCCESS UA_PW_OK/UNIMPLEMENTED 
+Inputs: REKEY SR_AUTH UA_PW_OK UA_PW_OK
+Validation Status: NOT_VALIDATED
+

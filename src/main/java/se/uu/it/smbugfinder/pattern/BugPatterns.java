@@ -23,8 +23,6 @@ public class BugPatterns {
 	@XmlTransient
 	private DFAAdapter specificationLanguage;
 	
-	private List<ConformancePattern> conformancePatterns;
-	
 	@XmlElements(value = {
 			@XmlElement(type = BugPattern.class, name = "bugPattern"),
 			@XmlElement(type = GeneralBugPattern.class, name = "generalBugPattern")

@@ -29,6 +29,9 @@ import se.uu.it.smbugfinder.dfa.Symbol;
 import se.uu.it.smbugfinder.dfa.SymbolMapping;
 import se.uu.it.smbugfinder.encoding.DFADecoder;
 
+/**
+ * Loads bug patterns from a supplied directory path.
+ */
 public class BugPatternLoader {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BugPatternLoader.class);
 	private static JAXBContext context;

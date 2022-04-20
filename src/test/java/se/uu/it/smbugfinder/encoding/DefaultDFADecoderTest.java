@@ -23,7 +23,7 @@ import se.uu.it.smbugfinder.utils.TestUtils;
 /*
  * TODO It would be better if our inputs for specs/expected automata were .dot files, as it would allow us to reduce the code/create better tests.
  */
-public class DefaultDfaDecoderTest {
+public class DefaultDFADecoderTest {
 //
 //	@Test
 //	public void testUnfoldOtherNonCapturingFilter() {

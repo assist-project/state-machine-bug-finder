@@ -36,7 +36,10 @@ import se.uu.it.smbugfinder.sut.SUT;
 import se.uu.it.smbugfinder.sut.SimulatedMealySUT;
 import se.uu.it.smbugfinder.sut.SocketSUT;
 
-
+/**
+ * Utility for using smbugfinder to be used to test generic network protocol implementations using a Mealy machine.
+ * For validation, it assumes a test harness with which it communicates over TCP sockets, by exchanging strings representing in 
+ */
 public class Main {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	

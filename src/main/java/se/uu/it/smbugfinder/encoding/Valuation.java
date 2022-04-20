@@ -2,6 +2,9 @@ package se.uu.it.smbugfinder.encoding;
 
 import java.util.LinkedHashMap;
 
+/**
+ * A mapping from variables to values. 
+ */
 public class Valuation extends LinkedHashMap<Variable, Value>{
 	/**
 	 * 

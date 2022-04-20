@@ -1,5 +1,8 @@
 package se.uu.it.smbugfinder;
 
+/**
+ * Used to signal bad arguments.
+ */
 public class ConfigurationException extends RuntimeException{
 	/**
 	 * 

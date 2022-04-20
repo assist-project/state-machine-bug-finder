@@ -5,6 +5,9 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import se.uu.it.smbugfinder.dfa.DFAAdapter;
 
+/**
+ * Encodes a protocol violation as a DFA. 
+ */
 public class BugPattern extends AbstractBugPattern {
 	BugPattern() {
 		super();

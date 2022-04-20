@@ -40,6 +40,13 @@ import se.uu.it.smbugfinder.witness.SequenceGenerator;
 import se.uu.it.smbugfinder.witness.SequenceGeneratorFactory;
 import se.uu.it.smbugfinder.witness.WitnessFinder;
 
+/**
+ * StateMachineBugFinder or SMBugFinder in short, is a library for automating the detection of state machine bugs in SUTs.
+ * It takes as input the Mealy machine model of the SUT and a catalog of bugs expressed as DFAs.
+ * It then automatically detects the DFA-encoded bugs on the Mealy machine, generating witnesses exposing the violations.
+ * The witnesses can optionally be validated by executing the corresponding inputs on the SUT.
+ * This last step requires a test harness.
+ */
 public class StateMachineBugFinder<I,O> {
 	private static final Logger LOGGER = LoggerFactory.getLogger(StateMachineBugFinder.class);
 	private MealyToDFAConverter<I,O> converter;
