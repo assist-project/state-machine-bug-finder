@@ -1,13 +1,13 @@
 -m 
-/models/ssh/newver/Dropbear.dot 
+/models/ssh/Dropbear-v2014.65.dot 
 -p 
 /patterns/ssh/ 
 -eo 
 NO_RESP 
 -od 
-output/Dropbear-v2020.81
+output/Dropbear-v2014.65 
 -ha 
-localhost:7000 
+localhost:7001
 -rcm 
 resetok 
 -generationStrategy 
