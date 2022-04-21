@@ -3,7 +3,8 @@
 **StateMachineBugFinder** (or **SMBugFinder** for short) is the implementation of our automata-based bug detection technique.
 **SMBugFinder** can be used both as a standalone testing tool, or as a library which can be incorporated in other state-fuzzing frameworks to automate analysis of learned models.
 As a testing tool, it takes as input a DOT Mealy machine model and a *pattern folder*, containing patterns for the bugs we want to check.
-It checks the model for these patterns, and validates each found bug by executing tests via a test harness with which it communicates over sockets exchanging inputs and outputs.
+It checks the model for these patterns, and validates each found bug by executing tests via an external test harness.
+Communication with the harness is performed over sockets and involves exchanging inputs and outputs.
 
 Besides the source code, the artifact contains the bug patterns developed for SSH, which are located in the 'src/main/resources/patterns/ssh' directory.
 During bug detection, these are checked on the models learned for SSH servers, located in the 'src/main/resources/models/ssh' directory.
