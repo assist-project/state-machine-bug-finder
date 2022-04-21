@@ -7,7 +7,7 @@ It checks the model for these patterns, and validates each found bug by executin
 
 Besides the source code, the artifact contains the bug patterns developed for SSH, which are located in the 'src/main/resources/patterns/ssh' directory.
 During bug detection, these are checked on the models learned for SSH servers, located in the 'src/main/resources/models/ssh' directory.
-The learning setup used to generate these models can be found at the given link.
+The learning setup used to generate these models can be found at the given [link][sshharness].
 This setup provides a test harness which was re-used as part of this work for validation.
 
 ## Quick walkthrough
@@ -36,6 +36,6 @@ This model is basic, consisting of two nodes and four edges.
 
 For each SUT tested in our work, we provide a corresponding argument file in the 'args' directory.
 Reproducing the experiments without validation can be done be running **SMBugFinder** on each of these argument files.
-Validation is out-of-scope for this artifact.
+Validation of found bugs is out-of-scope for this artifact.
 
-
+[sshharness]:https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:77503
