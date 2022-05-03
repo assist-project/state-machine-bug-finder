@@ -17,13 +17,13 @@ Suppose we want to test Dropbear V2020.81, for which a model is present in our m
 From within **SMBugFinder**'s directory we then run:
 
     > mvn install
-    > java -jar target\sm-bug-finder.jar args/dropbear-v2020.81
+    > java -jar target/sm-bug-finder.jar args/dropbear-v2020.81
     
 First step installs **SMBugFinder**. 
 Second executes **SMBugFinder** on the arguments included in the argument file 'args/dropbear-v2020.81'.
 Executing the second command should reveal three bugs found in the model learned for this version of Dropbear.
 To validate these bugs, we need to provide the additional argument '-vb', as well as a test harness for SSH.
-One of the bug shown in the print-out is *Missing SR_AUTH*.
+One of the bugs shown in the print-out is *Missing SR_AUTH*.
 The bug entails the server engaging the authentication service without a prior service request for it (which is 'SR_AUTH' in our input alphabet).
 The witness uncovered exposes this problem.
 
