@@ -76,7 +76,7 @@ public class StateMachineBugFinder<I,O> {
 		this.exporter = exporter;
 	}
 	
-	public Statistics findBugs(BugPatterns patterns, MealyMachine<?,I,?,O> mealy, Collection<I> inputs, SymbolMapping<I,O> mapping, @Nullable SUT<I,O> sut, List<StateMachineBug<I,O>> bugs) {
+	public BugReport<I,O> findBugs(BugPatterns patterns, MealyMachine<?,I,?,O> mealy, Collection<I> inputs, SymbolMapping<I,O> mapping, @Nullable SUT<I,O> sut, List<StateMachineBug<I,O>> bugs) {
 		tracker = new StatisticsTracker(config, patterns);
 		tracker.startStateMachineBugFinding(inputs);
 		if (validate) {
@@ -153,7 +153,7 @@ public class StateMachineBugFinder<I,O> {
 			handleUncategorizedSpecificationBugs(spec, sutLanguage, detectedPatterns, mealy, mapping, bugs);
 		}
 		tracker.finishStateMachineBugFinding(bugs);
-		return tracker.generateStatistics();
+		return new BugReport<I,O>(bugs, tracker.generateStatistics());
 	}
 	
 	private void handleGeneralBugPattern(GeneralBugPattern generalBugPattern, DFAAdapter sutLanguage, Collection<BugPattern> specificBugPatterns, SymbolMapping<I,O> mapping, List<StateMachineBug<I,O>> bugs) {

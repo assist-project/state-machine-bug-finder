@@ -63,7 +63,7 @@ public class StatisticsTracker {
 	}
 	
 	private Comparator<AbstractBugPattern> bpComp() {
-		return (bp1, bp2) -> bp1.getId().compareTo(bp2.getId());
+		return (bp1, bp2) -> bp1.getName().compareTo(bp2.getName());
 	}
 	
 

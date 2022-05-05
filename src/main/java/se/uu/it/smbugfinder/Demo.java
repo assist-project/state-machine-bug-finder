@@ -25,7 +25,6 @@ import net.automatalib.automata.transducers.impl.compact.CompactMealy;
 import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
-import se.uu.it.smbugfinder.bug.Bug;
 import se.uu.it.smbugfinder.bug.StateMachineBug;
 import se.uu.it.smbugfinder.dfa.MealySymbolExtractor;
 import se.uu.it.smbugfinder.dfa.Symbol;
@@ -132,9 +131,7 @@ public class Demo {
 		modelBugFinder.setExporter(new DFAExporter.DirectoryDFAExporter(outputDirectory));
 		
 		List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
-		Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
-		export(stats, outputDirectory, "statistics.txt");
-		BugReport bugReport = new BugReport(modelBugs);
+		BugReport<String, String> bugReport = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
 		export(bugReport, outputDirectory, "bug_report.txt");
 	}
 	
@@ -148,21 +145,5 @@ public class Demo {
 	private static void export(ExportableResult result, String outputDirectory, String filename) throws FileNotFoundException {
 		result.doExport(new PrintWriter(new OutputStreamWriter(System.out), true));
 		result.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, filename).toFile())), true));	
-	}
-	
-	static class BugReport extends ExportableResult {
-		private List<? extends Bug<?,?>> bugs;
-		public BugReport(List<? extends Bug<?,?>> bugs) {
-			this.bugs = bugs;
-		}
-
-		@Override
-		protected void doExport(PrintWriter pw) {
-			title("Bug Listing", pw);
-			for (Bug<?,?> bug : bugs) {
-				pw.println(bug.getDescription());
-			}	
-		}
-		
 	}
 }

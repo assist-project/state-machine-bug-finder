@@ -1,7 +1,7 @@
 -m 
 /models/ssh/BitVise-7.23.dot 
 -p 
-/patterns/ssh/ 
+/bugpatterns/ssh/ 
 -eo 
 NO_RESP 
 -od 

@@ -24,7 +24,6 @@ import net.automatalib.automata.transducers.impl.compact.CompactMealy;
 import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
-import se.uu.it.smbugfinder.Demo.BugReport;
 import se.uu.it.smbugfinder.bug.StateMachineBug;
 import se.uu.it.smbugfinder.dfa.MealySymbolExtractor;
 import se.uu.it.smbugfinder.dfa.Symbol;
@@ -37,7 +36,7 @@ import se.uu.it.smbugfinder.sut.SimulatedMealySUT;
 import se.uu.it.smbugfinder.sut.SocketSUT;
 
 /**
- * Utility for using smbugfinder to be used to test generic network protocol implementations using a Mealy machine.
+ * Utility for using SMBugFinder to be used to test generic network protocol implementations using a Mealy machine.
  * For validation, it assumes a test harness with which it communicates over TCP sockets, by exchanging strings representing in 
  */
 public class Main {
@@ -100,11 +99,8 @@ public class Main {
 		StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<String, String>(finderConfig);
 		modelBugFinder.setExporter(new DFAExporter.DirectoryDFAExporter(config.getOutputDir()));
 		List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
-		Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
-		export(stats, config.getOutputDir(), "statistics.txt");
-		BugReport bugReport = new BugReport(modelBugs); 
-		export(bugReport, config.getOutputDir(), "bug_report.txt");
-		
+		BugReport<String, String> stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
+		export(stats, config.getOutputDir(), "bug_report.txt");
 	}
 	
 	private static void export(ExportableResult result, String outputDirectory, String filename) throws FileNotFoundException {
