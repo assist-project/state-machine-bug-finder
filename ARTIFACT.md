@@ -1,15 +1,56 @@
-# state-machine-bug-finder
-
 **StateMachineBugFinder** (or **SMBugFinder** for short) is the implementation of our automata-based bug detection technique.
-**SMBugFinder** can be used both as a standalone testing tool, or as a library which can be incorporated in other state-fuzzing frameworks to automate analysis of learned models.
-As a testing tool, it takes as input a DOT Mealy machine model and a *pattern folder*, containing patterns for the bugs we want to check.
-It checks the model for these patterns, and validates each found bug by executing tests via an external test harness.
-Communication with the harness is performed over sockets and involves exchanging inputs and outputs.
+**SMBugFinder** can be used both as a standalone testing tool, or as a library which can be incorporated in other learning setups (such as **DTLS-Fuzzer**) to automate analysis of learned models.
+As a testing tool it requires connection to an online test harness.
+This document presents our SSH bug patterns and the learned models they were checked on, experimental results for SSH and how to *partially* reproduce them (partially is used since we omit validation).
+It is assumed that **SMBugFinder** and are installed (see **SMBugFinder's**'s 'README.md'), and that all commands are run from within **SMBugFinder's**'s directory.
 
-Besides the source code, the artifact contains the bug patterns developed for SSH, which are located in the 'src/main/resources/patterns/ssh' directory.
-During bug detection, these are checked on the models learned for SSH servers, located in the 'src/main/resources/models/ssh' directory.
-The learning setup used to generate these models can be found at the given [link][sshharness].
-This setup provides a test harness which was re-used as part of this work for validation.
+# SSH bug patterns
+
+Bug patterns for SSH servers are located in located in the 'src/main/resources/bugpatterns/ssh' directory.
+Below is the *MISSING SR_AUTH* bug pattern located at 'src/main/resources/bugpatterns/ssh/missing_sr_auth.dot'. 
+
+```
+digraph G {
+label=""
+start [color="red"]
+bug [shape="doublecircle"]
+
+start -> start [label="other - {I_SR_AUTH}"]
+start -> bug [label="{O_UA_SUCCESS}"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}
+
+```
+
+Bug patterns are encoded as DOT graphs and can be viewed with `xdot`, e.g. by running:
+
+    > xdot src/main/resources/bugpatterns/ssh/missing_sr_auth.dot
+
+# Learned models for SSH
+
+We used the [learning setup][sshharness]  developed in prior work to generate models for SSH servers that we later analyzed using **SMBugFinder**'s testing tool facility.
+The SSH server models used in our submission are stored in 'src/main/resources/models/ssh'.
+Each model is named after the SUT whose behavior it captures.
+
+# Experimental results for SSH
+
+Results for SSH servers along with a CSV summary are stored in 'experiments/results/ssh'.
+There is a folder for each experiment, named after the SUT analyzed. 
+The folder (e.g. 'experiments/results/ssh/Dropbear-v2014.65') includes:
+
+ - a summary of the results and statistics ('bug_report.txt');
+ - models for the DFA-encoded bug patterns after the condensed notation (e.g. 'other') has been resolved (e.g. 'WrongCertificateTypeLanguage.dot');
+ - DFA models for the SUT ('sutLanguage.dot') and its intersection with bug patterns, if this intersection is not empty (e.g. 'sutWrongCertificateTypeLanguage.dot);
+ - witnesses for all the bugs found, contained in the 'bugs' directory.
+
+# Reproducing experiments
+
+We developed a script `run_bugchecker.sh`, which reproduces our experiments for SSH minus validation.
+Validation is omitted as it 
+
+
 
 ## Quick walkthrough
 
