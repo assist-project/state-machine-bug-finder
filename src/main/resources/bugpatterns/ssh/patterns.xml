@@ -163,6 +163,7 @@
         <name>Termination After UNIMPL</name>
         <bugLanguage>termination_after_unimpl.dot</bugLanguage>
         <description>Server terminates connection after sending UNIMPL, indicated by a NO_CONN response to CH_DATA.</description>
+        <enabled>false</enabled>
     </bugPattern>
      
 </bugPatterns>

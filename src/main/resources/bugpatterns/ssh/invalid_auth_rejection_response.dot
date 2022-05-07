@@ -4,7 +4,7 @@ start [color="red"]
 bug [shape="doublecircle"]
 
 start -> sr_accept [label="O_SR_ACCEPT"]
-start -> start [label="other - O_UA_SUCCESS"]
+start -> start [label="other - {O_UA_SUCCESS}"]
 sr_accept -> invalid_authreq [label="{I_UA_PK_NOK, I_UA_PW_NOK, I_UA_NONE}"]
 sr_accept -> sr_accept [label="other - {O_UA_SUCCESS, O_NO_CONN, O_DISCONNECT, O_UNIMPL}"]
 
