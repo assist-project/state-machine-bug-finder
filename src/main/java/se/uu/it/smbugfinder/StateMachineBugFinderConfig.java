@@ -27,14 +27,14 @@ public class StateMachineBugFinderConfig {
     private int nonConformingBound = 10000;
 
     @Parameter(names = { "-tb",
-            "-testBound" }, required = false, description = "Bound on the number of tests executed to validate bugs.")
-    private Integer bound = 100;
+            "-testBound" }, required = false, description = "Bound on the number of tests executed to validate each bug pattern.")
+    private int bound = 100;
 
     @Parameter(names = { "-dm", "-debugMode" }, required = false, description = "Runs a specific debug mode.")
     private DebugMode debugMode;
 
     @Parameter(names = { "-dwb",
-            "-debugWitnessBound" }, required = false, description = "Bound on the number of counted witnesses, assuming debug mode COUNT_GENERATED_WITNESSES is used")
+            "-debugWitnessBound" }, required = false, description = "Bound on the number of counted witnesses generated assuming debug mode COUNT_GENERATED_WITNESSES is used")
     private int debugWitnessBound = 10000;
 
     public StateMachineBugFinderConfig() {
@@ -49,7 +49,7 @@ public class StateMachineBugFinderConfig {
         return searchConfig;
     }
 
-    public Integer getBound() {
+    public int getBound() {
         return bound;
     }
 
