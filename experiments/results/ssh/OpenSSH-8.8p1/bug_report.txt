@@ -38,3 +38,42 @@ Trace: KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SR_AUTH/SR_ACCEPT UA_
 Inputs: KEXINIT KEX30 NEWKEYS SR_AUTH UA_PK_OK KEXINIT KEX30 CH_OPEN
 Validation Status: VALIDATION_SUCCESSFUL
 
+
+================================================================================
+Run Description
+================================================================================
+
+
+--------------------------------------------------------------------------------
+State Machine Bug Finding Parameters
+--------------------------------------------------------------------------------
+
+Alphabet: [SR_CONN, CH_CLOSE, KEXINIT, SR_AUTH, NEWKEYS, CH_EOF, KEX30, CH_OPEN, CH_REQUEST_PTY, CH_DATA, UA_PK_OK, UA_PK_NOK]
+Bug Validation Enabled: true
+Uncategorized Bug Bound: 10
+
+================================================================================
+Statistics
+================================================================================
+
+Number of inputs: 30
+Number of resets: 5
+Number of bugs: 5
+Time bug-checking took (ms): 64126
+Bug patterns loaded (19): [Early Service Accept, Unauthenticated Client, Rekey Failure Pre-Authentication, Rekey Failure Post-Authentication, Continue After Disconnect, Invalid Response Before NEWKEYS, Invalid SR_AUTH Response, Invalid Authentication Rejection Response, Multiple UA_SUCCESS, Unignored Authentication Request, Invalid Closure Response, Authentication Failure After Rekey, Channel Open Failure After Rekey, Request Failure After Rekey, Missing NEWKEYS, Missing UA_SUCCESS, Multiple Kexinit, Missing SR_AUTH, Connection Layer Bug]
+Bug patterns found (5): [Rekey Failure Pre-Authentication, Invalid SR_AUTH Response, Unignored Authentication Request, Invalid Closure Response, Missing NEWKEYS]
+Bug patterns validated successfully (5): [Rekey Failure Pre-Authentication, Invalid SR_AUTH Response, Unignored Authentication Request, Invalid Closure Response, Missing NEWKEYS]
+Validation Inputs per Bug Pattern
+   Rekey Failure Pre-Authentication : 5
+   Invalid SR_AUTH Response : 2
+   Unignored Authentication Request : 6
+   Invalid Closure Response : 9
+   Missing NEWKEYS : 8
+
+Validation Resets per Bug Pattern
+   Rekey Failure Pre-Authentication : 1
+   Invalid SR_AUTH Response : 1
+   Unignored Authentication Request : 1
+   Invalid Closure Response : 1
+   Missing NEWKEYS : 1
+
