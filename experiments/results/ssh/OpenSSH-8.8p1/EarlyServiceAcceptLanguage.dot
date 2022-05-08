@@ -140,7 +140,7 @@ digraph g {
 	s4 -> s4 [label="I_CH_DATA"];
 	s4 -> s4 [label="I_UA_PK_OK"];
 	s4 -> s4 [label="I_UA_PK_NOK"];
-	s4 -> s7 [label="O_UNIMPL"];
+	s4 -> s4 [label="O_UNIMPL"];
 	s4 -> s4 [label="O_CH_CLOSE"];
 	s4 -> s4 [label="O_CH_SUCCESS"];
 	s4 -> s4 [label="O_KEXINIT"];

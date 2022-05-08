@@ -3,45 +3,38 @@
 Bug Listing
 ================================================================================
 
-Bug Pattern: Early Service Accept
-Severity: HIGH
-Description: Server accepts service request before key exchange has been completed (Property 3).
-Trace: KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS SR_CONN/UNIMPL 
-Inputs: KEXINIT KEX30 SR_CONN
-Validation Status: NOT_VALIDATED
-
 Bug Pattern: Rekey Failure Pre-Authentication
 Severity: LOW
 Description: Server refuses rekey after a service request is accepted, before authentication. (Property 5)
 Trace: KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SR_AUTH/SR_ACCEPT KEXINIT/UNIMPL 
 Inputs: KEXINIT KEX30 NEWKEYS SR_AUTH KEXINIT
-Validation Status: NOT_VALIDATED
+Validation Status: VALIDATION_SUCCESSFUL
 
 Bug Pattern: Invalid SR_AUTH Response
 Severity: LOW
 Description: Server incorrectly responds to a service request. Conforming responses are either SR_ACCEPT or SR_DISCONNECT (Property 8).
 Trace: KEXINIT/KEXINIT SR_AUTH/UNIMPL 
 Inputs: KEXINIT SR_AUTH
-Validation Status: NOT_VALIDATED
+Validation Status: VALIDATION_SUCCESSFUL
 
 Bug Pattern: Unignored Authentication Request
 Severity: MEDIUM
 Description: An authentication request received after a UA_SUCCESS is not ignored (Property 11).
 Trace: KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SR_AUTH/SR_ACCEPT UA_PK_OK/UA_SUCCESS+GLOBAL_REQUEST UA_PK_OK/UNIMPL 
 Inputs: KEXINIT KEX30 NEWKEYS SR_AUTH UA_PK_OK UA_PK_OK
-Validation Status: NOT_VALIDATED
+Validation Status: VALIDATION_SUCCESSFUL
 
 Bug Pattern: Invalid Closure Response
 Severity: LOW
 Description: Server does not respond to a CH_CLOSE with a CH_CLOSE (Property 12).
 Trace: KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SR_AUTH/SR_ACCEPT UA_PK_OK/UA_SUCCESS+GLOBAL_REQUEST KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS CH_OPEN/CH_OPEN_SUCCESS CH_CLOSE/NO_RESP 
 Inputs: KEXINIT KEX30 NEWKEYS SR_AUTH UA_PK_OK KEXINIT KEX30 CH_OPEN CH_CLOSE
-Validation Status: NOT_VALIDATED
+Validation Status: VALIDATION_SUCCESSFUL
 
 Bug Pattern: Missing NEWKEYS
 Severity: MEDIUM
 Description: Server sends upper layer message during a rekey, before receiving NEWKEYS.
 Trace: KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SR_AUTH/SR_ACCEPT UA_PK_OK/UA_SUCCESS+GLOBAL_REQUEST KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS CH_OPEN/CH_OPEN_SUCCESS 
 Inputs: KEXINIT KEX30 NEWKEYS SR_AUTH UA_PK_OK KEXINIT KEX30 CH_OPEN
-Validation Status: NOT_VALIDATED
+Validation Status: VALIDATION_SUCCESSFUL
 
