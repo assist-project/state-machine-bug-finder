@@ -5,6 +5,7 @@ import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -108,6 +109,24 @@ public class StateMachineBugFinder<I,O> {
 				detectedPatterns.add(bugPattern);
 				LOGGER.info("sutBugLanguage not empty, finding witness");
 				exporter.exportDfa(sutBugLanguage, "sut" + bugPattern.getShortenedName() + "Language.dot");
+				if (DebugMode.COUNT_GENERATED_WITNESSES.isEnabled(config)) {
+				    SequenceGenerator<Symbol> generator = SequenceGeneratorFactory.buildGenerator(config.getWitnessGenerationStrategy(), config.getSearchConfig(), null);
+				    Iterable<Word<Symbol>> sequence = generator.generateSequences(sutBugLanguage.getDfa(), sutBugLanguage.getSymbols());
+				    Iterator<Word<Symbol>> iter = sequence.iterator();
+				    int count = 0;
+				    while (iter.hasNext()) {
+				        count ++;
+				        if (count > config.getDebugWitnessBound()) {
+				            break;
+				        }
+				    }
+				    if (count < config.getDebugWitnessBound()) {
+				        LOGGER.info("The bug pattern {} would lead to the generation of at most {} witnesses for validation.", bugPattern.getName(), count);
+				    } else {
+				        LOGGER.info("The bug pattern {} would lead to the generation of over {} witnesses for validation.", bugPattern.getName(), config.getDebugWitnessBound());
+				    }
+				}
+				
 				if (validate && !DebugMode.EVALUATE_SPECIFIC_BUG_PATTERNS.isEnabled(config)) {
 					SequenceGenerator<Symbol> sequenceGenerator = SequenceGeneratorFactory.buildGenerator(config.getWitnessGenerationStrategy(), config.getSearchConfig(), null);
 					WitnessFinder witnessFinder = new WitnessFinder(sequenceGenerator, config.getBound()); 
@@ -332,7 +351,7 @@ public class StateMachineBugFinder<I,O> {
 					break;
 				} 				
 			}
-			if (allFlows > config.getNonConformingSequenceBound()) {
+			if (allFlows > config.getNonConformingBound()) {
 				break;
 			}
 		}
