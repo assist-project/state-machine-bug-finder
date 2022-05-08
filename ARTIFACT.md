@@ -1,7 +1,7 @@
 **StateMachineBugFinder** (or **SMBugFinder** for short) is the implementation of our automata-based bug detection technique.
-**SMBugFinder** can be used both as a standalone testing tool, or as a library which can be incorporated in other learning setups (such as **DTLS-Fuzzer**) to automate analysis of learned models.
+**SMBugFinder** can be used both as a standalone testing tool, or as a library which can be incorporated in other learning setups (such as **DTLS-Fuzzer**'s) to automate analysis of learned models.
 As a testing tool it requires connection to an online test harness.
-This document presents our SSH bug patterns and the learned models they were checked on, experimental results for SSH and how to *partially* reproduce them (partially is used since we omit validation).
+This document presents our SSH server bug patterns and the learned models they were checked on, experimental results for SSH and how to *partially* reproduce them (partially is used since we omit validation).
 It is assumed that **SMBugFinder** and are installed (see **SMBugFinder's**'s 'README.md'), and that all commands are run from within **SMBugFinder's**'s directory.
 
 # SSH bug patterns
@@ -48,7 +48,6 @@ The folder (e.g. 'experiments/results/ssh/Dropbear-v2014.65') includes:
 # Reproducing experiments
 
 We developed a script `run_bugchecker.sh`, which reproduces our experiments for SSH minus validation.
-Validation is omitted as it 
 
 
 
