@@ -112,20 +112,14 @@
     </bugPattern>
     
     <!-- Other specific bug Patterns -->
+
     <bugPattern>
         <name>Missing NEWKEYS</name>
         <bugLanguage>missing_newkeys.dot</bugLanguage>
         <description>Server sends upper layer message during a rekey, before receiving NEWKEYS.</description>
         <severity>MEDIUM</severity>
     </bugPattern>
-    
-    <bugPattern>
-        <name>Missing UA_SUCCESS</name>
-        <bugLanguage>missing_ua_success.dot</bugLanguage>
-        <description>UA_SUCCESS is missing.</description>
-        <severity>HIGH</severity>
-    </bugPattern>
-    
+
     <bugPattern>
         <name>Missing SR_AUTH</name>
         <bugLanguage>missing_sr_auth.dot</bugLanguage>
@@ -139,7 +133,7 @@
         <bugLanguage>connection_layer_bug.dot</bugLanguage>
         <description>There is a bug in the connection layer.</description>
         <severity>UNKNOWN</severity>
-        <enabled>true</enabled>       
+        <enabled>false</enabled>       
     </generalBugPattern>
     
     <generalBugPattern>
@@ -147,7 +141,7 @@
     	<bugLanguage>transport_layer_bug.dot</bugLanguage>
     	<description>There is a bug in the transport layer.</description>
     	<severity>UNKNOWN</severity>
-        <enabled>true</enabled>
+        <enabled>false</enabled>
     </generalBugPattern>
     
 </bugPatterns>
