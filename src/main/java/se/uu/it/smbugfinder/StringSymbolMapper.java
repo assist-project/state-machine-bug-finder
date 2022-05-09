@@ -36,6 +36,9 @@ public class StringSymbolMapper implements SymbolMapping<String,String> {
 
 	@Override
 	public String toOutput(Collection<OutputSymbol> symbols) {
+	    if (symbols.isEmpty()) {
+	        return emptyOutput;
+	    }
 		StringBuilder builder = new StringBuilder();
 		for (OutputSymbol symbol : symbols) {
 			builder.append(symbol.name() + sep);
@@ -50,7 +53,7 @@ public class StringSymbolMapper implements SymbolMapping<String,String> {
 
 	@Override
 	public List<OutputSymbol> fromOutput(String output) {
-		return Arrays.stream(output.split(Pattern.quote(sep))).map(s -> new OutputSymbol(s)).collect(Collectors.toList());
+		return Arrays.stream(output.split(Pattern.quote(sep))).filter(s -> !s.equals(emptyOutput)).map(s -> new OutputSymbol(s)).collect(Collectors.toList());
 	}
 
 	@Override

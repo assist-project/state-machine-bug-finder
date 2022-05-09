@@ -22,15 +22,15 @@
     <!-- Rekey Properties  -->
     <!-- Property 5 bug pattern -->
     <bugPattern>
-        <name>Rekey Failure Pre-Authentication</name>
-        <bugLanguage>rekey_failure_pre-authentication.dot</bugLanguage>
+        <name>Rekey Failure Before Authentication</name>
+        <bugLanguage>rekey_failure_before_authentication.dot</bugLanguage>
         <description>Server refuses rekey after a service request is accepted, before authentication. (Property 5)</description>
         <severity>LOW</severity>
     </bugPattern>
     
     <bugPattern>
-        <name>Rekey Failure Post-Authentication</name>
-        <bugLanguage>rekey_failure_post-authentication.dot</bugLanguage>
+        <name>Rekey Failure After Authentication</name>
+        <bugLanguage>rekey_failure_after_authentication.dot</bugLanguage>
         <description>Server refuses rekey with an authenticated client. (Property 5)</description>
         <severity>LOW</severity>
     </bugPattern>
@@ -111,7 +111,7 @@
         <description>Following a rekey, request to open PTY is not successful.</description>
     </bugPattern>
     
-    <!-- Other Bug Patterns -->
+    <!-- Other specific bug Patterns -->
     <bugPattern>
         <name>Missing NEWKEYS</name>
         <bugLanguage>missing_newkeys.dot</bugLanguage>
@@ -131,18 +131,6 @@
         <bugLanguage>missing_sr_auth.dot</bugLanguage>
         <description>Authentication is performed without SR_AUTH.</description>
     </bugPattern>
-
-    <bugPattern>
-        <name>Multiple Kexinit</name>
-        <bugLanguage>multiple_kexinit.dot</bugLanguage>
-        <description>Server sends an additional KEXINIT during a key-exchange.</description>
-    </bugPattern>
-
-     <bugPattern>
-        <name>Unresponsive state</name>
-        <bugLanguage>unresponsive_state.dot</bugLanguage>
-        <description>State machine contains an unresponsive state.</description>
-    </bugPattern>
     
     <!-- General bug patterns -->
 
@@ -150,7 +138,8 @@
         <name>Connection Layer Bug</name>
         <bugLanguage>connection_layer_bug.dot</bugLanguage>
         <description>There is a bug in the connection layer.</description>
-        <severity>UNKNOWN</severity>       
+        <severity>UNKNOWN</severity>
+        <enabled>true</enabled>       
     </generalBugPattern>
     
     <generalBugPattern>
@@ -158,15 +147,8 @@
     	<bugLanguage>transport_layer_bug.dot</bugLanguage>
     	<description>There is a bug in the transport layer.</description>
     	<severity>UNKNOWN</severity>
+        <enabled>true</enabled>
     </generalBugPattern>
     
-    <!-- Disabled bug patterns due to them raising false alarms -->  
-    <bugPattern>
-        <name>Termination After UNIMPL</name>
-        <bugLanguage>termination_after_unimpl.dot</bugLanguage>
-        <description>Server terminates connection after sending UNIMPL, indicated by a NO_CONN response to CH_DATA.</description>
-        <enabled>false</enabled>
-    </bugPattern>
-     
 </bugPatterns>
 
