@@ -7,8 +7,6 @@ NO_RESP
 -od 
 output/BitVise-7.23  
 -ha 
-localhost:8001 
+localhost:6001 
 -rcm 
-resetok 
--generationStrategy 
-BFS
+resetok

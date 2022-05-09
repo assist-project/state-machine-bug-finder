@@ -9,6 +9,4 @@ output/Dropbear-v2014.65
 -ha 
 localhost:7001
 -rcm 
-resetok 
--generationStrategy 
-BFS
+resetok
