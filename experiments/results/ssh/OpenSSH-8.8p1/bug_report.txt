@@ -1,15 +1,22 @@
 
 ================================================================================
-Bug Listing
+Bug Report
 ================================================================================
 
-Bug Pattern: Rekey Failure Pre-Authentication
+
+--------------------------------------------------------------------------------
+Listing Bugs
+--------------------------------------------------------------------------------
+
+Bug Id: 1
+Bug Pattern: Rekey Failure Before Authentication
 Severity: LOW
 Description: Server refuses rekey after a service request is accepted, before authentication. (Property 5)
 Trace: KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SR_AUTH/SR_ACCEPT KEXINIT/UNIMPL 
 Inputs: KEXINIT KEX30 NEWKEYS SR_AUTH KEXINIT
 Validation Status: VALIDATION_SUCCESSFUL
 
+Bug Id: 2
 Bug Pattern: Invalid SR_AUTH Response
 Severity: LOW
 Description: Server incorrectly responds to a service request. Conforming responses are either SR_ACCEPT or SR_DISCONNECT (Property 8).
@@ -17,6 +24,7 @@ Trace: KEXINIT/KEXINIT SR_AUTH/UNIMPL
 Inputs: KEXINIT SR_AUTH
 Validation Status: VALIDATION_SUCCESSFUL
 
+Bug Id: 3
 Bug Pattern: Unignored Authentication Request
 Severity: MEDIUM
 Description: An authentication request received after a UA_SUCCESS is not ignored (Property 11).
@@ -24,13 +32,15 @@ Trace: KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SR_AUTH/SR_ACCEPT UA_
 Inputs: KEXINIT KEX30 NEWKEYS SR_AUTH UA_PK_OK UA_PK_OK
 Validation Status: VALIDATION_SUCCESSFUL
 
+Bug Id: 4
 Bug Pattern: Invalid Closure Response
 Severity: LOW
 Description: Server does not respond to a CH_CLOSE with a CH_CLOSE (Property 12).
-Trace: KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SR_AUTH/SR_ACCEPT UA_PK_OK/UA_SUCCESS+GLOBAL_REQUEST KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS CH_OPEN/CH_OPEN_SUCCESS CH_CLOSE/NO_RESP 
-Inputs: KEXINIT KEX30 NEWKEYS SR_AUTH UA_PK_OK KEXINIT KEX30 CH_OPEN CH_CLOSE
+Trace: KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SR_AUTH/SR_ACCEPT UA_PK_OK/UA_SUCCESS+GLOBAL_REQUEST KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS CH_OPEN/CH_OPEN_SUCCESS CH_CLOSE/NO_RESP SR_CONN/UNIMPL 
+Inputs: KEXINIT KEX30 NEWKEYS SR_AUTH UA_PK_OK KEXINIT KEX30 CH_OPEN CH_CLOSE SR_CONN
 Validation Status: VALIDATION_SUCCESSFUL
 
+Bug Id: 5
 Bug Pattern: Missing NEWKEYS
 Severity: MEDIUM
 Description: Server sends upper layer message during a rekey, before receiving NEWKEYS.
@@ -45,7 +55,7 @@ Run Description
 
 
 --------------------------------------------------------------------------------
-State Machine Bug Finding Parameters
+State Machine Bug Finder Parameters
 --------------------------------------------------------------------------------
 
 Alphabet: [SR_CONN, CH_CLOSE, KEXINIT, SR_AUTH, NEWKEYS, CH_EOF, KEX30, CH_OPEN, CH_REQUEST_PTY, CH_DATA, UA_PK_OK, UA_PK_NOK]
@@ -56,24 +66,25 @@ Uncategorized Bug Bound: 10
 Statistics
 ================================================================================
 
-Number of inputs: 30
+Experiment completed: true
+Number of inputs: 31
 Number of resets: 5
 Number of bugs: 5
-Time bug-checking took (ms): 64126
-Bug patterns loaded (19): [Early Service Accept, Unauthenticated Client, Rekey Failure Pre-Authentication, Rekey Failure Post-Authentication, Continue After Disconnect, Invalid Response Before NEWKEYS, Invalid SR_AUTH Response, Invalid Authentication Rejection Response, Multiple UA_SUCCESS, Unignored Authentication Request, Invalid Closure Response, Authentication Failure After Rekey, Channel Open Failure After Rekey, Request Failure After Rekey, Missing NEWKEYS, Missing UA_SUCCESS, Multiple Kexinit, Missing SR_AUTH, Connection Layer Bug]
-Bug patterns found (5): [Rekey Failure Pre-Authentication, Invalid SR_AUTH Response, Unignored Authentication Request, Invalid Closure Response, Missing NEWKEYS]
-Bug patterns validated successfully (5): [Rekey Failure Pre-Authentication, Invalid SR_AUTH Response, Unignored Authentication Request, Invalid Closure Response, Missing NEWKEYS]
+Time bug-checking took (ms): 66289
+Bug patterns loaded (16): [Authentication Failure After Rekey, Channel Open Failure After Rekey, Channel Request Terminal Failure After Rekey, Continue After Disconnect, Early Service Accept, Invalid Authentication Rejection Response, Invalid Closure Response, Invalid Response Before NEWKEYS, Invalid SR_AUTH Response, Missing NEWKEYS, Missing SR_AUTH, Multiple UA_SUCCESS, Rekey Failure After Authentication, Rekey Failure Before Authentication, Unauthenticated Client, Unignored Authentication Request]
+Bug patterns found (5): [Invalid Closure Response, Invalid SR_AUTH Response, Missing NEWKEYS, Rekey Failure Before Authentication, Unignored Authentication Request]
+Bug patterns validated successfully (5): [Invalid Closure Response, Invalid SR_AUTH Response, Missing NEWKEYS, Rekey Failure Before Authentication, Unignored Authentication Request]
 Validation Inputs per Bug Pattern
-   Rekey Failure Pre-Authentication : 5
+   Invalid Closure Response : 10
    Invalid SR_AUTH Response : 2
-   Unignored Authentication Request : 6
-   Invalid Closure Response : 9
    Missing NEWKEYS : 8
+   Rekey Failure Before Authentication : 5
+   Unignored Authentication Request : 6
 
 Validation Resets per Bug Pattern
-   Rekey Failure Pre-Authentication : 1
-   Invalid SR_AUTH Response : 1
-   Unignored Authentication Request : 1
    Invalid Closure Response : 1
+   Invalid SR_AUTH Response : 1
    Missing NEWKEYS : 1
+   Rekey Failure Before Authentication : 1
+   Unignored Authentication Request : 1
 

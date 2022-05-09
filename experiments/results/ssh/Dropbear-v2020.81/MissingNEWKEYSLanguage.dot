@@ -29,7 +29,6 @@ digraph g {
 	s0 -> s0 [label="O_CH_NONE"];
 	s0 -> s1 [label="O_SR_ACCEPT"];
 	s0 -> s0 [label="O_CH_EOF"];
-	s0 -> s0 [label="O_NO_RESP"];
 	s0 -> s0 [label="O_CH_MAX"];
 	s1 -> s1 [label="I_SR_CONN"];
 	s1 -> s1 [label="I_CH_CLOSE"];
@@ -55,7 +54,6 @@ digraph g {
 	s1 -> s1 [label="O_CH_NONE"];
 	s1 -> s1 [label="O_SR_ACCEPT"];
 	s1 -> s1 [label="O_CH_EOF"];
-	s1 -> s1 [label="O_NO_RESP"];
 	s1 -> s1 [label="O_CH_MAX"];
 	s2 -> s2 [label="I_SR_CONN"];
 	s2 -> s2 [label="I_CH_CLOSE"];
@@ -81,7 +79,6 @@ digraph g {
 	s2 -> s2 [label="O_CH_NONE"];
 	s2 -> s2 [label="O_SR_ACCEPT"];
 	s2 -> s2 [label="O_CH_EOF"];
-	s2 -> s2 [label="O_NO_RESP"];
 	s2 -> s2 [label="O_CH_MAX"];
 	s3 -> s3 [label="I_SR_CONN"];
 	s3 -> s3 [label="I_CH_CLOSE"];
@@ -107,7 +104,6 @@ digraph g {
 	s3 -> s3 [label="O_CH_NONE"];
 	s3 -> s3 [label="O_SR_ACCEPT"];
 	s3 -> s3 [label="O_CH_EOF"];
-	s3 -> s3 [label="O_NO_RESP"];
 	s3 -> s3 [label="O_CH_MAX"];
 	s4 -> s3 [label="I_SR_CONN"];
 	s4 -> s3 [label="I_CH_CLOSE"];
@@ -133,7 +129,6 @@ digraph g {
 	s4 -> s3 [label="O_CH_NONE"];
 	s4 -> s3 [label="O_SR_ACCEPT"];
 	s4 -> s3 [label="O_CH_EOF"];
-	s4 -> s3 [label="O_NO_RESP"];
 	s4 -> s3 [label="O_CH_MAX"];
 
 __start0 [label="" shape="none" width="0" height="0"];

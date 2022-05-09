@@ -31,7 +31,6 @@ digraph g {
 	s0 -> s0 [label="O_CH_NONE"];
 	s0 -> s0 [label="O_SR_ACCEPT"];
 	s0 -> s0 [label="O_CH_CLOSE*"];
-	s0 -> s0 [label="O_NO_RESP"];
 	s0 -> s0 [label="O_DISCONNECT"];
 	s0 -> s0 [label="O_CH_MAX"];
 	s1 -> s1 [label="I_SR_CONN"];
@@ -47,21 +46,20 @@ digraph g {
 	s1 -> s1 [label="I_UA_PK_OK"];
 	s1 -> s1 [label="I_UA_PK_NOK"];
 	s1 -> s2 [label="O_UNIMPL"];
-	s1 -> s3 [label="O_CH_CLOSE"];
-	s1 -> s3 [label="O_CH_SUCCESS"];
+	s1 -> s2 [label="O_CH_CLOSE"];
+	s1 -> s2 [label="O_CH_SUCCESS"];
 	s1 -> s3 [label="O_KEXINIT"];
 	s1 -> s1 [label="O_KEX31"];
 	s1 -> s0 [label="O_NEWKEYS"];
-	s1 -> s3 [label="O_BUFFERED"];
+	s1 -> s2 [label="O_BUFFERED"];
 	s1 -> s3 [label="O_UA_SUCCESS"];
-	s1 -> s3 [label="O_GLOBAL_REQUEST"];
-	s1 -> s3 [label="O_CH_OPEN_SUCCESS"];
+	s1 -> s2 [label="O_GLOBAL_REQUEST"];
+	s1 -> s2 [label="O_CH_OPEN_SUCCESS"];
 	s1 -> s2 [label="O_NO_CONN"];
-	s1 -> s3 [label="O_UA_FAILURE"];
+	s1 -> s2 [label="O_UA_FAILURE"];
 	s1 -> s2 [label="O_CH_NONE"];
-	s1 -> s3 [label="O_SR_ACCEPT"];
-	s1 -> s3 [label="O_CH_CLOSE*"];
-	s1 -> s2 [label="O_NO_RESP"];
+	s1 -> s2 [label="O_SR_ACCEPT"];
+	s1 -> s2 [label="O_CH_CLOSE*"];
 	s1 -> s2 [label="O_DISCONNECT"];
 	s1 -> s2 [label="O_CH_MAX"];
 	s2 -> s2 [label="I_SR_CONN"];
@@ -91,7 +89,6 @@ digraph g {
 	s2 -> s2 [label="O_CH_NONE"];
 	s2 -> s2 [label="O_SR_ACCEPT"];
 	s2 -> s2 [label="O_CH_CLOSE*"];
-	s2 -> s2 [label="O_NO_RESP"];
 	s2 -> s2 [label="O_DISCONNECT"];
 	s2 -> s2 [label="O_CH_MAX"];
 	s3 -> s2 [label="I_SR_CONN"];
@@ -121,7 +118,6 @@ digraph g {
 	s3 -> s2 [label="O_CH_NONE"];
 	s3 -> s2 [label="O_SR_ACCEPT"];
 	s3 -> s2 [label="O_CH_CLOSE*"];
-	s3 -> s2 [label="O_NO_RESP"];
 	s3 -> s2 [label="O_DISCONNECT"];
 	s3 -> s2 [label="O_CH_MAX"];
 

@@ -28,7 +28,6 @@ digraph g {
 	s0 -> s0 [label="O_CH_NONE"];
 	s0 -> s0 [label="O_SR_ACCEPT"];
 	s0 -> s0 [label="O_CH_CLOSE*"];
-	s0 -> s0 [label="O_NO_RESP"];
 	s0 -> s0 [label="O_DISCONNECT"];
 	s0 -> s0 [label="O_CH_MAX"];
 
