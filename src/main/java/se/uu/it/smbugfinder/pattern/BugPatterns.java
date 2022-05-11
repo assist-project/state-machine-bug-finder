@@ -82,6 +82,12 @@ public class BugPatterns {
 		return specificationLanguage;
 	}
 	
+	public void applySelector(Predicate<BugPattern> selector) {
+	    List<BugPattern> bugPatterns = new LinkedList<BugPattern>(this.bugPatterns);
+        bugPatterns.removeIf(bp -> !selector.test(bp));
+        this.bugPatterns = bugPatterns;
+	}
+	
 	void setSpecificationLanguage(DFAAdapter specificationLanguage) {
 		this.specificationLanguage = specificationLanguage;
 	}

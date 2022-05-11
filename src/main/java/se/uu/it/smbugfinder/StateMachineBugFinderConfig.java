@@ -1,5 +1,7 @@
 package se.uu.it.smbugfinder;
 
+import java.util.List;
+
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParametersDelegate;
 
@@ -40,6 +42,14 @@ public class StateMachineBugFinderConfig {
     @Parameter(names = { "-dtl",
     "-debugTimeLimit" }, required = false, description = "Time cap on testing if the debug mode EVALUATE_SPECIFIC_BUG_PATTERNS is used. Default is P1D meaning one day.")
     private String debugTimeLimit = "P1D";
+    
+    @Parameter(names = { "-sbp",
+    "-selectBugPatterns" }, required = false, description = "Only uses the following bug patterns from the catalogue. To be used, these should be enabled in the patterns file.")
+    private List<String> selectedBugPatterns;
+
+    public List<String> getSelectedBugPatterns() {
+        return selectedBugPatterns;
+    }
 
     public String getDebugTimeLimit() {
         return debugTimeLimit;

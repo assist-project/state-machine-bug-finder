@@ -78,6 +78,9 @@ public class StateMachineBugFinder<I,O> {
 	}
 	
 	public BugReport<I,O> findBugs(BugPatterns patterns, MealyMachine<?,I,?,O> mealy, Collection<I> inputs, SymbolMapping<I,O> mapping, @Nullable SUT<I,O> sut, List<StateMachineBug<I,O>> bugs) {
+	    if (config.getSelectedBugPatterns() != null) {
+            patterns.applySelector(bp -> config.getSelectedBugPatterns().contains(bp.getName()));
+        }
 		tracker = new StatisticsTracker(config, patterns);
 		tracker.startStateMachineBugFinding(inputs);
 		if (validate) {
@@ -86,6 +89,7 @@ public class StateMachineBugFinder<I,O> {
 			sut = inputCountingSut;
 			tracker.setSutTracking(inputCountingSut.getCounter(), resetCountingSut.getCounter());
 		}
+		
 		DFAAdapter sutLanguage = converter.convert(mealy, inputs, mapping);
 		exporter.exportDfa(sutLanguage, "sutLanguage.dot");
 		List<BugPattern> detectedPatterns = new LinkedList<>(); 
