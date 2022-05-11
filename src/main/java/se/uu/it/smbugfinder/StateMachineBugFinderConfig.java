@@ -1,5 +1,6 @@
 package se.uu.it.smbugfinder;
 
+import java.time.Duration;
 import java.util.List;
 
 import com.beust.jcommander.Parameter;
@@ -32,6 +33,14 @@ public class StateMachineBugFinderConfig {
             "-testBound" }, required = false, description = "Bound on the number of tests executed to validate each bug pattern.")
     private int bound = 100;
     
+    @Parameter(names = { "-vtl",
+    "-validationTimeLimit" }, required = false, description = "Bound on the number of tests executed to validate each bug pattern.", converter = DurationConverter.class)
+    private Duration validationTimeLimit;
+    
+    public Duration getValidationTimeLimit() {
+        return validationTimeLimit;
+    }
+
     @Parameter(names = { "-dm", "-debugMode" }, required = false, description = "Runs a specific debug mode.")
     private DebugMode debugMode;
 
@@ -40,8 +49,8 @@ public class StateMachineBugFinderConfig {
     private int debugWitnessBound = 100000;
     
     @Parameter(names = { "-dtl",
-    "-debugTimeLimit" }, required = false, description = "Time cap on testing if the debug mode EVALUATE_SPECIFIC_BUG_PATTERNS is used. Default is P1D meaning one day.")
-    private String debugTimeLimit = "P1D";
+    "-debugTimeLimit" }, required = false, description = "Time cap on testing if the debug mode EVALUATE_SPECIFIC_BUG_PATTERNS is used. Default is P1D meaning one day.", converter = DurationConverter.class)
+    private Duration debugTimeLimit = Duration.ofDays(1);
     
     @Parameter(names = { "-sbp",
     "-selectBugPatterns" }, required = false, description = "Only uses the following bug patterns from the catalogue. To be used, these should be enabled in the patterns file.")
@@ -51,7 +60,7 @@ public class StateMachineBugFinderConfig {
         return selectedBugPatterns;
     }
 
-    public String getDebugTimeLimit() {
+    public Duration getDebugTimeLimit() {
         return debugTimeLimit;
     }
 
