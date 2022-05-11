@@ -34,11 +34,11 @@ public class StateMachineBugFinderConfig {
     private DebugMode debugMode;
 
     @Parameter(names = { "-dwb",
-            "-debugWitnessBound" }, required = false, description = "Bound on the number of counted witnesses generated assuming debug mode COUNT_GENERATED_WITNESSES is used")
-    private int debugWitnessBound = 10000;
+            "-debugWitnessBound" }, required = false, description = "Bound on the number of witnesses generated/counted assuming debug modes  EVALUATE_SPECIFIC_BUG_PATTERNS/COUNT_GENERATED_WITNESSES are used")
+    private int debugWitnessBound = 100000;
     
     @Parameter(names = { "-dtl",
-    "-debugTimeLimit" }, required = false, description = "Time cap on testing is the debug mode EVALUATE_SPECIFIC_BUG_PATTERNS is used. Default is one day.")
+    "-debugTimeLimit" }, required = false, description = "Time cap on testing if the debug mode EVALUATE_SPECIFIC_BUG_PATTERNS is used. Default is P1D meaning one day.")
     private String debugTimeLimit = "P1D";
 
     public String getDebugTimeLimit() {

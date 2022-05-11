@@ -215,16 +215,18 @@ public class StateMachineBugFinder<I,O> {
 		tracker.handleGeneralBugPattern(generalBugPattern, generatedSequences, uncategorizedSequences);
 	}
 	
-	private void evaluateSpecificBugPatterns(GeneralBugPattern generalBugPattern, DFAAdapter sutLanguage, Collection<BugPattern> specificBugPatterns, SymbolMapping<I,O> mapping, @Nullable SUT<I,O> sut) {
+	private void evaluateSpecificBugPatterns(GeneralBugPattern generalBugPattern, DFAAdapter sutLanguage, Collection<BugPattern> detectedSpecificBugPatterns, SymbolMapping<I,O> mapping, @Nullable SUT<I,O> sut) {
 		LOGGER.info("Using the general bug pattern {} to evaluate (the benefit of) the specific bug patterns", generalBugPattern.getShortenedName());
 		DFAAdapter bugLanguage = generalBugPattern.generateBugLanguage().minimize();
 		exporter.exportDfa(bugLanguage, generalBugPattern.getShortenedName() + "Language.dot");
+
+
 		DFAAdapter sutBugLanguage = sutLanguage.intersect(bugLanguage).minimize();
 		exporter.exportDfa(sutBugLanguage, "sut" + generalBugPattern.getShortenedName() + "Language.dot");
 		
-		Set<BugPattern> categorizingBps = new LinkedHashSet<>();
+		Set<BugPattern> coveredBps = new LinkedHashSet<>();
 		Set<BugPattern> validatedCategorizingBps = new LinkedHashSet<>();
-		List<BugPattern> specializedBps = specificBugPatterns.stream().filter(sbp -> !sutBugLanguage.intersect(sbp.generateBugLanguage()).isEmpty()).collect(Collectors.toList());
+		List<BugPattern> specificBps = detectedSpecificBugPatterns.stream().filter(sbp -> !sutBugLanguage.intersect(sbp.generateBugLanguage()).isEmpty()).collect(Collectors.toList());
 		String timeoutStr = config.getDebugTimeLimit();
 		Duration duration = Duration.parse(timeoutStr);
 		
@@ -239,17 +241,17 @@ public class StateMachineBugFinder<I,O> {
 
 		for (Word<Symbol> sequence : wordsToAcceptingStates(sutBugLanguage.getDfa(), sutBugLanguage.getSymbols(), search)) {
 			generatedSequences ++;
-			List<BugPattern> capturingBps = specializedBps.stream().filter(bp -> bp.generateBugLanguage().accepts(sequence)).collect(Collectors.toList());
+			List<BugPattern> capturingBps = specificBps.stream().filter(bp -> bp.generateBugLanguage().acceptsPrefix(sequence)).collect(Collectors.toList());
 			if (capturingBps.isEmpty()) {
 				uncategorizedSequences ++;
 			} 
-			categorizingBps.addAll(capturingBps);
+			coveredBps.addAll(capturingBps);
 			if (validate) {
 				Trace<I,O> trace = mapping.toExecutionTrace(sequence);
 				Word<O> outputWord = sut.execute(trace.getInputWord());
 				Trace<I,O> actualTrace = new Trace<I,O> (trace.getInputWord(), outputWord);
 				Word<Symbol> actualSequence= mapping.fromExecutionTrace(actualTrace);
-				boolean exhibitsBug = bugLanguage.accepts(actualSequence);
+				boolean exhibitsBug = bugLanguage.acceptsPrefix(actualSequence);
 				if (exhibitsBug) {
 					capturingBps.forEach(bp -> tracker.validated(bp));
 					validatedCategorizingBps.addAll(capturingBps);
@@ -257,17 +259,17 @@ public class StateMachineBugFinder<I,O> {
 					if (capturingBps.isEmpty()) {
 						validatedUncategorizedSequences ++;
 					}
-					if (validatedCategorizingBps.size() == specializedBps.size()) {
+					if (validatedCategorizingBps.size() == specificBps.size()) {
 						break;
 					}
 				}
 			} else {
-				if (categorizingBps.size() == specializedBps.size()) {
+				if (coveredBps.size() == specificBps.size()) {
 					break;
 				}
 			}
 			
-			if (generatedSequences > generalBugPattern.generatedSequenceBound()) {
+			if (generatedSequences > config.getDebugWitnessBound()) {
 				break;
 			}
 			
@@ -278,14 +280,21 @@ public class StateMachineBugFinder<I,O> {
 		
 		LOGGER.info("Sequences generated: {}", generatedSequences);
 		LOGGER.info("Uncategorized sequences generated: {}", uncategorizedSequences);
-		LOGGER.info("Specialized bug patterns ({}): {}", specializedBps.size(), specializedBps.toString());
-		LOGGER.info("Categorizing bug patterns ({}): {}", categorizingBps.size(), categorizingBps.toString());
-		if (categorizingBps.size() != specializedBps.size()) {
-			Set<BugPattern> specializedBpsNotCovered = new LinkedHashSet<>(specializedBps);
-			specializedBpsNotCovered.removeAll(categorizingBps);
-			LOGGER.info("Specialized bug patterns that were not covered by sequence generation ({}): {}", specializedBpsNotCovered.size(), specializedBpsNotCovered.toString());
+		Set<BugPattern> uncategorizedSpecificBps= new LinkedHashSet<>(detectedSpecificBugPatterns);
+		uncategorizedSpecificBps.removeAll(specificBps);
+		if (!uncategorizedSpecificBps.isEmpty()) {
+            LOGGER.info("Specific bug patterns found in SUT that are not captured by the general bug pattern ({})", uncategorizedSpecificBps.toString());
+        } else {
+            LOGGER.info("All bug patterns found in SUT are captured by the general bug pattern");
+        }
+		LOGGER.info("Specific bug patterns found in both general bug pattern and SUT ({}): {}", specificBps.size(), specificBps.toString());
+		LOGGER.info("Specific bug patterns which were covered by sequence generation ({}): {}", coveredBps.size(), coveredBps.toString());
+		if (coveredBps.size() != specificBps.size()) {
+			Set<BugPattern> specificBpsNotCovered = new LinkedHashSet<>(specificBps);
+			specificBpsNotCovered.removeAll(coveredBps);
+			LOGGER.info("Specific bug patterns that were not covered by sequence generation ({}): {}", specificBpsNotCovered.size(), specificBpsNotCovered.toString());
 		} else {
-			LOGGER.info("All specialized bug patterns have been covered by sequence generation");
+			LOGGER.info("All specific bug patterns have been covered by sequence generation");
 		}
 		
 		if (validate) {
@@ -293,12 +302,12 @@ public class StateMachineBugFinder<I,O> {
 			LOGGER.info("Validated sequences: {}", validatedSequences);
 			LOGGER.info("Validated uncategorized sequences: {}", validatedUncategorizedSequences);
 			LOGGER.info("Validated categorizing bug patterns ({}): {}", validatedCategorizingBps.size(), validatedCategorizingBps.toString());
-			if (validatedCategorizingBps.size() != specializedBps.size()) {
-				Set<BugPattern> specializedBpsNotCovered = new LinkedHashSet<>(specializedBps);
-				specializedBpsNotCovered.removeAll(validatedCategorizingBps);
-				LOGGER.info("Specialized bug patterns that were not validated({}): {}", specializedBpsNotCovered.size(), specializedBpsNotCovered.toString());
+			if (validatedCategorizingBps.size() != specificBps.size()) {
+				Set<BugPattern> specificBpsNotCovered = new LinkedHashSet<>(specificBps);
+				specificBpsNotCovered.removeAll(validatedCategorizingBps);
+				LOGGER.info("Specific bug patterns that were not validated({}): {}", specificBpsNotCovered.size(), specificBpsNotCovered.toString());
 			} else {
-				LOGGER.info("All specialized bug patterns have been validated");
+				LOGGER.info("All specific bug patterns have been validated");
 			}
 			tracker.endValidation(generalBugPattern);
 			tracker.handleValidatedGeneralBugPattern(generalBugPattern, validatedSequences, validatedUncategorizedSequences);
