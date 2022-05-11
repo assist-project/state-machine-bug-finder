@@ -225,12 +225,8 @@ public class StateMachineBugFinder<I,O> {
 		Set<BugPattern> categorizingBps = new LinkedHashSet<>();
 		Set<BugPattern> validatedCategorizingBps = new LinkedHashSet<>();
 		List<BugPattern> specializedBps = specificBugPatterns.stream().filter(sbp -> !sutBugLanguage.intersect(sbp.generateBugLanguage()).isEmpty()).collect(Collectors.toList());
-		String timeoutStr = System.getProperties().getOrDefault("smbugfinder.timeout", "PT1D").toString();
+		String timeoutStr = config.getDebugTimeLimit();
 		Duration duration = Duration.parse(timeoutStr);
-//		specializedBps.forEach(sbp -> { 
-//			DfaAdapter sutSbp = sbp.generateBugLanguage().intersect(sutBugLanguage);
-//			LOGGER.info("{}: {}", sbp.getName(), sutSbp.path(sutSbp.getShortestAcceptingSequence()));
-//		});
 		
 		SearchConfig search = config.getSearchConfig();
 		long startTime = System.currentTimeMillis();

@@ -29,13 +29,21 @@ public class StateMachineBugFinderConfig {
     @Parameter(names = { "-tb",
             "-testBound" }, required = false, description = "Bound on the number of tests executed to validate each bug pattern.")
     private int bound = 100;
-
+    
     @Parameter(names = { "-dm", "-debugMode" }, required = false, description = "Runs a specific debug mode.")
     private DebugMode debugMode;
 
     @Parameter(names = { "-dwb",
             "-debugWitnessBound" }, required = false, description = "Bound on the number of counted witnesses generated assuming debug mode COUNT_GENERATED_WITNESSES is used")
     private int debugWitnessBound = 10000;
+    
+    @Parameter(names = { "-dtl",
+    "-debugTimeLimit" }, required = false, description = "Time cap on testing is the debug mode EVALUATE_SPECIFIC_BUG_PATTERNS is used. Default is one day.")
+    private String debugTimeLimit = "P1D";
+
+    public String getDebugTimeLimit() {
+        return debugTimeLimit;
+    }
 
     public StateMachineBugFinderConfig() {
         searchConfig = new SearchConfig();
