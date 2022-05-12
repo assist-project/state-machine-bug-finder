@@ -12,16 +12,20 @@ class Format(Enum):
     TEX = "tex"
 
 class BugPatternStatus(Enum):
-    VALIDATED = "confirmed"
-    CE = "counterexample"
+    VALIDATED = "validated"
+    FAILED = "failed"
     NOT_VALIDATED = "not_validated"
     NOT_FOUND = "-"
     NOT_LOADED = "not_loaded"
 
 class BugPatternValidationStatistics:
-    def __init__(self, inputs, resets, time=None):
+    def __init__(self, status, inputs, resets, time=None):
+        self.status = status
         self.inputs = inputs
         self.resets = resets
+
+    def get_status(self):
+        return self.status
 
     def get_inputs(self):
         return self.inputs
@@ -33,7 +37,7 @@ class BugPatternValidationStatistics:
         return self.time
 
     def __repr__(self):
-        return "BugPatternValidationStatistics(Inputs:{}, Resets:{})".format(str(self.inputs), str(self.resets))
+        return "BugPatternValidationStatistics(Status:{}, Inputs:{}, Resets:{})".format(str(self.status), str(self.inputs), str(self.resets))
 
 class ValidationStatistics:
     def __init__(self, bp_validation_stats, validation_time):
@@ -48,6 +52,12 @@ class ValidationStatistics:
 
     def get_total_resets(self):
         return sum([stats.get_resets() for stats in self._bp_validation_stats])
+
+    def get_total_validating_inputs(self):
+        return sum([stats.get_inputs() for stats in self._bp_validation_stats if stats.get_status() == BugPatternStatus.VALIDATED])
+
+    def get_total_validating_resets(self):
+        return sum([stats.get_resets() for stats in self._bp_validation_stats if stats.get_status() == BugPatternStatus.VALIDATED])
     
 class ResultData:
 
@@ -76,6 +86,13 @@ class ResultData:
 
     def get_bugpattern_stats(self):
         return self._bugpattern_stats
+
+    def count_found_bugs(self):
+        return sum(self._bugpatterns[bp] != BugPatternStatus.NOT_FOUND  for bp in self._bugpattern_stats)
+
+    def count_validated_bugs(self):
+        result = sum(self._bugpatterns[bp] == BugPatternStatus.VALIDATED  for bp in self._bugpattern_stats)
+        return result
 
     def get_exp_name(self):
         return self._exp_name
@@ -129,9 +146,38 @@ class CsvCollator(Collator):
                 if include_validation:
                     csv_writer.writerow(["-" for _ in range(len(suts)+1)])
                     csv_writer.writerow(["-" for _ in range(len(suts)+1)])
-                    csv_writer.writerow(["Total Inputs"] + [suts_bp[sut].get_exp_stats().get_total_inputs() if suts_bp[sut].get_exp_stats() is not None else "" for sut in sorted_suts] )
-                    csv_writer.writerow(["Total Resets"] + [suts_bp[sut].get_exp_stats().get_total_resets() if suts_bp[sut].get_exp_stats() is not None else "" for sut in sorted_suts] )
-                    csv_writer.writerow(["Total Time(ms)"] + [suts_bp[sut].get_exp_stats().get_total_time() if suts_bp[sut].get_exp_stats() is not None else "" for sut in sorted_suts] )
+
+                    # the rows
+                    bugs_found = list()
+                    bugs_validated = list()
+                    total_inputs = list()
+                    total_resets = list()
+                    total_time = list()
+                    total_validating_inputs = list()
+                    total_validating_resets = list()
+                    total_time = list()
+                    for sut in sorted_suts:
+                        sut_exp = suts_bp[sut]
+                        bugs_found.append(sut_exp.count_found_bugs())
+                        bugs_validated.append(sut_exp.count_validated_bugs())
+                        total_inputs.append(sut_exp.get_exp_stats().get_total_inputs() if sut_exp.get_exp_stats() is not None else "")
+                        total_resets.append(sut_exp.get_exp_stats().get_total_resets() if sut_exp.get_exp_stats() is not None else "")
+                        total_validating_resets.append(sut_exp.get_exp_stats().get_total_validating_resets() if sut_exp.get_exp_stats() is not None else "")
+                        total_validating_inputs.append(sut_exp.get_exp_stats().get_total_validating_inputs() if sut_exp.get_exp_stats() is not None else "")
+                        total_time.append(sut_exp.get_exp_stats().get_total_time() if sut_exp.get_exp_stats() is not None else "")
+
+                    csv_writer.writerow(["Bugs Found in Model"] + bugs_found)
+                    csv_writer.writerow(["Bugs Validated"] + bugs_validated)
+                    csv_writer.writerow(["Total Inputs"] + total_inputs)
+                    csv_writer.writerow(["Total Resets"] + total_resets)
+                    csv_writer.writerow(["Total Inputs for Validated Bugs"] + total_validating_inputs)
+                    csv_writer.writerow(["Total Resets for Validated Bugs"] + total_validating_resets)
+                    csv_writer.writerow(["Total Time(ms)"] + total_time)
+                    
+
+                    #csv_writer.writerow(["Total Inputs"] + [suts_bp[sut].get_exp_stats().get_total_inputs() if suts_bp[sut].get_exp_stats() is not None else "" for sut in sorted_suts] )
+                    #csv_writer.writerow(["Total Resets"] + [suts_bp[sut].get_exp_stats().get_total_resets() if suts_bp[sut].get_exp_stats() is not None else "" for sut in sorted_suts] )
+                    #csv_writer.writerow(["Total Time(ms)"] + [suts_bp[sut].get_exp_stats().get_total_time() if suts_bp[sut].get_exp_stats() is not None else "" for sut in sorted_suts] )
 
 def get_result_file(result_dir):
     return os.path.join(result_dir, "bug_report.txt")
@@ -216,7 +262,7 @@ def get_result_data(result_file):
         validatedbps = read_list_from_line(line)
         for bp in list(bugpatterns):
             if bugpatterns[bp] is BugPatternStatus.NOT_VALIDATED and bp != "Uncategorized":
-                bugpatterns[bp] = BugPatternStatus.VALIDATED if bp in validatedbps else BugPatternStatus.CE
+                bugpatterns[bp] = BugPatternStatus.VALIDATED if bp in validatedbps else BugPatternStatus.FAILED
 
         found_bp_list = [bugpattern for bugpattern in list(bugpatterns) if bugpatterns[bugpattern] != BugPatternStatus.NOT_FOUND and bugpattern != "Uncategorized" and bugpattern != "Handshake Bug"]
 
@@ -228,7 +274,7 @@ def get_result_data(result_file):
         (bug_resets, idx) = get_matching_lines_in_order(found_bp_list, lines, from_index=idx)
 
         for (bp_name, bug_inputs, bug_resets) in zip(found_bp_list, bug_inputs, bug_resets):
-            bugpattern_stats[bp_name] = BugPatternValidationStatistics(read_number(bug_inputs), read_number(bug_resets))
+            bugpattern_stats[bp_name] = BugPatternValidationStatistics(bugpatterns[bp_name], read_number(bug_inputs), read_number(bug_resets))
         
         stats = ValidationStatistics(list(bugpattern_stats.values()), total_time)
 
@@ -243,7 +289,7 @@ def get_collator(format):
         raise NotImplementedError
 
 def coleasce_status(s1, s2):
-    prio_list = [BugPatternStatus.NOT_LOADED, BugPatternStatus.NOT_FOUND, BugPatternStatus.NOT_VALIDATED, BugPatternStatus.CE, BugPatternStatus.VALIDATED]
+    prio_list = [BugPatternStatus.NOT_LOADED, BugPatternStatus.NOT_FOUND, BugPatternStatus.NOT_VALIDATED, BugPatternStatus.FAILED, BugPatternStatus.VALIDATED]
     return s1 if prio_list.index(s1) > prio_list.index(s2) else s2
 
 class CoalesceException(Exception):
