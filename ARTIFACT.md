@@ -1,10 +1,11 @@
 **StateMachineBugFinder** (or **SMBugFinder** for short) is the implementation of our automata-based bug detection technique.
 **SMBugFinder** can be used both as a standalone testing tool, or as a library which can be incorporated in other learning setups (such as **DTLS-Fuzzer**'s) to automate analysis of learned models.
 As a testing tool it requires connection to an online test harness.
-This document presents our SSH server bug patterns and the learned models they were checked on, experimental results for SSH and to reproduce them.
-It is assumed that **SMBugFinder** and are installed (see **SMBugFinder's**'s 'README.md'), and that all commands are run from within **SMBugFinder's**'s directory.
+This document presents our SSH server bug patterns and the learned models they were checked on, experimental results for SSH and how to reproduce them.
+It is assumed that **SMBugFinder** is installed (see **SMBugFinder's**'s 'README.md'), and that all commands are run from within **SMBugFinder's**'s directory.
 The necessary software is already setup in the virtual machine provided as part of the artifact.
-Also setup is Dropbear 2020.81, to exemplify validation.
+Also setup are the SSH [learning setup][ssharness] provided by prior work ('ssh-mapper'), and  Dropbear 2020.81 ('suts/ssh/dropbear-2020.81'). 
+We will use these to exemplify validation via an external test harness.
 
 # SSH bug patterns
 
@@ -55,7 +56,7 @@ Press 'OK' to view the summary.
 
 #  Performing a single bug detection experiment
 
-Suppose we want to test Dropbear V2020.81, for which a model is present in our models directory ('src/main/resources/models/ssh').
+Suppose we want to test Dropbear V2020.81, for which a model is included in our models directory ('src/main/resources/models/ssh/Dropbear-v2020.81.dot').
 From within **SMBugFinder**'s directory we first launch Dropbear, having it listen on port 7001.
 
     > suts/ssh/dropbear-2020.81/dropbear -p localhost:7001 -F -R -T 100
@@ -104,7 +105,7 @@ The witness uncovered exposes this problem.
 
 Authentication was engaged ('UA_SUCCESS') without prior request for the authentication service (via 'SR_AUTH'). 
 The bug pattern which lead to this bug's capture is defined by the DOT model 'src/main/resources/bugpatterns/ssh/missing_sr_auth.dot' which we can view with `xdot`. 
-Running this command also produces the output folder 'output/Dropbear-v2020.81' whose structure we described earlier. 
+Running this command also produces the output folder 'output/Dropbear-v2020.81' whose structure is similar to that of the experiment folders were described earlier. 
 
 # Reproducing bug detection experiments
 
@@ -121,18 +122,18 @@ We then run:
 
     > ./run_bugchecker.sh -ao
 
-Option `-ao` causes the summary file to be automatically opened once the experiments are done.
-All bugs found in the implementations' models are marked as 'not_validated'.
+Option `-ao` causes script to automatically open the summary file  once the experiments are done.
+On the displayed summary, all bugs found in the implementations' models are marked as 'not_validated'.
 There should be two such bugs for Dropbear, five for OpenSSH and four for BitVise.
+User can also check the generated experiment folders in 'output/ssh'.
 
 ## With validation
 
-We have found bugs, but without validation we cannot be sure they affect the implementation.
+We have found bugs, but without validation we cannot be sure they actually affect the implementation.
 Options `-v` and `-qv` enable BFS validation and quick, single witness validation, respectively. 
 Suppose we want to run bug detection on Dropbear, this time using validation.
 We first need to ensure Dropbear and the test harness are running.
 For convenience, we provide the scripts to launch them: `run_dropbear.sh`, `run_dropbear_mapper.sh`.
-Each script must be executed in a separate terminal.
 We then run:
 
     > ./run_bugchecker.sh -v -ao
