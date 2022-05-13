@@ -1,0 +1,26 @@
+Bug\SUT,BitVise-8.49,Dropbear-v2020.81,OpenSSH-8.8p1
+Authentication Failure After Rekey,-,-,-
+Channel Open Failure After Rekey,-,-,-
+Channel Request Terminal Failure After Rekey,-,-,-
+Continue After Disconnect,-,-,-
+Early Service Accept,-,-,-
+Invalid Authentication Rejection Response,-,-,-
+Invalid Closure Response,-,"validated(inp: 6, rst: 1)","validated(inp: 10, rst: 1)"
+Invalid Response Before NEWKEYS,-,-,-
+Invalid SR_AUTH Response,"validated(inp: 4, rst: 1)",-,"validated(inp: 2, rst: 1)"
+Missing NEWKEYS,"validated(inp: 7, rst: 1)",-,"validated(inp: 8, rst: 1)"
+Missing SR_AUTH,-,"validated(inp: 4, rst: 1)",-
+Multiple UA_SUCCESS,-,-,-
+Rekey Failure After Authentication,"validated(inp: 8, rst: 1)",-,-
+Rekey Failure Before Authentication,-,-,"validated(inp: 5, rst: 1)"
+Unauthenticated Client,-,-,-
+Unignored Authentication Request,"validated(inp: 6, rst: 1)",-,"validated(inp: 6, rst: 1)"
+-,-,-,-
+-,-,-,-
+Bugs Found in Model,4,2,5
+Bugs Validated,4,2,5
+Total Inputs,25,10,31
+Total Resets,4,2,5
+Total Inputs for Validated Bugs,25,10,31
+Total Resets for Validated Bugs,4,2,5
+Total Time(ms),16990,9605,66289
