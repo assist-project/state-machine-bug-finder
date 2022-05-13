@@ -18,7 +18,7 @@ start [color="red"]
 bug [shape="doublecircle"]
 
 start -> start [label="other - {I_SR_AUTH}"]
-start -> bug [label="{O_UA_SUCCESS}"]
+start -> bug [label="{O_UA_SUCCESS, O_UA_FAILURE}"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
@@ -38,7 +38,7 @@ Each model is named after the SUT whose behavior it captures.
 
 # Experimental results for SSH
 
-Results for SSH servers along with a CSV summary are stored in 'experiments/results/ssh'.
+Results for SSH servers along with a CSV summary ('ssh_summary.csv') are stored in 'experiments/results/ssh'.
 There is a folder for each experiment, named after the SUT analyzed. 
 A folder (e.g. 'experiments/results/ssh/Dropbear-v2020.81') includes:
 
@@ -46,10 +46,17 @@ A folder (e.g. 'experiments/results/ssh/Dropbear-v2020.81') includes:
  - models for the DFA-encoded bug patterns after the condensed notation (e.g. 'other') has been resolved (e.g. 'MissingSR_AUTHLanguage.dot');
  - DFA models for the SUT ('sutLanguage.dot') and its intersection with bug patterns, if this intersection is not empty (e.g. 'sutMissingSR_AUTHLanguage.dot');
 
+On the virtual machine, the CSV summary can be viewed with LibreOffice, e.g.
+
+    > xdg-open experiments/results/ssh/ssh_summary.csv
+
+A 'Text Import' LibreOffice window should pop up. 
+Press 'OK' to view the summary.
+
 #  Performing a single bug detection experiment
 
 Suppose we want to test Dropbear V2020.81, for which a model is present in our models directory ('src/main/resources/models/ssh').
-From within **SMBugFinder**'s directory we first launch Dropbear, having it listen on port 7000.
+From within **SMBugFinder**'s directory we first launch Dropbear, having it listen on port 7001.
 
     > suts/ssh/dropbear-2020.81/dropbear -p localhost:7001 -F -R -T 100
 
@@ -58,12 +65,12 @@ In a separate terminal, we then launch the SSH mapper (test infrastructure) take
     > python2.7 ssh-mapper/paramiko/mapper/mapper.py -l localhost:7000 -s localhost:7001 -c Dropbear 
     
 The mapper is listening on local port 7000 for inputs (e.g. 'KEXINIT') to execute on the SSH implementation listening at local port 7001.
-Finally, in a third terminal, we execute **SMBugFinder** on the arguments included in the argument file 'args/dropbear-v2020.81', telling it, in addition, to validate the bugs using the `-vb` option.
+Finally, in a third terminal, we execute **SMBugFinder** on the arguments included in the argument file 'args/dropbear-v2020.81', telling it to validate the bugs using the `-vb` option.
 
     > java -jar target/sm-bug-finder.jar args/dropbear-v2020.81 -vb
 
 
-This should produce the output:
+This should produce output which includes:
 
 ```
 --------------------------------------------------------------------------------
@@ -88,23 +95,23 @@ Validation Status: VALIDATION_SUCCESSFUL
 
 ```
 
-Executing should produce the above output revealing two bugs found in the model learned for this version of Dropbear.
-One of the bug shown in the print-out is *Missing SR_AUTH*.
+The output reveals two bugs found in the model learned for this version of Dropbear.
+One of the bugs shown is *Missing SR_AUTH*.
 The bug entails the Dropbear server engaging the authentication service without a prior service request for it (which is 'SR_AUTH' in our input alphabet).
 The witness uncovered exposes this problem.
 
     > KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP UA_PK_OK/UA_SUCCESS
 
-Authentication was successful ('UA_SUCCESS') without prior request for the authentication service (via 'SR_AUTH'). 
+Authentication was engaged ('UA_SUCCESS') without prior request for the authentication service (via 'SR_AUTH'). 
 The bug pattern which lead to this bug's capture is defined by the DOT model 'src/main/resources/bugpatterns/ssh/missing_sr_auth.dot' which we can view with `xdot`. 
-Running this command also produces the output folder 'output/Dropbear2020.81' whose structure was described earlier. 
+Running this command also produces the output folder 'output/Dropbear-v2020.81' whose structure we described earlier. 
 
 # Reproducing bug detection experiments
 
 We developed a script, `run_bugchecker.sh`, designed to reproduce the SSH experiments conducted in our submission, the results of which are stored in 'experiments/results/ssh/' in our artifact.
 The script executes the relevant bug checking experiments and collates the results into a CSV summary ('ssh_summary.csv').
-Results are stores in 'output/ssh'.
-The summary can be checked against the relevant table in our submission, or against the bugs we reported.
+Results are stored in 'output/ssh'.
+The summary can be checked against Table 4 in our submission, or against the bugs we reported.
 Validation is only supported for Dropbear.
 
 ## Without validation
@@ -115,11 +122,12 @@ We then run:
     > ./run_bugchecker.sh -ao
 
 Option `-ao` causes the summary file to be automatically opened once the experiments are done.
-All bugs found are marked as 'not_validated'.
+All bugs found in the implementations' models are marked as 'not_validated'.
 There should be two such bugs for Dropbear, five for OpenSSH and four for BitVise.
 
 ## With validation
 
+We have found bugs, but without validation we cannot be sure they affect the implementation.
 Options `-v` and `-qv` enable BFS validation and quick, single witness validation, respectively. 
 Suppose we want to run bug detection on Dropbear, this time using validation.
 We first need to ensure Dropbear and the test harness are running.
@@ -130,6 +138,6 @@ We then run:
     > ./run_bugchecker.sh -v -ao
 
 This should generate in 'output/ssh' experimental results and a summary that are consistent with those used for the submission ('experiments/results/ssh').
-It should reveal two validated bugs in Dropbear.
+It should reveal two validated bugs in Dropbear, Invalid Closure Response and Missing SR_AUTH.
 
 [sshharness]:https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:77503
