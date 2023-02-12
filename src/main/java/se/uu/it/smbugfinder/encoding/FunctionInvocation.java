@@ -13,7 +13,7 @@ public class FunctionInvocation implements ValueExpression {
 		this.function = function;
 		this.parameters = parameters;
 		if (function.getNumArgs() != parameters.length) {
-			throw new RuntimeDecodingException("Invalid number of parameters in function invokation");
+			throw new RuntimeDecodingException("Invalid number of parameters in function invocation");
 		}
 	}
 	
