@@ -38,17 +38,17 @@ import se.uu.it.smbugfinder.sut.SocketSUT;
 
 /**
  * Utility for using smbugfinder to be used to test generic network protocol implementations using a Mealy machine.
- * For validation, it assumes a test harness with which it communicates over TCP sockets, by exchanging strings representing in 
+ * For validation, it assumes a test harness with which it communicates over TCP sockets, by exchanging strings representing in
  */
 public class Main {
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-	
+
 	public static void main(String args[] ) throws FileNotFoundException, IOException {
 		if (args.length > 0 && !args[0].startsWith("@")  && new File(args[0]).exists()) {
 			LOGGER.info("Noticed that the first argument is a file. Processing it as an argument file.");
 			args[0] = "@" + args[0];
-		} 
-		
+		}
+
 		StateMachineBugFinderToolConfig config = new StateMachineBugFinderToolConfig();
 		JCommander commander = JCommander.newBuilder()
 				.allowParameterOverwriting(true)
@@ -73,9 +73,9 @@ public class Main {
 		dir.mkdirs();
 		InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
 		InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(getResource(config.getModel()));
-		
+
 		BugPatternLoader loader = new BugPatternLoader(new DefaultDFADecoder());
-		
+
 		SymbolMapping<String, String> symbolMapping = new StringSymbolMapper(config.getEmptyOutput(), config.getSeparator());
 		List<Symbol> allSymbols = new ArrayList<>();
 		SUT<String,String> sut = null;
@@ -96,27 +96,27 @@ public class Main {
 				throw new ConfigurationException("Unable to validate since neither the address of a test harness nor a validation model were provided");
 			}
 		}
-		
+
 		StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<String, String>(finderConfig);
 		modelBugFinder.setExporter(new DFAExporter.DirectoryDFAExporter(config.getOutputDir()));
 		List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
 		Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
 		export(stats, config.getOutputDir(), "statistics.txt");
-		BugReport bugReport = new BugReport(modelBugs); 
+		BugReport bugReport = new BugReport(modelBugs);
 		export(bugReport, config.getOutputDir(), "bug_report.txt");
-		
+
 	}
-	
+
 	private static void export(ExportableResult result, String outputDirectory, String filename) throws FileNotFoundException {
 		result.doExport(new PrintWriter(new OutputStreamWriter(System.out), true));
-		result.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, filename).toFile())), true));	
+		result.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, filename).toFile())), true));
 	}
-	
+
 	private static InputStream getResource(String path) throws FileNotFoundException {
 		InputStream resource = Main.class.getResourceAsStream(path);
 		if (resource == null) {
 			resource = new FileInputStream(path);
-		} 
+		}
 		return resource;
 	}
 }

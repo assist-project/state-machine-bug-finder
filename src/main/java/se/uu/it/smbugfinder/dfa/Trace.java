@@ -9,7 +9,7 @@ import net.automatalib.words.Word;
 public class Trace <I,O> implements Iterable<Pair<I,O>>{
 	private Word<I> inputWord;
 	private Word<O> outputWord;
-	
+
 	public Trace(Word<I> inputs, Word<O> outputs) {
 		super();
 		this.inputWord = inputs;
@@ -22,11 +22,11 @@ public class Trace <I,O> implements Iterable<Pair<I,O>>{
 	public Word<O> getOutputWord() {
 		return outputWord;
 	}
-	
+
 	public int getLength() {
 		return inputWord.length();
 	}
-	
+
 	public Stream<Pair<I,O>> getInputOutputStream() {
 		Stream.Builder<Pair<I,O>> builder = Stream.builder();
 		for (int i=0; i<getLength(); i++) {
@@ -34,11 +34,11 @@ public class Trace <I,O> implements Iterable<Pair<I,O>>{
 		}
 		return builder.build();
 	}
-	
+
 	public Iterator<Pair<I,O>> iterator() {
 		return getInputOutputStream().iterator();
 	}
-	
+
 	public String toCompactString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append("Trace: ");
@@ -47,7 +47,7 @@ public class Trace <I,O> implements Iterable<Pair<I,O>>{
 		}
 		return builder.toString();
 	}
-	
+
 	public String toString() {
 		return String.format("Trace: \n  inputs: %s\n  outputs: %s\n", inputWord, outputWord);
 	}

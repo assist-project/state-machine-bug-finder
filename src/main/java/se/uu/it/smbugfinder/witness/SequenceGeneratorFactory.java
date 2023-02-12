@@ -15,8 +15,8 @@ import net.automatalib.words.Word;
 import se.uu.it.smbugfinder.utils.DFAUtils;
 
 public class SequenceGeneratorFactory {
-	
-	
+
+
 	public static <I> SequenceGenerator<I> buildGenerator(GenerationStrategy generationStrategy, @Nullable SearchConfig config, @Nullable DFA<?,I> specification) {
 		switch(generationStrategy) {
 		case SHORTEST:
@@ -35,12 +35,12 @@ public class SequenceGeneratorFactory {
 			throw new NotImplementedException(String.format("Generation strategy %s is not supported.", generationStrategy));
 		}
 	}
-	
+
 	static class ShortestSequenceGenerator<I> implements SequenceGenerator<I> {
-		
+
 		@Override
 		public <S> Iterable<Word<I>> generateSequences(DFA<S, I> bugLanguage, Collection<I> alphabet) {
-			Word<I> shortest = DFAUtils.findShortestAcceptingWord(bugLanguage, alphabet); 
+			Word<I> shortest = DFAUtils.findShortestAcceptingWord(bugLanguage, alphabet);
 			if (shortest != null) {
 				return Arrays.asList(shortest);
 			} else {
@@ -48,7 +48,7 @@ public class SequenceGeneratorFactory {
 			}
 		}
 	}
-	
+
 	static class BFSSequenceGenerator<I> implements SequenceGenerator<I> {
 		private SearchConfig config;
 
@@ -62,5 +62,5 @@ public class SequenceGeneratorFactory {
 			return explorer.wordsToTargetStates(acceptingStates, config);
 		}
 	}
-	
+
 }

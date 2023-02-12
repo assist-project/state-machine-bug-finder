@@ -8,13 +8,13 @@ public class RelationalExpression  implements BooleanExpression {
 
 	private ValueExpression expr1, expr2;
 	private RelationalOperator op;
-	
+
 	public RelationalExpression(ValueExpression expr1, RelationalOperator op, ValueExpression expr2) {
 		this.expr1 = expr1;
 		this.op = op;
 		this.expr2 = expr2;
 	}
-	
+
 	public boolean eval(Symbol symbol, Valuation valuation) {
 		Value value1 = expr1.eval(symbol, valuation);
 		Value value2 = expr2.eval(symbol, valuation);
@@ -32,7 +32,7 @@ public class RelationalExpression  implements BooleanExpression {
 			} else {
 				contains = collection.contains(value1.getStoredValue());
 			}
-			
+
 			if (op == RelationalOperator.IN) {
 				return contains;
 			} else {
@@ -42,7 +42,7 @@ public class RelationalExpression  implements BooleanExpression {
 			throw new RuntimeDecodingException(String.format("Operation %s not supported", op.name()));
 		}
 	}
-	
+
 	public String toString() {
 		return expr1.toString() + " " + op.getSign() + " " + expr2.toString();
 	}

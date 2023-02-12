@@ -5,7 +5,7 @@ package se.uu.it.smbugfinder;
  */
 public class ConfigurationException extends RuntimeException{
 	/**
-	 * 
+	 *
 	 */
 	private static final long serialVersionUID = 1L;
 

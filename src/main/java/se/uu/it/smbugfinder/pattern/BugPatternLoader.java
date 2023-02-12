@@ -35,7 +35,7 @@ import se.uu.it.smbugfinder.encoding.DFADecoder;
 public class BugPatternLoader {
 	private static final Logger LOGGER = LoggerFactory.getLogger(BugPatternLoader.class);
 	private static JAXBContext context;
-	
+
 	private static final String PATTERNS_FILE = "patterns.xml";
 
 	private static synchronized JAXBContext getJAXBContext()
@@ -53,13 +53,13 @@ public class BugPatternLoader {
 		BugPatternLoader loader = new BugPatternLoader(decoder);
 		return loader.loadPatterns(patternsDirectory, symbols);
 	}
-	
+
 	private DFADecoder dfaDecoder;
-	
+
 	public BugPatternLoader(DFADecoder dfaDecoder) {
 		this.dfaDecoder = dfaDecoder;
 	}
-	
+
 	public BugPatterns loadPatterns(String patternsDirectory, Collection<Symbol> symbols) throws BugPatternLoadingException {
 		BugPatterns bugPatterns = null;
 		LOGGER.info("Loading bug patterns");
@@ -72,12 +72,12 @@ public class BugPatternLoader {
 		} catch (Exception e) {
 			throw new BugPatternLoadingException("Failed to load patterns from patterns XML file from file " + patternsDirectory, e);
 		}
-		
+
 		preparePatterns(bugPatterns, patternsURI, symbols);
 		LOGGER.info("Successfully loaded {} bug patterns from file {}", bugPatterns.getBugPatterns().size(), patternsDirectory);
 		return bugPatterns;
 	}
-	
+
 	private BugPatterns loadPatterns(InputStream inputStream) throws JAXBException, IOException, XMLStreamException {
 		Unmarshaller unmarshaller = getJAXBContext().createUnmarshaller();
 		XMLInputFactory xif = XMLInputFactory.newFactory();
@@ -87,29 +87,29 @@ public class BugPatternLoader {
 				inputStream));
 		BugPatterns bugPatterns = (BugPatterns) unmarshaller.unmarshal(xsr);
 		bugPatterns.prepare();
-		
+
 		return bugPatterns;
 
 	}
 
 	private void preparePatterns(BugPatterns bugPatterns, URI location, Collection<Symbol> symbols) {
 		Function<String, DFAAdapter> loadSpecification = p -> loadDfa(p, location, symbols);
-		
+
 		if (bugPatterns.getSpecificationLanguagePath() != null) {
 			DFAAdapter conformanceLanguage = loadSpecification.apply(bugPatterns.getSpecificationLanguagePath());
 			bugPatterns.setSpecificationLanguage(conformanceLanguage);
 		}
-		
+
 		for (BugPattern bugPattern : bugPatterns.getBugPatterns()) {
 			DFAAdapter bugLanguage = loadSpecification.apply(bugPattern.getBugLanguagePath());
 			bugPattern.setBugLanguage(bugLanguage);
 		}
 	}
-	
+
 	private DFAAdapter loadDfa(String encodedDfaPath, URI location, Collection<Symbol> symbols){
 		LOGGER.info("Loading DFA at path: {}", encodedDfaPath);
 		URI encodedDfaLocation = location.resolve(encodedDfaPath);
-		InputStream encodedDfaStream = getResourceAsStream(encodedDfaLocation.getPath()); 
+		InputStream encodedDfaStream = getResourceAsStream(encodedDfaLocation.getPath());
 		try {
 			DFAAdapter dfaAdapter = dfaDecoder.decode(encodedDfaStream, symbols);
 			return dfaAdapter;
@@ -117,7 +117,7 @@ public class BugPatternLoader {
 			throw new BugPatternLoadingException("Error handling encoded dfa at path " + encodedDfaLocation.getPath(), e);
 		}
 	}
-	
+
 	private InputStream getResourceAsStream(String resourcePath) {
 		InputStream encodedDfaStream = BugPatternLoader.class.getResourceAsStream(resourcePath);
 		if (encodedDfaStream == null) {
@@ -133,7 +133,7 @@ public class BugPatternLoader {
 		if (encodedDfaStream == null) {
 			throw new BugPatternLoadingException("Could not find resource at path " + resourcePath);
 		}
-		
+
 		return encodedDfaStream;
 	}
 }

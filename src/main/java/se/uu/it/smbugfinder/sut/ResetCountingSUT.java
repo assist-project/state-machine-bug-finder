@@ -3,7 +3,7 @@ package se.uu.it.smbugfinder.sut;
 import net.automatalib.words.Word;
 
 public class ResetCountingSUT<I,O> implements SUT<I,O> {
-	
+
 	private SUT<I, O> sut;
 	private Counter counter;
 
@@ -17,9 +17,9 @@ public class ResetCountingSUT<I,O> implements SUT<I,O> {
 		counter.increment();
 		return sut.execute(inputWord);
 	}
-	
+
 	public Counter getCounter() {
 		return counter;
 	}
-	
+
 }

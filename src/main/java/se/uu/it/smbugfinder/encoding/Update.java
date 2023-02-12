@@ -7,7 +7,7 @@ import se.uu.it.smbugfinder.dfa.Symbol;
 
 public class Update {
 	private static Update EMPTY;
-	
+
 	public static final Update emptyUpdate() {
 		if (EMPTY == null) {
 			EMPTY = new Update();
@@ -20,15 +20,15 @@ public class Update {
 	public Update(Assignment... assignments) {
 		this.assignments = assignments;
 	}
-	
+
 	public Update(Collection<Assignment> assignments) {
 		this.assignments = assignments.toArray(new Assignment[assignments.size()]);
 	}
-	
+
 	public Assignment [] getAssignments() {
 		return assignments;
 	}
-	
+
 	public Valuation update(Symbol symbol, Valuation valuation) {
 		Valuation currentValuation = valuation;
 		for (Assignment assignment : assignments) {
@@ -36,7 +36,7 @@ public class Update {
 		}
 		return currentValuation;
 	}
-	
+
 	public String toString() {
 		return Arrays.toString(assignments);
 	}
@@ -62,6 +62,6 @@ public class Update {
 			return false;
 		return true;
 	}
-	
-	
+
+
 }

@@ -24,12 +24,12 @@ public class DefaultDFAEncodingParser implements DFAEncodingParser {
 	public DefaultDFAEncodingParser(ParsingContextFactory factory) {
 		this.factory = factory;
 	}
-	
+
 
 	public DefaultDFAEncodingParser() {
 		this(ParsingContextFactory.EMPTY);
 	}
-	
+
 	public DFAEncoding parse(InputStream encodedDfaStream) throws IOException {
 		ParsingContext context = factory.newContext();
 		cache = new HashMap<>();
@@ -54,7 +54,7 @@ public class DefaultDFAEncodingParser implements DFAEncodingParser {
 			return label;
 		} catch (se.uu.it.smbugfinder.encoding.javacc.ParseException | TokenMgrError e) {
 			throw new InvalidLabelException(labelString, e);
-		} 
+		}
 	}
 
 }

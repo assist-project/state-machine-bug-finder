@@ -13,7 +13,7 @@ public class DefaultTokenMatcher implements TokenMatcher {
 	}
 
 	/**
-	 * In case a symbol matches a token, return the atomic token that it is matched to. 
+	 * In case a symbol matches a token, return the atomic token that it is matched to.
 	 */
 	@Override
 	public DescriptionToken matchingAtomicToken(Symbol symbol, DescriptionToken description) {
@@ -57,7 +57,7 @@ public class DefaultTokenMatcher implements TokenMatcher {
 				throw new RuntimeDecodingException(String.format("Unsupported binary operation type %s", operation.name()));
 			}
 			break;
-			
+
 		case ENUMERATION:
 			EnumerationToken enumerationDescription = (EnumerationToken) description;
 			for (DescriptionToken token : enumerationDescription.getSubTokens()) {
@@ -88,10 +88,10 @@ public class DefaultTokenMatcher implements TokenMatcher {
 			}
 			break;
 		default:
-			throw new RuntimeDecodingException(String.format("Unsupported symbol description type %s", description.getType().name())); 
-			
+			throw new RuntimeDecodingException(String.format("Unsupported symbol description type %s", description.getType().name()));
+
 		}
-		
+
 		return matchingToken;
 	}
 

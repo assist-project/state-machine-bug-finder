@@ -12,7 +12,7 @@ public class DFAEncoding {
 	 */
 	private DFA<?, Label> encodedDfa;
 	private Collection<Label> labels;
-	
+
 	public DFAEncoding(DFA<?, Label> encodedDfa, Collection<Label> labels) {
 		super();
 		this.encodedDfa = encodedDfa;
@@ -26,5 +26,5 @@ public class DFAEncoding {
 	public Collection<Label> getLabels() {
 		return labels;
 	}
-	
+
 }

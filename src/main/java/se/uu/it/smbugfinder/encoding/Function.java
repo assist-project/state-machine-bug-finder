@@ -8,28 +8,28 @@ public abstract class Function {
 
 	private String name;
 	private int numArgs;
-	
+
 	public Function(String name, int numArgs) {
 		this.name = name;
 		this.numArgs = numArgs;
 	}
-	
+
 	public Value invoke(Symbol symbol, Value ... arguments) {
 		if (arguments.length != numArgs) {
 			throw new RuntimeDecodingException(String.format("Function %s invoked with an invalid number of arguments (%d instead of %d)", name, arguments.length, numArgs));
 		}
-		
+
 		return doInvoke(symbol, arguments);
 	}
-	
+
 	public int getNumArgs() {
 		return numArgs;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	protected abstract Value doInvoke(Symbol symbol, Value ... arguments);
 
 	@Override
@@ -63,5 +63,5 @@ public abstract class Function {
 	protected void invalidInvocation(Value ... arguments) {
 		throw new RuntimeDecodingException(String.format("Function %s was invoked with invalid arguments %s", this.getName(), Arrays.toString(arguments)));
 	}
-	
+
 }

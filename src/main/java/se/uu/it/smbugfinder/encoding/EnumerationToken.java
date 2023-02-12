@@ -6,11 +6,11 @@ import java.util.Set;
 
 public class EnumerationToken extends DescriptionToken {
 	private List<? extends DescriptionToken> descriptionToken;
-	
+
 	public EnumerationToken(List<? extends DescriptionToken> descriptionToken) {
 		this.descriptionToken = descriptionToken;
 	}
-	
+
 	@Override
 	public Set<DescriptionToken> getSubTokens() {
 		return new LinkedHashSet<>(descriptionToken);

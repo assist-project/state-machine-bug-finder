@@ -38,29 +38,29 @@ import se.uu.it.smbugfinder.sut.SimulatedMealySUT;
 
 /**
  * An interactive demo application showcasing how the state-machine-bug-finder works.
- * A user is requested first a SUT model along, the bug patterns and other inputs relevant for bug checking. 
- * Each request may be skipped, in which case, default input is used. 
+ * A user is requested first a SUT model along, the bug patterns and other inputs relevant for bug checking.
+ * Each request may be skipped, in which case, default input is used.
  */
 public class Demo {
 
 	private BufferedReader in;
 	private PrintStream out;
 	private Deque<String> commands;
-	
+
 	public Demo(BufferedReader in, PrintStream out) {
 		this.in = in;
 		this.out = out;
 		this.commands = new ArrayDeque<String>();
 	}
-	
+
 	public Demo() {
 		this(new BufferedReader(new InputStreamReader(System.in)), System.out);
 	}
-	
+
 	public void bufferCommands(Collection<String> commands) {
 		this.commands.addAll(commands);
 	}
-	
+
 	private String ask(String msg, boolean required) throws IOException{
 		out.println(msg);
 		if (!commands.isEmpty()) {
@@ -68,7 +68,7 @@ public class Demo {
 			out.println(command);
 			return command;
 		}
-		String newCommands; 
+		String newCommands;
 		while ( (newCommands =  in.readLine().trim()).isEmpty() && required);
 		String[] commandSplit = newCommands.split("\\s");
 		if (commandSplit.length > 1) {
@@ -76,30 +76,30 @@ public class Demo {
 		}
 		return commandSplit[0];
 	}
-	
+
 	private String askOrDefault(String msg, String def) throws IOException {
 		String input = ask(msg, false);
 		if (input.length() == 0 || input.equals("-")) {
 			input = def;
 			out.println("Using (default): " + def);
-		} 
+		}
 		return input;
 	}
-	
-	
+
+
 	private void displayIntro() {
 		out.println("Welcome to the state-machine-bug-finder demo. ");
 		out.println("The purpose is to showcase how the bug-finder works on user-supplied models/bug patterns.");
 	}
-	
+
 	private InputStream getResource(String path) throws FileNotFoundException {
 		InputStream resource = Demo.class.getResourceAsStream(path);
 		if (resource == null) {
 			resource = new FileInputStream(path);
-		} 
+		}
 		return resource;
 	}
-	
+
 	public void run() throws IOException {
 		displayIntro();
 		String sutModel = askOrDefault("SUT model path: ", "/models/dtls/MbedTLS.dot");
@@ -108,12 +108,12 @@ public class Demo {
 		String noResp = askOrDefault("Mealy no response output: ", "TIMEOUT");
 		String validationModel = askOrDefault("Path to Mealy machine used in validation: ", null);
 		String outputDirectory = askOrDefault("Output directory: ", "output");
-		
+
 		InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
 		InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(getResource(sutModel));
-		
+
 		BugPatternLoader loader = new BugPatternLoader(new DefaultDFADecoder());
-		
+
 		SymbolMapping<String, String> symbolMapping = new StringSymbolMapper(noResp, sep);
 		List<Symbol> allSymbols = new ArrayList<>();
 		SUT<String,String> sut = null;
@@ -130,26 +130,26 @@ public class Demo {
 		StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<String, String>(config);
 		new File(outputDirectory).mkdirs();
 		modelBugFinder.setExporter(new DFAExporter.DirectoryDFAExporter(outputDirectory));
-		
+
 		List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
 		Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
 		export(stats, outputDirectory, "statistics.txt");
 		BugReport bugReport = new BugReport(modelBugs);
 		export(bugReport, outputDirectory, "bug_report.txt");
 	}
-	
+
 
 	public static void main(String args []) throws IOException {
 		Demo demo = new Demo();
 		demo.bufferCommands(Arrays.asList(args));
 		demo.run();
 	}
-	
+
 	private static void export(ExportableResult result, String outputDirectory, String filename) throws FileNotFoundException {
 		result.doExport(new PrintWriter(new OutputStreamWriter(System.out), true));
-		result.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, filename).toFile())), true));	
+		result.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, filename).toFile())), true));
 	}
-	
+
 	static class BugReport extends ExportableResult {
 		private List<? extends Bug<?,?>> bugs;
 		public BugReport(List<? extends Bug<?,?>> bugs) {
@@ -161,8 +161,8 @@ public class Demo {
 			title("Bug Listing", pw);
 			for (Bug<?,?> bug : bugs) {
 				pw.println(bug.getDescription());
-			}	
+			}
 		}
-		
+
 	}
 }

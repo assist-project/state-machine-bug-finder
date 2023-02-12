@@ -24,7 +24,7 @@ public class TestUtils {
 		}
 		return sw.toString();
 	}
-	
+
 	/*
 	 * Returns a DFA in which all unspecified transitions are directed to a sync state.
 	 */
@@ -33,6 +33,6 @@ public class TestUtils {
 		FastDFA<I> complementModel = new FastDFA<>(simpleAlphabet);
 		DFAs.complete(dfa, simpleAlphabet, complementModel);
 		return complementModel;
-		
+
 	}
 }

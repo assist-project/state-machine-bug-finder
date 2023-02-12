@@ -4,7 +4,7 @@ import java.util.LinkedHashMap;
 
 public class Variables extends LinkedHashMap<String, Variable>{
 	/**
-     * 
+     *
      */
     private static final long serialVersionUID = 1L;
 

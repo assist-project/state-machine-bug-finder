@@ -14,15 +14,15 @@ public abstract class AbstractLabelParser {
 	public void setParsingContext(ParsingContext context) {
 		this.context = context;
 	}
-	
+
 	public Function resolveFunction(String identifier) {
 		Function function = this.context.getFunctions().get(identifier);
 		if (function == null) {
 			throw new RuntimeDecodingException("Function " + identifier + " undefined. Defined functions: " + context.getFunctions().keySet());
 		}
 		return function;
-	} 
-	
+	}
+
 	public Field resolveField(String identifier) {
 		Field field = this.context.getFields().get(identifier);
 		if (field == null) {
@@ -30,7 +30,7 @@ public abstract class AbstractLabelParser {
 		}
 		return field;
 	}
-	
+
 	public Constant resolveConstant(String identifier) {
 		Constant cst = this.context.getConstants().get(identifier);
 		if (cst == null) {
@@ -38,7 +38,7 @@ public abstract class AbstractLabelParser {
 		}
 		return cst;
 	}
-	
+
 	public Variable resolveVariable(String identifier) {
 		if (context.getVariables().containsKey(identifier)) {
 			return context.getVariables().get(identifier);
@@ -47,23 +47,23 @@ public abstract class AbstractLabelParser {
 		context.getVariables().put(newVar.getName(), newVar);
 		return newVar;
 	}
-	
+
 	public ValueExpression resolveValueExpression(String identifier) {
 		if (context.getFields().containsKey(identifier)) {
 			return context.getFields().get(identifier);
 		}
-		
+
 		if (context.getConstants().containsKey(identifier)) {
 			return context.getConstants().get(identifier);
 		}
-		
+
 		if (context.getVariables().containsKey(identifier)) {
 			return context.getVariables().get(identifier);
 		}
-		
+
 		Variable newVar = new Variable(identifier);
 		context.getVariables().put(newVar.getName(), newVar);
-		
+
 		return newVar;
 	}
 }

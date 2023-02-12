@@ -16,7 +16,7 @@ import net.automatalib.words.impl.ListAlphabet;
 import se.uu.it.smbugfinder.utils.DFAUtils;
 
 public class DeviantTransitionSequenceGenerator <I> implements SequenceGenerator<I> {
-	
+
 	private DFA<?, I> specification;
 
 	public DeviantTransitionSequenceGenerator(DFA<?, I> specification) {
@@ -33,9 +33,9 @@ public class DeviantTransitionSequenceGenerator <I> implements SequenceGenerator
 			}
 		};
 	}
-	
+
 	private static class DeviantTransitionSequenceIterator<I> implements Iterator<Word<I>> {
-		
+
 		private DFA<?, I> specification;
 		private FastDFA<I> bugLanguage;
 		private FastDFAState sink;
@@ -50,11 +50,11 @@ public class DeviantTransitionSequenceGenerator <I> implements SequenceGenerator
 			symbols.forEach(i -> this.bugLanguage.setTransition(sink, i, sink));
 			this.alphabet = symbols;
 		}
-		
+
 		private <S1,S2> void createCopy(DFA<S1, I> from, MutableDFA<S2, I>  to, Collection<I> alphabet) {
 			AutomatonLowLevelCopy.copy(AutomatonCopyMethod.BFS, from, alphabet, to);
 		}
-		
+
 		@Override
 		public boolean hasNext() {
 			return computeNextWord() != null;

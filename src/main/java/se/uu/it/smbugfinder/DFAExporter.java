@@ -14,16 +14,16 @@ import se.uu.it.smbugfinder.dfa.DFAAdapter;
 
 public interface DFAExporter {
 	static final Logger LOGGER = LoggerFactory.getLogger(DFAExporter.class);
-	
+
 	public void exportDfa(DFAAdapter spec, String name);
-	
+
 	public static class DirectoryDFAExporter implements DFAExporter {
 		private String outputDir;
 
 		public DirectoryDFAExporter(String outputDir) {
 			this.outputDir = outputDir;
 		}
-		
+
 		public void exportDfa(DFAAdapter spec, String name) {
 			try {
 				spec.export(new FileWriter(new File(outputDir, name)));
@@ -32,8 +32,8 @@ public interface DFAExporter {
 				LOGGER.error(e.getLocalizedMessage());
 			}
 		}
-	} 
-	
+	}
+
 	public static class StreamDFAExporter implements DFAExporter {
 		private PrintWriter writer;
 
@@ -43,7 +43,7 @@ public interface DFAExporter {
 
 		@Override
 		public void exportDfa(DFAAdapter spec, String name) {
-			
+
 			writer.println("============");
 			writer.println("");
 			writer.println("DFA " + name);
