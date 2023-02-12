@@ -214,7 +214,10 @@
 	  <java>
 	    <endWithNewline />
 	    <!-- <trimTrailingWhitespace /> -->
-	    <!-- <importOrder /> -->
+            <importOrder>
+	      <!-- the empty string is for all imports not specified explicitly, '|' joins groups without blank line -->
+              <order>java,javax,org,com,net|</order>
+            </importOrder>
 	    <removeUnusedImports />
 	  </java>
 	</configuration>
