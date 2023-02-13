@@ -1,9 +1,9 @@
 package se.uu.it.smbugfinder.encoding;
 
 public class OtherToken extends DescriptionToken {
-	
+
 	private OtherTokenType otherTokenType;
-	
+
 	public OtherToken() {
 		this(OtherTokenType.ALL);
 	}
@@ -16,7 +16,7 @@ public class OtherToken extends DescriptionToken {
 	public DescriptionType getType() {
 		return DescriptionType.OTHER;
 	}
-	
+
 	public OtherTokenType getOtherTokenType() {
 		return otherTokenType;
 	}

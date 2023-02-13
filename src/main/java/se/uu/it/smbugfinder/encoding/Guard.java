@@ -4,24 +4,24 @@ import se.uu.it.smbugfinder.dfa.Symbol;
 
 public class Guard {
 	private static Guard TRUE;
-	
+
 	public static final Guard trueGuard() {
 		if (TRUE == null) {
 			TRUE = new Guard(TrueExpression.getInstance());
 		}
 		return TRUE;
 	}
-	
+
 	private BooleanExpression booleanExpression;
-	
+
 	public Guard(BooleanExpression booleanExpression) {
 		this.booleanExpression = booleanExpression;
 	}
-	
+
 	public boolean eval(Symbol symbol, Valuation valuation) {
 		return booleanExpression.eval(symbol, valuation);
 	}
-	
+
 	public String toString() {
 		return booleanExpression.toString();
 	}

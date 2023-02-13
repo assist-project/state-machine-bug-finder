@@ -18,11 +18,11 @@ public class Variable implements ValueExpression {
 	public Value eval(Symbol symbol, Valuation valuation) {
 		return valuation.get(this);
 	}
-	
+
 	public String toString() {
 		return name;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -10,16 +10,16 @@ public class Constant extends Value {
 		super(storedValue);
 		this.name = name;
 	}
-	
+
 	public String getName() {
 		return name;
 	}
-	
+
 	@Override
 	public Value eval(Symbol symbol, Valuation valuation) {
 		return new Value(getStoredValue());
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

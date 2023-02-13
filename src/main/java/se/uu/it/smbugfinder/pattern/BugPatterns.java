@@ -16,32 +16,32 @@ import se.uu.it.smbugfinder.dfa.DFAAdapter;
 
 @XmlRootElement(name = "bugPatterns")
 public class BugPatterns {
-	
+
 	@XmlElement(name = "specificationLanguage", required = false)
 	private String specificationLanguagePath;
-	
+
 	@XmlTransient
 	private DFAAdapter specificationLanguage;
-	
+
 	@XmlElements(value = {
 			@XmlElement(type = BugPattern.class, name = "bugPattern"),
 			@XmlElement(type = GeneralBugPattern.class, name = "generalBugPattern")
 			})
 	private List<BugPattern> bugPatterns;
-	
+
 	@XmlElement(name = "defaultBugSeverity")
 	private BugSeverity defaultBugSeverity;
-	
+
 	@XmlElement(name = "defaultEnabled")
 	private boolean defaultEnabled;
-	
+
 	BugPatterns() {
 		bugPatterns = new ArrayList<>();
 		defaultBugSeverity = BugSeverity.UNKNOWN;
 		defaultEnabled = true;
 	}
-	
-	
+
+
 	/**
 	 * Initializes bug patterns according to the default values of this container and removes disabled bug patterns.
 	 * Should be called before bug patterns are accessed.
@@ -50,7 +50,7 @@ public class BugPatterns {
 		updateDefaults();
 		removeDisabled();
 	}
-	
+
 	/*
 	 * Adjusts the contained bug patterns according to the default values of this container.
 	 */
@@ -64,7 +64,7 @@ public class BugPatterns {
 			}
 		}
 	}
-	
+
 	/*
 	 * Removes bug patterns that have not been enabled
 	 */
@@ -73,7 +73,7 @@ public class BugPatterns {
 		bugPatterns.removeIf(bp -> !bp.isEnabled());
 		this.bugPatterns = bugPatterns;
 	}
-	
+
 	public String getSpecificationLanguagePath() {
 		return specificationLanguagePath;
 	}
@@ -81,7 +81,7 @@ public class BugPatterns {
 	public DFAAdapter getSpecificationLanguage() {
 		return specificationLanguage;
 	}
-	
+
 	void setSpecificationLanguage(DFAAdapter specificationLanguage) {
 		this.specificationLanguage = specificationLanguage;
 	}
@@ -89,23 +89,23 @@ public class BugPatterns {
 	public List<BugPattern> getBugPatterns() {
 		return bugPatterns;
 	}
-	
+
 	public List<BugPattern> getSpecificBugPatterns() {
 		return bugPatterns.stream().filter(bp -> !bp.isGeneral()).collect(Collectors.toList());
 	}
-	
+
 	public List<GeneralBugPattern> getGeneralBugPatterns() {
 		return bugPatterns.stream().filter(bp -> bp.isGeneral()).map(bp -> (GeneralBugPattern) bp).collect(Collectors.toList());
 	}
-	
+
 	public List<BugPattern> getBugPatterns(Predicate<BugPattern> filter) {
 		return bugPatterns.stream().filter(filter).collect(Collectors.toList());
 	}
-	
+
 	public BugSeverity getDefaultBugSeverity() {
 		return defaultBugSeverity;
 	}
-	
+
 	public boolean isDefaultEnabled() {
 		return defaultEnabled;
 	}

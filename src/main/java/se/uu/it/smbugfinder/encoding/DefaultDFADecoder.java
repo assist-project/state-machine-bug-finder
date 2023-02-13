@@ -17,26 +17,26 @@ import se.uu.it.smbugfinder.dfa.Symbol;
 public class DefaultDFADecoder implements DFADecoder {
 	private TokenMatcher tokenMatcher = new DefaultTokenMatcher();
 	private DFAEncodingParser parser;
-	
+
 	public DefaultDFADecoder(DFAEncodingParser parser) {
 		this.parser = parser;
 	}
-	
+
 	public DefaultDFADecoder() {
 		this(new DefaultDFAEncodingParser());
 	}
-	
+
 	public void setTokenMatcher(TokenMatcher tokenMatcher) {
 		this.tokenMatcher = tokenMatcher;
 	}
-	
+
 	public DFAAdapter decode(InputStream dfaEncodingStream, Collection<Symbol> symbols) throws Exception  {
 		DFAEncoding dfaEncoding = parser.parse(dfaEncodingStream);
 		DFAAdapter decodedDfa = decode(dfaEncoding, symbols);
 		return decodedDfa;
 	}
-	
-	DFAAdapter decode(DFAEncoding dfaEncoding, 
+
+	DFAAdapter decode(DFAEncoding dfaEncoding,
 			Collection<Symbol> symbols) {
 		FastDFA<Symbol> decodedDfa = decode(dfaEncoding.getEncodedDfa(), dfaEncoding.getLabels(), symbols);
 		FastDFA<Symbol> inputCompleteDfa = new FastDFA<Symbol>(new ListAlphabet<Symbol>(new ArrayList<>(symbols)));
@@ -44,7 +44,7 @@ public class DefaultDFADecoder implements DFADecoder {
 		DFAAdapter dfaAdapter = new DFAAdapter(decodedDfa, decodedDfa.getInputAlphabet());
 		return dfaAdapter.minimize();
 	}
-	
+
 	private <S> FastDFA<Symbol> decode(DFA<S, Label> encodedDfa, Collection<Label> labels, Collection<Symbol> symbols) {
 		Alphabet<Symbol> alphabet = new ListAlphabet<>(new ArrayList<>(symbols));
 		FastDFA<Symbol> decodedDfa = new FastDFA<>(alphabet);

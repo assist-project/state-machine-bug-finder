@@ -16,24 +16,24 @@ public class FunctionInvocation implements ValueExpression {
 			throw new RuntimeDecodingException("Invalid number of parameters in function invocation");
 		}
 	}
-	
+
 	public FunctionInvocation(Function function, List<ValueExpression> parameters) {
 		this(function, parameters.toArray(new ValueExpression[parameters.size()]));
 	}
-	
+
 	@Override
 	public Value eval(Symbol symbol, Valuation valuation) {
 		Value [] args = new Value [parameters.length];
-		
+
 		for (int i=0; i< parameters.length; i++) {
 			args[i] = parameters[i].eval(symbol, valuation);
 		}
-		
+
 		Value result = function.invoke(symbol, args);
-		
+
 		return result;
 	}
-	
+
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		builder.append(function.getName());
@@ -47,7 +47,7 @@ public class FunctionInvocation implements ValueExpression {
 		builder.append(")");
 		return builder.toString();
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -7,12 +7,12 @@ package se.uu.it.smbugfinder.encoding;
  * Users of the library can tailor the context to the protocol in question.
  */
 public class ParsingContext {
-	
+
 	private Constants constants;
 	private Fields fields;
 	private Functions functions;
 	private Variables variables;
-	
+
 	public ParsingContext() {
 		constants = new Constants();
 		fields = new Fields();
@@ -38,17 +38,17 @@ public class ParsingContext {
 	public Functions getFunctions() {
 		return functions;
 	}
-	
+
 	public Variables getVariables() {
 		return variables;
 	}
-	
+
 	public String toString() {
 		StringBuilder builder = new StringBuilder();
 		return builder.append("Constants: ").append(constants.keySet()).append(System.lineSeparator())
 		.append("Fields: ").append(fields.keySet()).append(System.lineSeparator())
 		.append("Functions: ").append(functions.keySet()).append(System.lineSeparator())
 		.append("Variables: ").append(variables.keySet()).toString();
-		
+
 	}
 }

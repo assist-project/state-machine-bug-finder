@@ -6,13 +6,13 @@ public class Assignment {
 
 	private Field field;
 	private Variable variable;
-	
+
 	public Assignment(Variable variable, Field field) {
 		super();
 		this.field = field;
 		this.variable = variable;
 	}
-	
+
 	public Valuation update(Symbol label, Valuation valuation) {
 		Value val = field.eval(label, valuation);
 		return valuation.update(variable, val);
@@ -25,12 +25,12 @@ public class Assignment {
 	public Variable getVariable() {
 		return variable;
 	}
-	
+
 	public String toString() {
 		return variable + " := " + field;
 	}
-	
-	
+
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

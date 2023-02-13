@@ -54,28 +54,28 @@ public class StateMachineBugFinder<I,O> {
 	private StateMachineBugFinderConfig config;
 	private StatisticsTracker tracker;
 	private DFAExporter exporter;
-	
+
 	public StateMachineBugFinder(StateMachineBugFinderConfig config) {
 		this.validate = config.isValidate();
 		this.config = config;
 		this.converter = new MealyToDFAConverter<>();
 		this.exporter = (dfa, name) -> {};
 	}
-	
+
 	/**
 	 * @param converter
 	 */
 	public void setConverter(MealyToDFAConverter<I,O> converter) {
 		this.converter = converter;
 	}
-	
+
 	/**
 	 * @param exporter
 	 */
 	public void setExporter(DFAExporter exporter) {
 		this.exporter = exporter;
 	}
-	
+
 	public Statistics findBugs(BugPatterns patterns, MealyMachine<?,I,?,O> mealy, Collection<I> inputs, SymbolMapping<I,O> mapping, @Nullable SUT<I,O> sut, List<StateMachineBug<I,O>> bugs) {
 		tracker = new StatisticsTracker(config, patterns);
 		tracker.startStateMachineBugFinding(inputs);
@@ -87,9 +87,9 @@ public class StateMachineBugFinder<I,O> {
 		}
 		DFAAdapter sutLanguage = converter.convert(mealy, inputs, mapping);
 		exporter.exportDfa(sutLanguage, "sutLanguage.dot");
-		List<BugPattern> detectedPatterns = new LinkedList<>(); 
+		List<BugPattern> detectedPatterns = new LinkedList<>();
 
-		// match against each loaded bug pattern 
+		// match against each loaded bug pattern
 		for (BugPattern bugPattern : patterns.getSpecificBugPatterns()) {
 			LOGGER.info("Checking bug pattern {}", bugPattern.getShortenedName());
 			DFAAdapter bugLanguage = bugPattern.generateBugLanguage();
@@ -99,18 +99,18 @@ public class StateMachineBugFinder<I,O> {
 				LOGGER.info("The bug pattern {} is an empty language when considering only the input/output labels from the SUT model. ", bugPattern.getName());
 				continue;
 			}
-			
+
 			DFAAdapter sutBugLanguage = bugPattern.generateBugLanguage()
 					.intersect(sutLanguage)
-					.minimize(); 
-			
+					.minimize();
+
 			if (!sutBugLanguage.isEmpty()) {
 				detectedPatterns.add(bugPattern);
 				LOGGER.info("sutBugLanguage not empty, finding witness");
 				exporter.exportDfa(sutBugLanguage, "sut" + bugPattern.getShortenedName() + "Language.dot");
 				if (validate && !DebugMode.EVALUATE_SPECIFIC_BUG_PATTERNS.isEnabled(config)) {
 					SequenceGenerator<Symbol> sequenceGenerator = SequenceGeneratorFactory.buildGenerator(config.getWitnessGenerationStrategy(), config.getSearchConfig(), null);
-					WitnessFinder witnessFinder = new WitnessFinder(sequenceGenerator, config.getBound()); 
+					WitnessFinder witnessFinder = new WitnessFinder(sequenceGenerator, config.getBound());
 					tracker.startValidation(bugPattern);
 					Trace<I,O> witness = witnessFinder.findWitness(sut, mapping, sutBugLanguage, bugPattern.generateBugLanguage());
 					tracker.endValidation(bugPattern);
@@ -146,7 +146,7 @@ public class StateMachineBugFinder<I,O> {
 				handleGeneralBugPattern(bugPattern, sutLanguage, detectedPatterns, mapping, bugs);
 			}
 		}
-		
+
 		DFAAdapter spec = patterns.getSpecificationLanguage();
 		if (spec != null) {
 			// check for the existence of unidentified specification bugs
@@ -155,7 +155,7 @@ public class StateMachineBugFinder<I,O> {
 		tracker.finishStateMachineBugFinding(bugs);
 		return tracker.generateStatistics();
 	}
-	
+
 	private void handleGeneralBugPattern(GeneralBugPattern generalBugPattern, DFAAdapter sutLanguage, Collection<BugPattern> specificBugPatterns, SymbolMapping<I,O> mapping, List<StateMachineBug<I,O>> bugs) {
 		LOGGER.info("Checking bug pattern {}", generalBugPattern.getShortenedName());
 		DFAAdapter bugLanguage = generalBugPattern.generateBugLanguage().minimize();
@@ -163,10 +163,10 @@ public class StateMachineBugFinder<I,O> {
 		DFAAdapter sutBugLanguage = sutLanguage.intersect(bugLanguage).minimize();
 		exporter.exportDfa(sutBugLanguage, "sut" + generalBugPattern.getShortenedName() + "Language.dot");
 		Set<BugPattern> categorizingBps = new LinkedHashSet<>();
-		
+
 		SearchConfig search = config.getSearchConfig();
 		List<BugPattern> specializedBugPatterns = specificBugPatterns.stream().filter(sbp -> !sutBugLanguage.intersect(sbp.generateBugLanguage()).isEmpty()).collect(Collectors.toList());
-		
+
 		int uncategorizedSequences = 0, generatedSequences = 0;
 
 		for (Word<Symbol> sequence : wordsToAcceptingStates(sutBugLanguage.getDfa(), sutBugLanguage.getSymbols(), search)) {
@@ -183,43 +183,43 @@ public class StateMachineBugFinder<I,O> {
 			} else {
 				categorizingBps.addAll(capturingBps);
 			}
-			
+
 			if (generatedSequences > generalBugPattern.generatedSequenceBound()) {
 				break;
 			}
-			
+
 		}
-		
+
 		LOGGER.info("Sequences generated: {}", generatedSequences);
 		LOGGER.info("Uncategorized sequences generated: {}", uncategorizedSequences);
 		LOGGER.info("Categorizing bug patterns ({}): {}", categorizingBps.size(), categorizingBps.toString());
 		tracker.handleGeneralBugPattern(generalBugPattern, generatedSequences, uncategorizedSequences);
 	}
-	
+
 	private void evaluateSpecificBugPatterns(GeneralBugPattern generalBugPattern, DFAAdapter sutLanguage, Collection<BugPattern> specificBugPatterns, SymbolMapping<I,O> mapping, @Nullable SUT<I,O> sut) {
 		LOGGER.info("Using the general bug pattern {} to evaluate (the benefit of) the specific bug patterns", generalBugPattern.getShortenedName());
 		DFAAdapter bugLanguage = generalBugPattern.generateBugLanguage().minimize();
 		exporter.exportDfa(bugLanguage, generalBugPattern.getShortenedName() + "Language.dot");
 		DFAAdapter sutBugLanguage = sutLanguage.intersect(bugLanguage).minimize();
 		exporter.exportDfa(sutBugLanguage, "sut" + generalBugPattern.getShortenedName() + "Language.dot");
-		
+
 		Set<BugPattern> categorizingBps = new LinkedHashSet<>();
 		Set<BugPattern> validatedCategorizingBps = new LinkedHashSet<>();
 		List<BugPattern> specializedBps = specificBugPatterns.stream().filter(sbp -> !sutBugLanguage.intersect(sbp.generateBugLanguage()).isEmpty()).collect(Collectors.toList());
 		String timeoutStr = System.getProperties().getOrDefault("smbugfinder.timeout", "PT1D").toString();
 		Duration duration = Duration.parse(timeoutStr);
-//		specializedBps.forEach(sbp -> { 
+//		specializedBps.forEach(sbp -> {
 //			DfaAdapter sutSbp = sbp.generateBugLanguage().intersect(sutBugLanguage);
 //			LOGGER.info("{}: {}", sbp.getName(), sutSbp.path(sutSbp.getShortestAcceptingSequence()));
 //		});
-		
+
 		SearchConfig search = config.getSearchConfig();
 		long startTime = System.currentTimeMillis();
-		
+
 		if (validate) {
 			tracker.startValidation(generalBugPattern);
 		}
-		
+
 		int uncategorizedSequences = 0, generatedSequences = 0, validatedSequences = 0, validatedUncategorizedSequences = 0;
 
 		for (Word<Symbol> sequence : wordsToAcceptingStates(sutBugLanguage.getDfa(), sutBugLanguage.getSymbols(), search)) {
@@ -227,7 +227,7 @@ public class StateMachineBugFinder<I,O> {
 			List<BugPattern> capturingBps = specializedBps.stream().filter(bp -> bp.generateBugLanguage().accepts(sequence)).collect(Collectors.toList());
 			if (capturingBps.isEmpty()) {
 				uncategorizedSequences ++;
-			} 
+			}
 			categorizingBps.addAll(capturingBps);
 			if (validate) {
 				Trace<I,O> trace = mapping.toExecutionTrace(sequence);
@@ -251,16 +251,16 @@ public class StateMachineBugFinder<I,O> {
 					break;
 				}
 			}
-			
+
 			if (generatedSequences > generalBugPattern.generatedSequenceBound()) {
 				break;
 			}
-			
+
 			if (System.currentTimeMillis() - startTime > duration.toMillis()) {
 				break;
 			}
 		}
-		
+
 		LOGGER.info("Sequences generated: {}", generatedSequences);
 		LOGGER.info("Uncategorized sequences generated: {}", uncategorizedSequences);
 		LOGGER.info("Specialized bug patterns ({}): {}", specializedBps.size(), specializedBps.toString());
@@ -272,7 +272,7 @@ public class StateMachineBugFinder<I,O> {
 		} else {
 			LOGGER.info("All specialized bug patterns have been covered by sequence generation");
 		}
-		
+
 		if (validate) {
 			validatedCategorizingBps.forEach(bp -> tracker.validated(bp));
 			LOGGER.info("Validated sequences: {}", validatedSequences);
@@ -290,8 +290,8 @@ public class StateMachineBugFinder<I,O> {
 		}
 		tracker.handleGeneralBugPattern(generalBugPattern, generatedSequences, uncategorizedSequences);
 	}
-	
-	private void handleUncategorizedSpecificationBugs(DFAAdapter specLanguage, DFAAdapter sutLanguage, Collection<BugPattern> bugPatterns, 
+
+	private void handleUncategorizedSpecificationBugs(DFAAdapter specLanguage, DFAAdapter sutLanguage, Collection<BugPattern> bugPatterns,
 			MealyMachine<?,I, ?, O> mealy, SymbolMapping<I,O> mapping, List<StateMachineBug<I,O>> bugs) {
 		exporter.exportDfa(specLanguage, "specificationLanguage.dot");
 		LOGGER.info("Generating specification-violating sequences and checking there are bug patterns capturing them");
@@ -299,7 +299,7 @@ public class StateMachineBugFinder<I,O> {
 		exporter.exportDfa(specBugLanguage, "specificationBugLanguage.dot");
 		DFAAdapter sutSpecBugLanguage = sutLanguage.intersect(specBugLanguage).minimize();
 		exporter.exportDfa(sutSpecBugLanguage, "sutSpecificationBugLanguage.dot");
-		
+
 		Set<Object> deviantTransitions = new LinkedHashSet<>();
 		Set<String> categorizingBp = new LinkedHashSet<>();
 		SearchConfig search = new SearchConfig();
@@ -316,39 +316,39 @@ public class StateMachineBugFinder<I,O> {
 				if (deviantTransitions.contains(deviantTransition)) {
 					deviantTransitionSkips ++;
 					continue;
-				} 
+				}
 				deviantTransitions.add(deviantTransition);
-			} 
+			}
 			if (capturingBps.isEmpty()) {
 				if (specLanguage.accepts(sequence)) {
 					throw new InternalError("Accepting sequence in uncategorized bug language accepted by specification");
 				}
-				
+
 				Trace<I,O> trace = mapping.toExecutionTrace(sequence);
 				StateMachineBug<I,O> bug = new StateMachineBug<>(trace, AbstractBugPattern.uncategorized());
 				bugs.add(bug);
 				uncategorizedFlows ++;
 				if (uncategorizedFlows >= config.getUncategorizedBugBound()) {
 					break;
-				} 				
+				}
 			}
 			if (allFlows > config.getNonConformingSequenceBound()) {
 				break;
 			}
 		}
-		
+
 		LOGGER.info("Non-conforming sequences generated: {}", allFlows);
 		LOGGER.info("Uncategorized sequences generated: {}", uncategorizedFlows);
 		LOGGER.info("Deviant transition skips: {}", deviantTransitionSkips);
 		LOGGER.info("Categorizing bug patterns ({}): {}", categorizingBp.size(), categorizingBp.toString());
 	}
-	
+
 	private <S>  Iterable<Word<Symbol>> wordsToAcceptingStates(DFA<S, Symbol> dfa, Collection<Symbol> symbols, SearchConfig search) {
 		ModelExplorer<S, Symbol> explorer = new ModelExplorer<>(dfa, symbols);
 		List<S> acceptingStates = dfa.getStates().stream().filter(s -> dfa.isAccepting(s)).collect(Collectors.toList());
 		return explorer.wordsToTargetStates(acceptingStates, search);
 	}
-	
+
 	private <MS> Object getDeviantTransition(Word<Symbol> sequence, DFAAdapter spec, MealyMachine<MS,I,?,O> mealy,  SymbolMapping<I,O> mapping) {
 		assert(!spec.accepts(sequence));
 		Set<Symbol> suffixSymbols = new LinkedHashSet<>();
@@ -368,7 +368,7 @@ public class StateMachineBugFinder<I,O> {
 				}
 			}
 		}
-		
+
 		if (deviatingSymbol != null) {
 			Word<Symbol> deviatingSequence = acceptedPrefix.append(deviatingSymbol);
 			Trace<I, O> trace = mapping.toExecutionTrace(deviatingSequence);
@@ -377,7 +377,7 @@ public class StateMachineBugFinder<I,O> {
 		}
 		return null;
 	}
-	
+
 	private <S> void allowedSymbols(DFA<S, Symbol> specDfa, Word<Symbol> fromPrefix, Collection<Symbol> usedSymbols,  Collection<Symbol> allowedSymbols) {
 		S state = specDfa.getState(fromPrefix);
 		if (specDfa.isAccepting(state)) {
@@ -393,7 +393,7 @@ public class StateMachineBugFinder<I,O> {
 						if (!visited.contains(nextState)) {
 							toVisit.add(nextState);
 						}
-						
+
 						allowedSymbols.add(symbol);
 					}
 				}

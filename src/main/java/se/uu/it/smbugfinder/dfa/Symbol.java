@@ -2,14 +2,14 @@ package se.uu.it.smbugfinder.dfa;
 
 /**
  * Implements the DFA symbols.
- * 
+ *
  */
 public abstract class Symbol {
 	private final String name;
 	Symbol(String name) {
 		this.name = name;
 	}
-	
+
 	public String name() {
 		return name;
 	}
@@ -39,5 +39,5 @@ public abstract class Symbol {
 			return false;
 		return true;
 	}
-	
+
 }

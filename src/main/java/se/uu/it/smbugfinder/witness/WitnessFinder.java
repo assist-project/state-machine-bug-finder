@@ -10,7 +10,7 @@ import se.uu.it.smbugfinder.dfa.Trace;
 import se.uu.it.smbugfinder.sut.SUT;
 
 public class WitnessFinder {
-	
+
 	private int bound;
 	private SequenceGenerator<Symbol> generator;
 
@@ -18,15 +18,15 @@ public class WitnessFinder {
 		this.generator = generator;
 		this.bound = bound;
 	}
-	
+
 	public <I,O>  Trace<I,O> findWitness(SUT<I,O> sut, SymbolMapping<I,O> mapping, DFAAdapter sutBugLanguage, DFAAdapter bugLanguage) {
 		return findWitness(sut, mapping, sutBugLanguage, bugLanguage,  true);
 	}
-	
+
 	public <I,O>  Trace<I,O> findCounterexample(SUT<I,O> sut, SymbolMapping<I,O> mapping, DFAAdapter sutBugLanguage, DFAAdapter bugLanguage) {
 		return findWitness(sut, mapping, sutBugLanguage, bugLanguage, false);
 	}
-	
+
 	private <I,O> Trace<I,O> findWitness(SUT<I,O> sut, SymbolMapping<I,O> mapping, DFAAdapter sutBugLanguage, DFAAdapter bugLanguage, boolean desiredValidationOutcome) {
 		int count = 0;
 		for (Word<Symbol> sequence : generator.generateSequences(sutBugLanguage.getDfa(), sutBugLanguage.getSymbols())) {

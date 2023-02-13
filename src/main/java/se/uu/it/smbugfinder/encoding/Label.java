@@ -4,31 +4,31 @@ public class Label {
 	private DescriptionToken description;
 	private Update update;
 	private Guard guard;
-	
+
 	public Label(DescriptionToken description) {
 		guard = Guard.trueGuard();
 		update = Update.emptyUpdate();
 		this.description = description;
 	}
-	
-	
+
+
 	public Label(DescriptionToken description, Guard guard, Update update) {
 		this.guard = guard;
 		this.update = update;
 		this.description = description;
 	}
-	
+
 	public DescriptionToken getDescription() {
 		return description;
 	}
-	
+
 	public Update getUpdate() {
 		return update;
 	}
 	public Guard getGuard() {
 		return guard;
 	}
-	
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;
@@ -81,8 +81,8 @@ public class Label {
 			builder.append(" where ")
 			.append(guard.toString());
 		}
-		
+
 		return builder.toString();
 	}
-	
+
 }

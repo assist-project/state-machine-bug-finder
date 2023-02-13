@@ -39,7 +39,7 @@ public class ModelExplorer<S, I> {
 		this.inputs = inputs;
 		this.predMap = AutomatonUtils.generatePredecessorMap(model, inputs);
 	}
-	
+
 	public void setStartStateFilter(Predicate<S> filter) {
 		startStateFilter = filter;
 		if (stateMapping == null) {
@@ -57,8 +57,8 @@ public class ModelExplorer<S, I> {
 			}
 		};
 	}
-	
-	
+
+
 	private class BFSPathToStateIterator implements Iterator<Word<I>> {
 		private Queue<SearchState> toVisit;
 		private Word<I> nextWord;
@@ -75,13 +75,13 @@ public class ModelExplorer<S, I> {
 			this.visitTargetStates = options.isVisitTargetStates();
 			this.queueBound = options.getQueueBound();
 			SearchOrder order = options.getOrder();
-					
+
 			switch(order) {
 			case MIN_VISIT:
 				toVisit = new PriorityQueue<SearchState>(new Comparator<SearchState>(){
 					@Override
 					public int compare(SearchState s1, SearchState s2) {
-						// we prioritize states based on the max visited value and on the order in which they were created.  
+						// we prioritize states based on the max visited value and on the order in which they were created.
 						int compMax = Integer.compare(s1.maxVisited(), s2.maxVisited());
 						if (compMax == 0) {
 							return Long.compare(s1.getId(), s2.getId());
@@ -94,7 +94,7 @@ public class ModelExplorer<S, I> {
 				toVisit = new PriorityQueue<SearchState>(new Comparator<SearchState>(){
 					@Override
 					public int compare(SearchState s1, SearchState s2) {
-						// we prioritize states based on the max visited value and on the order in which they were created.  
+						// we prioritize states based on the max visited value and on the order in which they were created.
 						int compStates = Integer.compare(s1.distinctStatesVisited(), s2.distinctStatesVisited());
 						if (compStates == 0) {
 							return Long.compare(s1.getId(), s2.getId());
@@ -107,7 +107,7 @@ public class ModelExplorer<S, I> {
 				toVisit = new PriorityQueue<SearchState>(new Comparator<SearchState>(){
 					@Override
 					public int compare(SearchState s1, SearchState s2) {
-						// we prioritize states based on the max visited value and on the order in which they were created.  
+						// we prioritize states based on the max visited value and on the order in which they were created.
 						int compStates = Integer.compare(s1.distinctStatesVisited(), s2.distinctStatesVisited());
 						if (compStates == 0) {
 							compStates = Integer.compare(s1.maxVisited(), s2.maxVisited());
@@ -118,13 +118,13 @@ public class ModelExplorer<S, I> {
 						return compStates;
 					}
 				});
-				break;	
-			
+				break;
+
 			case MIN_VISIT_MIN_STATE:
 				toVisit = new PriorityQueue<SearchState>(new Comparator<SearchState>(){
 					@Override
 					public int compare(SearchState s1, SearchState s2) {
-						// we prioritize states based on the max visited value and on the order in which they were created.  
+						// we prioritize states based on the max visited value and on the order in which they were created.
 						int compStates = Integer.compare(s1.maxVisited(), s2.maxVisited());
 						if (compStates == 0) {
 							compStates = Integer.compare(s1.distinctStatesVisited(), s2.distinctStatesVisited());
@@ -136,12 +136,12 @@ public class ModelExplorer<S, I> {
 					}
 				});
 				break;
-				
+
 			case MAX_STATE:
 				toVisit = new PriorityQueue<SearchState>(new Comparator<SearchState>(){
 					@Override
 					public int compare(SearchState s1, SearchState s2) {
-						// we prioritize states based on the max visited value and on the order in which they were created.  
+						// we prioritize states based on the max visited value and on the order in which they were created.
 						int compStates = Integer.compare(s2.distinctStatesVisited(), s1.distinctStatesVisited());
 						if (compStates == 0) {
 							return Long.compare(s1.getId(), s2.getId());
@@ -154,7 +154,7 @@ public class ModelExplorer<S, I> {
 				toVisit = new ArrayDeque<>();
 				break;
 			}
-			
+
 			for (S targetState : targetStates) {
 				toVisit.add(new SearchState(targetState));
 			}
@@ -185,14 +185,14 @@ public class ModelExplorer<S, I> {
 				return nextWord;
 			} else {
 				while (!toVisit.isEmpty() || visitingIter.hasNext()) {
-					
+
 					while (!visitingIter.hasNext() && !toVisit.isEmpty()) {
 						searchState = toVisit.poll();
-						
+
 						if (predMap.containsKey(searchState.getState())) {
 							visitingIter = predMap.get(searchState.getState()).iterator();
 						}
-						
+
 						if (model.getInitialState().equals(searchState.getState())) {
 							nextWord = searchState.getSuffix();
 							return nextWord;
@@ -206,9 +206,9 @@ public class ModelExplorer<S, I> {
 					}
 
 					while (visitingIter.hasNext()) {
-						PredStruct<S, I> predStruct = visitingIter.next(); 
+						PredStruct<S, I> predStruct = visitingIter.next();
 						SearchState potentialState = new SearchState(predStruct.getState(), predStruct.getInput(), searchState);
-						
+
 						if (potentialState.maxVisited() <= stateVisit && (!visitTargetStates || !targetStates.contains(predStruct.getState()))) {
 							if (toVisit.size() < queueBound) {
 								toVisit.add(potentialState);
@@ -222,11 +222,11 @@ public class ModelExplorer<S, I> {
 
 			return nextWord;
 		}
-		
+
 
 		private class SearchState {
-			
-			
+
+
 			private I input;
 			private S state;
 			private long id;
@@ -258,15 +258,15 @@ public class ModelExplorer<S, I> {
 			public S getState() {
 				return state;
 			}
-			
+
 			public long getId() {
 				return id;
 			}
-			
+
 			public SearchState getParent() {
 				return parent;
 			}
-			
+
 			public int distinctStatesVisited() {
 				if (distinctVisited == -1) {
 					Set<S> visited = new HashSet<>();
@@ -278,10 +278,10 @@ public class ModelExplorer<S, I> {
 					}
 					distinctVisited = visited.size();
 				}
-				
+
 				return distinctVisited;
 			}
-			
+
 			public int maxVisited() {
 				if (maxVisited == -1) {
 					SearchState crtExplState = this;
@@ -296,7 +296,7 @@ public class ModelExplorer<S, I> {
 						crtExplState = crtExplState.getParent();
 					}
 					maxVisited = timesVisited.values().stream().max(Comparator.naturalOrder()).orElse(0);
-				} 
+				}
 				return maxVisited;
 			}
 		}

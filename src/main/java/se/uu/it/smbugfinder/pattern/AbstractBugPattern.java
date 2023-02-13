@@ -26,7 +26,7 @@ public abstract class AbstractBugPattern extends Pattern {
 				public boolean isGeneral() {
 					return true;
 				}
-				
+
 			};
 			bp.id = 0;
 			bp.name = "Uncategorized";
@@ -36,22 +36,22 @@ public abstract class AbstractBugPattern extends Pattern {
 		}
 		return UNCATEGORIZED;
 	}
-	
+
 	public AbstractBugPattern() {
 		id = CUR_ID ++;
 	}
-	
+
 	@XmlTransient
 	private int id;
-	
+
 	@XmlElement(name = "severity", required = false)
 	private BugSeverity severity;
-	
+
 	@XmlTransient
 	private DFAAdapter bugLanguage;
-	
+
 	/**
-	 * Generates the bug language described by this bug pattern. 
+	 * Generates the bug language described by this bug pattern.
 	 * On first call, it stores the generated language to a variable, allowing for subsequent calls to simply return the variable.
 	 */
 	public DFAAdapter generateBugLanguage() {
@@ -60,20 +60,20 @@ public abstract class AbstractBugPattern extends Pattern {
 		}
 		return bugLanguage;
 	}
-	
+
 	abstract DFAAdapter doGenerateBugLanguage();
-	
+
 	public Integer getId() {
 		return id;
 	}
-	
+
 	public BugSeverity getSeverity() {
 		return severity;
 	}
-	
+
 	void setSeverity(BugSeverity severity) {
 		this.severity = severity;
 	}
-	
+
 	public abstract boolean isGeneral();
 }

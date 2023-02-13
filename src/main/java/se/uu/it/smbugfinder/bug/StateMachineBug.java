@@ -4,10 +4,10 @@ import se.uu.it.smbugfinder.dfa.Trace;
 import se.uu.it.smbugfinder.pattern.AbstractBugPattern;
 
 public class StateMachineBug<I,O> extends Bug<I,O>{
-	
+
 	private AbstractBugPattern bugPattern;
 	private Trace<I,O> counterexample;
-	
+
 	public StateMachineBug(Trace<I,O>  trace, AbstractBugPattern bugPattern) {
 		super(trace);
 		if (trace == null) {
@@ -16,7 +16,7 @@ public class StateMachineBug<I,O> extends Bug<I,O>{
 		this.bugPattern = bugPattern;
 		setSeverity(bugPattern.getSeverity());
 	}
-	
+
 	public AbstractBugPattern getBugPattern() {
 		return bugPattern;
 	}
@@ -42,22 +42,22 @@ public class StateMachineBug<I,O> extends Bug<I,O>{
 		}
 		return sb.toString();
 	}
-	
-	
+
+
 	public void validationFailed(Trace<I,O> counterexample) {
 		setStatus(BugValidationStatus.VALIDATION_FAILED);
 		this.counterexample = counterexample;
 	}
-	
+
 	public void validationSuccessful() {
 		setStatus(BugValidationStatus.VALIDATION_SUCCESSFUL);
 	}
-	
+
 	@Override
 	public BugSeverity getDefaultSeverity() {
 		return BugSeverity.UNKNOWN;
 	}
-	
+
 	@Override
 	public BugValidationStatus getDefaultStatus() {
 		return BugValidationStatus.NOT_VALIDATED;

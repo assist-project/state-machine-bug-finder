@@ -3,7 +3,7 @@ package se.uu.it.smbugfinder.encoding;
 import se.uu.it.smbugfinder.dfa.Symbol;
 
 public class BinaryBooleanExpression implements BooleanExpression {
-	
+
 	private BooleanExpression left;
 	private LogicalOperator op;
 	private BooleanExpression right;
@@ -29,7 +29,7 @@ public class BinaryBooleanExpression implements BooleanExpression {
 		default:
 			throw new RuntimeDecodingException(String.format("Operator %s not supported", op.name()));
 		}
-		
+
 		return result;
 	}
 

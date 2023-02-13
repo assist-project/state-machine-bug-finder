@@ -4,7 +4,7 @@ import java.util.LinkedHashSet;
 import java.util.Set;
 
 public class SetExpressionToken extends DescriptionToken {
-	
+
 	private DescriptionToken left;
 	private SetOperator operator;
 	private DescriptionToken right;
@@ -14,7 +14,7 @@ public class SetExpressionToken extends DescriptionToken {
 		this.operator = operator;
 		this.right = right;
 	}
-	
+
 	public SetOperator getOperator() {
 		return operator;
 	}
@@ -26,7 +26,7 @@ public class SetExpressionToken extends DescriptionToken {
 	public DescriptionToken getRight() {
 		return right;
 	}
-	
+
 	public Set<DescriptionToken> getSubTokens() {
 		Set<DescriptionToken> subTokens = new LinkedHashSet<>();
 		subTokens.add(left);

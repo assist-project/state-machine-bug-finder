@@ -7,11 +7,11 @@ public class RegexToken extends DescriptionToken {
 	public RegexToken(String regexFilter) {
 		this.regexFilter = regexFilter;
 	}
-	
+
 	public String getRegexFilter() {
 		return regexFilter;
 	}
-	
+
 	public String toString() {
 		return "F_" + regexFilter;
 	}

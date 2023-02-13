@@ -10,7 +10,7 @@ public final class InputSymbol extends Symbol {
 	public final boolean isInput() {
 		return true;
 	}
-	
+
 	public String toString() {
 		return "I_" + name();
 	}

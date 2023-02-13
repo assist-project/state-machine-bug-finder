@@ -13,7 +13,7 @@ public class RegisterState<S> {
 	public S getState() {
 		return state;
 	}
-	
+
 
 	@Override
 	public int hashCode() {
@@ -23,7 +23,7 @@ public class RegisterState<S> {
 		result = prime * result + ((valuation == null) ? 0 : valuation.hashCode());
 		return result;
 	}
-	
+
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)

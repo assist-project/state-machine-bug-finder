@@ -6,7 +6,7 @@ import se.uu.it.smbugfinder.dfa.Symbol;
 
 public class Value implements ValueExpression {
 	private Object storedValue;
-	
+
 	public Value(Object storedValue) {
 		this.storedValue = storedValue;
 	}
@@ -35,24 +35,24 @@ public class Value implements ValueExpression {
 			return false;
 		return true;
 	}
-	
+
 	public <T> T getStoredValue(Class<T> cls) {
 		if (storedValue == null) {
 			return null;
 		} else {
 			return cls.cast(storedValue);
 		}
-	} 
-	
+	}
+
 	public Object getStoredValue() {
 		return storedValue;
 	}
-	
+
 	@Override
 	public Value eval(Symbol symbol, Valuation valuation) {
 		return this;
 	}
-	
+
 	public String toString() {
 		return Objects.toString(storedValue);
 	}
