@@ -29,8 +29,9 @@
     <dependency>
       <groupId>javax.xml.bind</groupId>
       <artifactId>jaxb-api</artifactId>
-      <version>2.3.0</version>
+      <version>2.3.1</version>
     </dependency>
+    <!--
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-core</artifactId>
@@ -39,7 +40,7 @@
     <dependency>
       <groupId>com.sun.xml.bind</groupId>
       <artifactId>jaxb-impl</artifactId>
-      <version>2.3.0</version>
+      <version>4.0.2</version>
     </dependency>
 
     <dependency>
@@ -47,6 +48,7 @@
       <artifactId>activation</artifactId>
       <version>1.1.1</version>
     </dependency>
+    -->
 
     <!-- provide an SLF4J implementation -->
     <dependency>
@@ -54,7 +56,6 @@
       <artifactId>logback-core</artifactId>
       <version>1.4.5</version>
     </dependency>
-
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
@@ -70,16 +71,24 @@
 
     <dependency>
       <groupId>net.automatalib</groupId>
+      <artifactId>automata-api</artifactId>
+      <version>${automatalib.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.automatalib</groupId>
+      <artifactId>automata-commons-util</artifactId>
+      <version>${automatalib.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>net.automatalib</groupId>
       <artifactId>automata-core</artifactId>
       <version>${automatalib.version}</version>
     </dependency>
-
     <dependency>
       <groupId>net.automatalib</groupId>
       <artifactId>automata-serialization-dot</artifactId>
       <version>${automatalib.version}</version>
     </dependency>
-
     <dependency>
       <groupId>net.automatalib</groupId>
       <artifactId>automata-util</artifactId>
@@ -142,12 +151,12 @@
 	</plugin>
 	<plugin>
 	  <artifactId>maven-deploy-plugin</artifactId>
-	  <version>2.8.2</version>
+	  <version>3.1.0</version>
 	</plugin>
 	<!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
 	<plugin>
 	  <artifactId>maven-site-plugin</artifactId>
-	  <version>3.7.1</version>
+	  <version>3.12.1</version>
 	</plugin>
 	<plugin>
 	  <artifactId>maven-project-info-reports-plugin</artifactId>
@@ -176,7 +185,7 @@
       <plugin>
 	<groupId>org.codehaus.mojo</groupId>
 	<artifactId>javacc-maven-plugin</artifactId>
-	<version>2.6</version>
+	<version>3.0.1</version>
 	<configuration>
 	  <sourceDirectory>${basedir}/src/main/java/se/uu/it/smbugfinder/encoding/javacc/</sourceDirectory>
 	</configuration>
