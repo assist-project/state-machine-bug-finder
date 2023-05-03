@@ -4,5 +4,5 @@ import se.uu.it.smbugfinder.dfa.Symbol;
 
 public interface BooleanExpression {
 
-	public boolean eval(Symbol label, Valuation valuation);
+    public boolean eval(Symbol label, Valuation valuation);
 }

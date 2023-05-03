@@ -9,35 +9,35 @@ import se.uu.it.smbugfinder.dfa.DFAAdapter;
  * TODO A pattern of capturing (some aspect of) conformance to the specification.
  */
 public class ConformancePattern extends Pattern {
-	@XmlElement(name="conformanceLanguage", required = true)
-	private String conformanceLanguagePath;
+    @XmlElement(name="conformanceLanguage", required = true)
+    private String conformanceLanguagePath;
 
-	@XmlTransient
-	private DFAAdapter conformanceLanguage;
+    @XmlTransient
+    private DFAAdapter conformanceLanguage;
 
-	@XmlElement(name="uncategorizedSequenceBound", required = false)
-	private int uncategorizedSequenceBound;
+    @XmlElement(name="uncategorizedSequenceBound", required = false)
+    private int uncategorizedSequenceBound;
 
-	@XmlElement(name="generatedSequenceBound", required = false)
-	private int generatedSequenceBound;
+    @XmlElement(name="generatedSequenceBound", required = false)
+    private int generatedSequenceBound;
 
-	public String getConformanceLanguagePath() {
-		return conformanceLanguagePath;
-	}
+    public String getConformanceLanguagePath() {
+        return conformanceLanguagePath;
+    }
 
-	public DFAAdapter getConformanceLanguage() {
-		return conformanceLanguage;
-	}
+    public DFAAdapter getConformanceLanguage() {
+        return conformanceLanguage;
+    }
 
-	void setConformanceLanguage(DFAAdapter conformanceLanguage) {
-		this.conformanceLanguage = conformanceLanguage;
-	}
+    void setConformanceLanguage(DFAAdapter conformanceLanguage) {
+        this.conformanceLanguage = conformanceLanguage;
+    }
 
-	public int getUncategorizedSequenceBound() {
-		return uncategorizedSequenceBound;
-	}
+    public int getUncategorizedSequenceBound() {
+        return uncategorizedSequenceBound;
+    }
 
-	public int getGeneratedSequenceBound() {
-		return generatedSequenceBound;
-	}
+    public int getGeneratedSequenceBound() {
+        return generatedSequenceBound;
+    }
 }

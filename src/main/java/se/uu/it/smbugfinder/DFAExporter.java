@@ -13,47 +13,47 @@ import org.slf4j.LoggerFactory;
 import se.uu.it.smbugfinder.dfa.DFAAdapter;
 
 public interface DFAExporter {
-	static final Logger LOGGER = LoggerFactory.getLogger(DFAExporter.class);
+    static final Logger LOGGER = LoggerFactory.getLogger(DFAExporter.class);
 
-	public void exportDfa(DFAAdapter spec, String name);
+    public void exportDfa(DFAAdapter spec, String name);
 
-	public static class DirectoryDFAExporter implements DFAExporter {
-		private String outputDir;
+    public static class DirectoryDFAExporter implements DFAExporter {
+        private String outputDir;
 
-		public DirectoryDFAExporter(String outputDir) {
-			this.outputDir = outputDir;
-		}
+        public DirectoryDFAExporter(String outputDir) {
+            this.outputDir = outputDir;
+        }
 
-		public void exportDfa(DFAAdapter spec, String name) {
-			try {
-				spec.export(new FileWriter(new File(outputDir, name)));
-			} catch (IOException e) {
-				LOGGER.error("Could not export {}", name);
-				LOGGER.error(e.getLocalizedMessage());
-			}
-		}
-	}
+        public void exportDfa(DFAAdapter spec, String name) {
+            try {
+                spec.export(new FileWriter(new File(outputDir, name)));
+            } catch (IOException e) {
+                LOGGER.error("Could not export {}", name);
+                LOGGER.error(e.getLocalizedMessage());
+            }
+        }
+    }
 
-	public static class StreamDFAExporter implements DFAExporter {
-		private PrintWriter writer;
+    public static class StreamDFAExporter implements DFAExporter {
+        private PrintWriter writer;
 
-		public StreamDFAExporter(OutputStream out) {
-			this.writer = new PrintWriter(new OutputStreamWriter(out));
-		}
+        public StreamDFAExporter(OutputStream out) {
+            this.writer = new PrintWriter(new OutputStreamWriter(out));
+        }
 
-		@Override
-		public void exportDfa(DFAAdapter spec, String name) {
+        @Override
+        public void exportDfa(DFAAdapter spec, String name) {
 
-			writer.println("============");
-			writer.println("");
-			writer.println("DFA " + name);
-			writer.println("");
-			writer.println("============");
-			try {
-				spec.export(writer);
-			} catch (IOException e) {
-				writer.println("Failure exporting model");
-			}
-		}
-	}
+            writer.println("============");
+            writer.println("");
+            writer.println("DFA " + name);
+            writer.println("");
+            writer.println("============");
+            try {
+                spec.export(writer);
+            } catch (IOException e) {
+                writer.println("Failure exporting model");
+            }
+        }
+    }
 }

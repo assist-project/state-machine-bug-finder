@@ -253,44 +253,44 @@ public class DefaultDFADecoderTest {
 //		assertEquivalent(expected, unfolded, messageLabels, spec, specLabels);
 //	}
 //
-	@Test
-	public void testUnionOther() {
-		Symbol a = new InputSymbol("a");
-		Symbol b = new InputSymbol("b");
-		Symbol o1 = new OutputSymbol("o1");
-		Symbol o2 = new OutputSymbol("o2");
+    @Test
+    public void testUnionOther() {
+        Symbol a = new InputSymbol("a");
+        Symbol b = new InputSymbol("b");
+        Symbol o1 = new OutputSymbol("o1");
+        Symbol o2 = new OutputSymbol("o2");
 
-		Label aOrO1 = new Label(new SetExpressionToken(new SymbolToken(a), SetOperator.UNION, new SymbolToken(o1)), Guard.trueGuard(), Update.emptyUpdate());
-		Label otherOutput = new Label(new OtherToken(OtherTokenType.OUTPUT), Guard.trueGuard(), Update.emptyUpdate());
-		Label otherInput = new Label(new OtherToken(OtherTokenType.INPUT), Guard.trueGuard(), Update.emptyUpdate());
-		Label other = new Label(new OtherToken(OtherTokenType.ALL), Guard.trueGuard(), Update.emptyUpdate());
+        Label aOrO1 = new Label(new SetExpressionToken(new SymbolToken(a), SetOperator.UNION, new SymbolToken(o1)), Guard.trueGuard(), Update.emptyUpdate());
+        Label otherOutput = new Label(new OtherToken(OtherTokenType.OUTPUT), Guard.trueGuard(), Update.emptyUpdate());
+        Label otherInput = new Label(new OtherToken(OtherTokenType.INPUT), Guard.trueGuard(), Update.emptyUpdate());
+        Label other = new Label(new OtherToken(OtherTokenType.ALL), Guard.trueGuard(), Update.emptyUpdate());
 
-		List<Label> specLabels = Arrays.asList(aOrO1, otherOutput, otherInput, other);
+        List<Label> specLabels = Arrays.asList(aOrO1, otherOutput, otherInput, other);
 
-		FastDFA<Label> spec = new FastDFA<>(new ListAlphabet<>(specLabels));
+        FastDFA<Label> spec = new FastDFA<>(new ListAlphabet<>(specLabels));
 
-		FastDFAState s0 = spec.addInitialState(false);
-		FastDFAState s1 = spec.addState(true);
+        FastDFAState s0 = spec.addInitialState(false);
+        FastDFAState s1 = spec.addState(true);
 
-		spec.addTransition(s0, aOrO1, s0);
-		spec.addTransition(s0, otherOutput, s1);
+        spec.addTransition(s0, aOrO1, s0);
+        spec.addTransition(s0, otherOutput, s1);
 
-		List<Symbol> symbols = Arrays.asList(a, b, o1, o2);
-		Alphabet<Symbol> alphabet = new ListAlphabet<>(symbols);
+        List<Symbol> symbols = Arrays.asList(a, b, o1, o2);
+        Alphabet<Symbol> alphabet = new ListAlphabet<>(symbols);
 
-		FastDFA<Symbol> expectedMut = new FastDFA<>(alphabet);
-		s0 = expectedMut.addInitialState(false);
-		s1 = expectedMut.addState(true);
-		expectedMut.addTransition(s0, a, s0);
-		expectedMut.addTransition(s0, o1, s0);
-		expectedMut.addTransition(s0, o2, s1);
+        FastDFA<Symbol> expectedMut = new FastDFA<>(alphabet);
+        s0 = expectedMut.addInitialState(false);
+        s1 = expectedMut.addState(true);
+        expectedMut.addTransition(s0, a, s0);
+        expectedMut.addTransition(s0, o1, s0);
+        expectedMut.addTransition(s0, o2, s1);
 
-		DFA<?, Symbol> expectedDfa = TestUtils.completeDFA(expectedMut, alphabet);
-		DefaultDFADecoder dfaDecoder = new DefaultDFADecoder();
-		DFAAdapter actualDfa = dfaDecoder.decode(new DFAEncoding(spec, specLabels), symbols);
+        DFA<?, Symbol> expectedDfa = TestUtils.completeDFA(expectedMut, alphabet);
+        DefaultDFADecoder dfaDecoder = new DefaultDFADecoder();
+        DFAAdapter actualDfa = dfaDecoder.decode(new DFAEncoding(spec, specLabels), symbols);
 
-		assertEquivalent(expectedDfa, actualDfa.getDfa(), symbols, spec, specLabels);
-	}
+        assertEquivalent(expectedDfa, actualDfa.getDfa(), symbols, spec, specLabels);
+    }
 //
 //	@Test
 //	public void testBasicGuardAndAssignment() {
@@ -356,13 +356,13 @@ public class DefaultDFADecoderTest {
 //		assertEquivalent(expectedDfa, actualDfa.getDfa(), symbols, spec, specLabels);
 //	}
 
-	private void assertEquivalent(DFA<?, Symbol> expected, DFA<?, Symbol> actual, Collection<Symbol> messageLabels, DFA<?, Label> spec, Collection<Label> specLabels) {
-		Word<Symbol> sepWord = Automata.findSeparatingWord(expected, actual, messageLabels);
-		Assert.assertNull(String.format("The DFA resulting from the unfolding of a test specification differs from what is expected. \n"
-				+ "Specification: %s\n Expected: %s\n Actual: %s\n SepWord: %s\n",
-				TestUtils.getAutomataString(spec, specLabels),
-				TestUtils.getAutomataString(expected, messageLabels),
-				TestUtils.getAutomataString(actual, messageLabels),
-				sepWord), sepWord);
-	}
+    private void assertEquivalent(DFA<?, Symbol> expected, DFA<?, Symbol> actual, Collection<Symbol> messageLabels, DFA<?, Label> spec, Collection<Label> specLabels) {
+        Word<Symbol> sepWord = Automata.findSeparatingWord(expected, actual, messageLabels);
+        Assert.assertNull(String.format("The DFA resulting from the unfolding of a test specification differs from what is expected. \n"
+                + "Specification: %s\n Expected: %s\n Actual: %s\n SepWord: %s\n",
+                TestUtils.getAutomataString(spec, specLabels),
+                TestUtils.getAutomataString(expected, messageLabels),
+                TestUtils.getAutomataString(actual, messageLabels),
+                sepWord), sepWord);
+    }
 }

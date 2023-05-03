@@ -6,9 +6,9 @@ import net.automatalib.automata.fsa.DFA;
 import net.automatalib.words.Word;
 
 public interface SequenceGenerator<I> {
-	/**
-	 * Generates sequences accepted by {@code bugLanguage} using the supplied inputs.
-	 */
-	<S>  Iterable<Word<I>> generateSequences(DFA<S, I> bugLanguage, Collection<I> inputs);
+    /**
+     * Generates sequences accepted by {@code bugLanguage} using the supplied inputs.
+     */
+    <S>  Iterable<Word<I>> generateSequences(DFA<S, I> bugLanguage, Collection<I> inputs);
 
 }

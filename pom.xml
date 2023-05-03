@@ -31,24 +31,6 @@
       <artifactId>jaxb-api</artifactId>
       <version>2.3.1</version>
     </dependency>
-    <!--
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-core</artifactId>
-      <version>4.0.2</version>
-    </dependency>
-    <dependency>
-      <groupId>com.sun.xml.bind</groupId>
-      <artifactId>jaxb-impl</artifactId>
-      <version>4.0.2</version>
-    </dependency>
-
-    <dependency>
-      <groupId>javax.activation</groupId>
-      <artifactId>activation</artifactId>
-      <version>1.1.1</version>
-    </dependency>
-    -->
 
     <!-- provide an SLF4J implementation -->
     <dependency>
@@ -224,12 +206,16 @@
 	<configuration>
 	  <java>
 	    <endWithNewline />
-	    <trimTrailingWhitespace />
             <importOrder>
 	      <!-- the empty string is for all imports not specified explicitly, '|' joins groups without blank line -->
               <order>java,javax,org,com,net|</order>
             </importOrder>
+            <indent>
+              <spaces>true</spaces>
+              <spacesPerTab>4</spacesPerTab>
+            </indent>
 	    <removeUnusedImports />
+	    <trimTrailingWhitespace />
 	  </java>
 	</configuration>
       </plugin>
