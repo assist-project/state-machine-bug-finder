@@ -1,16 +1,16 @@
 package se.uu.it.smbugfinder.encoding;
 
 public enum SetOperator {
-	DIFFERENCE("-"),
-	UNION("U");
+    DIFFERENCE("-"),
+    UNION("U");
 
-	private String sign;
+    private String sign;
 
-	private SetOperator(String sign) {
-		this.sign = sign;
-	}
+    private SetOperator(String sign) {
+        this.sign = sign;
+    }
 
-	public String getSign() {
-		return sign;
-	}
+    public String getSign() {
+        return sign;
+    }
 }

@@ -9,41 +9,41 @@ import se.uu.it.smbugfinder.dfa.DFAAdapter;
  * Encodes a protocol violation as a DFA.
  */
 public class BugPattern extends AbstractBugPattern {
-	BugPattern() {
-		super();
-	}
+    BugPattern() {
+        super();
+    }
 
 
 
-	@XmlElement(name="bugLanguage", required = true)
-	private String bugLanguagePath;
+    @XmlElement(name="bugLanguage", required = true)
+    private String bugLanguagePath;
 
-	@XmlTransient
-	private DFAAdapter bugLanguage;
+    @XmlTransient
+    private DFAAdapter bugLanguage;
 
-	@Override
-	DFAAdapter doGenerateBugLanguage() {
-		return bugLanguage;
-	}
+    @Override
+    DFAAdapter doGenerateBugLanguage() {
+        return bugLanguage;
+    }
 
-	public String getBugLanguagePath() {
-		return bugLanguagePath;
-	}
+    public String getBugLanguagePath() {
+        return bugLanguagePath;
+    }
 
-	void setBugLanguage(DFAAdapter bugLanguage) {
-		this.bugLanguage = bugLanguage;
-	}
+    void setBugLanguage(DFAAdapter bugLanguage) {
+        this.bugLanguage = bugLanguage;
+    }
 
-	DFAAdapter getBugLanguage() {
-		return bugLanguage;
-	}
+    DFAAdapter getBugLanguage() {
+        return bugLanguage;
+    }
 
-	public boolean isGeneral() {
-		return false;
-	}
+    public boolean isGeneral() {
+        return false;
+    }
 
-	@Override
-	public String toString() {
-		return "BugPattern [name=" + name + "]";
-	}
+    @Override
+    public String toString() {
+        return "BugPattern [name=" + name + "]";
+    }
 }

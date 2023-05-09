@@ -19,139 +19,139 @@ import se.uu.it.smbugfinder.sut.Counter;
 
 public class StatisticsTracker {
 
-	private Counter inputCounter;
-	private Counter resetCounter;
-	private long startTime;
-	private long totalTime;
-	private long totalBugs;
+    private Counter inputCounter;
+    private Counter resetCounter;
+    private long startTime;
+    private long totalTime;
+    private long totalBugs;
 
-	private long validationInputCount;
-	private long validationResetCount;
+    private long validationInputCount;
+    private long validationResetCount;
 
-	private Set<AbstractBugPattern> loadedBugPatterns;
-	private Set<AbstractBugPattern> foundBugPatterns;
-	private Set<AbstractBugPattern> validatedBugPatterns;
+    private Set<AbstractBugPattern> loadedBugPatterns;
+    private Set<AbstractBugPattern> foundBugPatterns;
+    private Set<AbstractBugPattern> validatedBugPatterns;
 
-	private Map<AbstractBugPattern, Long> validatedTSBugPatterns;
+    private Map<AbstractBugPattern, Long> validatedTSBugPatterns;
 
-	private Map<AbstractBugPattern, Long> bugPatternValidationInputCount;
-	private Map<AbstractBugPattern, Long> bugPatternValidationResetCount;
+    private Map<AbstractBugPattern, Long> bugPatternValidationInputCount;
+    private Map<AbstractBugPattern, Long> bugPatternValidationResetCount;
 
-	private Map<GeneralBugPattern, Long> generalBugPatternSequenceCount;
-	private Map<GeneralBugPattern, Long> generalBugPatternUncategorizedSequenceCount;
-	private Map<GeneralBugPattern, Long> generalBugPatternValidatedSequenceCount;
-	private Map<GeneralBugPattern, Long> generalBugPatternValidatedUncategorizedSequenceCount;
-	private boolean timeout;
-
-
-	private StateMachineBugFinderConfig config;
-	private Collection<?> inputAlphabet;
-
-	public StatisticsTracker(StateMachineBugFinderConfig config, BugPatterns bugPatterns) {
-		this.config = config;
-		loadedBugPatterns = new TreeSet<>(bpComp());
-		loadedBugPatterns.addAll(bugPatterns.getBugPatterns());
-		foundBugPatterns = new TreeSet<>(bpComp());
-		validatedBugPatterns = new TreeSet<>(bpComp());
-		validatedTSBugPatterns = new LinkedHashMap<>();
-		bugPatternValidationInputCount = new TreeMap<>(bpComp());
-		bugPatternValidationResetCount = new TreeMap<>(bpComp());
-		generalBugPatternSequenceCount = new TreeMap<>(bpComp());
-		generalBugPatternUncategorizedSequenceCount = new TreeMap<>(bpComp());
-		generalBugPatternValidatedSequenceCount = new TreeMap<>(bpComp());
-		generalBugPatternValidatedUncategorizedSequenceCount = new TreeMap<>(bpComp());
-	}
-
-	private Comparator<AbstractBugPattern> bpComp() {
-		return (bp1, bp2) -> bp1.getId().compareTo(bp2.getId());
-	}
+    private Map<GeneralBugPattern, Long> generalBugPatternSequenceCount;
+    private Map<GeneralBugPattern, Long> generalBugPatternUncategorizedSequenceCount;
+    private Map<GeneralBugPattern, Long> generalBugPatternValidatedSequenceCount;
+    private Map<GeneralBugPattern, Long> generalBugPatternValidatedUncategorizedSequenceCount;
+    private boolean timeout;
 
 
-	public void setSutTracking(Counter inputCounter, Counter resetCounter) {
-		this.inputCounter = inputCounter;
-		this.resetCounter = resetCounter;
-	}
+    private StateMachineBugFinderConfig config;
+    private Collection<?> inputAlphabet;
+
+    public StatisticsTracker(StateMachineBugFinderConfig config, BugPatterns bugPatterns) {
+        this.config = config;
+        loadedBugPatterns = new TreeSet<>(bpComp());
+        loadedBugPatterns.addAll(bugPatterns.getBugPatterns());
+        foundBugPatterns = new TreeSet<>(bpComp());
+        validatedBugPatterns = new TreeSet<>(bpComp());
+        validatedTSBugPatterns = new LinkedHashMap<>();
+        bugPatternValidationInputCount = new TreeMap<>(bpComp());
+        bugPatternValidationResetCount = new TreeMap<>(bpComp());
+        generalBugPatternSequenceCount = new TreeMap<>(bpComp());
+        generalBugPatternUncategorizedSequenceCount = new TreeMap<>(bpComp());
+        generalBugPatternValidatedSequenceCount = new TreeMap<>(bpComp());
+        generalBugPatternValidatedUncategorizedSequenceCount = new TreeMap<>(bpComp());
+    }
+
+    private Comparator<AbstractBugPattern> bpComp() {
+        return (bp1, bp2) -> bp1.getId().compareTo(bp2.getId());
+    }
 
 
-	public void startStateMachineBugFinding(Collection<?> inputAlphabet) {
-		startTime = System.currentTimeMillis();
-		this.inputAlphabet = inputAlphabet;
+    public void setSutTracking(Counter inputCounter, Counter resetCounter) {
+        this.inputCounter = inputCounter;
+        this.resetCounter = resetCounter;
+    }
 
-	}
 
-	/**
-	 * Gets the current time of the experiment
-	 */
-	public long currentTimeMillis() {
-		return System.currentTimeMillis() - startTime;
-	}
+    public void startStateMachineBugFinding(Collection<?> inputAlphabet) {
+        startTime = System.currentTimeMillis();
+        this.inputAlphabet = inputAlphabet;
 
-	public <I,O> void finishStateMachineBugFinding(List<StateMachineBug<I,O>> bugs) {
-		totalTime = System.currentTimeMillis() - startTime;
-		for (StateMachineBug<I,O> modelBug : bugs) {
-			foundBugPatterns.add(modelBug.getBugPattern());
+    }
 
-			if (modelBug.getStatus() == BugValidationStatus.VALIDATION_SUCCESSFUL) {
-				validatedBugPatterns.add(modelBug.getBugPattern());
-			}
-		}
-		totalBugs = bugs.size();
-	}
+    /**
+     * Gets the current time of the experiment
+     */
+    public long currentTimeMillis() {
+        return System.currentTimeMillis() - startTime;
+    }
 
-	public void startValidation(AbstractBugPattern bugPattern) {
-		validationInputCount = inputCounter.get();
-		validationResetCount = resetCounter.get();
-	}
+    public <I,O> void finishStateMachineBugFinding(List<StateMachineBug<I,O>> bugs) {
+        totalTime = System.currentTimeMillis() - startTime;
+        for (StateMachineBug<I,O> modelBug : bugs) {
+            foundBugPatterns.add(modelBug.getBugPattern());
 
-	public void found(AbstractBugPattern bugPattern) {
-		foundBugPatterns.add(bugPattern);
-	}
+            if (modelBug.getStatus() == BugValidationStatus.VALIDATION_SUCCESSFUL) {
+                validatedBugPatterns.add(modelBug.getBugPattern());
+            }
+        }
+        totalBugs = bugs.size();
+    }
 
-	public void timeout() {
-		timeout = true;
-	}
+    public void startValidation(AbstractBugPattern bugPattern) {
+        validationInputCount = inputCounter.get();
+        validationResetCount = resetCounter.get();
+    }
 
-	public void validated(AbstractBugPattern bugPattern) {
-		validatedBugPatterns.add(bugPattern);
-		if (!validatedTSBugPatterns.containsKey(bugPattern)) {
-			validatedTSBugPatterns.put(bugPattern, System.currentTimeMillis() - startTime);
-		}
-	}
+    public void found(AbstractBugPattern bugPattern) {
+        foundBugPatterns.add(bugPattern);
+    }
 
-	public void endValidation(AbstractBugPattern bugPattern) {
-		bugPatternValidationInputCount.put(bugPattern, inputCounter.get() - validationInputCount);
-		bugPatternValidationResetCount.put(bugPattern, resetCounter.get() - validationResetCount);
-	}
+    public void timeout() {
+        timeout = true;
+    }
 
-	public void handleGeneralBugPattern(GeneralBugPattern bugPattern, long sequences, long uncategorizedSequences) {
-		generalBugPatternUncategorizedSequenceCount.put(bugPattern, uncategorizedSequences);
-		generalBugPatternSequenceCount.put(bugPattern, sequences);
-	}
+    public void validated(AbstractBugPattern bugPattern) {
+        validatedBugPatterns.add(bugPattern);
+        if (!validatedTSBugPatterns.containsKey(bugPattern)) {
+            validatedTSBugPatterns.put(bugPattern, System.currentTimeMillis() - startTime);
+        }
+    }
 
-	public void handleValidatedGeneralBugPattern(GeneralBugPattern bugPattern, long validatedSequences, long validatedUncategorizedSequences) {
-		generalBugPatternValidatedUncategorizedSequenceCount.put(bugPattern, validatedUncategorizedSequences);
-		generalBugPatternValidatedSequenceCount.put(bugPattern, validatedSequences);
-	}
+    public void endValidation(AbstractBugPattern bugPattern) {
+        bugPatternValidationInputCount.put(bugPattern, inputCounter.get() - validationInputCount);
+        bugPatternValidationResetCount.put(bugPattern, resetCounter.get() - validationResetCount);
+    }
 
-	public Statistics generateStatistics() {
-		Statistics statistics = new Statistics(config);
-		statistics.setInputAlphabet(inputAlphabet);
+    public void handleGeneralBugPattern(GeneralBugPattern bugPattern, long sequences, long uncategorizedSequences) {
+        generalBugPatternUncategorizedSequenceCount.put(bugPattern, uncategorizedSequences);
+        generalBugPatternSequenceCount.put(bugPattern, sequences);
+    }
 
-		if (inputCounter != null) {
-			statistics.setInputs(inputCounter.get());
-			statistics.setResets(resetCounter.get());
-		}
-		statistics.setTimeout(timeout);
-		statistics.setTotalBugs(totalBugs);
-		statistics.setLoadedBugPatterns(loadedBugPatterns);
-		statistics.setFoundBugPatterns(foundBugPatterns);
-		statistics.setValidationBugPatterns(validatedBugPatterns);
-		statistics.setValidationTSBugPatterns(validatedTSBugPatterns);
-		statistics.setBugPatternValidationCounts(bugPatternValidationInputCount, bugPatternValidationResetCount);
-		statistics.setGeneralBugPatternSequenceCounts(generalBugPatternSequenceCount, generalBugPatternUncategorizedSequenceCount);
-		statistics.setGeneralBugPatternValidatedSequenceCounts(generalBugPatternValidatedSequenceCount, generalBugPatternValidatedUncategorizedSequenceCount);
-		statistics.setTotalTime(totalTime);
+    public void handleValidatedGeneralBugPattern(GeneralBugPattern bugPattern, long validatedSequences, long validatedUncategorizedSequences) {
+        generalBugPatternValidatedUncategorizedSequenceCount.put(bugPattern, validatedUncategorizedSequences);
+        generalBugPatternValidatedSequenceCount.put(bugPattern, validatedSequences);
+    }
 
-		return statistics;
-	}
+    public Statistics generateStatistics() {
+        Statistics statistics = new Statistics(config);
+        statistics.setInputAlphabet(inputAlphabet);
+
+        if (inputCounter != null) {
+            statistics.setInputs(inputCounter.get());
+            statistics.setResets(resetCounter.get());
+        }
+        statistics.setTimeout(timeout);
+        statistics.setTotalBugs(totalBugs);
+        statistics.setLoadedBugPatterns(loadedBugPatterns);
+        statistics.setFoundBugPatterns(foundBugPatterns);
+        statistics.setValidationBugPatterns(validatedBugPatterns);
+        statistics.setValidationTSBugPatterns(validatedTSBugPatterns);
+        statistics.setBugPatternValidationCounts(bugPatternValidationInputCount, bugPatternValidationResetCount);
+        statistics.setGeneralBugPatternSequenceCounts(generalBugPatternSequenceCount, generalBugPatternUncategorizedSequenceCount);
+        statistics.setGeneralBugPatternValidatedSequenceCounts(generalBugPatternValidatedSequenceCount, generalBugPatternValidatedUncategorizedSequenceCount);
+        statistics.setTotalTime(totalTime);
+
+        return statistics;
+    }
 }

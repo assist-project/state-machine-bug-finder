@@ -15,24 +15,24 @@ import net.automatalib.util.automata.fsa.DFAs;
 import net.automatalib.words.impl.ListAlphabet;
 
 public class TestUtils {
-	public static <S,I,T> String getAutomataString(Automaton<S, I, T> automaton, Collection<? extends I> inputAlphabet) {
-		StringWriter sw = new StringWriter();
-		try {
-			GraphDOT.write(automaton, inputAlphabet, sw);
-		} catch (IOException e) {
-			Assert.fail(e.getMessage());
-		}
-		return sw.toString();
-	}
+    public static <S,I,T> String getAutomataString(Automaton<S, I, T> automaton, Collection<? extends I> inputAlphabet) {
+        StringWriter sw = new StringWriter();
+        try {
+            GraphDOT.write(automaton, inputAlphabet, sw);
+        } catch (IOException e) {
+            Assert.fail(e.getMessage());
+        }
+        return sw.toString();
+    }
 
-	/*
-	 * Returns a DFA in which all unspecified transitions are directed to a sync state.
-	 */
-	public static <I> DFA<?, I> completeDFA(DFA<?, I> dfa, Collection<I> alphabet) {
-		ListAlphabet<I> simpleAlphabet = new ListAlphabet<I>(new ArrayList<>(alphabet));
-		FastDFA<I> complementModel = new FastDFA<>(simpleAlphabet);
-		DFAs.complete(dfa, simpleAlphabet, complementModel);
-		return complementModel;
+    /*
+     * Returns a DFA in which all unspecified transitions are directed to a sync state.
+     */
+    public static <I> DFA<?, I> completeDFA(DFA<?, I> dfa, Collection<I> alphabet) {
+        ListAlphabet<I> simpleAlphabet = new ListAlphabet<I>(new ArrayList<>(alphabet));
+        FastDFA<I> complementModel = new FastDFA<>(simpleAlphabet);
+        DFAs.complete(dfa, simpleAlphabet, complementModel);
+        return complementModel;
 
-	}
+    }
 }

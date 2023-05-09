@@ -12,68 +12,68 @@ import se.uu.it.smbugfinder.dfa.DFAAdapter;
  * In addition, it is equipped with a unique index and a severity level.
  */
 public abstract class AbstractBugPattern extends Pattern {
-	private static int CUR_ID = 1;
-	private static AbstractBugPattern UNCATEGORIZED;
-	public static AbstractBugPattern uncategorized() {
-		if (UNCATEGORIZED == null) {
-			AbstractBugPattern bp = new AbstractBugPattern() {
-				@Override
-				DFAAdapter doGenerateBugLanguage() {
-					throw new RuntimeException("Uncategorized bug pattern does not provide a bug language");
-				}
+    private static int CUR_ID = 1;
+    private static AbstractBugPattern UNCATEGORIZED;
+    public static AbstractBugPattern uncategorized() {
+        if (UNCATEGORIZED == null) {
+            AbstractBugPattern bp = new AbstractBugPattern() {
+                @Override
+                DFAAdapter doGenerateBugLanguage() {
+                    throw new RuntimeException("Uncategorized bug pattern does not provide a bug language");
+                }
 
-				@Override
-				public boolean isGeneral() {
-					return true;
-				}
+                @Override
+                public boolean isGeneral() {
+                    return true;
+                }
 
-			};
-			bp.id = 0;
-			bp.name = "Uncategorized";
-			bp.description = "Uncategorized behavior which does not conform to the specification.";
-			bp.severity = BugSeverity.UNKNOWN;
-			UNCATEGORIZED = bp;
-		}
-		return UNCATEGORIZED;
-	}
+            };
+            bp.id = 0;
+            bp.name = "Uncategorized";
+            bp.description = "Uncategorized behavior which does not conform to the specification.";
+            bp.severity = BugSeverity.UNKNOWN;
+            UNCATEGORIZED = bp;
+        }
+        return UNCATEGORIZED;
+    }
 
-	public AbstractBugPattern() {
-		id = CUR_ID ++;
-	}
+    public AbstractBugPattern() {
+        id = CUR_ID ++;
+    }
 
-	@XmlTransient
-	private int id;
+    @XmlTransient
+    private int id;
 
-	@XmlElement(name = "severity", required = false)
-	private BugSeverity severity;
+    @XmlElement(name = "severity", required = false)
+    private BugSeverity severity;
 
-	@XmlTransient
-	private DFAAdapter bugLanguage;
+    @XmlTransient
+    private DFAAdapter bugLanguage;
 
-	/**
-	 * Generates the bug language described by this bug pattern.
-	 * On first call, it stores the generated language to a variable, allowing for subsequent calls to simply return the variable.
-	 */
-	public DFAAdapter generateBugLanguage() {
-		if (bugLanguage == null) {
-			bugLanguage = doGenerateBugLanguage();
-		}
-		return bugLanguage;
-	}
+    /**
+     * Generates the bug language described by this bug pattern.
+     * On first call, it stores the generated language to a variable, allowing for subsequent calls to simply return the variable.
+     */
+    public DFAAdapter generateBugLanguage() {
+        if (bugLanguage == null) {
+            bugLanguage = doGenerateBugLanguage();
+        }
+        return bugLanguage;
+    }
 
-	abstract DFAAdapter doGenerateBugLanguage();
+    abstract DFAAdapter doGenerateBugLanguage();
 
-	public Integer getId() {
-		return id;
-	}
+    public Integer getId() {
+        return id;
+    }
 
-	public BugSeverity getSeverity() {
-		return severity;
-	}
+    public BugSeverity getSeverity() {
+        return severity;
+    }
 
-	void setSeverity(BugSeverity severity) {
-		this.severity = severity;
-	}
+    void setSeverity(BugSeverity severity) {
+        this.severity = severity;
+    }
 
-	public abstract boolean isGeneral();
+    public abstract boolean isGeneral();
 }

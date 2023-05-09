@@ -7,5 +7,5 @@ import se.uu.it.smbugfinder.dfa.DFAAdapter;
 import se.uu.it.smbugfinder.dfa.Symbol;
 
 public interface DFADecoder {
-	public DFAAdapter decode(InputStream dfaStream, Collection<Symbol> symbols) throws Exception;
+    public DFAAdapter decode(InputStream dfaStream, Collection<Symbol> symbols) throws Exception;
 }
