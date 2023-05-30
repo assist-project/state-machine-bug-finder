@@ -18,8 +18,8 @@ From within **SMBugFinder**'s directory we then run:
 
     > mvn install
     > java -jar target/sm-bug-finder.jar args/dropbear-v2020.81
-    
-First step installs **SMBugFinder**. 
+
+First step installs **SMBugFinder**.
 Second executes **SMBugFinder** on the arguments included in the argument file 'args/dropbear-v2020.81'.
 Executing the second command should reveal three bugs found in the model learned for this version of Dropbear.
 To validate these bugs, we need to provide the additional argument '-vb', as well as a test harness for SSH.
@@ -29,8 +29,8 @@ The witness uncovered exposes this problem.
 
     > KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP UA_PK_OK/UA_SUCCESS
 
-Authentication was successful (UA_SUCCESS) without prior request for the authentication service (via 'SR_AUTH'). 
-The bug pattern which lead to this bug's capture is defined by the DOT model 'missing_sr_auth.dot'. 
+Authentication was successful (UA_SUCCESS) without prior request for the authentication service (via 'SR_AUTH').
+The bug pattern which lead to this bug's capture is defined by the DOT model 'missing_sr_auth.dot'.
 This model is basic, consisting of two nodes and four edges.
 
 ## Reproducing experiments
