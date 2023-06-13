@@ -36,12 +36,12 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
-      <version>1.4.7</version>
+      <version>1.4.8</version>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.4.7</version>
+      <version>1.4.8</version>
     </dependency>
 
     <dependency>
@@ -206,7 +206,6 @@
           <formats>
             <format>
               <includes>
-                <!--<include>**/*.java</include> -->
                 <include>*.md</include>
                 <include>*.xml</include>
               </includes>
@@ -225,12 +224,44 @@
             </importOrder>
             <removeUnusedImports />
             <formatAnnotations />
+            <endWithNewline />
+            <trimTrailingWhitespace />
+            <indent>
+              <spaces>true</spaces>
+              <spacesPerTab>4</spacesPerTab>
+            </indent>
           </java>
         </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
       </plugin>
 
+      <!-- Static code analysis -->
       <plugin>
-        <!-- Build an executable JAR -->
+        <groupId>com.github.spotbugs</groupId>
+        <artifactId>spotbugs-maven-plugin</artifactId>
+        <version>4.7.3.0</version>
+        <configuration>
+          <threshold>High</threshold>
+        </configuration>
+<!--
+        <executions>
+          <execution>
+            <goals>
+              <goal>check</goal>
+            </goals>
+          </execution>
+        </executions>
+-->
+      </plugin>
+
+      <!-- Build an executable JAR -->
+      <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
         <version>2.6</version>
