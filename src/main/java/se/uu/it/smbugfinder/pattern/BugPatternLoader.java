@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.nio.charset.StandardCharsets;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -83,8 +84,7 @@ public class BugPatternLoader {
         XMLInputFactory xif = XMLInputFactory.newFactory();
         xif.setProperty(XMLInputFactory.IS_SUPPORTING_EXTERNAL_ENTITIES, false);
         xif.setProperty(XMLInputFactory.SUPPORT_DTD, false);
-        XMLStreamReader xsr = xif.createXMLStreamReader(new InputStreamReader(
-                inputStream));
+        XMLStreamReader xsr = xif.createXMLStreamReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         BugPatterns bugPatterns = (BugPatterns) unmarshaller.unmarshal(xsr);
         bugPatterns.prepare();
 

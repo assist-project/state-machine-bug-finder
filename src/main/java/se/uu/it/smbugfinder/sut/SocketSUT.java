@@ -3,8 +3,10 @@ package se.uu.it.smbugfinder.sut;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 
 import javax.annotation.Nullable;
 
@@ -26,8 +28,8 @@ public class SocketSUT implements SUT<String, String> {
     public SocketSUT(Socket sock, String reset, @Nullable String resetConfirmation) {
         try {
             // Create socket out (no buffering) and in
-            sockout = new PrintWriter(sock.getOutputStream(), true);
-            sockin = new BufferedReader(new InputStreamReader(sock.getInputStream()));
+            sockout = new PrintWriter(new OutputStreamWriter(sock.getOutputStream(), StandardCharsets.UTF_8), true);
+            sockin = new BufferedReader(new InputStreamReader(sock.getInputStream(), StandardCharsets.UTF_8));
             this.reset = reset;
             this.resetConfirmation = resetConfirmation;
             sendReset();

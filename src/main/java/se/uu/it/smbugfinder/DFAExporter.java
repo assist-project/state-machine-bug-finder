@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,7 @@ public interface DFAExporter {
 
         public void exportDfa(DFAAdapter spec, String name) {
             try {
-                spec.export(new FileWriter(new File(outputDir, name)));
+                spec.export(new FileWriter(new File(outputDir, name), StandardCharsets.UTF_8));
             } catch (IOException e) {
                 LOGGER.error("Could not export {}", name);
                 LOGGER.error(e.getLocalizedMessage());
@@ -38,7 +39,7 @@ public interface DFAExporter {
         private PrintWriter writer;
 
         public StreamDFAExporter(OutputStream out) {
-            this.writer = new PrintWriter(new OutputStreamWriter(out));
+            this.writer = new PrintWriter(new OutputStreamWriter(out, StandardCharsets.UTF_8));
         }
 
         @Override

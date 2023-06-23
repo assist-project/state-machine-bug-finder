@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -86,7 +87,7 @@ public class Main {
             if (config.getHarnessAddress() != null) {
                 String[] hostPort = config.getHarnessAddress().split("\\:");
                 String host = hostPort[0];
-                int port = Integer.valueOf(hostPort[1]);
+                int port = Integer.parseInt(hostPort[1]);
                 Socket socket = new Socket(host, port);
                 sut = new SocketSUT(socket, config.getResetMessage(), config.getResetConfirmationMessage());
             } else if (config.getValidationModel() != null) {
@@ -108,8 +109,8 @@ public class Main {
     }
 
     private static void export(ExportableResult result, String outputDirectory, String filename) throws FileNotFoundException {
-        result.doExport(new PrintWriter(new OutputStreamWriter(System.out), true));
-        result.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, filename).toFile())), true));
+        result.doExport(new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8), true));
+        result.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, filename).toFile()), StandardCharsets.UTF_8), true));
     }
 
     private static InputStream getResource(String path) throws FileNotFoundException {

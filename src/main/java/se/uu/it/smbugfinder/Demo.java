@@ -11,6 +11,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -54,7 +55,7 @@ public class Demo {
     }
 
     public Demo() {
-        this(new BufferedReader(new InputStreamReader(System.in)), System.out);
+        this(new BufferedReader(new InputStreamReader(System.in, StandardCharsets.UTF_8)), System.out);
     }
 
     public void bufferCommands(Collection<String> commands) {
@@ -69,7 +70,7 @@ public class Demo {
             return command;
         }
         String newCommands;
-        while ( (newCommands =  in.readLine().trim()).isEmpty() && required);
+        while ((newCommands = in.readLine().trim()).isEmpty() && required);
         String[] commandSplit = newCommands.split("\\s");
         if (commandSplit.length > 1) {
             Arrays.stream(commandSplit, 1, commandSplit.length).forEach(cmd -> commands.add(cmd));
@@ -146,8 +147,8 @@ public class Demo {
     }
 
     private static void export(ExportableResult result, String outputDirectory, String filename) throws FileNotFoundException {
-        result.doExport(new PrintWriter(new OutputStreamWriter(System.out), true));
-        result.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, filename).toFile())), true));
+        result.doExport(new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8), true));
+        result.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, filename).toFile()), StandardCharsets.UTF_8), true));
     }
 
     static class BugReport extends ExportableResult {
