@@ -7,7 +7,7 @@
 
   <groupId>se.uu.it</groupId>
   <artifactId>state-machine-bug-finder</artifactId>
-  <version>0.1</version>
+  <version>0.2</version>
 
   <name>state-machine-bug-finder</name>
   <url>https://github.com/assist-project/state-machine-bug-finder</url>
