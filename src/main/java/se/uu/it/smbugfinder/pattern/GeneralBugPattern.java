@@ -1,6 +1,6 @@
 package se.uu.it.smbugfinder.pattern;
 
-import javax.xml.bind.annotation.XmlElement;
+import jakarta.xml.bind.annotation.XmlElement;
 
 /**
  * Captures general bugs, used to unearth a wide range of violations.
