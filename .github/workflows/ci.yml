@@ -15,5 +15,5 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
-      - name: Build and run tests
-        run: mvn test
+      - name: Build and run checks
+        run: mvn verify

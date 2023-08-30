@@ -63,11 +63,13 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
       <version>1.4.11</version>
+      <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <version>1.4.11</version>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
@@ -109,9 +111,9 @@
     </dependency>
 
     <dependency>
-      <artifactId>annotations</artifactId>
       <groupId>com.google.code.findbugs</groupId>
-      <version>3.0.1u2</version>
+      <artifactId>jsr305</artifactId>
+      <version>3.0.2</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.beust/jcommander -->
@@ -222,6 +224,10 @@
             <goals>
               <goal>analyze-only</goal>
             </goals>
+            <configuration>
+              <failOnWarning>true</failOnWarning>
+              <ignoreUnusedRuntime>true</ignoreUnusedRuntime>
+            </configuration>
           </execution>
           <execution>
             <id>copy-dependencies</id>
