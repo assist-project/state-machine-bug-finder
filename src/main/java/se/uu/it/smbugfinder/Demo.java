@@ -129,16 +129,20 @@ public class Demo {
             sut = new SimulatedMealySUT<String, String>(validationModelPath.model);
         }
         StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<String, String>(config);
-        new File(outputDirectory).mkdirs();
-        modelBugFinder.setExporter(new DFAExporter.DirectoryDFAExporter(outputDirectory));
 
-        List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
-        Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
-        export(stats, outputDirectory, "statistics.txt");
-        BugReport bugReport = new BugReport(modelBugs);
-        export(bugReport, outputDirectory, "bug_report.txt");
+        File dir = new File(outputDirectory);
+        if (dir.mkdirs()) {
+            modelBugFinder.setExporter(new DFAExporter.DirectoryDFAExporter(outputDirectory));
+
+            List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
+            Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
+            export(stats, outputDirectory, "statistics.txt");
+            BugReport bugReport = new BugReport(modelBugs);
+            export(bugReport, outputDirectory, "bug_report.txt");
+        } else {
+            System.out.println("Directory cannot be created");
+        }
     }
-
 
     public static void main(String args []) throws IOException {
         Demo demo = new Demo();
