@@ -10,6 +10,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,44 +71,40 @@ public class Main {
     }
 
     private static void launchBugFinder(StateMachineBugFinderToolConfig config) throws FileNotFoundException, IOException {
-        File dir = new File(config.getOutputDir());
-        if (dir.mkdirs()) {
-            InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
-            InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(getResource(config.getModel()));
+        Files.createDirectories(Paths.get(config.getOutputDir()));
+        InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
+        InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(getResource(config.getModel()));
 
-            BugPatternLoader loader = new BugPatternLoader(new DefaultDFADecoder());
+        BugPatternLoader loader = new BugPatternLoader(new DefaultDFADecoder());
 
-            SymbolMapping<String, String> symbolMapping = new StringSymbolMapper(config.getEmptyOutput(), config.getSeparator());
-            List<Symbol> allSymbols = new ArrayList<>();
-            SUT<String,String> sut = null;
-            MealySymbolExtractor.extractSymbols(sutModelData.model, sutModelData.alphabet, symbolMapping, allSymbols);
-            BugPatterns bp = loader.loadPatterns(config.getPatterns(), allSymbols);
-            StateMachineBugFinderConfig finderConfig = config.getSmBugFinderConfig();
-            if (finderConfig.isValidate()) {
-                if (config.getHarnessAddress() != null) {
-                    String[] hostPort = config.getHarnessAddress().split("\\:");
-                    String host = hostPort[0];
-                    int port = Integer.parseInt(hostPort[1]);
-                    Socket socket = new Socket(host, port);
-                    sut = new SocketSUT(socket, config.getResetMessage(), config.getResetConfirmationMessage());
-                } else if (config.getValidationModel() != null) {
-                    InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> validationModelPath = mealyParser.readModel(getResource(config.getValidationModel()));
-                    sut = new SimulatedMealySUT<String, String>(validationModelPath.model);
-                } else {
-                    throw new ConfigurationException("Unable to validate since neither the address of a test harness nor a validation model were provided");
-                }
+        SymbolMapping<String, String> symbolMapping = new StringSymbolMapper(config.getEmptyOutput(), config.getSeparator());
+        List<Symbol> allSymbols = new ArrayList<>();
+        SUT<String,String> sut = null;
+        MealySymbolExtractor.extractSymbols(sutModelData.model, sutModelData.alphabet, symbolMapping, allSymbols);
+        BugPatterns bp = loader.loadPatterns(config.getPatterns(), allSymbols);
+        StateMachineBugFinderConfig finderConfig = config.getSmBugFinderConfig();
+        if (finderConfig.isValidate()) {
+            if (config.getHarnessAddress() != null) {
+                String[] hostPort = config.getHarnessAddress().split("\\:");
+                String host = hostPort[0];
+                int port = Integer.parseInt(hostPort[1]);
+                Socket socket = new Socket(host, port);
+                sut = new SocketSUT(socket, config.getResetMessage(), config.getResetConfirmationMessage());
+            } else if (config.getValidationModel() != null) {
+                InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> validationModelPath = mealyParser.readModel(getResource(config.getValidationModel()));
+                sut = new SimulatedMealySUT<String, String>(validationModelPath.model);
+            } else {
+                throw new ConfigurationException("Unable to validate since neither the address of a test harness nor a validation model were provided");
             }
-
-            StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<String, String>(finderConfig);
-            modelBugFinder.setExporter(new DFAExporter.DirectoryDFAExporter(config.getOutputDir()));
-            List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
-            Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
-            export(stats, config.getOutputDir(), "statistics.txt");
-            BugReport bugReport = new BugReport(modelBugs);
-            export(bugReport, config.getOutputDir(), "bug_report.txt");
-        } else {
-            System.out.println("Directory cannot be created");
         }
+
+        StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<String, String>(finderConfig);
+        modelBugFinder.setExporter(new DFAExporter.DirectoryDFAExporter(config.getOutputDir()));
+        List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
+        Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
+        export(stats, config.getOutputDir(), "statistics.txt");
+        BugReport bugReport = new BugReport(modelBugs);
+        export(bugReport, config.getOutputDir(), "bug_report.txt");
     }
 
     private static void export(ExportableResult result, String outputDirectory, String filename) throws FileNotFoundException {

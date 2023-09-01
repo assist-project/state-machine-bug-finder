@@ -1,7 +1,6 @@
 package se.uu.it.smbugfinder;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,6 +11,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -130,18 +130,14 @@ public class Demo {
         }
         StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<String, String>(config);
 
-        File dir = new File(outputDirectory);
-        if (dir.mkdirs()) {
-            modelBugFinder.setExporter(new DFAExporter.DirectoryDFAExporter(outputDirectory));
+        Files.createDirectories(Paths.get(outputDirectory));
+        modelBugFinder.setExporter(new DFAExporter.DirectoryDFAExporter(outputDirectory));
 
-            List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
-            Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
-            export(stats, outputDirectory, "statistics.txt");
-            BugReport bugReport = new BugReport(modelBugs);
-            export(bugReport, outputDirectory, "bug_report.txt");
-        } else {
-            System.out.println("Directory cannot be created");
-        }
+        List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
+        Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
+        export(stats, outputDirectory, "statistics.txt");
+        BugReport bugReport = new BugReport(modelBugs);
+        export(bugReport, outputDirectory, "bug_report.txt");
     }
 
     public static void main(String args []) throws IOException {
