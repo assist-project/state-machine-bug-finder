@@ -49,7 +49,7 @@ public class Trace <I,O> implements Iterable<Pair<I,O>>{
     }
 
     public String toString() {
-        return String.format("Trace: \n  inputs: %s\n  outputs: %s\n", inputWord, outputWord);
+        return String.format("Trace: %n  inputs: %s%n  outputs: %s%n", inputWord, outputWord);
     }
 
     @Override

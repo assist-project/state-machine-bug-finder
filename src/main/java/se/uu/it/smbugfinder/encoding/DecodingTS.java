@@ -75,7 +75,7 @@ public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>,
                         if (nextStateCandidate != null) {
                             if (previouslyMatchedLabel != null) {
                                     throw new RuntimeDecodingException(
-                                            String.format("Non-determinism in state %s. \n"
+                                            String.format("Non-determinism in state %s. %n"
                                             + "The concrete label %s can trigger two transitions: %s and %s.",
                                             dfaState, symbol, previouslyMatchedLabel, label) );
                             } else {
@@ -94,7 +94,7 @@ public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>,
                         if (nextStateCandidate != null) {
                             if (previouslyMatchedLabel != null) {
                                 throw new RuntimeDecodingException(
-                                        String.format("Non-determinism in state %s. \n"
+                                        String.format("Non-determinism in state %s. %n"
                                         + "The concrete label %s can trigger two transitions: %s and %s.",
                                         dfaState, symbol, previouslyMatchedLabel, otherLabel) );
                             } else {
