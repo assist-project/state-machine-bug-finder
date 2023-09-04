@@ -10,6 +10,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
@@ -70,8 +71,7 @@ public class Main {
     }
 
     private static void launchBugFinder(StateMachineBugFinderToolConfig config) throws FileNotFoundException, IOException {
-        File dir = new File(config.getOutputDir());
-        dir.mkdirs();
+        Files.createDirectories(Paths.get(config.getOutputDir()));
         InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
         InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(getResource(config.getModel()));
 
@@ -105,7 +105,6 @@ public class Main {
         export(stats, config.getOutputDir(), "statistics.txt");
         BugReport bugReport = new BugReport(modelBugs);
         export(bugReport, config.getOutputDir(), "bug_report.txt");
-
     }
 
     private static void export(ExportableResult result, String outputDirectory, String filename) throws FileNotFoundException {

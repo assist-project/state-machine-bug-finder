@@ -1,7 +1,6 @@
 package se.uu.it.smbugfinder;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -12,6 +11,7 @@ import java.io.OutputStreamWriter;
 import java.io.PrintStream;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
@@ -129,7 +129,8 @@ public class Demo {
             sut = new SimulatedMealySUT<String, String>(validationModelPath.model);
         }
         StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<String, String>(config);
-        new File(outputDirectory).mkdirs();
+
+        Files.createDirectories(Paths.get(outputDirectory));
         modelBugFinder.setExporter(new DFAExporter.DirectoryDFAExporter(outputDirectory));
 
         List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
@@ -138,7 +139,6 @@ public class Demo {
         BugReport bugReport = new BugReport(modelBugs);
         export(bugReport, outputDirectory, "bug_report.txt");
     }
-
 
     public static void main(String args []) throws IOException {
         Demo demo = new Demo();
