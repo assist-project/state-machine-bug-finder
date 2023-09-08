@@ -28,7 +28,7 @@ public class AutomatonUtils {
         Set<S> visited = new HashSet<S>();
         Set<S> reachable = new LinkedHashSet<S>();
         toVisit.add(fromState);
-        while(!toVisit.isEmpty()) {
+        while (!toVisit.isEmpty()) {
             S state = toVisit.poll();
             visited.add(state);
             reachable.add(state);
