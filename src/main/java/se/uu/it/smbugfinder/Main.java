@@ -85,7 +85,7 @@ public class Main {
         StateMachineBugFinderConfig finderConfig = config.getSmBugFinderConfig();
         if (finderConfig.isValidate()) {
             if (config.getHarnessAddress() != null) {
-                String[] hostPort = config.getHarnessAddress().split("\\:");
+                String[] hostPort = config.getHarnessAddress().split("\\:", -1);
                 String host = hostPort[0];
                 int port = Integer.parseInt(hostPort[1]);
                 Socket socket = new Socket(host, port);
