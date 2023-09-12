@@ -26,10 +26,10 @@ public class Assignment {
         return variable;
     }
 
+    @Override
     public String toString() {
         return variable + " := " + field;
     }
-
 
     @Override
     public int hashCode() {

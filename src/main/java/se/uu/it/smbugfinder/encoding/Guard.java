@@ -22,6 +22,7 @@ public class Guard {
         return booleanExpression.eval(symbol, valuation);
     }
 
+    @Override
     public String toString() {
         return booleanExpression.toString();
     }

@@ -12,6 +12,7 @@ public class RegexToken extends DescriptionToken {
         return regexFilter;
     }
 
+    @Override
     public String toString() {
         return "F_" + regexFilter;
     }

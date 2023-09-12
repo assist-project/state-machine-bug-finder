@@ -43,6 +43,7 @@ public class ParsingContext {
         return variables;
     }
 
+    @Override
     public String toString() {
         StringBuilder builder = new StringBuilder();
         return builder.append("Constants: ").append(constants.keySet()).append(System.lineSeparator())

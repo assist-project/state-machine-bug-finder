@@ -11,6 +11,7 @@ public final class OutputSymbol extends Symbol {
         return false;
     }
 
+    @Override
     public String toString() {
         return "O_" + name();
     }

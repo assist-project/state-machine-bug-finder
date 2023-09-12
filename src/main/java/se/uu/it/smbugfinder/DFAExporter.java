@@ -25,6 +25,7 @@ public interface DFAExporter {
             this.outputDir = outputDir;
         }
 
+        @Override
         public void exportDfa(DFAAdapter spec, String name) {
             try {
                 spec.export(new FileWriter(new File(outputDir, name), StandardCharsets.UTF_8));

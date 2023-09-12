@@ -11,6 +11,7 @@ public final class InputSymbol extends Symbol {
         return true;
     }
 
+    @Override
     public String toString() {
         return "I_" + name();
     }

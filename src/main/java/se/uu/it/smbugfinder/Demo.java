@@ -87,7 +87,6 @@ public class Demo {
         return input;
     }
 
-
     private void displayIntro() {
         out.println("Welcome to the state-machine-bug-finder demo. ");
         out.println("The purpose is to showcase how the bug-finder works on user-supplied models/bug patterns.");

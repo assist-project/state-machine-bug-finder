@@ -15,6 +15,7 @@ public class RelationalExpression  implements BooleanExpression {
         this.expr2 = expr2;
     }
 
+    @Override
     public boolean eval(Symbol symbol, Valuation valuation) {
         Value value1 = expr1.eval(symbol, valuation);
         Value value2 = expr2.eval(symbol, valuation);
@@ -43,6 +44,7 @@ public class RelationalExpression  implements BooleanExpression {
         }
     }
 
+    @Override
     public String toString() {
         return expr1.toString() + " " + op.getSign() + " " + expr2.toString();
     }

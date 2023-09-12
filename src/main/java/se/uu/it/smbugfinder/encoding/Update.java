@@ -37,6 +37,7 @@ public class Update {
         return currentValuation;
     }
 
+    @Override
     public String toString() {
         return Arrays.toString(assignments);
     }

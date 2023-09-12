@@ -30,6 +30,7 @@ public class DefaultDFAEncodingParser implements DFAEncodingParser {
         this(ParsingContextFactory.EMPTY);
     }
 
+    @Override
     public DFAEncoding parse(InputStream encodedDfaStream) throws IOException {
         ParsingContext context = factory.newContext();
         cache = new HashMap<>();
