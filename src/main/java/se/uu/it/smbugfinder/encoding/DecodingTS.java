@@ -36,6 +36,7 @@ public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>,
             this.tokenMatcher = tokenMatcher;
         }
 
+        @Override
         public RegisterState<S> getInitialState() {
             return initial;
         }

@@ -18,6 +18,7 @@ public class BugPatternLoadingException extends RuntimeException{
         super(message, exception);
     }
 
+    @Override
     public String getMessage() {
         StringBuilder sb = new StringBuilder();
         return sb.append("Failed to load bug patterns.")

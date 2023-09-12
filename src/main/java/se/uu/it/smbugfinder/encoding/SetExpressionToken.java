@@ -27,6 +27,7 @@ public class SetExpressionToken extends DescriptionToken {
         return right;
     }
 
+    @Override
     public Set<DescriptionToken> getSubTokens() {
         Set<DescriptionToken> subTokens = new LinkedHashSet<>();
         subTokens.add(left);

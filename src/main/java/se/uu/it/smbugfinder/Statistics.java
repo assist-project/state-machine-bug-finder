@@ -52,6 +52,7 @@ public class Statistics extends ExportableResult {
         return statsString;
     }
 
+    @Override
     public void doExport(PrintWriter out) {
         title("Run Description", out);
         generateRunDescription(out, config, inputAlphabet);

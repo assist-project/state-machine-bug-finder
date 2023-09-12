@@ -35,6 +35,7 @@ public class Trace<I,O> implements Iterable<Pair<I,O>> {
         return builder.build();
     }
 
+    @Override
     public Iterator<Pair<I,O>> iterator() {
         return getInputOutputStream().iterator();
     }
@@ -48,6 +49,7 @@ public class Trace<I,O> implements Iterable<Pair<I,O>> {
         return builder.toString();
     }
 
+    @Override
     public String toString() {
         return String.format("Trace: %n  inputs: %s%n  outputs: %s%n", inputWord, outputWord);
     }

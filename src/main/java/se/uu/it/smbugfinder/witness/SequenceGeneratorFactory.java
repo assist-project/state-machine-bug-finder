@@ -56,6 +56,7 @@ public class SequenceGeneratorFactory {
             this.config = config;
         }
 
+       @Override
         public <S> Iterable<Word<I>> generateSequences(DFA<S, I> bugLanguage, Collection<I> alphabet) {
             Set<S> acceptingStates = bugLanguage.getStates().stream().filter(s -> bugLanguage.isAccepting(s)).collect(Collectors.toSet());
             ModelExplorer<S,I> explorer = new ModelExplorer<>(bugLanguage, alphabet);

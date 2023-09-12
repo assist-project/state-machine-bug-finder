@@ -19,6 +19,7 @@ public class Variable implements ValueExpression {
         return valuation.get(this);
     }
 
+    @Override
     public String toString() {
         return name;
     }

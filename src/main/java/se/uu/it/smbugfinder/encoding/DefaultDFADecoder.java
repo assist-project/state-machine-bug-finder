@@ -30,6 +30,7 @@ public class DefaultDFADecoder implements DFADecoder {
         this.tokenMatcher = tokenMatcher;
     }
 
+    @Override
     public DFAAdapter decode(InputStream dfaEncodingStream, Collection<Symbol> symbols) throws Exception  {
         DFAEncoding dfaEncoding = parser.parse(dfaEncodingStream);
         DFAAdapter decodedDfa = decode(dfaEncoding, symbols);

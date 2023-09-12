@@ -25,6 +25,7 @@ public class GeneralBugPattern extends BugPattern {
         return uncategorizedSequenceBound;
     }
 
+    @Override
     public boolean isGeneral() {
         return true;
     }

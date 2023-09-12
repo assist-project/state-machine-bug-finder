@@ -38,6 +38,7 @@ public class BugPattern extends AbstractBugPattern {
         return bugLanguage;
     }
 
+    @Override
     public boolean isGeneral() {
         return false;
     }
