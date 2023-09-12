@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 import net.automatalib.commons.util.Pair;
 import net.automatalib.words.Word;
 
-public class Trace <I,O> implements Iterable<Pair<I,O>>{
+public class Trace<I,O> implements Iterable<Pair<I,O>> {
     private Word<I> inputWord;
     private Word<O> outputWord;
 
@@ -69,7 +69,7 @@ public class Trace <I,O> implements Iterable<Pair<I,O>>{
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Trace other = (Trace) obj;
+        Trace<?,?> other = (Trace) obj;
         if (inputWord == null) {
             if (other.inputWord != null)
                 return false;
