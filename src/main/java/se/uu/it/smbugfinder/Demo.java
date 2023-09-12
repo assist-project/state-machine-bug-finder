@@ -71,7 +71,7 @@ public class Demo {
         }
         String newCommands;
         while ((newCommands = in.readLine().trim()).isEmpty() && required);
-        String[] commandSplit = newCommands.split("\\s");
+        String[] commandSplit = newCommands.split("\\s", -1);
         if (commandSplit.length > 1) {
             Arrays.stream(commandSplit, 1, commandSplit.length).forEach(cmd -> commands.add(cmd));
         }
