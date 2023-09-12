@@ -1,7 +1,6 @@
 package se.uu.it.smbugfinder.pattern;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -69,7 +68,7 @@ public class BugPatterns {
      * Removes bug patterns that have not been enabled
      */
     private void removeDisabled() {
-        List<BugPattern> bugPatterns = new LinkedList<BugPattern>(this.bugPatterns);
+        List<BugPattern> bugPatterns = new ArrayList<BugPattern>(this.bugPatterns);
         bugPatterns.removeIf(bp -> !bp.isEnabled());
         this.bugPatterns = bugPatterns;
     }
