@@ -14,12 +14,13 @@ import se.uu.it.smbugfinder.dfa.DFAAdapter;
 public abstract class AbstractBugPattern extends Pattern {
     private static int CUR_ID = 1;
     private static AbstractBugPattern UNCATEGORIZED;
+
     public static AbstractBugPattern uncategorized() {
-        if (UNCATEGORIZED == null) {
+        if (AbstractBugPattern.UNCATEGORIZED == null) {
             AbstractBugPattern bp = new AbstractBugPattern() {
                 @Override
                 DFAAdapter doGenerateBugLanguage() {
-                    throw new RuntimeException("Uncategorized bug pattern does not provide a bug language");
+                    throw new RuntimeException("Uncategorized bug pattern does not provide a bug language.");
                 }
 
                 @Override
@@ -32,9 +33,9 @@ public abstract class AbstractBugPattern extends Pattern {
             bp.name = "Uncategorized";
             bp.description = "Uncategorized behavior which does not conform to the specification.";
             bp.severity = BugSeverity.UNKNOWN;
-            UNCATEGORIZED = bp;
+            AbstractBugPattern.UNCATEGORIZED = bp;
         }
-        return UNCATEGORIZED;
+        return AbstractBugPattern.UNCATEGORIZED;
     }
 
     public AbstractBugPattern() {
