@@ -350,7 +350,7 @@ public class StateMachineBugFinder<I,O> {
     }
 
     private <MS> Object getDeviantTransition(Word<Symbol> sequence, DFAAdapter spec, MealyMachine<MS,I,?,O> mealy,  SymbolMapping<I,O> mapping) {
-        assert(!spec.accepts(sequence));
+        assert !spec.accepts(sequence);
         Set<Symbol> suffixSymbols = new LinkedHashSet<>();
         Word<Symbol> acceptedPrefix = null;
         Symbol deviatingSymbol = null;
