@@ -20,18 +20,11 @@
     <!-- Dependencies appear alphabetically sorted below -->
     <automatalib.version>0.10.0</automatalib.version>
     <checker-qual.version>3.38.0</checker-qual.version>
-    <guava.version>32.1.2-jre</guava.version>
     <jaxb-api.version>4.0.0</jaxb-api.version>
     <jaxb-impl.version>4.0.3</jaxb-impl.version>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>com.google.guava</groupId>
-      <artifactId>guava</artifactId>
-      <version>${guava.version}</version>
-    </dependency>
-
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
