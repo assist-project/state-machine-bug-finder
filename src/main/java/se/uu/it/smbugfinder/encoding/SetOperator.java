@@ -4,7 +4,7 @@ public enum SetOperator {
     DIFFERENCE("-"),
     UNION("U");
 
-    private String sign;
+    private final String sign;
 
     private SetOperator(String sign) {
         this.sign = sign;

@@ -4,7 +4,7 @@ public enum LogicalOperator {
     AND("and"),
     OR("or");
 
-    private String sign;
+    private final String sign;
 
     private LogicalOperator(String sign) {
         this.sign = sign;
