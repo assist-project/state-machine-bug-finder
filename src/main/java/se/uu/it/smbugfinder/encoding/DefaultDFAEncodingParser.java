@@ -5,9 +5,6 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import net.automatalib.automata.fsa.impl.compact.CompactDFA;
 import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
@@ -16,7 +13,7 @@ import se.uu.it.smbugfinder.encoding.javacc.LabelParserFacade;
 import se.uu.it.smbugfinder.encoding.javacc.TokenMgrError;
 
 public class DefaultDFAEncodingParser implements DFAEncodingParser {
-    private static final Logger LOGGER = LoggerFactory.getLogger(DefaultDFAEncodingParser.class.getName());
+    // private static final Logger LOGGER = LoggerFactory.getLogger(DefaultDFAEncodingParser.class.getName());
 
     private ParsingContextFactory factory;
     private Map<String, Label> cache;

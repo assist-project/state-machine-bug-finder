@@ -7,15 +7,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import net.automatalib.automata.fsa.DFA;
 import net.automatalib.ts.acceptors.DeterministicAcceptorTS;
 import se.uu.it.smbugfinder.dfa.Symbol;
 
 public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>, Symbol> {
-        private static final Logger LOGGER = LoggerFactory.getLogger(DecodingTS.class.getName());
+        // private static final Logger LOGGER = LoggerFactory.getLogger(DecodingTS.class.getName());
 
         private DFA<S, Label> encodedDfa;
         private RegisterState<S> initial;

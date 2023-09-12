@@ -64,7 +64,7 @@ public class BugPatternLoader {
     public BugPatterns loadPatterns(String patternsDirectory, Collection<Symbol> symbols) throws BugPatternLoadingException {
         BugPatterns bugPatterns = null;
         LOGGER.info("Loading bug patterns");
-        InputStream patternsStream = null;
+        InputStream patternsStream;
         URI patternsURI = URI.create(patternsDirectory);
         String patternsFile = patternsURI.resolve(PATTERNS_FILE).getPath();
         patternsStream = getResourceAsStream(patternsFile);
