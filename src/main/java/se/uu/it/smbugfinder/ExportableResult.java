@@ -4,12 +4,10 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.io.Writer;
 
-import com.google.common.base.Strings;
-
 public abstract class ExportableResult {
 
-    private static String SECTION_DELIM = Strings.repeat("-", 80);
-    private static String TITLE_DELIM = Strings.repeat("=", 80);
+    private static String SECTION_DELIM = "-".repeat(80);
+    private static String TITLE_DELIM = "=".repeat(80);
 
     public void export(Writer writer) {
         PrintWriter pw = writer instanceof PrintWriter ? (PrintWriter) writer : new PrintWriter(writer);
