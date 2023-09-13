@@ -41,7 +41,7 @@ public class Guard {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if (! (obj instanceof Guard))
             return false;
         Guard other = (Guard) obj;
         if (booleanExpression == null) {

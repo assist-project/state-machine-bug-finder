@@ -29,7 +29,7 @@ public abstract class Symbol {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if (! (obj instanceof Symbol))
             return false;
         Symbol other = (Symbol) obj;
         if (name == null) {

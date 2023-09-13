@@ -30,7 +30,7 @@ public class RegisterState<S> {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if (! (obj instanceof RegisterState<?>))
             return false;
         RegisterState<?> other = (RegisterState<?>) obj;
         if (state == null) {

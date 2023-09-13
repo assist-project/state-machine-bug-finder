@@ -56,13 +56,12 @@ public class Update {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if (! (obj instanceof Update))
             return false;
         Update other = (Update) obj;
         if (!Arrays.equals(assignments, other.assignments))
             return false;
         return true;
     }
-
 
 }

@@ -34,7 +34,7 @@ public class Constant extends Value {
             return true;
         if (!super.equals(obj))
             return false;
-        if (getClass() != obj.getClass())
+        if (! (obj instanceof Constant))
             return false;
         Constant other = (Constant) obj;
         if (name == null) {
