@@ -12,14 +12,12 @@ import net.automatalib.ts.acceptors.DeterministicAcceptorTS;
 import se.uu.it.smbugfinder.dfa.Symbol;
 
 public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>, Symbol> {
-        // private static final Logger LOGGER = LoggerFactory.getLogger(DecodingTS.class.getName());
 
         private DFA<S, Label> encodedDfa;
         private RegisterState<S> initial;
         private RegisterState<S> sink;
         private TokenMatcher tokenMatcher;
         private Collection<Label> labels;
-
 
         public DecodingTS(DFA<S, Label> encodedDfa, Collection<Label> labels) {
             this.encodedDfa = encodedDfa;

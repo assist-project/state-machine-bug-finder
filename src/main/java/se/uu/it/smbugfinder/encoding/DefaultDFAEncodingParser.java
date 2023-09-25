@@ -13,7 +13,6 @@ import se.uu.it.smbugfinder.encoding.javacc.LabelParserFacade;
 import se.uu.it.smbugfinder.encoding.javacc.TokenMgrError;
 
 public class DefaultDFAEncodingParser implements DFAEncodingParser {
-    // private static final Logger LOGGER = LoggerFactory.getLogger(DefaultDFAEncodingParser.class.getName());
 
     private ParsingContextFactory factory;
     private Map<String, Label> cache;
