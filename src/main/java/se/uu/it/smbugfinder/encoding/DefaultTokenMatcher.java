@@ -6,10 +6,8 @@ public class DefaultTokenMatcher implements TokenMatcher {
 
     @Override
     public boolean match(Symbol symbol, DescriptionToken description) {
-        boolean matches = false;
         DescriptionToken matchingToken = matchingAtomicToken(symbol, description);
-        matches = matchingToken != null;
-        return matches;
+        return matchingToken != null;
     }
 
     /**
