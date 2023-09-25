@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.io.Writer;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.LinkedList;
 import java.util.List;
 
 import net.automatalib.automata.fsa.DFA;
@@ -81,7 +80,7 @@ public class DFAAdapter {
         FastDFA<Symbol> reducedDfa = newDfa();
         AutomatonLowLevelCopy.copy(AutomatonCopyMethod.DFS, dfa, symbols, reducedDfa);
         DFAUtils.reachableStates(reducedDfa, symbols, reachableStates);
-        List<FastDFAState> statesToRemove = new LinkedList<>(reducedDfa.getStates());
+        List<FastDFAState> statesToRemove = new ArrayList<>(reducedDfa.getStates());
         statesToRemove.removeAll(reachableStates);
         statesToRemove.forEach(s -> reducedDfa.removeState(s));
         return new DFAAdapter(reducedDfa, reducedDfa.getInputAlphabet());

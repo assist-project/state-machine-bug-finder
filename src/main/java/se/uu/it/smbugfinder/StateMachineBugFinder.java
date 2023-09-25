@@ -2,11 +2,11 @@ package se.uu.it.smbugfinder;
 
 import java.time.Duration;
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Deque;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -87,7 +87,7 @@ public class StateMachineBugFinder<I,O> {
         }
         DFAAdapter sutLanguage = converter.convert(mealy, inputs, mapping);
         exporter.exportDfa(sutLanguage, "sutLanguage.dot");
-        List<BugPattern> detectedPatterns = new LinkedList<>();
+        List<BugPattern> detectedPatterns = new ArrayList<>();
 
         // match against each loaded bug pattern
         for (BugPattern bugPattern : patterns.getSpecificBugPatterns()) {

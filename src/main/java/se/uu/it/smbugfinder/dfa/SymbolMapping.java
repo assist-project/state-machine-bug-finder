@@ -3,7 +3,6 @@ package se.uu.it.smbugfinder.dfa;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -82,7 +81,7 @@ public interface SymbolMapping <I,O> {
     default Trace<I,O> toExecutionTrace(Word<Symbol> symbolWord) {
         WordBuilder<I> inputWordBuilder = new WordBuilder<I>();
         WordBuilder<O> outputWordBuilder = new WordBuilder<O>();
-        List<OutputSymbol> outputSymbols = new LinkedList<>();
+        List<OutputSymbol> outputSymbols = new ArrayList<>();
         boolean first = true;
 
         for (Symbol symbol : symbolWord) {

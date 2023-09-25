@@ -1,9 +1,9 @@
 package se.uu.it.smbugfinder.encoding;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -57,7 +57,7 @@ public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>,
                 return sink;
             } else {
                 S dfaState = state.getState();
-                List<Label> otherLabels = new LinkedList<>();
+                List<Label> otherLabels = new ArrayList<>();
 
                 // variables used to check for non-determinism/inconsistency in the specification
                 RegisterState<S> nextState = null, nextStateCandidate = null;
