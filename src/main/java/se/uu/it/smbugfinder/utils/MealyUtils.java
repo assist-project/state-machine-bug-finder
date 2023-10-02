@@ -8,14 +8,13 @@ import java.util.Set;
 
 import net.automatalib.automata.transducers.MealyMachine;
 
-public class MealyUtils extends AutomatonUtils{
-
+public class MealyUtils extends AutomatonUtils {
 
     /**
      * Determines all the outputs the model can generate in response to the given inputs.
-     * @param automaton
-     * @param inputs
-     * @param reachableOutputs
+     * @param automaton         the model expressed as automaton
+     * @param inputs            the given inputs
+     * @param reachableOutputs  the initial reachable outputs
      */
     public static <S,I,O> void reachableOutputs(MealyMachine<S, I, ?, O> automaton, Collection<I> inputs, Collection<? super O> reachableOutputs) {
         Queue<S> reachableStates = new ArrayDeque<S>();

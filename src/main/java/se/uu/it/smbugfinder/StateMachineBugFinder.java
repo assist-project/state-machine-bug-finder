@@ -63,14 +63,14 @@ public class StateMachineBugFinder<I,O> {
     }
 
     /**
-     * @param converter
+     * @param converter  a converter of a Mealy machine to a DFA
      */
     public void setConverter(MealyToDFAConverter<I,O> converter) {
         this.converter = converter;
     }
 
     /**
-     * @param exporter
+     * @param exporter  a DFA exporter
      */
     public void setExporter(DFAExporter exporter) {
         this.exporter = exporter;

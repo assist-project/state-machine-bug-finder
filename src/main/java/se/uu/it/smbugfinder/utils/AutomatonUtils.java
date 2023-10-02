@@ -15,9 +15,9 @@ public class AutomatonUtils {
 
     /**
      * Determines all the states which can be reached using the given inputs on the automaton.
-     * @param automaton
-     * @param inputs
-     * @param reachableStates
+     * @param automaton        the model expressed as an automaton
+     * @param inputs           the given inputs
+     * @param reachableStates  a collection of initial reachable states
      */
     public static <S,I> void reachableStates(UniversalDeterministicAutomaton<S, I, ?, ?, ?> automaton, Collection<I> inputs, Collection<S> reachableStates) {
         reachableStates(automaton, inputs, automaton.getInitialState(), reachableStates);
