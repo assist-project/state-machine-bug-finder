@@ -19,7 +19,8 @@
 
     <!-- Dependencies appear alphabetically sorted below -->
     <automatalib.version>0.10.0</automatalib.version>
-    <checker-qual.version>3.38.0</checker-qual.version>
+    <checker-qual.version>3.39.0</checker-qual.version>
+    <error-prone.version>2.21.1</error-prone.version>
     <jaxb-api.version>4.0.1</jaxb-api.version>
     <jaxb-impl.version>4.0.3</jaxb-impl.version>
   </properties>
@@ -143,6 +144,22 @@
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
           <version>3.11.0</version>
+          <configuration>
+            <showWarnings>true</showWarnings>
+            <compilerArgs>
+              <!--arg>-Werror</arg>-->
+              <arg>-Xlint:all</arg>
+              <arg>-XDcompilePolicy=simple</arg>
+              <arg>-Xplugin:ErrorProne -XepExcludedPaths:.*/target/generated-sources/javacc/.* -Xep:AddressSelection:OFF -Xep:EqualsGetClass:OFF -Xep:MissingSummary:OFF </arg>
+            </compilerArgs>
+            <annotationProcessorPaths>
+              <path>
+                <groupId>com.google.errorprone</groupId>
+                <artifactId>error_prone_core</artifactId>
+                <version>${error-prone.version}</version>
+              </path>
+            </annotationProcessorPaths>
+          </configuration>
         </plugin>
         <!-- We probably do not need this...
         <plugin>
