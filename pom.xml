@@ -20,16 +20,21 @@
     <!-- Dependencies appear alphabetically sorted below -->
     <automatalib.version>0.10.0</automatalib.version>
     <checker-qual.version>3.39.0</checker-qual.version>
-    <error-prone.version>2.22.0</error-prone.version>
+    <commons.version>3.13.0</commons.version>
+    <error-prone.version>2.23.0</error-prone.version>
     <jaxb-api.version>4.0.1</jaxb-api.version>
     <jaxb-impl.version>4.0.3</jaxb-impl.version>
+    <jcommander.version>1.82</jcommander.version>
+    <junit.version>4.13.2</junit.version>
+    <logback.version>1.4.11</logback.version>
+    <slf4j.version>2.0.9</slf4j.version>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>2.0.9</version>
+      <version>${slf4j.version}</version>
     </dependency>
 
     <dependency>
@@ -57,20 +62,20 @@
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-core</artifactId>
-      <version>1.4.11</version>
+      <version>${logback.version}</version>
       <scope>runtime</scope>
     </dependency>
     <dependency>
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
-      <version>1.4.11</version>
+      <version>${logback.version}</version>
       <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>org.apache.commons</groupId>
       <artifactId>commons-lang3</artifactId>
-      <version>3.13.0</version>
+      <version>${commons.version}</version>
       <scope>compile</scope>
     </dependency>
 
@@ -115,13 +120,13 @@
     <dependency>
       <groupId>com.beust</groupId>
       <artifactId>jcommander</artifactId>
-      <version>1.82</version>
+      <version>${jcommander.version}</version>
     </dependency>
 
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <version>4.13.2</version>
+      <version>${junit.version}</version>
       <scope>test</scope>
     </dependency>
   </dependencies>
