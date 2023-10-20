@@ -23,7 +23,7 @@
     <commons.version>3.13.0</commons.version>
     <error-prone.version>2.23.0</error-prone.version>
     <jaxb-api.version>4.0.1</jaxb-api.version>
-    <jaxb-impl.version>4.0.3</jaxb-impl.version>
+    <jaxb-impl.version>4.0.4</jaxb-impl.version>
     <jcommander.version>1.82</jcommander.version>
     <junit.version>4.13.2</junit.version>
     <logback.version>1.4.11</logback.version>
