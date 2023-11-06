@@ -2,8 +2,8 @@ package se.uu.it.smbugfinder.witness;
 
 import java.util.Collection;
 
-import net.automatalib.automata.fsa.DFA;
-import net.automatalib.words.Word;
+import net.automatalib.automaton.fsa.DFA;
+import net.automatalib.word.Word;
 
 public interface SequenceGenerator<I> {
     /**

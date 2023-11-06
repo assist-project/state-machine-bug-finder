@@ -7,8 +7,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import net.automatalib.automata.fsa.DFA;
-import net.automatalib.ts.acceptors.DeterministicAcceptorTS;
+import net.automatalib.automaton.fsa.DFA;
+import net.automatalib.ts.acceptor.DeterministicAcceptorTS;
 import se.uu.it.smbugfinder.dfa.Symbol;
 
 public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>, Symbol> {

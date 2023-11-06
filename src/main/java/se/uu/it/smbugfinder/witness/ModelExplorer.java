@@ -15,11 +15,11 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.function.Predicate;
 
-import net.automatalib.automata.UniversalDeterministicAutomaton;
-import net.automatalib.commons.util.mappings.Mapping;
-import net.automatalib.commons.util.mappings.MutableMapping;
-import net.automatalib.util.automata.cover.Covers;
-import net.automatalib.words.Word;
+import net.automatalib.automaton.UniversalDeterministicAutomaton;
+import net.automatalib.common.util.mapping.Mapping;
+import net.automatalib.common.util.mapping.MutableMapping;
+import net.automatalib.util.automaton.cover.Covers;
+import net.automatalib.word.Word;
 import se.uu.it.smbugfinder.utils.AutomatonUtils;
 import se.uu.it.smbugfinder.utils.AutomatonUtils.PredMap;
 import se.uu.it.smbugfinder.utils.AutomatonUtils.PredStruct;

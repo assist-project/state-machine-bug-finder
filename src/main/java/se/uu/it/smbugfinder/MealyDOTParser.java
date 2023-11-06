@@ -3,9 +3,9 @@ package se.uu.it.smbugfinder;
 import java.io.IOException;
 import java.io.InputStream;
 
-import net.automatalib.automata.AutomatonCreator;
-import net.automatalib.automata.transducers.MutableMealyMachine;
-import net.automatalib.commons.util.Pair;
+import net.automatalib.automaton.AutomatonCreator;
+import net.automatalib.automaton.transducer.MutableMealyMachine;
+import net.automatalib.common.util.Pair;
 import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;

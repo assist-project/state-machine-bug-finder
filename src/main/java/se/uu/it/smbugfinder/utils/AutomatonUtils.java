@@ -8,8 +8,8 @@ import java.util.LinkedHashSet;
 import java.util.Queue;
 import java.util.Set;
 
-import net.automatalib.automata.UniversalDeterministicAutomaton;
-import net.automatalib.words.Word;
+import net.automatalib.automaton.UniversalDeterministicAutomaton;
+import net.automatalib.word.Word;
 
 public class AutomatonUtils {
 

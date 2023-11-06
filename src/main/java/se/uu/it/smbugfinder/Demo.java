@@ -22,7 +22,7 @@ import java.util.List;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import net.automatalib.automata.transducers.impl.compact.CompactMealy;
+import net.automatalib.automaton.transducer.CompactMealy;
 import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;

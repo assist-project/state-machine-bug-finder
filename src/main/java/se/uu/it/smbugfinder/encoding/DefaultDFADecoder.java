@@ -4,13 +4,13 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import net.automatalib.automata.fsa.DFA;
-import net.automatalib.automata.fsa.impl.FastDFA;
-import net.automatalib.util.automata.fsa.DFAs;
+import net.automatalib.alphabet.Alphabet;
+import net.automatalib.alphabet.ListAlphabet;
+import net.automatalib.automaton.fsa.DFA;
+import net.automatalib.automaton.fsa.FastDFA;
+import net.automatalib.util.automaton.fsa.DFAs;
 import net.automatalib.util.ts.copy.TSCopy;
 import net.automatalib.util.ts.traversal.TSTraversalMethod;
-import net.automatalib.words.Alphabet;
-import net.automatalib.words.impl.ListAlphabet;
 import se.uu.it.smbugfinder.dfa.DFAAdapter;
 import se.uu.it.smbugfinder.dfa.Symbol;
 

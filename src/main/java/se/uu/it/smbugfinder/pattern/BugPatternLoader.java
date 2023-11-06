@@ -23,7 +23,7 @@ import javax.xml.stream.XMLStreamReader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.automatalib.automata.transducers.MealyMachine;
+import net.automatalib.automaton.transducer.MealyMachine;
 import se.uu.it.smbugfinder.dfa.DFAAdapter;
 import se.uu.it.smbugfinder.dfa.MealySymbolExtractor;
 import se.uu.it.smbugfinder.dfa.Symbol;

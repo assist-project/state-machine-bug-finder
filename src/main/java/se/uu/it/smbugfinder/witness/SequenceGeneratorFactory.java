@@ -10,8 +10,8 @@ import javax.annotation.Nullable;
 
 import org.apache.commons.lang3.NotImplementedException;
 
-import net.automatalib.automata.fsa.DFA;
-import net.automatalib.words.Word;
+import net.automatalib.automaton.fsa.DFA;
+import net.automatalib.word.Word;
 import se.uu.it.smbugfinder.utils.DFAUtils;
 
 public class SequenceGeneratorFactory {

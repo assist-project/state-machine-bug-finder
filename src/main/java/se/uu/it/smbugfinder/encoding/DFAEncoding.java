@@ -2,7 +2,7 @@ package se.uu.it.smbugfinder.encoding;
 
 import java.util.Collection;
 
-import net.automatalib.automata.fsa.DFA;
+import net.automatalib.automaton.fsa.DFA;
 import net.automatalib.util.ts.copy.TSCopy;
 
 public class DFAEncoding {

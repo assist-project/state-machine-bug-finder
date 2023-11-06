@@ -2,7 +2,7 @@ package se.uu.it.smbugfinder.dfa;
 
 import java.util.List;
 
-import net.automatalib.words.Word;
+import net.automatalib.word.Word;
 
 public class SymbolTrace extends Trace<InputSymbol,List<OutputSymbol>>{
 

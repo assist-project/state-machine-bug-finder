@@ -1,6 +1,6 @@
 package se.uu.it.smbugfinder.sut;
 
-import net.automatalib.words.Word;
+import net.automatalib.word.Word;
 
 public class ResetCountingSUT<I,O> implements SUT<I,O> {
 

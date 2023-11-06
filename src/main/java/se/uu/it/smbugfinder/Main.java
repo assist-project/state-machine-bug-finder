@@ -22,7 +22,7 @@ import org.slf4j.LoggerFactory;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 
-import net.automatalib.automata.transducers.impl.compact.CompactMealy;
+import net.automatalib.automaton.transducer.CompactMealy;
 import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
