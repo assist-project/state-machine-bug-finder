@@ -13,7 +13,7 @@ import javax.annotation.Nullable;
 import net.automatalib.word.Word;
 import net.automatalib.word.WordBuilder;
 
-public class SocketSUT implements SUT<String, String> {
+public final class SocketSUT implements SUT<String, String> {
     private static String RESET = "reset";
 
     private PrintWriter sockout;

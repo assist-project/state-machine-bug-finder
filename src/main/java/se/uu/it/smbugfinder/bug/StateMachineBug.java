@@ -3,12 +3,12 @@ package se.uu.it.smbugfinder.bug;
 import se.uu.it.smbugfinder.dfa.Trace;
 import se.uu.it.smbugfinder.pattern.AbstractBugPattern;
 
-public class StateMachineBug<I,O> extends Bug<I,O>{
+public final class StateMachineBug<I, O> extends Bug<I, O> {
 
     private AbstractBugPattern bugPattern;
-    private Trace<I,O> counterexample;
+    private Trace<I, O> counterexample;
 
-    public StateMachineBug(Trace<I,O>  trace, AbstractBugPattern bugPattern) {
+    public StateMachineBug(Trace<I, O> trace, AbstractBugPattern bugPattern) {
         super(trace);
         if (trace == null) {
             throw new InternalError("Trace cannot be null");
@@ -42,7 +42,6 @@ public class StateMachineBug<I,O> extends Bug<I,O>{
         }
         return sb.toString();
     }
-
 
     public void validationFailed(Trace<I,O> counterexample) {
         setStatus(BugValidationStatus.VALIDATION_FAILED);

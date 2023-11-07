@@ -5,7 +5,7 @@ import java.util.List;
 
 import se.uu.it.smbugfinder.dfa.Symbol;
 
-public class FunctionInvocation implements ValueExpression {
+public final class FunctionInvocation implements ValueExpression {
     private ValueExpression[] parameters;
     private Function function;
 
