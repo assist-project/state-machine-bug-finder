@@ -3,8 +3,8 @@ package se.uu.it.smbugfinder.dfa;
 import java.util.Iterator;
 import java.util.stream.Stream;
 
-import net.automatalib.commons.util.Pair;
-import net.automatalib.words.Word;
+import net.automatalib.common.util.Pair;
+import net.automatalib.word.Word;
 
 public class Trace<I,O> implements Iterable<Pair<I,O>> {
     private Word<I> inputWord;

@@ -5,14 +5,14 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import net.automatalib.automata.fsa.DFA;
-import net.automatalib.automata.fsa.MutableDFA;
-import net.automatalib.automata.fsa.impl.FastDFA;
-import net.automatalib.automata.fsa.impl.FastDFAState;
-import net.automatalib.util.automata.copy.AutomatonCopyMethod;
-import net.automatalib.util.automata.copy.AutomatonLowLevelCopy;
-import net.automatalib.words.Word;
-import net.automatalib.words.impl.ListAlphabet;
+import net.automatalib.alphabet.ListAlphabet;
+import net.automatalib.automaton.fsa.DFA;
+import net.automatalib.automaton.fsa.FastDFA;
+import net.automatalib.automaton.fsa.FastDFAState;
+import net.automatalib.automaton.fsa.MutableDFA;
+import net.automatalib.util.automaton.copy.AutomatonCopyMethod;
+import net.automatalib.util.automaton.copy.AutomatonLowLevelCopy;
+import net.automatalib.word.Word;
 import se.uu.it.smbugfinder.utils.DFAUtils;
 
 public class DeviantTransitionSequenceGenerator <I> implements SequenceGenerator<I> {

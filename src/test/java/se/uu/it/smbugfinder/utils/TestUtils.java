@@ -7,12 +7,12 @@ import java.util.Collection;
 
 import org.junit.Assert;
 
-import net.automatalib.automata.Automaton;
-import net.automatalib.automata.fsa.DFA;
-import net.automatalib.automata.fsa.impl.FastDFA;
+import net.automatalib.alphabet.ListAlphabet;
+import net.automatalib.automaton.Automaton;
+import net.automatalib.automaton.fsa.DFA;
+import net.automatalib.automaton.fsa.FastDFA;
 import net.automatalib.serialization.dot.GraphDOT;
-import net.automatalib.util.automata.fsa.DFAs;
-import net.automatalib.words.impl.ListAlphabet;
+import net.automatalib.util.automaton.fsa.DFAs;
 
 public class TestUtils {
     public static <S,I,T> String getAutomataString(Automaton<S, I, T> automaton, Collection<? extends I> inputAlphabet) {

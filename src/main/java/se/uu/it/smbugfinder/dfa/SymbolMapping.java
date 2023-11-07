@@ -6,9 +6,9 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import net.automatalib.commons.util.Pair;
-import net.automatalib.words.Word;
-import net.automatalib.words.WordBuilder;
+import net.automatalib.common.util.Pair;
+import net.automatalib.word.Word;
+import net.automatalib.word.WordBuilder;
 
 /**
  *

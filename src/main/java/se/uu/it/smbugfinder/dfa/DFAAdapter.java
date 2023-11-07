@@ -6,17 +6,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.automatalib.automata.fsa.DFA;
-import net.automatalib.automata.fsa.impl.FastDFA;
-import net.automatalib.automata.fsa.impl.FastDFAState;
-import net.automatalib.automata.fsa.impl.compact.CompactDFA;
+import net.automatalib.alphabet.ListAlphabet;
+import net.automatalib.automaton.fsa.CompactDFA;
+import net.automatalib.automaton.fsa.DFA;
+import net.automatalib.automaton.fsa.FastDFA;
+import net.automatalib.automaton.fsa.FastDFAState;
 import net.automatalib.serialization.dot.GraphDOT;
-import net.automatalib.util.automata.copy.AutomatonCopyMethod;
-import net.automatalib.util.automata.copy.AutomatonLowLevelCopy;
-import net.automatalib.util.automata.fsa.DFAs;
-import net.automatalib.util.ts.acceptors.AcceptanceCombiner;
-import net.automatalib.words.Word;
-import net.automatalib.words.impl.ListAlphabet;
+import net.automatalib.util.automaton.copy.AutomatonCopyMethod;
+import net.automatalib.util.automaton.copy.AutomatonLowLevelCopy;
+import net.automatalib.util.automaton.fsa.DFAs;
+import net.automatalib.util.ts.acceptor.AcceptanceCombiner;
+import net.automatalib.word.Word;
 import se.uu.it.smbugfinder.utils.DFAUtils;
 
 /**

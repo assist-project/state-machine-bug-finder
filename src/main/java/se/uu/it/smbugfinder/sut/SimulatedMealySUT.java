@@ -1,8 +1,8 @@
 package se.uu.it.smbugfinder.sut;
 
-import net.automatalib.automata.transducers.MealyMachine;
-import net.automatalib.words.Word;
-import net.automatalib.words.WordBuilder;
+import net.automatalib.automaton.transducer.MealyMachine;
+import net.automatalib.word.Word;
+import net.automatalib.word.WordBuilder;
 
 public class SimulatedMealySUT <I,O> implements SUT <I,O> {
     private MealyMachine<?, I, ?, O> mealy;
@@ -11,6 +11,7 @@ public class SimulatedMealySUT <I,O> implements SUT <I,O> {
         this.mealy = mealy;
 
     }
+
     @Override
     public Word<O> execute(Word<I> inputWord) {
         Word<O> output = doExecute(inputWord, mealy);

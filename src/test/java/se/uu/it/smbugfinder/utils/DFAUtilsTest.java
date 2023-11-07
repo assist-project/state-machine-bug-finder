@@ -10,15 +10,15 @@ import java.util.stream.Collectors;
 import org.junit.Assert;
 import org.junit.Test;
 
-import net.automatalib.automata.fsa.impl.FastDFA;
-import net.automatalib.automata.fsa.impl.FastDFAState;
-import net.automatalib.automata.transducers.impl.FastMealy;
-import net.automatalib.automata.transducers.impl.FastMealyState;
-import net.automatalib.automata.transducers.impl.MealyTransition;
-import net.automatalib.commons.util.Pair;
-import net.automatalib.commons.util.mappings.Mapping;
-import net.automatalib.words.Word;
-import net.automatalib.words.impl.ListAlphabet;
+import net.automatalib.alphabet.ListAlphabet;
+import net.automatalib.automaton.fsa.FastDFA;
+import net.automatalib.automaton.fsa.FastDFAState;
+import net.automatalib.automaton.transducer.FastMealy;
+import net.automatalib.automaton.transducer.FastMealyState;
+import net.automatalib.automaton.transducer.MealyTransition;
+import net.automatalib.common.util.Pair;
+import net.automatalib.common.util.mapping.Mapping;
+import net.automatalib.word.Word;
 import se.uu.it.smbugfinder.dfa.InputSymbol;
 import se.uu.it.smbugfinder.dfa.Symbol;
 

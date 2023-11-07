@@ -8,14 +8,14 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import net.automatalib.automata.fsa.MutableDFA;
-import net.automatalib.automata.fsa.impl.FastDFA;
-import net.automatalib.automata.fsa.impl.FastDFAState;
-import net.automatalib.automata.transducers.MealyMachine;
-import net.automatalib.commons.util.Pair;
-import net.automatalib.commons.util.mappings.Mapping;
-import net.automatalib.words.Alphabet;
-import net.automatalib.words.impl.ListAlphabet;
+import net.automatalib.alphabet.Alphabet;
+import net.automatalib.alphabet.ListAlphabet;
+import net.automatalib.automaton.fsa.FastDFA;
+import net.automatalib.automaton.fsa.FastDFAState;
+import net.automatalib.automaton.fsa.MutableDFA;
+import net.automatalib.automaton.transducer.MealyMachine;
+import net.automatalib.common.util.Pair;
+import net.automatalib.common.util.mapping.Mapping;
 import se.uu.it.smbugfinder.utils.DFAUtils;
 import se.uu.it.smbugfinder.utils.MealyUtils;
 

@@ -10,8 +10,8 @@ import java.nio.charset.StandardCharsets;
 
 import javax.annotation.Nullable;
 
-import net.automatalib.words.Word;
-import net.automatalib.words.WordBuilder;
+import net.automatalib.word.Word;
+import net.automatalib.word.WordBuilder;
 
 public class SocketSUT implements SUT<String, String> {
     private static String RESET = "reset";

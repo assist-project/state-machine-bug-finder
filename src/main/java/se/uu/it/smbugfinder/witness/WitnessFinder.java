@@ -1,7 +1,7 @@
 package se.uu.it.smbugfinder.witness;
 
-import net.automatalib.words.Word;
-import net.automatalib.words.WordBuilder;
+import net.automatalib.word.Word;
+import net.automatalib.word.WordBuilder;
 import se.uu.it.smbugfinder.dfa.DFAAdapter;
 import se.uu.it.smbugfinder.dfa.InputSymbol;
 import se.uu.it.smbugfinder.dfa.Symbol;

@@ -8,19 +8,19 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import net.automatalib.automata.fsa.DFA;
-import net.automatalib.automata.fsa.MutableDFA;
-import net.automatalib.automata.fsa.impl.FastDFA;
-import net.automatalib.automata.fsa.impl.FastDFAState;
-import net.automatalib.automata.transducers.MealyMachine;
-import net.automatalib.commons.util.Pair;
-import net.automatalib.commons.util.mappings.Mapping;
-import net.automatalib.util.automata.Automata;
-import net.automatalib.util.automata.equivalence.DeterministicEquivalenceTest;
-import net.automatalib.util.automata.fsa.DFAs;
-import net.automatalib.util.automata.fsa.MutableDFAs;
-import net.automatalib.words.Word;
-import net.automatalib.words.impl.ListAlphabet;
+import net.automatalib.alphabet.ListAlphabet;
+import net.automatalib.automaton.fsa.DFA;
+import net.automatalib.automaton.fsa.FastDFA;
+import net.automatalib.automaton.fsa.FastDFAState;
+import net.automatalib.automaton.fsa.MutableDFA;
+import net.automatalib.automaton.transducer.MealyMachine;
+import net.automatalib.common.util.Pair;
+import net.automatalib.common.util.mapping.Mapping;
+import net.automatalib.util.automaton.Automata;
+import net.automatalib.util.automaton.equivalence.DeterministicEquivalenceTest;
+import net.automatalib.util.automaton.fsa.DFAs;
+import net.automatalib.util.automaton.fsa.MutableDFAs;
+import net.automatalib.word.Word;
 
 public class DFAUtils extends AutomatonUtils {
 
@@ -49,7 +49,7 @@ public class DFAUtils extends AutomatonUtils {
         return dfa;
     }
 
-    private static <MI, MS, MO, DI, DS, DA extends MutableDFA<DS, DI>>  void convertMealyToDFA(MS mealyState, DS dfaState, MealyMachine<MS, MI, ?, MO> mealy,
+    private static <MI, MS, MO, DI, DS, DA extends MutableDFA<DS, DI>> void convertMealyToDFA(MS mealyState, DS dfaState, MealyMachine<MS, MI, ?, MO> mealy,
             Collection<MI> inputs, Mapping<MI, DI> inputMapping, Mapping<Pair<MS,MO>, List<DI>> outputMapping, Map<MS, DS> inputStateMapping,
             Set<MS> visited, DA dfa) {
         inputStateMapping.put(mealyState, dfaState);
@@ -73,7 +73,7 @@ public class DFAUtils extends AutomatonUtils {
             symbols.addAll(outputSymbols);
 
             DS lastState = inputState, nextState;
-            for (int i=0; i<symbols.size()-1; i++) {
+            for (int i = 0; i < symbols.size()-1; i++) {
                 DI ioSymbol = symbols.get(i);
                 nextState = dfa.addState(true);
                 dfa.addTransition(lastState, ioSymbol, nextState);
@@ -97,21 +97,19 @@ public class DFAUtils extends AutomatonUtils {
         return rejectingModel;
     }
 
-
     public static <S,I> boolean hasAcceptingPaths(S state, DFA<S, I> automaton, Collection<I> inputs) {
         Set<S> reachableStates = new HashSet<>();
         reachableStates(automaton, inputs, state, reachableStates);
         return reachableStates.stream().anyMatch(s -> automaton.isAccepting(s));
     }
 
-    public static <S,I> Word<I> findShortestAcceptingWord( DFA<S, I> automaton, Collection<I> inputs ) {
-        DeterministicEquivalenceTest<I> test = new DeterministicEquivalenceTest<I>(DFAs.complete(automaton, new ListAlphabet<I>(new ArrayList<>(inputs))));
-        Word<I> accepting = test.findSeparatingWord(buildRejecting(inputs), inputs);
+    public static <S,I> Word<I> findShortestAcceptingWord(DFA<S, I> automaton, Collection<I> inputs) {
+        Word<I> accepting = DeterministicEquivalenceTest.findSeparatingWord(DFAs.complete(automaton, new ListAlphabet<I>(new ArrayList<>(inputs))), buildRejecting(inputs), inputs);
         return accepting;
     }
 
-    public static <S,I> Word<I> findShortestNonAcceptingPrefix( DFA<S, I> automaton, Word<I> word ) {
-        int prefixLen=0;
+    public static <S,I> Word<I> findShortestNonAcceptingPrefix(DFA<S, I> automaton, Word<I> word) {
+        int prefixLen = 0;
         S crtState = automaton.getInitialState();
         for (I input : word) {
             if (crtState == null || !automaton.isAccepting(crtState)) {
