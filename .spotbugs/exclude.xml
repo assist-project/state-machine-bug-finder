@@ -5,6 +5,7 @@
     <Or>
       <Source name="~.*/javacc/LabelParser\.java*"/>
       <Source name="~.*/javacc/LabelParserTokenManager\.java*"/>
+      <Source name="~.*/javacc/SimpleCharStream\.java*"/>
       <Source name="~.*/javacc/TokenMgrError\.java*"/>
     </Or>
   </Match>
