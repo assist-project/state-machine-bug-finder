@@ -49,7 +49,7 @@ public class DFAUtils extends AutomatonUtils {
         return dfa;
     }
 
-    private static <MI, MS, MO, DI, DS, DA extends MutableDFA<DS, DI>>  void convertMealyToDFA(MS mealyState, DS dfaState, MealyMachine<MS, MI, ?, MO> mealy,
+    private static <MI, MS, MO, DI, DS, DA extends MutableDFA<DS, DI>> void convertMealyToDFA(MS mealyState, DS dfaState, MealyMachine<MS, MI, ?, MO> mealy,
             Collection<MI> inputs, Mapping<MI, DI> inputMapping, Mapping<Pair<MS,MO>, List<DI>> outputMapping, Map<MS, DS> inputStateMapping,
             Set<MS> visited, DA dfa) {
         inputStateMapping.put(mealyState, dfaState);
@@ -97,20 +97,18 @@ public class DFAUtils extends AutomatonUtils {
         return rejectingModel;
     }
 
-
     public static <S,I> boolean hasAcceptingPaths(S state, DFA<S, I> automaton, Collection<I> inputs) {
         Set<S> reachableStates = new HashSet<>();
         reachableStates(automaton, inputs, state, reachableStates);
         return reachableStates.stream().anyMatch(s -> automaton.isAccepting(s));
     }
 
-    public static <S,I> Word<I> findShortestAcceptingWord( DFA<S, I> automaton, Collection<I> inputs ) {
-        DeterministicEquivalenceTest<I> test = new DeterministicEquivalenceTest<I>(DFAs.complete(automaton, new ListAlphabet<I>(new ArrayList<>(inputs))));
-        Word<I> accepting = test.findSeparatingWord(buildRejecting(inputs), inputs);
+    public static <S,I> Word<I> findShortestAcceptingWord(DFA<S, I> automaton, Collection<I> inputs) {
+        Word<I> accepting = DeterministicEquivalenceTest.findSeparatingWord(DFAs.complete(automaton, new ListAlphabet<I>(new ArrayList<>(inputs))), buildRejecting(inputs), inputs);
         return accepting;
     }
 
-    public static <S,I> Word<I> findShortestNonAcceptingPrefix( DFA<S, I> automaton, Word<I> word ) {
+    public static <S,I> Word<I> findShortestNonAcceptingPrefix(DFA<S, I> automaton, Word<I> word) {
         int prefixLen = 0;
         S crtState = automaton.getInitialState();
         for (I input : word) {
