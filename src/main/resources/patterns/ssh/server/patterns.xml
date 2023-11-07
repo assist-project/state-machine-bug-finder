@@ -1,0 +1,188 @@
+<bugPatterns>
+    <defaultBugSeverity>LOW</defaultBugSeverity>
+    <defaultEnabled>true</defaultEnabled>
+
+    <!-- Security Properties  -->
+    <!-- Property 3 bug pattern -->
+    <bugPattern>
+        <name>Early Service Accept</name>
+        <bugLanguage>early_service_accept.dot</bugLanguage>
+        <description>Server accepts service request before key exchange has been
+            completed (Property 3).</description>
+        <severity>HIGH</severity>
+    </bugPattern>
+
+    <!-- Property 4 bug pattern -->
+    <bugPattern>
+        <name>Unauthenticated Client</name>
+        <bugLanguage>unauthenticated_client.dot</bugLanguage>
+        <description>Server opens a channel with a client whose credentials were
+            not successfully authenticated (Property 4).</description>
+        <severity>HIGH</severity>
+    </bugPattern>
+
+    <!-- Rekey Properties  -->
+    <!-- Property 5 bug pattern -->
+    <bugPattern>
+        <name>Rekey Failure Pre-Authentication</name>
+        <bugLanguage>rekey_failure_pre-authentication.dot</bugLanguage>
+        <description>Server refuses rekey after a service request is accepted,
+            before authentication. (Property 5)</description>
+        <severity>LOW</severity>
+    </bugPattern>
+
+    <bugPattern>
+        <name>Rekey Failure Post-Authentication</name>
+        <bugLanguage>rekey_failure_post-authentication.dot</bugLanguage>
+        <description>Server refuses rekey with an authenticated client.
+            (Property 5)</description>
+        <severity>LOW</severity>
+    </bugPattern>
+
+    <!-- Functional Properties  -->
+    <!-- Property 6 bug pattern -->
+    <bugPattern>
+        <name>Continue After Disconnect</name>
+        <bugLanguage>continue_after_disconnect.dot</bugLanguage>
+        <description>Server sends data after having received a DISCONNECT
+            (Property 6).</description>
+        <severity>LOW</severity>
+    </bugPattern>
+
+    <!-- Property 7 bug pattern [RFC 4253, p. 19] -->
+    <bugPattern>
+        <name>Invalid Response Before NEWKEYS</name>
+        <bugLanguage>invalid_response_before_newkeys.dot</bugLanguage>
+        <description>After sending KEXINIT, server sends SR_ACCEPT or another
+            KEXINIT, before sending NEWKEYS (Property 7).</description>
+        <severity>LOW</severity>
+    </bugPattern>
+
+    <!-- Property 8 bug pattern [RFC 4253, p. 24] -->
+    <bugPattern>
+        <name>Invalid SR_AUTH Response</name>
+        <bugLanguage>invalid_service_request_response.dot</bugLanguage>
+        <description>Server incorrectly responds to a service request.
+            Conforming responses are either SR_ACCEPT or SR_DISCONNECT (Property
+            8).</description>
+        <severity>LOW</severity>
+    </bugPattern>
+
+    <!-- Property 9 bug pattern [RFC 4252, p. 6] -->
+    <bugPattern>
+        <name>Invalid Authentication Rejection Response</name>
+        <bugLanguage>invalid_auth_rejection_response.dot</bugLanguage>
+        <description>Server does not respond with a UA_FAILURE when rejecting an
+            authentication request (Property 9).</description>
+        <severity>LOW</severity>
+    </bugPattern>
+
+    <!-- Property 10 bug pattern [RFC 4252, p. 6] -->
+    <bugPattern>
+        <name>Multiple UA_SUCCESS</name>
+        <bugLanguage>multiple_ua_success.dot</bugLanguage>
+        <description>UA_SUCCESS is produced multiple times (Property 10).</description>
+        <severity>MEDIUM</severity>
+    </bugPattern>
+
+    <!-- Property 11 bug pattern -->
+    <bugPattern>
+        <name>Unignored Authentication Request</name>
+        <bugLanguage>auth_not_ignored.dot</bugLanguage>
+        <description>An authentication request received after a UA_SUCCESS is
+            not ignored (Property 11).</description>
+        <severity>MEDIUM</severity>
+    </bugPattern>
+
+    <!-- Property 12 bug pattern -->
+    <bugPattern>
+        <name>Invalid Closure Response</name>
+        <bugLanguage>invalid_closure_response.dot</bugLanguage>
+        <description>Server does not respond to a CH_CLOSE with a CH_CLOSE
+            (Property 12).</description>
+        <severity>LOW</severity>
+    </bugPattern>
+
+    <!-- Other Rekey Properties  -->
+    <bugPattern>
+        <name>Authentication Failure After Rekey</name>
+        <bugLanguage>ua_failure_after_rekey.dot</bugLanguage>
+        <description>Following a rekey, client authentication using valid
+            credentials is unsuccessful.</description>
+    </bugPattern>
+
+    <bugPattern>
+        <name>Channel Open Failure After Rekey</name>
+        <bugLanguage>channel_open_failure_after_rekey.dot</bugLanguage>
+        <description>Following a rekey, attempt to open channel is not
+            successful.</description>
+    </bugPattern>
+
+    <bugPattern>
+        <name>Request Failure After Rekey</name>
+        <bugLanguage>channel_request_failure_after_rekey.dot</bugLanguage>
+        <description>Following a rekey, request to open PTY is not successful.</description>
+    </bugPattern>
+
+    <!-- Other Bug Patterns -->
+    <bugPattern>
+        <name>Missing NEWKEYS</name>
+        <bugLanguage>missing_newkeys.dot</bugLanguage>
+        <description>Server sends upper layer message during a rekey, before
+            receiving NEWKEYS.</description>
+        <severity>MEDIUM</severity>
+    </bugPattern>
+
+    <bugPattern>
+        <name>Missing UA_SUCCESS</name>
+        <bugLanguage>missing_ua_success.dot</bugLanguage>
+        <description>UA_SUCCESS is missing (Property 10).</description>
+        <severity>HIGH</severity>
+    </bugPattern>
+
+    <bugPattern>
+        <name>Multiple Kexinit</name>
+        <bugLanguage>multiple_kexinit.dot</bugLanguage>
+        <description>Server sends an additional KEXINIT during a key-exchange.</description>
+    </bugPattern>
+
+    <bugPattern>
+        <name>Missing SR_AUTH</name>
+        <bugLanguage>missing_sr_auth.dot</bugLanguage>
+        <description>Authentication is performed without SR_AUTH.</description>
+        <enabled>true</enabled>
+    </bugPattern>
+
+    <bugPattern>
+        <name>Unresponsive state</name>
+        <bugLanguage>unresponsive_state.dot</bugLanguage>
+        <description>State machine contains an unresponsive state.</description>
+    </bugPattern>
+
+    <!-- General bug patterns -->
+    
+    <generalBugPattern>
+        <name>Connection Layer Bug</name>
+        <bugLanguage>connection_layer_bug.dot</bugLanguage>
+        <description>There is a bug in the connection layer.</description>
+        <severity>UNKNOWN</severity>
+    </generalBugPattern>
+
+    <generalBugPattern>
+        <name>Transport Layer Bug</name>
+        <bugLanguage>transport_layer_bug.dot</bugLanguage>
+        <description>There is a bug in the transport layer.</description>
+        <severity>UNKNOWN</severity>
+    </generalBugPattern>
+
+    <!-- Disabled bug patterns due to them raising false alarms -->
+    <bugPattern>
+        <name>Termination After UNIMPL</name>
+        <bugLanguage>termination_after_unimpl.dot</bugLanguage>
+        <description>Server terminates connection after sending UNIMPL,
+            indicated by a NO_CONN response to CH_DATA.</description>
+        <enabled>false</enabled>
+    </bugPattern>
+
+</bugPatterns>
+

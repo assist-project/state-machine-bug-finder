@@ -1,7 +1,7 @@
 -m
-/models/ssh/Dropbear-v2014.65.dot
+/models/ssh/server/Dropbear-v2014.65.dot
 -p
-/patterns/ssh/
+/patterns/ssh/server/
 -eo
 NO_RESP
 -od
