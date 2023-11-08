@@ -1,4 +1,4 @@
-# StateMachineBugFinder
+![missing_sr_auth](https://github.com/assist-project/state-machine-bug-finder/assets/2325013/a528a692-6378-431c-a847-a780769c7ce2)# StateMachineBugFinder
 **StateMachineBugFinder** (or **SMBugFinder** for short) is an automated bug detection framework implementing the technique presented at NDSS 2023 (see [publication][ndss2023]).
 Provided a state machine model of a SUT (e.g., generated automatically by a protocol state fuzzer), **SMBugFinder** automatically analyzes the model for state machine bugs.
 For analysis, **SMBugFinder** uses a catalogue of bug patterns.
@@ -51,13 +51,20 @@ See the respective fuzzer repos for scripts to trim the models.
 **SMBugFinder** takes as argument the path to a folder containing bug paterns, which form our bug pattern catalogue.
 Bug patterns are specified as DOT graphs, and currently have to be manually written.
 A bug pattern defines a DFA which accepts only sequences exposing the presence of the bug.
-[src/main/resources/models](src/main/resources/models) contains an extensive set of bug patterns for SSH (including all used in the NDSS publication), and a few bug patterns for DTLS (bug patterns used for the publication experiments can be found [here](https://gitlab.com/pfg666/dtls-fuzzer/-/tree/bugcheck-artifact/src/main/resources/bugpatterns)).
+[src/main/resources/models](src/main/resources/models) contains an extensive set of bug patterns for SSH (including all used in the NDSS publication), and a few bug patterns for DTLS (bug patterns used in the publication experiments can be found [here](https://gitlab.com/pfg666/dtls-fuzzer/-/tree/bugcheck-artifact/src/main/resources/bugpatterns)).
+Below is the pattern for the *Missing SR_AUTH* bug we found in Dropbear, as displayed by `dot`.
 
-Below is the pattern for the *Missing SR_AUTH* bug we found in Dropbear.
+![missing_sr_auth](https://github.com/assist-project/state-machine-bug-finder/assets/2325013/e65a7a0a-b6f9-4f02-8bd7-02a5a95609fa)
+
+Notice how simple it is (two edges and three nodes).
+Simplicity is in large part due to the *condensed notation* we use (see [publication][ndss2023]).
+The bug pattern is implemented by the following code.
+
 
 ```
 digraph G {
-label=""
+label=""![Uploading missing_sr_auth.svg…]()
+
 start [color="red"]
 bug [shape="doublecircle"]
 
@@ -71,17 +78,11 @@ __start0 -> start;
 }
 ```
 
-Notice how simple it is (two edges and three nodes).
-Simplicity is in large part due to the *condensed notation* we use (see [publication][ndss2023]).
-Visualization is done again with 'dot'/'xdot', which in this case involves running:
-
-    > xdot src/main/resources/patterns/ssh/missing_sr_auth.dot
-
 In addition to bug patterns, the bug pattern folder must also include a mandatory `patterns.xml` file.
-This file specifies the bug patternss to check, containing various information on them (e.g., name, bug severity).
+This file specifies the bug patterns to check, containing various information on them (e.g., name, bug severity).
 Below is the excerpt specifying the  *Missing SR_AUTH* bug pattern.
 
-```
+```xml
 <bugPattern>
     <name>Missing SR_AUTH</name>
     <bugLanguage>missing_sr_auth.dot</bugLanguage>
@@ -92,7 +93,7 @@ Below is the excerpt specifying the  *Missing SR_AUTH* bug pattern.
 ## Validation
 
 Validation requires arguments to establish TCP connection to a protocol-specific test harness, typically extracted from the state fuzzer used to generate models.
-**SMBugFinder** uses this connection to instruct the test harness to execute sequences of inputs on the SUT and retrieve generated response.
+Using this connection, **SMBugFinder** instructs the test harness to execute sequences of inputs on the SUT and retrieve generated response.
 For our *Missing SR_AUTH* bug, the input sequence would be `KEXINIT KEX30 NEWKEYS UA_PK_OK`.
 **SMBugFinder** would check that the response, when combined with the input sequence, still exposes the bug.
 Validation is disabled by default, and can be enabled via the `-vb` option.
@@ -122,6 +123,7 @@ For a full list of options run:
 For ease of use, **SMBugFinder** includes in the [args folder](args) folder, *argument files* containing arguments for executing common experiments.
 **SMBugFinder** can be run on these argument files.
 A good example is:
+
 
     > java -jar target/sm-bug-finder.jar args/dropbear-v2020.81
 
