@@ -1,4 +1,4 @@
-![missing_sr_auth](https://github.com/assist-project/state-machine-bug-finder/assets/2325013/a528a692-6378-431c-a847-a780769c7ce2)# StateMachineBugFinder
+# StateMachineBugFinder
 **StateMachineBugFinder** (or **SMBugFinder** for short) is an automated bug detection framework implementing the technique presented at NDSS 2023 (see [publication][ndss2023]).
 Provided a state machine model of a SUT (e.g., generated automatically by a protocol state fuzzer), **SMBugFinder** automatically analyzes the model for state machine bugs.
 For analysis, **SMBugFinder** uses a catalogue of bug patterns.
@@ -9,7 +9,7 @@ To use **SMBugFinder** you'll need:
 
 * JDK 17
 * Apache Maven
-* (optional) Graphviz, Python 3.x and `xdot` for model visualization
+* (optional) [Graphviz][graphviz], Python 3.x and [xdot](https://pypi.org/project/xdot/) for model visualization
 
 ## Usage
 
@@ -63,8 +63,7 @@ The bug pattern is implemented by the following code.
 
 ```
 digraph G {
-label=""![Uploading missing_sr_auth.svg…]()
-
+label=""
 start [color="red"]
 bug [shape="doublecircle"]
 
