@@ -56,7 +56,7 @@ Below is the pattern for the *Missing SR_AUTH* bug we found in Dropbear, as disp
 
 ![missing_sr_auth](https://github.com/assist-project/state-machine-bug-finder/assets/2325013/e65a7a0a-b6f9-4f02-8bd7-02a5a95609fa)
 
-Notice how simple it is (two edges and three nodes).
+Notice how simple it is (two edges and two visible nodes).
 Simplicity is in large part due to the *condensed notation* we use (see [publication][ndss2023]).
 The bug pattern is implemented by the following code.
 
