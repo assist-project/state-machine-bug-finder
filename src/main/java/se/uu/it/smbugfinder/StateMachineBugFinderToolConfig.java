@@ -86,6 +86,10 @@ public class StateMachineBugFinderToolConfig {
         this.model = model;
     }
 
+    public void setValidationModel(String validationModel) {
+        this.validationModel = validationModel;
+    }
+
     public void setPatterns(String patterns) {
         this.patterns = patterns;
     }
