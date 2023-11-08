@@ -1,2 +1,120 @@
 # state-machine-bug-finder
-A library that can be used to enhance state-fuzzing frameworks with automatic bug-finding capabilities.
+
+**StateMachineBugFinder** (or **SMBugFinder** for short) is an automated bug detection framework implementing the technique presented at NDSS 2023 (see [publication][ndss2023]).
+Provided a state machine model of a SUT (e.g., generated automatically by a protocol state fuzzer), **SMBugFinder** automatically analyses the model to identify state machine bugs.
+Identification requires description of the bugs in the form of DFA-encoded bug patterns.
+The detected bugs **SMBugFinder** 
+
+## Dependencies
+
+To use **SMBugFinder** you'll need:
+
+* JDK 17
+* Apache Maven
+* (optional) Graphviz for model visualization
+
+## Usage
+
+**SMBugFinder** can be used as a standalone testing tool, or as a library which can be incorporated in other protocol state fuzzers (e.g., [DTLS-Fuzzer][dtlsfuzzer] or [EDHOC-Fuzzer][edhocfuzzer]) to automate analysis of the generated models they generate.
+
+Suppose we want to test the SSH server implementation of [Dropbear][dropbear] V2020.81 using **SMBugFinder**.
+From within **SMBugFinder**'s directory we then run:
+
+    > mvn install
+    > java -jar target/sm-bug-finder.jar -m /models/ssh/Dropbear-v2020.81.dot -p /patterns/ssh/
+
+First command installs **SMBugFinder**.
+Second command executes **SMBugFinder** on arguments provided via command line or included in an argument file (e.g., such as [args/dropbear-v2020.81](args/dropbear-v2020.81)).
+There are two mandatory arguments that have to be provided:
+
+  * the model of the SUT (in this case, Dropbear-V2020.81)
+  * the catalogue of bug patterns (in this case, bug patterns defined for SSH servers)
+
+Executing the second command should reveal three bugs identified in the Dropbear model.
+One of the bugs is *Missing SR_AUTH*, for which  **SMBugFinder** gives the following witness.
+
+    > KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP UA_PK_OK/UA_SUCCESS
+
+The bug entails the server performing authentication (indicated by `UA_SUCCESS` as output) without a prior request for the authentication server (via `SR_AUTH` as input).
+Unfortunately, the witness has not been validated (validation status is `NOT_VALIDATED`), meaning we don't know if the SUT actually exhibits the bug.
+More on that later.
+
+## Models
+
+SUT models are specified in DOT format, and can be obtained automatically using existing protocol state fuzzers.
+[src/main/resources/models](src/main/resources/models) contains sample models for DTLS and SSH, named after the SUT they were generated for, which was done using [DTLS-Fuzzer][dtlsfuzzer] and an [SSH fuzzer](https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:77503).
+The models can be visualized using [GraphViz][graphviz]'s `dot` utility, or better still, the `xdot` Python utility which builds on [GraphViz][graphviz].
+The models are large, making visualization difficult. 
+See the respective fuzzer repos for scripts to trim the models.
+
+## Bug patterns
+
+Bug patterns are specified as DOT format, and currently have to be manually written.
+A bug pattern defines a DFA which accept only sequences exposing the presence of the bug.
+[src/main/resources/models](src/main/resources/models) contains an extensive set of bug patterns for SSH (including all used in the NDSS publication), and a few bug patterns for DTLS (publication bug patterns can be found [here](https://gitlab.com/pfg666/dtls-fuzzer/-/tree/bugcheck-artifact/src/main/resources/bugpatterns)).
+
+Below is the pattern for the *Missing SR_AUTH* bug we found in Dropbear.
+
+```
+digraph G {
+label=""
+start [color="red"]
+bug [shape="doublecircle"]
+
+start -> start [label="other - {I_SR_AUTH}"]
+start -> bug [label="{O_UA_SUCCESS}"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}
+```
+
+Notice how simple it is.
+Visualization is done again with 'dot'/'xdot', which in this case involves running:
+
+    > xdot src/main/resources/patterns/ssh/missing_sr_auth.dot
+
+## Validation
+
+Validation requires arguments to establish TCP connection to a protocol-specific test harness, typically extracted from the state fuzzer used to generate models.
+**SMBugFinder** uses this connection to command the test harness to execute sequences of inputs on the SUT and retrieve generated response.
+For our **Missing SR_AUTH** bug, the input sequence would be `KEXINIT KEX30 NEWKEYS UA_PK_OK`.
+**SMBugFinder** would check that the response when combined with the input sequence still exposes the bug.
+Validation is disabled by default, and can be enabled via the `-vb` option.
+
+Suppose that our test harness for SSH listens at address `localhost:7000`.
+To run bug detection on Dropbear with validation enabled we would run:
+
+    > java -jar target/sm-bug-finder.jar -m /models/ssh/Dropbear-v2020.81.dot -p /patterns/ssh/ -vb -ha localhost:7000
+
+## Output files
+
+**SMBugFinder** generates an output directory  (named `output` by default), which contains:
+
+*  bug patterns after the condensed notation has been resolved (e.g., `MissingSR_AUTHLanguage.dot`);
+*  model of the DFA-conversion of the original SUT model ( `sutLanguage.dot`);
+*  statistics file ( `statistics.txt`);
+*  bug report listing all the bugs found, witnesses, etc. ( `bug_report.txt`);
+*  if validation was enabled, for each bug a witness file which **SMBugFinder** can execute to expose the bug on the SUT
+
+## Arguments
+
+**SMBugFinder** supports many other useful options, e.g., for configuring the algorithm used to generate witnesses.
+For a full list of options run:
+
+    > java -jar target/sm-bug-finder.jar 
+
+For ease of use, **SMBugFinder** included argument files containing for running common experiments.
+A good example is:
+
+    > java -jar target/sm-bug-finder.jar args/dropbear-v2020.81
+
+
+[graphviz]:https://graphviz.org/
+[dropbear]: https://matt.ucc.asn.au/dropbear/dropbear.html
+[edhocfuzzer]:https://github.com/protocol-fuzzing/edhoc-fuzzer
+[dtlsfuzzer]:https://github.com/assist-project/dtls-fuzzer
+[ndss2023]:https://www.ndss-symposium.org/wp-content/uploads/2023/02/ndss2023_s68_paper.pdf
+[sshharness]:https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:77503
