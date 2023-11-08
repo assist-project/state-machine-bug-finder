@@ -90,6 +90,10 @@ public class StateMachineBugFinderToolConfig {
         this.validationModel = validationModel;
     }
 
+    public void setSeparator(String separator) {
+        this.separator = separator;
+    }
+
     public void setPatterns(String patterns) {
         this.patterns = patterns;
     }
