@@ -43,7 +43,7 @@ More on that later.
 SUT models are specified as DOT graphs, and can be obtained automatically using existing protocol state fuzzers.
 [src/main/resources/models](src/main/resources/models) contains sample models for DTLS and SSH, named after the SUT for which they were generated, which was done using [DTLS-Fuzzer][dtlsfuzzer] and an [SSH fuzzer](https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:77503).
 The models can be visualized using [GraphViz][graphviz]'s `dot` utility, or better still, the `xdot` Python utility which builds on [GraphViz][graphviz].
-The models are large, making visualization difficult. 
+The models are large, making visualization difficult.
 See the respective fuzzer repos for scripts to trim the models.
 
 ## Bug patterns
@@ -117,7 +117,7 @@ When executed, **SMBugFinder** generates an output directory  (named `output` by
 **SMBugFinder** supports many other useful options, e.g., for configuring the algorithm used to generate witnesses.
 For a full list of options run:
 
-    > java -jar target/sm-bug-finder.jar 
+    > java -jar target/sm-bug-finder.jar
 
 For ease of use, **SMBugFinder** includes in the [args folder](args) folder, *argument files* containing arguments for executing common experiments.
 **SMBugFinder** can be run on these argument files.
@@ -133,7 +133,7 @@ A good example is:
 * [DTLS-Fuzzer][dtlsfuzzer], [EDHOC-Fuzzer][edhocfuzzer] and [SSH-Fuzzer][sshfuzzer], fuzzers for DTLS, EDHOC and SSH (the latter is WIP) which can generate SUT models.
 
 
-[artifact]:https://doi.org/10.5281/zenodo.7129240 
+[artifact]:https://doi.org/10.5281/zenodo.7129240
 [dtlsartifact]:https://gitlab.com/pfg666/dtls-fuzzer/-/blob/bugcheck-artifact
 [graphviz]:https://graphviz.org/
 [dropbear]: https://matt.ucc.asn.au/dropbear/dropbear.html
