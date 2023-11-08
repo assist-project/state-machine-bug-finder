@@ -1,7 +1,7 @@
 # StateMachineBugFinder
 **StateMachineBugFinder** (or **SMBugFinder** for short) is an automated bug detection framework implementing the technique presented at NDSS 2023 (see [publication][ndss2023]).
-Provided a state machine model of a SUT (e.g., generated automatically by a protocol state fuzzer), **SMBugFinder** automatically analyses the model to identify state machine bugs.
-Identification requires description of the bugs in the form of DFA-encoded bug patterns.
+Provided a state machine model of a SUT (e.g., generated automatically by a protocol state fuzzer), **SMBugFinder** automatically analyzes the model for state machine bugs.
+For analysis, **SMBugFinder** uses a catalogue of bug patterns.
 
 ## Dependencies
 
@@ -48,10 +48,10 @@ See the respective fuzzer repos for scripts to trim the models.
 
 ## Bug patterns
 
-**SMBugFinder** takes as argument the path to a folder containing bug paterns.
+**SMBugFinder** takes as argument the path to a folder containing bug paterns, which form our bug pattern catalogue.
 Bug patterns are specified as DOT graphs, and currently have to be manually written.
 A bug pattern defines a DFA which accepts only sequences exposing the presence of the bug.
-[src/main/resources/models](src/main/resources/models) contains an extensive set of bug patterns for SSH (including all used in the NDSS publication), and a few bug patterns for DTLS (publication bug patterns can be found [here](https://gitlab.com/pfg666/dtls-fuzzer/-/tree/bugcheck-artifact/src/main/resources/bugpatterns)).
+[src/main/resources/models](src/main/resources/models) contains an extensive set of bug patterns for SSH (including all used in the NDSS publication), and a few bug patterns for DTLS (bug patterns used for the publication experiments can be found [here](https://gitlab.com/pfg666/dtls-fuzzer/-/tree/bugcheck-artifact/src/main/resources/bugpatterns)).
 
 Below is the pattern for the *Missing SR_AUTH* bug we found in Dropbear.
 
@@ -78,7 +78,7 @@ Visualization is done again with 'dot'/'xdot', which in this case involves runni
     > xdot src/main/resources/patterns/ssh/missing_sr_auth.dot
 
 In addition to bug patterns, the bug pattern folder must also include a mandatory `patterns.xml` file.
-This file specified the bug patterns to check, containing various information on them (e.g., name, severity).
+This file specifies the bug patternss to check, containing various information on them (e.g., name, bug severity).
 Below is the excerpt specifying the  *Missing SR_AUTH* bug pattern.
 
 ```
@@ -119,7 +119,7 @@ For a full list of options run:
 
     > java -jar target/sm-bug-finder.jar 
 
-For ease of use, **SMBugFinder** includes in the [args folder](args) *argument files* containing arguments for running common experiments.
+For ease of use, **SMBugFinder** includes in the [args folder](args) folder, *argument files* containing arguments for executing common experiments.
 **SMBugFinder** can be run on these argument files.
 A good example is:
 
@@ -127,7 +127,7 @@ A good example is:
 
 ## Useful links
 
-* the [NDSS publication][ndss2023], describing the bug detection technique and its evaluation on DTLS and QUIC;
+* the [NDSS publication][ndss2023], describing the bug detection technique and its evaluation on DTLS and SSH;
 * the [publication artifact][artifact], which can be used to reproduce the experiments;
 * the [DTLS component of the artifact][dtlsartifact], which is essentially DTLS-Fuzzer incorporating **SMBugFinder** as a library, to perform bug detection automatically;
 * [DTLS-Fuzzer][dtlsfuzzer], [EDHOC-Fuzzer][edhocfuzzer] and [SSH-Fuzzer][sshfuzzer], fuzzers for DTLS, EDHOC and SSH (the latter is WIP) which can generate SUT models.
