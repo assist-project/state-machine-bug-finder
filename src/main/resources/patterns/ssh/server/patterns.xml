@@ -154,7 +154,7 @@
     </bugPattern>
 
     <bugPattern>
-        <name>Unresponsive state</name>
+        <name>Unresponsive State</name>
         <bugLanguage>unresponsive_state.dot</bugLanguage>
         <description>State machine contains an unresponsive state.</description>
     </bugPattern>
