@@ -1,5 +1,4 @@
-# state-machine-bug-finder
-
+# StateMachineBugFinder
 **StateMachineBugFinder** (or **SMBugFinder** for short) is an automated bug detection framework implementing the technique presented at NDSS 2023 (see [publication][ndss2023]).
 Provided a state machine model of a SUT (e.g., generated automatically by a protocol state fuzzer), **SMBugFinder** automatically analyses the model to identify state machine bugs.
 Identification requires description of the bugs in the form of DFA-encoded bug patterns.
@@ -26,9 +25,8 @@ First command installs **SMBugFinder**.
 Second command executes **SMBugFinder** using the provided arguments.
 **SMBugFinder** requires two arguments:
 
-  * the model of the SUT (in this case, the model for Dropbear-V2020.81 server, available [here](src/main/resources/models/ssh/Dropbear-v2020.81.dot));
-  * the catalogue of bug patterns (in this case, bug patterns defined for SSH servers, available [here](src/main/resources/patterns/ssh/));
-
+  * the model of the SUT (in this case, the model for Dropbear-V2020.81 server, found [here](src/main/resources/models/ssh/Dropbear-v2020.81.dot));
+  * the catalogue of bug patterns (in this case, patterns defined for SSH servers, found [here](src/main/resources/patterns/ssh/));
 
 Executing the second command should reveal three bugs identified in the Dropbear model.
 One of the bugs is *Missing SR_AUTH*, for which  **SMBugFinder** gives the following witness.
@@ -79,10 +77,22 @@ Visualization is done again with 'dot'/'xdot', which in this case involves runni
 
     > xdot src/main/resources/patterns/ssh/missing_sr_auth.dot
 
+In addition to bug patterns, the bug pattern folder must also include a mandatory `patterns.xml` file.
+This file specified the bug patterns to check, containing various information on them (e.g., name, severity).
+Below is the excerpt specifying the  *Missing SR_AUTH* bug pattern.
+
+```
+<bugPattern>
+    <name>Missing SR_AUTH</name>
+    <bugLanguage>missing_sr_auth.dot</bugLanguage>
+    <description>Authentication is performed without SR_AUTH.</description>
+</bugPattern>
+```
+
 ## Validation
 
 Validation requires arguments to establish TCP connection to a protocol-specific test harness, typically extracted from the state fuzzer used to generate models.
-**SMBugFinder** uses this connection to command the test harness to execute sequences of inputs on the SUT and retrieve generated response.
+**SMBugFinder** uses this connection to instruct the test harness to execute sequences of inputs on the SUT and retrieve generated response.
 For our *Missing SR_AUTH* bug, the input sequence would be `KEXINIT KEX30 NEWKEYS UA_PK_OK`.
 **SMBugFinder** would check that the response, when combined with the input sequence, still exposes the bug.
 Validation is disabled by default, and can be enabled via the `-vb` option.
@@ -94,7 +104,7 @@ To run bug detection on Dropbear with validation enabled we would run:
 
 ## Output files
 
-**SMBugFinder** generates an output directory  (named `output` by default) containing:
+When executed, **SMBugFinder** generates an output directory  (named `output` by default) in which it stores:
 
 *  bug patterns after the condensed notation has been resolved (e.g., `MissingSR_AUTHLanguage.dot`);
 *  model of the DFA-conversion of the original SUT model ( `sutLanguage.dot`);
@@ -109,16 +119,26 @@ For a full list of options run:
 
     > java -jar target/sm-bug-finder.jar 
 
-For ease of use, **SMBugFinder** includes *argument files* containing arguments for running common experiments.
+For ease of use, **SMBugFinder** includes in the [args folder](args) *argument files* containing arguments for running common experiments.
 **SMBugFinder** can be run on these argument files.
 A good example is:
 
     > java -jar target/sm-bug-finder.jar args/dropbear-v2020.81
 
+## Useful links
 
+* the [NDSS publication][ndss2023], describing the bug detection technique and its evaluation on DTLS and QUIC;
+* the [publication artifact][artifact], which can be used to reproduce the experiments;
+* the [DTLS component of the artifact][dtlsartifact], which is essentially DTLS-Fuzzer incorporating **SMBugFinder** as a library, to perform bug detection automatically;
+* [DTLS-Fuzzer][dtlsfuzzer], [EDHOC-Fuzzer][edhocfuzzer] and [SSH-Fuzzer][sshfuzzer], fuzzers for DTLS, EDHOC and SSH (the latter is WIP) which can generate SUT models.
+
+
+[artifact]:https://doi.org/10.5281/zenodo.7129240 
+[dtlsartifact]:https://gitlab.com/pfg666/dtls-fuzzer/-/blob/bugcheck-artifact
 [graphviz]:https://graphviz.org/
 [dropbear]: https://matt.ucc.asn.au/dropbear/dropbear.html
 [edhocfuzzer]:https://github.com/protocol-fuzzing/edhoc-fuzzer
 [dtlsfuzzer]:https://github.com/assist-project/dtls-fuzzer
+[sshfuzzer]:https://github.com/assist-project/ssh-fuzzer
 [ndss2023]:https://www.ndss-symposium.org/wp-content/uploads/2023/02/ndss2023_s68_paper.pdf
 [sshharness]:https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:77503
