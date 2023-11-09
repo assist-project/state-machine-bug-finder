@@ -40,7 +40,7 @@ import se.uu.it.smbugfinder.sut.SimulatedMealySUT;
 import se.uu.it.smbugfinder.sut.SocketSUT;
 
 /**
- * Console application for running the bug finder to test generic network protocol implementations.
+ * Console application for running the bug finder to test network protocol implementations.
  * For validation, it assumes a test harness, with which it communicates over TCP sockets.
  */
 public class Main {
@@ -64,7 +64,7 @@ public class Main {
             try {
                 commander.parse(args);
                 launchBugFinder(config);
-            } catch(ParameterException exception) {
+            } catch (ParameterException exception) {
                 LOGGER.error(exception.getMessage());
                 commander.usage();
             }
@@ -83,7 +83,6 @@ public class Main {
         BugReport bugReport = new BugReport(modelBugs);
         export(bugReport, config.getOutputDir(), "bug_report.txt");
     }
-
 
     /**
      * Creates and launches the bug finder, returning statistics.
@@ -127,9 +126,7 @@ public class Main {
         }
         Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
         return stats;
-
     }
-
 
     private static void export(ExportableResult result, String outputDirectory, String filename) throws FileNotFoundException {
         result.doExport(new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8), true));
