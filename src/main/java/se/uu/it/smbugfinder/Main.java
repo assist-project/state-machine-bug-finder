@@ -46,7 +46,7 @@ import se.uu.it.smbugfinder.sut.SocketSUT;
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String args[] ) throws FileNotFoundException, IOException {
+    public static void main(String args[]) throws FileNotFoundException, IOException {
         if (args.length > 0 && !args[0].startsWith("@")  && new File(args[0]).exists()) {
             LOGGER.info("Noticed that the first argument is a file. Processing it as an argument file.");
             args[0] = "@" + args[0];
@@ -73,6 +73,9 @@ public class Main {
 
     /**
      * Creates and launches the bug finder, creating an output directory containing the results (statistics, bugs, and generated bug patterns).
+     * @param  config  configuration containing the bug finder config, plus other options relevant when running the bug finder from the console.
+     * @throws FileNotFoundException if the directory to save files cannot be found
+     * @throws IOException           if there a problen when writing files
      */
     public static void launchBugFinder(StateMachineBugFinderToolConfig config) throws FileNotFoundException, IOException {
         Files.createDirectories(Paths.get(config.getOutputDir()));
@@ -90,10 +93,8 @@ public class Main {
      * @param modelBugs - updated with the detected state machine bugs.
      * @param exporter - if not null, will receive for export the bugs detected by the bug finder.
      * @return statistics of the bug detection experiment.
-     * @throws FileNotFoundException
-     * @throws IOException
      */
-    public static Statistics launchBugFinder(StateMachineBugFinderToolConfig config, List<StateMachineBug<String, String>> modelBugs, @Nullable DFAExporter exporter) throws FileNotFoundException, IOException {
+    public static Statistics launchBugFinder(StateMachineBugFinderToolConfig config, List<StateMachineBug<String, String>> modelBugs, @Nullable DFAExporter exporter) throws IOException {
         InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
         InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(getResource(config.getModel()));
 
