@@ -10,7 +10,7 @@ import se.uu.it.smbugfinder.bug.StateMachineBug;
 
 public class BugFindingTest {
     /**
-     * Checks that, in the list of found bugs, the specific bugs capture the provided bug patterns.
+     * Checks in the list of found bugs that the specific bugs capture the provided bug patterns.
      */
     protected void assertFoundSpecificBugPatterns(List<StateMachineBug<String,String>> bugs, String ... expectedBugPatterns) {
         String [] foundBugPatterns = bugs.stream()
@@ -21,7 +21,6 @@ public class BugFindingTest {
                 .formatted(Arrays.toString(expectedBugPatterns), Arrays.toString(foundBugPatterns)),
                 expectedBugPatterns, foundBugPatterns);
     }
-
 
     /**
      * Checks that validation was successful for all specific bugs, and not performed for general bugs.
