@@ -1,7 +1,7 @@
 -m
-/models/ssh/OpenSSH-8.8p1.dot
+/models/ssh/server/OpenSSH-8.8p1.dot
 -p
-/patterns/ssh/
+/patterns/ssh/server/
 -eo
 NO_RESP
 -od

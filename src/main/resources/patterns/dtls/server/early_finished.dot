@@ -1,0 +1,11 @@
+digraph G {
+label=""
+init [color="red"]
+bug [shape="doublecircle"]
+
+init -> init [label="other - {I_CHANGE_CIPHER_SPEC}"]
+init -> bug [label="O_CHANGE_CIPHER_SPEC"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}

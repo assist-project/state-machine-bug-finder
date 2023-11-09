@@ -81,4 +81,20 @@ public class StateMachineBugFinderToolConfig {
     public String getResetConfirmationMessage() {
         return resetConfirmationMessage;
     }
+
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    public void setValidationModel(String validationModel) {
+        this.validationModel = validationModel;
+    }
+
+    public void setSeparator(String separator) {
+        this.separator = separator;
+    }
+
+    public void setPatterns(String patterns) {
+        this.patterns = patterns;
+    }
 }

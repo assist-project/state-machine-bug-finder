@@ -1,0 +1,17 @@
+digraph G {
+label=""
+init [color="red"]
+bug [shape="doublecircle"]
+ 
+init -> ch1 [label="I_ClientHello[Xlist:=cipher_suites]"]
+init -> init [label="other"]
+
+ch1 -> hvr [label="O_HelloVerifyRequest"]
+
+hvr -> ch2 [label="I_ClientHello[Ylist:=cipher_suites] where Ylist != Xlist"]
+
+ch2 -> bug [label="O_ServerHello"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}

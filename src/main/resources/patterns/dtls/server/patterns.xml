@@ -8,11 +8,10 @@
         <severity>HIGH</severity>   
     </bugPattern>
     
-	<bugPattern>
-		<name>Premature HelloRequest</name>
-		<bugLanguage>premature_hellorequest.dot</bugLanguage>
-		<description>HelloRequest before handshake has finished.</description>
-		<severity>LOW</severity>
-	</bugPattern>
+    <bugPattern>
+        <name>Non-conforming Cookie</name>
+        <bugLanguage>non-conforming_cookie.dot</bugLanguage>
+        <description>The first two ClientHello messages use different cipher suites, indicating that cipher suites are not included in the cookie computation.</description>
+        <severity>LOW</severity>
+    </bugPattern>
 </bugPatterns>
-

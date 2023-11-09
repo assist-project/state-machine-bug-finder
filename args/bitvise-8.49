@@ -1,7 +1,7 @@
 -m
-/models/ssh/BitVise-8.49.dot
+/models/ssh/server/BitVise-8.49.dot
 -p
-/patterns/ssh/
+/patterns/ssh/server/
 -eo
 NO_RESP
 -od

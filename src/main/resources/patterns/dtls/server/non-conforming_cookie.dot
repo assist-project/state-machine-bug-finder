@@ -1,0 +1,20 @@
+// The bug is the server computing the same cookie for the first two CLIENT_HELLO in a handshake, despite them having different cipher suites (e.g., cipher suites which use different key exchanges).
+// This is simplified non-parametric pattern capturing the bug for the case when the first CLIENT_HELLO uses a PSK-based cipher suite, and the second an RSA-based cipher suite.
+// The parametric version can capture the bug for all combination of cipher suites. 
+digraph G {
+label=""
+init [color="red"]
+bug [shape="doublecircle"]
+ 
+init -> ch1 [label="I_PSK_CLIENT_HELLO"]
+init -> init [label="other"]
+
+ch1 -> hvr [label="O_HELLO_VERIFY_REQUEST"]
+
+hvr -> ch2 [label="I_RSA_CLIENT_HELLO"]
+
+ch2 -> bug [label="O_SERVER_HELLO"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}

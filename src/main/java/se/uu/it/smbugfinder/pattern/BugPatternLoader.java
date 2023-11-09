@@ -70,7 +70,7 @@ public class BugPatternLoader {
         try {
             bugPatterns = loadPatterns(patternsStream);
         } catch (Exception e) {
-            throw new BugPatternLoadingException("Failed to load patterns from patterns XML file from file " + patternsDirectory, e);
+            throw new BugPatternLoadingException("Failed to load patterns from patterns XML file from folder " + patternsDirectory, e);
         }
 
         preparePatterns(bugPatterns, patternsURI, symbols);

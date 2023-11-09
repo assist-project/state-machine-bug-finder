@@ -26,6 +26,7 @@ import net.automatalib.automaton.transducer.CompactMealy;
 import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
+import se.uu.it.smbugfinder.DFAExporter.DirectoryDFAExporter;
 import se.uu.it.smbugfinder.Demo.BugReport;
 import se.uu.it.smbugfinder.bug.StateMachineBug;
 import se.uu.it.smbugfinder.dfa.MealySymbolExtractor;
@@ -39,8 +40,8 @@ import se.uu.it.smbugfinder.sut.SimulatedMealySUT;
 import se.uu.it.smbugfinder.sut.SocketSUT;
 
 /**
- * Utility for using smbugfinder to be used to test generic network protocol implementations using a Mealy machine.
- * For validation, it assumes a test harness with which it communicates over TCP sockets, by exchanging strings representing in
+ * Console application for running the bug finder to test network protocol implementations.
+ * For validation, it assumes a test harness, with which it communicates over TCP sockets.
  */
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
@@ -63,15 +64,36 @@ public class Main {
             try {
                 commander.parse(args);
                 launchBugFinder(config);
-            } catch(ParameterException exception) {
+            } catch (ParameterException exception) {
                 LOGGER.error(exception.getMessage());
                 commander.usage();
             }
         }
     }
 
-    private static void launchBugFinder(StateMachineBugFinderToolConfig config) throws FileNotFoundException, IOException {
+    /**
+     * Creates and launches the bug finder, creating an output directory containing the results (statistics, bugs, and generated bug patterns).
+     */
+    public static void launchBugFinder(StateMachineBugFinderToolConfig config) throws FileNotFoundException, IOException {
         Files.createDirectories(Paths.get(config.getOutputDir()));
+        DirectoryDFAExporter exporter = new DFAExporter.DirectoryDFAExporter(config.getOutputDir());
+        List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
+        Statistics stats = launchBugFinder(config, modelBugs, exporter);
+        export(stats, config.getOutputDir(), "statistics.txt");
+        BugReport bugReport = new BugReport(modelBugs);
+        export(bugReport, config.getOutputDir(), "bug_report.txt");
+    }
+
+    /**
+     * Creates and launches the bug finder, returning statistics.
+     * @param config - configuration containing the bug finder config, plus other options relevant when running the bug finder from the console.
+     * @param modelBugs - updated with the detected state machine bugs.
+     * @param exporter - if not null, will receive for export the bugs detected by the bug finder.
+     * @return statistics of the bug detection experiment.
+     * @throws FileNotFoundException
+     * @throws IOException
+     */
+    public static Statistics launchBugFinder(StateMachineBugFinderToolConfig config, List<StateMachineBug<String, String>> modelBugs, @Nullable DFAExporter exporter) throws FileNotFoundException, IOException {
         InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
         InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(getResource(config.getModel()));
 
@@ -99,12 +121,11 @@ public class Main {
         }
 
         StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<String, String>(finderConfig);
-        modelBugFinder.setExporter(new DFAExporter.DirectoryDFAExporter(config.getOutputDir()));
-        List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
+        if (exporter != null) {
+            modelBugFinder.setExporter(exporter);
+        }
         Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
-        export(stats, config.getOutputDir(), "statistics.txt");
-        BugReport bugReport = new BugReport(modelBugs);
-        export(bugReport, config.getOutputDir(), "bug_report.txt");
+        return stats;
     }
 
     private static void export(ExportableResult result, String outputDirectory, String filename) throws FileNotFoundException {
