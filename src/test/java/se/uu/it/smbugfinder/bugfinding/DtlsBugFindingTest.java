@@ -19,7 +19,6 @@ public class DtlsBugFindingTest extends BugFindingTest {
 
     @Test
     public void testDtlsClient() throws FileNotFoundException, IOException {
-
         StateMachineBugFinderToolConfig config = new StateMachineBugFinderToolConfig();
         config.setModel(DTLS_CLIENT_MODEL);
         config.setPatterns(DTLS_CLIENT_BUG_PATTERNS);
