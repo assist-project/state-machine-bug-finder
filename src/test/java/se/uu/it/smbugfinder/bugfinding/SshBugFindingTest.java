@@ -12,8 +12,9 @@ import se.uu.it.smbugfinder.StateMachineBugFinderToolConfig;
 import se.uu.it.smbugfinder.bug.StateMachineBug;
 
 /**
- * Tests involve using the bug finder to reproduce the results for SSH servers reported in the bug detection publication (accepted at NDSS 2023).
- * @see <a href="https://www.ndss-symposium.org/wp-content/uploads/2023/02/ndss2023_s68_paper.pdf">Bug detection publication</a>
+ * Tests that use the bug finder to reproduce the results for SSH servers reported in the NDSS 2023 paper:
+ *    Automata-Based Automated Detection of StateMachine Bugs in Protocol Implementations
+ * @see <a href="https://www.ndss-symposium.org/wp-content/uploads/2023/02/ndss2023_s68_paper.pdf"></a>
  */
 public class SshBugFindingTest extends BugFindingTest {
     private static final String SSH_SERVER_MODEL_FOLDER = "/models/ssh/server/";
