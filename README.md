@@ -75,7 +75,7 @@ Below is the pattern for the *Missing SR_AUTH* bug we found in Dropbear, as disp
 ![missing_sr_auth](https://github.com/assist-project/state-machine-bug-finder/assets/2325013/e65a7a0a-b6f9-4f02-8bd7-02a5a95609fa)
 
 The simplicity of the bug pattern is in large part due to the *condensed notation* we use in edges (see [publication][ndss2023]).
-For example, the self-loop in start corresponds to transitions on all inputs other than 
+For example, the self-loop in start corresponds to transitions on all inputs other than
 The bug pattern is implemented by the following code.
 
 
