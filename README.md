@@ -1,5 +1,5 @@
 # StateMachineBugFinder
-**StateMachineBugFinder** (or **SMBugFinder** for short) is an automated bug detection framework implementing the technique presented at NDSS 2023 (see [publication][ndss2023]).
+**StateMachineBugFinder** (or **SMBugFinder** for short) is a cross-platform, automated bug detection framework implementing the technique presented at NDSS 2023 (see [publication][ndss2023]).
 Provided a state machine model of a SUT (e.g., generated automatically by a protocol state fuzzer), **SMBugFinder** automatically analyzes the model for state machine bugs.
 For analysis, **SMBugFinder** uses a catalogue of bug patterns.
 
@@ -19,24 +19,40 @@ Suppose we want to test the SSH server implementation of [Dropbear][dropbear] V2
 From within **SMBugFinder**'s directory we then run:
 
     > mvn install
-    > java -jar target/sm-bug-finder.jar -m /models/ssh/Dropbear-v2020.81.dot -p /patterns/ssh/
+    > java -jar target/sm-bug-finder.jar -m /models/ssh/server/Dropbear-v2020.81.dot -p /patterns/ssh/server
 
 First command installs **SMBugFinder**.
-Second command executes **SMBugFinder** using the provided arguments.
-**SMBugFinder** requires two arguments:
+Second command executes **SMBugFinder** using two mandatory arguments:
 
-  * the model of the SUT (in this case, the model for Dropbear-V2020.81 server, found [here](src/main/resources/models/ssh/Dropbear-v2020.81.dot));
-  * the catalogue of bug patterns (in this case, patterns defined for SSH servers, found [here](src/main/resources/patterns/ssh/));
+  * the Mealy machine model of the SUT (in this case, the model for Dropbear-V2020.81 server, found [here](src/main/resources/models/ssh/server/Dropbear-v2020.81.dot));
+  * the catalogue of bug patterns (in this case, patterns defined for SSH servers, found [here](src/main/resources/patterns/ssh/server));
 
 Executing the second command should reveal three bugs identified in the Dropbear model.
-One of the bugs is *Missing SR_AUTH*, for which  **SMBugFinder** gives the following witness.
+One of the bugs is *Missing SR_AUTH*, for which  **SMBugFinder** gives the following information.
 
-    > KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP UA_PK_OK/UA_SUCCESS
+```
+Bug Pattern: Missing SR_AUTH
+Severity: LOW
+Description: Authentication is performed without SR_AUTH.
+Trace: KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP UA_PK_OK/UA_SUCCESS
+Inputs: KEXINIT KEX30 NEWKEYS UA_PK_OK
+Validation Status: NOT_VALIDATED
+```
 
-The witness exposes the server performing authentication (indicated by `UA_SUCCESS` as output) without having received a request for the authentication service (done via a `SR_AUTH` input).
-Unfortunately, the witness has not been validated (validation status is `NOT_VALIDATED`), meaning we don't know if the SUT actually exhibits the bug.
+The witness (after `Trace: `) exposes the server performing authentication (indicated by `UA_SUCCESS` as output) without having received a request for the authentication service (done via a `SR_AUTH` input).
+The witness was found on the model, however it has not been validated (validation status is `NOT_VALIDATED`) by running a corresponding test on the SUT to confirm the buggy behavior.
+Enabling validation requires connection to a test harness.
 More on that later.
 
+## Output files
+
+When executed, **SMBugFinder** generates an output directory  (named `output` by default) in which it stores:
+
+*  bug patterns after the condensed notation has been resolved (e.g., `MissingSR_AUTHLanguage.dot`);
+*  model of the DFA-conversion of the original SUT model ( `sutLanguage.dot`);
+*  statistics file ( `statistics.txt`);
+*  bug report listing all the bugs found, witnesses, etc. ( `bug_report.txt`);
+*  if validation was enabled, for each validated bug a witness file  which **SMBugFinder** can execute to expose the bug on the SUT.
 
 ## Models
 
@@ -52,12 +68,14 @@ See the respective fuzzer repos for scripts to trim the models.
 Bug patterns are specified as DOT graphs, and currently have to be manually written.
 A bug pattern defines a DFA which accepts only sequences exposing the presence of the bug.
 [src/main/resources/models](src/main/resources/models) contains an extensive set of bug patterns for SSH (including all used in the NDSS publication), and a few bug patterns for DTLS (bug patterns used in the publication experiments can be found [here](https://gitlab.com/pfg666/dtls-fuzzer/-/tree/bugcheck-artifact/src/main/resources/bugpatterns)).
-Below is the pattern for the *Missing SR_AUTH* bug we found in Dropbear, as displayed by `dot`.
+Below is the pattern for the *Missing SR_AUTH* bug we found in Dropbear, as displayed when running:
+
+    > dot /patterns/ssh/server/missing_ua_success.dot
 
 ![missing_sr_auth](https://github.com/assist-project/state-machine-bug-finder/assets/2325013/e65a7a0a-b6f9-4f02-8bd7-02a5a95609fa)
 
-Notice how simple it is (two edges and two visible nodes).
-Simplicity is in large part due to the *condensed notation* we use (see [publication][ndss2023]).
+The simplicity of the bug pattern is in large part due to the *condensed notation* we use in edges (see [publication][ndss2023]).
+For example, the self-loop in start corresponds to transitions on all inputs other than 
 The bug pattern is implemented by the following code.
 
 
@@ -78,7 +96,7 @@ __start0 -> start;
 ```
 
 In addition to bug patterns, the bug pattern folder must also include a mandatory `patterns.xml` file.
-This file specifies the bug patterns to check, containing various information on them (e.g., name, bug severity).
+This file specifies the bug patterns to check and information on them (e.g., name, bug severity).
 Below is the excerpt specifying the  *Missing SR_AUTH* bug pattern.
 
 ```xml
@@ -101,16 +119,6 @@ Suppose that our test harness for SSH listens at address `localhost:7000`.
 To run bug detection on Dropbear with validation enabled we would run:
 
     > java -jar target/sm-bug-finder.jar -m /models/ssh/Dropbear-v2020.81.dot -p /patterns/ssh/ -vb -ha localhost:7000
-
-## Output files
-
-When executed, **SMBugFinder** generates an output directory  (named `output` by default) in which it stores:
-
-*  bug patterns after the condensed notation has been resolved (e.g., `MissingSR_AUTHLanguage.dot`);
-*  model of the DFA-conversion of the original SUT model ( `sutLanguage.dot`);
-*  statistics file ( `statistics.txt`);
-*  bug report listing all the bugs found, witnesses, etc. ( `bug_report.txt`);
-*  if validation was enabled, for each validated bug a witness file  which **SMBugFinder** can execute to expose the bug on the SUT.
 
 ## Arguments
 
