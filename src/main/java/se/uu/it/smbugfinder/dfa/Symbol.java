@@ -24,12 +24,15 @@ public abstract class Symbol {
     }
 
     @Override
+    @SuppressWarnings("EqualsGetClass")
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
-        if (! (obj instanceof Symbol))
+        // we are using this method to compare objects
+        // of both InputSymbol and OutputSymbol classes
+        if (getClass() != obj.getClass())
             return false;
         Symbol other = (Symbol) obj;
         if (name == null) {
