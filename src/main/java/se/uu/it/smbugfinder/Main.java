@@ -27,8 +27,6 @@ import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
 import se.uu.it.smbugfinder.DFAExporter.DirectoryDFAExporter;
-import se.uu.it.smbugfinder.Demo.BugReport;
-import se.uu.it.smbugfinder.bug.StateMachineBug;
 import se.uu.it.smbugfinder.dfa.MealySymbolExtractor;
 import se.uu.it.smbugfinder.dfa.Symbol;
 import se.uu.it.smbugfinder.dfa.SymbolMapping;
@@ -80,21 +78,17 @@ public class Main {
     public static void launchBugFinder(StateMachineBugFinderToolConfig config) throws FileNotFoundException, IOException {
         Files.createDirectories(Paths.get(config.getOutputDir()));
         DirectoryDFAExporter exporter = new DFAExporter.DirectoryDFAExporter(config.getOutputDir());
-        List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
-        Statistics stats = launchBugFinder(config, modelBugs, exporter);
-        export(stats, config.getOutputDir(), "statistics.txt");
-        BugReport bugReport = new BugReport(modelBugs);
-        export(bugReport, config.getOutputDir(), "bug_report.txt");
+        BugFinderResult<String, String> result = launchBugFinder(config, exporter);
+        export(result, config.getOutputDir(), "bug_report.txt");
     }
 
     /**
      * Creates and launches the bug finder, returning statistics.
      * @param config - configuration containing the bug finder config, plus other options relevant when running the bug finder from the console.
-     * @param modelBugs - updated with the detected state machine bugs.
      * @param exporter - if not null, will receive for export the bugs detected by the bug finder.
-     * @return statistics of the bug detection experiment.
+     * @return result containing the bugs found plus statistics of the bug detection experiment.
      */
-    public static Statistics launchBugFinder(StateMachineBugFinderToolConfig config, List<StateMachineBug<String, String>> modelBugs, @Nullable DFAExporter exporter) throws IOException {
+    public static BugFinderResult<String, String> launchBugFinder(StateMachineBugFinderToolConfig config, @Nullable DFAExporter exporter) throws IOException {
         InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
         InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(getResource(config.getModel()));
 
@@ -125,8 +119,8 @@ public class Main {
         if (exporter != null) {
             modelBugFinder.setExporter(exporter);
         }
-        Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
-        return stats;
+        BugFinderResult<String, String> result  = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut);
+        return result;
     }
 
     private static void export(ExportableResult result, String outputDirectory, String filename) throws FileNotFoundException {
