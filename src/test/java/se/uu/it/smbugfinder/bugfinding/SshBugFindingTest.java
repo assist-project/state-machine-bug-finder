@@ -29,21 +29,21 @@ public class SshBugFindingTest extends BugFindingTest {
     public void testBitViseServer() throws FileNotFoundException, IOException {
         List<StateMachineBug<String, String>> bugs = runBugFinder(sshServerModel("BitVise-8.49.dot"));
         // Unresponsive State was not reported in the paper (it was reported in Patrick's MSc thesis on fuzzing SSH servers)
-        assertFoundSpecificBugPatterns(bugs, "Rekey Failure Post-Authentication", "Invalid SR_AUTH Response",
-                "Unignored Authentication Request", "Missing NEWKEYS", "Unresponsive State");
+        assertFoundSpecificBugPatterns(bugs, "Rekey Fail After Auth", "Invalid SR_AUTH Response",
+                "Unignored Authentication Request After UA_SUCCESS", "Missing NEWKEYS", "Unresponsive State");
     }
 
     @Test
     public void testDropbearServer() throws FileNotFoundException, IOException {
         List<StateMachineBug<String, String>> bugs = runBugFinder(sshServerModel("Dropbear-v2020.81.dot"));
-        assertFoundSpecificBugPatterns(bugs, "Invalid Closure Response", "Missing SR_AUTH");
+        assertFoundSpecificBugPatterns(bugs, "Invalid CH_CLOSE Response", "Missing SR_AUTH");
     }
 
     @Test
     public void testOpenSSHServer() throws FileNotFoundException, IOException {
         List<StateMachineBug<String, String>> bugs = runBugFinder(sshServerModel("OpenSSH-8.8p1.dot"));
-        assertFoundSpecificBugPatterns(bugs, "Rekey Failure Pre-Authentication", "Invalid SR_AUTH Response",
-                "Unignored Authentication Request", "Invalid Closure Response", "Missing NEWKEYS");
+        assertFoundSpecificBugPatterns(bugs, "Rekey Fail Before Auth", "Invalid SR_AUTH Response",
+                "Unignored Authentication Request After UA_SUCCESS", "Invalid CH_CLOSE Response", "Missing NEWKEYS");
     }
 
     @Test
