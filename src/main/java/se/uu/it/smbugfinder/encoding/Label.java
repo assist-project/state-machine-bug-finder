@@ -39,14 +39,13 @@ public class Label {
         return result;
     }
 
-
     @Override
     public boolean equals(Object obj) {
         if (this == obj)
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if (! (obj instanceof Label))
             return false;
         Label other = (Label) obj;
         if (description == null) {

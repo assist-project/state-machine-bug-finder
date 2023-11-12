@@ -155,7 +155,7 @@
               <!--arg>-Werror</arg>-->
               <arg>-Xlint:all</arg>
               <arg>-XDcompilePolicy=simple</arg>
-              <arg>-Xplugin:ErrorProne -XepExcludedPaths:.*/target/generated-sources/javacc/.* -Xep:AddressSelection:OFF -Xep:EqualsGetClass:OFF -Xep:MissingSummary:OFF </arg>
+              <arg>-Xplugin:ErrorProne -XepExcludedPaths:.*/target/generated-sources/javacc/.* -Xep:AddressSelection:OFF -Xep:MissingSummary:OFF </arg>
             </compilerArgs>
             <annotationProcessorPaths>
               <path>

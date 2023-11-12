@@ -69,7 +69,7 @@ public class Trace<I,O> implements Iterable<Pair<I,O>> {
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if (! (obj instanceof Trace))
             return false;
         Trace<?,?> other = (Trace) obj;
         if (inputWord == null) {
