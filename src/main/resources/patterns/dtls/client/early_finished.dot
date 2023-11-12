@@ -10,8 +10,6 @@ start -> ccs [label="I_CHANGE_CIPHER_SPEC"]
 ccs -> start [label="I_HELLO_REQUEST"]
 ccs -> ccs [label="other"]
 
-bug -> bug [label="other"]
-
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
 }
