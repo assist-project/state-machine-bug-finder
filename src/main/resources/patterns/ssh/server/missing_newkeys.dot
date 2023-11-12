@@ -6,9 +6,9 @@ bug [shape="doublecircle"]
 start -> sr_accept [label="O_SR_ACCEPT"]
 start -> start [label="other"]
 sr_accept -> rekey [label="O_KEXINIT"]
-sr_accept -> sr_accept [label="other - I_REKEY"]
+sr_accept -> sr_accept [label="other - {I_REKEY}"]
 rekey -> bug [label="{O_UA_SUCCESS, O_CH_OPEN_SUCCESS, O_CH_SUCCESS}"]
-rekey -> rekey [label="other - I_NEWKEYS"]
+rekey -> rekey [label="other - {I_NEWKEYS}"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;

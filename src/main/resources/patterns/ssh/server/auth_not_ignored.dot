@@ -6,19 +6,19 @@ bug [shape="doublecircle"]
 start -> authenticated [label="O_UA_SUCCESS"]
 start -> start [label="other"]
 
-authenticated -> new_auth [label="{I_UA_PK_OK, I_UA_PK_NOK, I_UA_PW_OK, I_UA_PW_NOK, I_UA_NONE}"]
+authenticated -> new_auth [label="{I_UA_PK_OK, I_UA_PK_NOK}"]
 authenticated -> ikexinit [label="{I_KEXINIT, I_KEXINIT_PROCEED}"]
 authenticated -> authenticated [label="other - {O_NO_CONN, O_DISCONNECT}"]
 
-new_auth -> authenticated [label="O_NO_RESP"]
-new_auth -> bug [label="other"]
+new_auth -> ikexinit [label="{I_KEXINIT, I_KEXINIT_PROCEED}"]
+new_auth -> authenticated [label="other_input"]
+new_auth -> bug [label="other_output"]
 
 ikexinit -> okexinit [label="O_KEXINIT"]
 okexinit -> ikex30 [label="I_KEX30"]
 ikex30 -> okex31 [label="O_KEX31"]
 okex31 -> onewkeys [label="O_NEWKEYS"]
-onewkeys -> inewkeys [label="I_NEWKEYS"]
-inewkeys -> authenticated [label="O_NO_RESP"]
+onewkeys -> authenticated [label="I_NEWKEYS"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;

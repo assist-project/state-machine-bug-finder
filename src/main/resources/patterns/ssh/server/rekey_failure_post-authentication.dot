@@ -15,7 +15,7 @@ kex30 -> bug [label="other_output"]
 kex31 -> onewkeys [label="O_NEWKEYS"]
 kex31 -> bug [label="other_output"]
 onewkeys -> inewkeys [label="I_NEWKEYS"]
-inewkeys -> bug [label="other_output - {O_NO_RESP}"]
+inewkeys -> bug [label="other_output"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;

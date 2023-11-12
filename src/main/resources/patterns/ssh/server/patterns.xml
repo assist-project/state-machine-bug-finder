@@ -141,7 +141,7 @@
     </bugPattern>
 
     <bugPattern>
-        <name>Multiple Kexinit</name>
+        <name>Multiple KEXINIT</name>
         <bugLanguage>multiple_kexinit.dot</bugLanguage>
         <description>Server sends an additional KEXINIT during a key-exchange.</description>
     </bugPattern>

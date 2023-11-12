@@ -7,13 +7,13 @@ start -> preauth [label="O_SR_ACCEPT"]
 start -> start [label="other"]
 
 preauth -> rekey [label="{I_KEXINIT, I_KEXINIT_PROCEED}"]
-preauth -> preauth [label="other - O_UA_SUCCESSFUL"]
+preauth -> preauth [label="other - {O_UA_SUCCESS}"]
 
 post_rekey -> rekey [label="{I_KEXINIT, I_KEXINIT_PROCEED}"]
 post_rekey -> authenticate [label="{I_PK_OK, I_PW_OK}"]
 post_rekey -> post_rekey [label="other - {O_UA_FAILURE, O_NO_CONN, O_DISCONNECT}"]
 
-authenticate -> bug [label="other - O_UA_SUCCESSFUL"]
+authenticate -> bug [label="other - {O_UA_SUCCESS}"]
 
 rekey -> kexinit [label="O_KEXINIT"]
 kexinit -> kex30 [label="I_KEX30"]

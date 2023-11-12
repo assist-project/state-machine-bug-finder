@@ -28,7 +28,7 @@ onk -> bug [label="other_output"]
 ink -> sra [label="I_SR_AUTH"]
 ink -> ink [label="O_NO_RESP"]
 ink -> end [label="other_input"]
-ink -> bug [label="other_output - O_NO_RESP"]
+ink -> bug [label="other_output"]
 
 sra -> bug [label="other_output - {O_SR_ACCEPT, O_NO_CONN, O_DISCONNECT}"]
 
