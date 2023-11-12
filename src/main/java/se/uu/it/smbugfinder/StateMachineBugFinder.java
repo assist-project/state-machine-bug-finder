@@ -13,6 +13,7 @@ import java.util.stream.Collectors;
 
 import javax.annotation.Nullable;
 
+import org.apache.commons.lang3.stream.Streams;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -33,6 +34,8 @@ import se.uu.it.smbugfinder.sut.Counter;
 import se.uu.it.smbugfinder.sut.InputCountingSUT;
 import se.uu.it.smbugfinder.sut.ResetCountingSUT;
 import se.uu.it.smbugfinder.sut.SUT;
+import se.uu.it.smbugfinder.sut.TimedSUT;
+import se.uu.it.smbugfinder.sut.TimeoutException;
 import se.uu.it.smbugfinder.witness.ModelExplorer;
 import se.uu.it.smbugfinder.witness.SearchConfig;
 import se.uu.it.smbugfinder.witness.SearchOrder;
@@ -78,12 +81,18 @@ public class StateMachineBugFinder<I,O> {
 
     public Statistics findBugs(BugPatterns patterns, MealyMachine<?,I,?,O> mealy, Collection<I> inputs, SymbolMapping<I,O> mapping, @Nullable SUT<I,O> sut, List<StateMachineBug<I,O>> bugs) {
         tracker = new StatisticsTracker(config, patterns);
+        if (config.getSelectedBugPatterns() != null) {
+            patterns.applySelector(bp -> config.getSelectedBugPatterns().contains(bp.getName()));
+        }
         tracker.startStateMachineBugFinding(inputs);
         if (validate) {
             ResetCountingSUT<I, O> resetCountingSut = new ResetCountingSUT<I, O>(sut, new Counter("resets"));
             InputCountingSUT<I, O> inputCountingSut = new InputCountingSUT<I, O>(resetCountingSut, new Counter("inputs"));
             sut = inputCountingSut;
             tracker.setSutTracking(inputCountingSut.getCounter(), resetCountingSut.getCounter());
+            if (config.getValidationTimeLimit() != null) {
+                sut = new TimedSUT<I, O>(sut, config.getValidationTimeLimit());
+            }
         }
         DFAAdapter sutLanguage = converter.convert(mealy, inputs, mapping);
         exporter.exportDfa(sutLanguage, "sutLanguage.dot");
@@ -108,26 +117,47 @@ public class StateMachineBugFinder<I,O> {
                 detectedPatterns.add(bugPattern);
                 LOGGER.info("sutBugLanguage not empty, finding witness");
                 exporter.exportDfa(sutBugLanguage, "sut" + bugPattern.getShortenedName() + "Language.dot");
-                if (validate && !DebugMode.EVALUATE_SPECIFIC_BUG_PATTERNS.isEnabled(config)) {
-                    SequenceGenerator<Symbol> sequenceGenerator = SequenceGeneratorFactory.buildGenerator(config.getWitnessGenerationStrategy(), config.getSearchConfig(), null);
-                    WitnessFinder witnessFinder = new WitnessFinder(sequenceGenerator, config.getBound());
-                    tracker.startValidation(bugPattern);
-                    Trace<I,O> witness = witnessFinder.findWitness(sut, mapping, sutBugLanguage, bugPattern.generateBugLanguage());
-                    tracker.endValidation(bugPattern);
-                    if (witness != null) {
-                        StateMachineBug<I,O> bug = new StateMachineBug<>(witness, bugPattern);
-                        bug.validationSuccessful();
-                        bugs.add(bug);
-                        LOGGER.info("Found valid witness {}", witness.toCompactString());
+                if (DebugMode.COUNT_GENERATED_WITNESSES.isEnabled(config)) {
+                    SequenceGenerator<Symbol> generator = SequenceGeneratorFactory
+                            .buildGenerator(config.getWitnessGenerationStrategy(), config.getSearchConfig(), null);
+                    Iterable<Word<Symbol>> sequence = generator.generateSequences(sutBugLanguage.getDfa(),
+                            sutBugLanguage.getSymbols());
+                    long count = Streams.of(sequence).limit(config.getDebugWitnessBound()).count();
+                    if (count < config.getDebugWitnessBound()) {
+                        LOGGER.info(
+                                "The bug pattern {} would lead to the generation of {} witness(es) for validation.",
+                                bugPattern.getName(), count);
                     } else {
-                        // could not validate bug
-                        Trace<I,O> counterexample = witnessFinder.findCounterexample(sut, mapping, sutBugLanguage, bugPattern.generateBugLanguage());
-                        Word<O> mealyOutput = mealy.computeOutput(counterexample.getInputWord());
-                        Trace<I,O> falseAlarm = new Trace<I,O> (counterexample.getInputWord(), mealyOutput);
-                        StateMachineBug<I,O> bug = new StateMachineBug<I,O>(falseAlarm, bugPattern);
-                        bug.validationFailed(counterexample);
-                        bugs.add(bug);
-                        LOGGER.info("Could not find valid witness, giving counterexample {}", counterexample.toCompactString());
+                        LOGGER.info(
+                                "The bug pattern {} would lead to the generation of over {} witness(es) for validation.",
+                                bugPattern.getName(), config.getDebugWitnessBound());
+                    }
+                }
+                if (validate && !DebugMode.EVALUATE_SPECIFIC_BUG_PATTERNS.isEnabled(config)) {
+                    try {
+                        SequenceGenerator<Symbol> sequenceGenerator = SequenceGeneratorFactory.buildGenerator(config.getWitnessGenerationStrategy(), config.getSearchConfig(), null);
+                        WitnessFinder witnessFinder = new WitnessFinder(sequenceGenerator, config.getBound());
+                        tracker.startValidation(bugPattern);
+                        Trace<I,O> witness = witnessFinder.findWitness(sut, mapping, sutBugLanguage, bugPattern.generateBugLanguage());
+                        tracker.endValidation(bugPattern);
+                        if (witness != null) {
+                            StateMachineBug<I,O> bug = new StateMachineBug<>(witness, bugPattern);
+                            bug.validationSuccessful();
+                            bugs.add(bug);
+                            LOGGER.info("Found valid witness {}", witness.toCompactString());
+                        } else {
+                            // could not validate bug
+                            Trace<I,O> counterexample = witnessFinder.findCounterexample(sut, mapping, sutBugLanguage, bugPattern.generateBugLanguage());
+                            Word<O> mealyOutput = mealy.computeOutput(counterexample.getInputWord());
+                            Trace<I,O> falseAlarm = new Trace<I,O> (counterexample.getInputWord(), mealyOutput);
+                            StateMachineBug<I,O> bug = new StateMachineBug<I,O>(falseAlarm, bugPattern);
+                            bug.validationFailed(counterexample);
+                            bugs.add(bug);
+                            LOGGER.info("Could not find valid witness, giving counterexample {}", counterexample.toCompactString());
+                        }
+                    } catch(TimeoutException e) {
+                        tracker.timeout();
+                        break;
                     }
                 } else {
                     Word<Symbol> acceptingSequence = sutBugLanguage.getShortestAcceptingSequence();
@@ -205,13 +235,8 @@ public class StateMachineBugFinder<I,O> {
 
         Set<BugPattern> categorizingBps = new LinkedHashSet<>();
         Set<BugPattern> validatedCategorizingBps = new LinkedHashSet<>();
-        List<BugPattern> specializedBps = specificBugPatterns.stream().filter(sbp -> !sutBugLanguage.intersect(sbp.generateBugLanguage()).isEmpty()).collect(Collectors.toList());
-        String timeoutStr = System.getProperties().getOrDefault("smbugfinder.timeout", "PT1D").toString();
-        Duration duration = Duration.parse(timeoutStr);
-//		specializedBps.forEach(sbp -> {
-//			DfaAdapter sutSbp = sbp.generateBugLanguage().intersect(sutBugLanguage);
-//			LOGGER.info("{}: {}", sbp.getName(), sutSbp.path(sutSbp.getShortestAcceptingSequence()));
-//		});
+        List<BugPattern> specificBps = specificBugPatterns.stream().filter(sbp -> !sutBugLanguage.intersect(sbp.generateBugLanguage()).isEmpty()).collect(Collectors.toList());
+        Duration duration = config.getDebugTimeLimit();
 
         SearchConfig search = config.getSearchConfig();
         long startTime = System.currentTimeMillis();
@@ -224,35 +249,40 @@ public class StateMachineBugFinder<I,O> {
 
         for (Word<Symbol> sequence : wordsToAcceptingStates(sutBugLanguage.getDfa(), sutBugLanguage.getSymbols(), search)) {
             generatedSequences ++;
-            List<BugPattern> capturingBps = specializedBps.stream().filter(bp -> bp.generateBugLanguage().accepts(sequence)).collect(Collectors.toList());
+            List<BugPattern> capturingBps = specificBps.stream().filter(bp -> bp.generateBugLanguage().accepts(sequence)).collect(Collectors.toList());
             if (capturingBps.isEmpty()) {
                 uncategorizedSequences ++;
             }
             categorizingBps.addAll(capturingBps);
             if (validate) {
-                Trace<I,O> trace = mapping.toExecutionTrace(sequence);
-                Word<O> outputWord = sut.execute(trace.getInputWord());
-                Trace<I,O> actualTrace = new Trace<I,O> (trace.getInputWord(), outputWord);
-                Word<Symbol> actualSequence= mapping.fromExecutionTrace(actualTrace);
-                boolean exhibitsBug = bugLanguage.accepts(actualSequence);
-                if (exhibitsBug) {
-                    capturingBps.forEach(bp -> tracker.validated(bp));
-                    validatedCategorizingBps.addAll(capturingBps);
-                    validatedSequences ++;
-                    if (capturingBps.isEmpty()) {
-                        validatedUncategorizedSequences ++;
+                try {
+                    Trace<I,O> trace = mapping.toExecutionTrace(sequence);
+                    Word<O> outputWord = sut.execute(trace.getInputWord());
+                    Trace<I,O> actualTrace = new Trace<I,O> (trace.getInputWord(), outputWord);
+                    Word<Symbol> actualSequence= mapping.fromExecutionTrace(actualTrace);
+                    boolean exhibitsBug = bugLanguage.accepts(actualSequence);
+                    if (exhibitsBug) {
+                        capturingBps.forEach(bp -> tracker.validated(bp));
+                        validatedCategorizingBps.addAll(capturingBps);
+                        validatedSequences ++;
+                        if (capturingBps.isEmpty()) {
+                            validatedUncategorizedSequences ++;
+                        }
+                        if (validatedCategorizingBps.size() == specificBps.size()) {
+                            break;
+                        }
                     }
-                    if (validatedCategorizingBps.size() == specializedBps.size()) {
-                        break;
-                    }
+                } catch(TimeoutException e) {
+                    tracker.timeout();
+                    break;
                 }
             } else {
-                if (categorizingBps.size() == specializedBps.size()) {
+                if (categorizingBps.size() == specificBps.size()) {
                     break;
                 }
             }
 
-            if (generatedSequences > generalBugPattern.generatedSequenceBound()) {
+            if (generatedSequences > config.getDebugWitnessBound()) {
                 break;
             }
 
@@ -263,10 +293,10 @@ public class StateMachineBugFinder<I,O> {
 
         LOGGER.info("Sequences generated: {}", generatedSequences);
         LOGGER.info("Uncategorized sequences generated: {}", uncategorizedSequences);
-        LOGGER.info("Specialized bug patterns ({}): {}", specializedBps.size(), specializedBps.toString());
+        LOGGER.info("Specific bug patterns ({}): {}", specificBps.size(), specificBps.toString());
         LOGGER.info("Categorizing bug patterns ({}): {}", categorizingBps.size(), categorizingBps.toString());
-        if (categorizingBps.size() != specializedBps.size()) {
-            Set<BugPattern> specializedBpsNotCovered = new LinkedHashSet<>(specializedBps);
+        if (categorizingBps.size() != specificBps.size()) {
+            Set<BugPattern> specializedBpsNotCovered = new LinkedHashSet<>(specificBps);
             specializedBpsNotCovered.removeAll(categorizingBps);
             LOGGER.info("Specialized bug patterns that were not covered by sequence generation ({}): {}", specializedBpsNotCovered.size(), specializedBpsNotCovered.toString());
         } else {
@@ -278,8 +308,8 @@ public class StateMachineBugFinder<I,O> {
             LOGGER.info("Validated sequences: {}", validatedSequences);
             LOGGER.info("Validated uncategorized sequences: {}", validatedUncategorizedSequences);
             LOGGER.info("Validated categorizing bug patterns ({}): {}", validatedCategorizingBps.size(), validatedCategorizingBps.toString());
-            if (validatedCategorizingBps.size() != specializedBps.size()) {
-                Set<BugPattern> specializedBpsNotCovered = new LinkedHashSet<>(specializedBps);
+            if (validatedCategorizingBps.size() != specificBps.size()) {
+                Set<BugPattern> specializedBpsNotCovered = new LinkedHashSet<>(specificBps);
                 specializedBpsNotCovered.removeAll(validatedCategorizingBps);
                 LOGGER.info("Specialized bug patterns that were not validated({}): {}", specializedBpsNotCovered.size(), specializedBpsNotCovered.toString());
             } else {

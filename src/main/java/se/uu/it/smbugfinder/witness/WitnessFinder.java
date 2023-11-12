@@ -1,5 +1,7 @@
 package se.uu.it.smbugfinder.witness;
 
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import net.automatalib.word.Word;
 import net.automatalib.word.WordBuilder;
 import se.uu.it.smbugfinder.dfa.DFAAdapter;
@@ -11,10 +13,10 @@ import se.uu.it.smbugfinder.sut.SUT;
 
 public class WitnessFinder {
 
-    private int bound;
+    private Integer bound;
     private SequenceGenerator<Symbol> generator;
 
-    public WitnessFinder(SequenceGenerator<Symbol> generator, int bound) {
+    public WitnessFinder(SequenceGenerator<Symbol> generator, @Nullable Integer bound) {
         this.generator = generator;
         this.bound = bound;
     }
@@ -41,7 +43,7 @@ public class WitnessFinder {
                 return trace;
             }
             count ++;
-            if (count >= bound && bound != -1) {
+            if (bound != null && count >= bound) {
                 break;
             }
         }

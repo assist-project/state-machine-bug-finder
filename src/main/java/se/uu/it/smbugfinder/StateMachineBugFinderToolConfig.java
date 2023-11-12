@@ -94,6 +94,10 @@ public class StateMachineBugFinderToolConfig {
         this.separator = separator;
     }
 
+    public void setEmptyOutput(String emptyOutput) {
+        this.emptyOutput = emptyOutput;
+    }
+
     public void setPatterns(String patterns) {
         this.patterns = patterns;
     }
