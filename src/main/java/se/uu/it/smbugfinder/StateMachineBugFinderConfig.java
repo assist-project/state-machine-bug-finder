@@ -11,42 +11,49 @@ import se.uu.it.smbugfinder.witness.SearchConfig;
 
 public class StateMachineBugFinderConfig {
 
-    @Parameter(names = {"-gs", "-generationStrategy"}, required=false, description = "Witness generation strategy.")
+    @Parameter(names = {"-gs", "-generationStrategy"}, required = false,
+               description = "Witness generation strategy.")
     private GenerationStrategy witnessGenerationStrategy = GenerationStrategy.SHORTEST;
 
     @ParametersDelegate
     private SearchConfig searchConfig;
 
-    @Parameter(names = {"-vb", "-validateBugs"}, required=false, description = "Validate the bugs found. Validation requires either an online test harness or a Mealy machine.")
+    @Parameter(names = {"-vb", "-validateBugs"}, required = false,
+               description = "Validate the bugs found. Validation requires either an online test harness or a Mealy machine.")
     private boolean validate = false;
 
-    @Parameter(names = { "-vtl", "-validationTimeLimit" }, required = false, description = "Bound on the time spent validating.", converter = DurationConverter.class)
+    @Parameter(names = { "-vtl", "-validationTimeLimit" }, required = false,
+               description = "Bound on the time spent validating.", converter = DurationConverter.class)
     private Duration validationTimeLimit;
 
-    @Parameter(names = {"-ub", "-uncategorizedBound"}, required=false, description = "Bound on the number sequences generated for a general bug pattern that have not been identified by any of the specific bug patterns.")
+    @Parameter(names = {"-ub", "-uncategorizedBound"}, required = false,
+               description = "Bound on the number sequences generated for a general bug pattern that have not been identified by any of the specific bug patterns.")
     private int uncategorizedBugBound = 10;
 
-    @Parameter(names = {"-ncb", "-nonConformingBound"}, required=false, description = "Bound on the number non-conforming sequences generated for a correctness specification.")
+    @Parameter(names = {"-ncb", "-nonConformingBound"}, required = false,
+               description = "Bound on the number non-conforming sequences generated for a correctness specification.")
     private int nonConformingSequenceBound = 10000;
 
-    @Parameter(names = {"-tb", "-testBound"}, required=false, description = "Bound on the number of tests executed to validate bugs.")
+    @Parameter(names = {"-tb", "-testBound"}, required = false,
+               description = "Bound on the number of tests executed to validate bugs.")
     private int bound = 100;
 
-    @Parameter(names = {"-d", "-debug"}, required=false, description = "Enables a specific debug mode. "
-            + "EVALUATE_SPECIFIC_BUG_PATTERNS generates and validates witnesses for each general bug pattern until validated witnesses cover all specific bug patterns. "
-            + "COUNT_GENERATED_WITNESSES counts the number of witnesses that would be generated for each specific bug pattern.")
+    @Parameter(names = {"-d", "-debug"}, required = false,
+               description = "Enables a specific debug mode. "
+                 + "EVALUATE_SPECIFIC_BUG_PATTERNS generates and validates witnesses for each general bug pattern until validated witnesses cover all specific bug patterns. "
+                 + "COUNT_GENERATED_WITNESSES counts the number of witnesses that would be generated for each specific bug pattern.")
     private DebugMode debugMode;
 
-    @Parameter(names = { "-dwb",
-    "-debugWitnessBound" }, required = false, description = "Bound on the number of witnesses generated/counted in debug modes EVALUATE_SPECIFIC_BUG_PATTERNS/COUNT_GENERATED_WITNESSES")
+    @Parameter(names = { "-dwb", "-debugWitnessBound" }, required = false,
+               description = "Bound on the number of witnesses generated/counted in debug modes EVALUATE_SPECIFIC_BUG_PATTERNS/COUNT_GENERATED_WITNESSES")
     private int debugWitnessBound = 100000;
 
-    @Parameter(names = { "-dtl",
-    "-debugTimeLimit" }, required = false, description = "Time bound for the debug mode EVALUATE_SPECIFIC_BUG_PATTERNS.", converter = DurationConverter.class)
+    @Parameter(names = { "-dtl", "-debugTimeLimit" }, required = false,
+               description = "Time bound for the debug mode EVALUATE_SPECIFIC_BUG_PATTERNS.", converter = DurationConverter.class)
     private Duration debugTimeLimit = Duration.ofDays(1);
 
-    @Parameter(names = { "-sbp",
-    "-selectBugPatterns" }, required = false, description = "Only uses the following bug patterns from the catalogue. To be used, these should be enabled in the patterns file.")
+    @Parameter(names = { "-sbp", "-selectBugPatterns" }, required = false,
+               description = "Only uses the following bug patterns from the catalogue. To be used, these should be enabled in the patterns file.")
     private List<String> selectedBugPatterns;
 
     public StateMachineBugFinderConfig() {
