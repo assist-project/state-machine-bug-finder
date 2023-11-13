@@ -67,15 +67,16 @@ See the respective fuzzer repos for scripts to trim the models.
 **SMBugFinder** takes as argument the path to a folder containing bug paterns, which form our bug pattern catalogue.
 Bug patterns are specified as DOT graphs, and currently have to be manually written.
 A bug pattern defines a DFA which accepts only sequences exposing the presence of the bug.
-[src/main/resources/models](src/main/resources/models) contains an extensive set of bug patterns for SSH (including all used in the NDSS publication), and a few bug patterns for DTLS (bug patterns used in the publication experiments can be found [here](https://gitlab.com/pfg666/dtls-fuzzer/-/tree/bugcheck-artifact/src/main/resources/bugpatterns)).
+[src/main/resources/models](src/main/resources/models) contains an extensive set of bug patterns for SSH (including all used in the NDSS publication), and a few bug patterns for DTLS (bug patterns used in the publication experiments can be found [here](https://gitlab.com/pfg666/dtls-fuzzer/-/tree/bugcheck-artifact/src/main/resources/patterns)).
 Below is the pattern for the *Missing SR_AUTH* bug we found in Dropbear, which we visualize by running:
 
     > xdot src/main/resources/patterns/ssh/server/missing_sr_auth.dot
 
-![missing_sr_auth](https://github.com/assist-project/state-machine-bug-finder/assets/2325013/766db691-4a29-45e0-b60c-c5a4886591f0)
+![missing_sr_auth](https://github.com/assist-project/state-machine-bug-finder/assets/2325013/e03bf029-6bee-478d-9b19-ea2015dab499)
+
 
 The simplicity of the bug pattern is in large part due to the *condensed notation* we use in edges (see [publication][ndss2023]).
-For example, the self-loop in start corresponds to transitions on all inputs other than
+For example, the self-loop in state *start* describes transitions on all messages other than the input message `SR_AUTH` (which leads to an implicit sink state) and the output messages `UA_SUCCESS` and `UA_FAILURE`, which lead to state *bug*.
 The bug pattern is implemented by the following code:
 
 
@@ -127,8 +128,7 @@ For a full list of options run:
 
 For ease of use, **SMBugFinder** includes in the [args folder](args) folder, *argument files* containing arguments for executing common experiments.
 **SMBugFinder** can be run on these argument files.
-An example example is:
-
+Below is an an example which includes some of the arguments we have just covered:
 
     > java -jar target/sm-bug-finder.jar args/dropbear-v2020.81
 
