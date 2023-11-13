@@ -1,7 +1,7 @@
 # StateMachineBugFinder
 **StateMachineBugFinder** (or **SMBugFinder** for short) is a cross-platform, automated bug detection framework implementing the technique presented at NDSS 2023 (see [publication][ndss2023]).
-Provided a state machine model of a SUT (e.g., generated automatically by a protocol state fuzzer), **SMBugFinder** automatically analyzes the model for state machine bugs.
-For analysis, **SMBugFinder** uses a catalogue of bug patterns.
+**SMBugFinder** takes as input a state machine model of a SUT (e.g., generated automatically by a protocol state fuzzer) and a catalogue of bug patterns.
+It uses this catalogue to automatically detect bugs in the SUT's state machine.
 
 ## Dependencies
 
@@ -13,7 +13,7 @@ To use **SMBugFinder** you'll need:
 
 ## Usage
 
-**SMBugFinder** can be used as a standalone testing tool, or as a library which can be incorporated in other protocol state fuzzers (e.g., [DTLS-Fuzzer][dtlsfuzzer] or [EDHOC-Fuzzer][edhocfuzzer]) to automate analysis of the generated models they generate.
+**SMBugFinder** can be used as a standalone testing tool, or as a library which can be incorporated in other protocol state fuzzers (e.g., [DTLS-Fuzzer][dtlsfuzzer] or [EDHOC-Fuzzer][edhocfuzzer]) to automate analysis of the models they generate.
 
 Suppose we want to test the SSH server implementation of [Dropbear][dropbear] V2020.81 using **SMBugFinder**.
 From within **SMBugFinder**'s directory we then run:
@@ -28,7 +28,7 @@ Second command executes **SMBugFinder** using two mandatory arguments, and an op
   * the catalogue of bug patterns (in this case, patterns defined for SSH servers, found [here](src/main/resources/patterns/ssh/server));
   * the 'empty output' symbol which is used in the SUT model to indicate when the SUT processes an input message without producing a response.
 
-Executing the second command should reveal three bugs identified in the Dropbear model.
+Executing the second command should reveal two bugs identified in the Dropbear model.
 One of the bugs is *Missing SR_AUTH*, for which  **SMBugFinder** gives the following information.
 
 ```
@@ -41,13 +41,14 @@ Validation Status: NOT_VALIDATED
 ```
 
 The witness (after `Trace: `) exposes the server performing authentication (indicated by `UA_SUCCESS` as output) without having received a request for the authentication service (done via a `SR_AUTH` input).
-The witness was found on the model, however it has not been validated (validation status is `NOT_VALIDATED`) by running a corresponding test on the SUT to confirm the buggy behavior.
+The witness was found on the model, however it has not been validated (validation status is `NOT_VALIDATED`).
+Validation is disabled by default and entails running a corresponding test on the SUT to confirm the buggy behavior.
 Enabling validation requires connection to a test harness.
 More on that later.
 
 ## Output files
 
-When executed, **SMBugFinder** generates an output directory  (named `output` by default) in which it stores:
+When executed, **SMBugFinder** generates an output directory, named `output` by default, in which it stores:
 
 *  bug patterns after the condensed notation has been resolved (e.g., `MissingSR_AUTHLanguage.dot`);
 *  model of the DFA-conversion of the original SUT model ( `sutLanguage.dot`);
@@ -58,7 +59,7 @@ When executed, **SMBugFinder** generates an output directory  (named `output` by
 
 SUT models are specified as DOT graphs, and can be obtained automatically using existing protocol state fuzzers.
 [src/main/resources/models](src/main/resources/models) contains sample models for DTLS and SSH, named after the SUT for which they were generated, which was done using [DTLS-Fuzzer][dtlsfuzzer] and an [SSH fuzzer](https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:77503).
-The models can be visualized using [GraphViz][graphviz]'s `dot` utility, or better still, the `xdot` Python [utility][xdot] which builds on [GraphViz][graphviz].
+The models can be visualized with the help of [GraphViz][graphviz]'s `dot` utility, or better still, the `xdot` Python [utility][xdot] which builds on [GraphViz][graphviz].
 The models are large, making visualization difficult.
 See the respective fuzzer repos for scripts to trim the models.
 
@@ -96,7 +97,7 @@ __start0 -> start;
 
 The bug pattern folder must also include a mandatory `patterns.xml` file.
 This file specifies the bug patterns to check and information on them (e.g., name, bug severity).
-Below is the excerpt specifying the  *Missing SR_AUTH* bug pattern.
+Below is the excerpt specifying the  *Missing SR_AUTH* bug pattern:
 
 ```xml
 <bugPattern>
@@ -135,13 +136,17 @@ Below is an an example which includes some of the arguments we have just covered
 ## Useful links
 
 * the [NDSS publication][ndss2023], describing the bug detection technique and its evaluation on DTLS and SSH;
-* the [publication artifact][artifact], which can be used to reproduce the experiments;
-* the [DTLS component of the artifact][dtlsartifact], which is essentially DTLS-Fuzzer incorporating **SMBugFinder** as a library, to perform bug detection automatically;
+* the [publication artifact][artifact], which is a VM that can be used to reproduce the experiments[^1];
+* the [DTLS component of the artifact][dtlsartifact], which is [DTLS-Fuzzer][dtlsfuzzer] incorporating **SMBugFinder** to perform bug detection automatically;
+* the [SSH compomponent of the artifact][sshartifact], containing additional scripts to reproduce experiments for SSH;
 * [DTLS-Fuzzer][dtlsfuzzer], [EDHOC-Fuzzer][edhocfuzzer] and [SSH-Fuzzer][sshfuzzer], fuzzers for DTLS, EDHOC and SSH (the latter is WIP) which can generate SUT models.
+
+[^1]:Note that **SMBugFinder** has seen significant updates since the artifact. We cannot guarantee compatibility with the version that was used in the artifact.
 
 
 [artifact]:https://doi.org/10.5281/zenodo.7129240
 [dtlsartifact]:https://gitlab.com/pfg666/dtls-fuzzer/-/blob/bugcheck-artifact
+[sshartifact]:https://github.com/assist-project/state-machine-bug-finder/tree/bugcheck-artifact
 [graphviz]:https://graphviz.org/
 [xdot]:https://pypi.org/project/xdot/
 [dropbear]: https://matt.ucc.asn.au/dropbear/dropbear.html
