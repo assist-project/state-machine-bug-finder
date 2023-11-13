@@ -73,6 +73,15 @@ public class BugPatterns {
         this.bugPatterns = bugPatterns;
     }
 
+    /*
+     * Removes bug patterns for which the selector returns false.
+     */
+    public void applySelector(Predicate<BugPattern> selector) {
+        List<BugPattern> bugPatterns = new ArrayList<BugPattern>(this.bugPatterns);
+        bugPatterns.removeIf(bp -> !selector.test(bp));
+        this.bugPatterns = bugPatterns;
+    }
+
     public String getSpecificationLanguagePath() {
         return specificationLanguagePath;
     }

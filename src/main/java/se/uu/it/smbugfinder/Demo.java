@@ -26,8 +26,6 @@ import net.automatalib.automaton.transducer.CompactMealy;
 import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
-import se.uu.it.smbugfinder.bug.Bug;
-import se.uu.it.smbugfinder.bug.StateMachineBug;
 import se.uu.it.smbugfinder.dfa.MealySymbolExtractor;
 import se.uu.it.smbugfinder.dfa.Symbol;
 import se.uu.it.smbugfinder.dfa.SymbolMapping;
@@ -102,8 +100,8 @@ public class Demo {
 
     public void run() throws IOException {
         displayIntro();
-        String sutModel = askOrDefault("SUT model path: ", "/models/dtls/MbedTLS.dot");
-        String patternsDir = askOrDefault("Bug patterns directory: ", "/patterns/dtls/");
+        String sutModel = askOrDefault("SUT model path: ", "/models/dtls/server/MbedTLS.dot");
+        String patternsDir = askOrDefault("Bug patterns directory: ", "/patterns/dtls/server/");
         String sep = askOrDefault("Mealy output separator: ", "\\|");
         String noResp = askOrDefault("Mealy no response output: ", "TIMEOUT");
         String validationModel = askOrDefault("Path to Mealy machine used in validation: ", null);
@@ -132,11 +130,8 @@ public class Demo {
         Files.createDirectories(Paths.get(outputDirectory));
         modelBugFinder.setExporter(new DFAExporter.DirectoryDFAExporter(outputDirectory));
 
-        List<StateMachineBug<String,String>> modelBugs = new ArrayList<>();
-        Statistics stats = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut, modelBugs);
-        export(stats, outputDirectory, "statistics.txt");
-        BugReport bugReport = new BugReport(modelBugs);
-        export(bugReport, outputDirectory, "bug_report.txt");
+        BugFinderResult<String, String> result = modelBugFinder.findBugs(bp, sutModelData.model, sutModelData.alphabet, symbolMapping, sut);
+        export(result, outputDirectory, "bug_report.txt");
     }
 
     public static void main(String args []) throws IOException {
@@ -148,21 +143,5 @@ public class Demo {
     private static void export(ExportableResult result, String outputDirectory, String filename) throws FileNotFoundException {
         result.doExport(new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8), true));
         result.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, filename).toFile()), StandardCharsets.UTF_8), true));
-    }
-
-    static class BugReport extends ExportableResult {
-        private List<? extends Bug<?,?>> bugs;
-        public BugReport(List<? extends Bug<?,?>> bugs) {
-            this.bugs = bugs;
-        }
-
-        @Override
-        protected void doExport(PrintWriter pw) {
-            title("Bug Listing", pw);
-            for (Bug<?,?> bug : bugs) {
-                pw.println(bug.getDescription());
-            }
-        }
-
     }
 }

@@ -6,8 +6,6 @@ bug [shape="doublecircle"]
 start -> start [label="other - {O_UA_SUCCESS, O_BUFFERED}"]
 start -> bug [label="{O_CH_OPEN_SUCCESS, O_CH_EOF}"]
 
-bug -> bug [label="other"]
-
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
 }

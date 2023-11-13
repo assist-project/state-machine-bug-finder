@@ -4,7 +4,7 @@ start [color="red"]
 bug [shape="doublecircle"]
 
 start -> start [label="other - {I_SR_AUTH}"]
-start -> bug [label="{O_UA_SUCCESS}"]
+start -> bug [label="{O_UA_SUCCESS, O_UA_FAILURE}"]
 
 bug -> bug [label="other"]
 

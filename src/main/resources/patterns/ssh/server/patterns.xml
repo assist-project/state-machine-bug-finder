@@ -24,16 +24,16 @@
     <!-- Rekey Properties  -->
     <!-- Property 5 bug pattern -->
     <bugPattern>
-        <name>Rekey Failure Pre-Authentication</name>
-        <bugLanguage>rekey_failure_pre-authentication.dot</bugLanguage>
+        <name>Rekey Fail Before Auth</name>
+        <bugLanguage>rekey_fail_before_auth.dot</bugLanguage>
         <description>Server refuses rekey after a service request is accepted,
             before authentication. (Property 5)</description>
         <severity>LOW</severity>
     </bugPattern>
 
     <bugPattern>
-        <name>Rekey Failure Post-Authentication</name>
-        <bugLanguage>rekey_failure_post-authentication.dot</bugLanguage>
+        <name>Rekey Fail After Auth</name>
+        <bugLanguage>rekey_fail_after_auth.dot</bugLanguage>
         <description>Server refuses rekey with an authenticated client.
             (Property 5)</description>
         <severity>LOW</severity>
@@ -61,8 +61,8 @@
     <!-- Property 8 bug pattern [RFC 4253, p. 24] -->
     <bugPattern>
         <name>Invalid SR_AUTH Response</name>
-        <bugLanguage>invalid_service_request_response.dot</bugLanguage>
-        <description>Server incorrectly responds to a service request.
+        <bugLanguage>invalid_sr_auth_response.dot</bugLanguage>
+        <description>Server incorrectly responds to an authentication service request.
             Conforming responses are either SR_ACCEPT or SR_DISCONNECT (Property
             8).</description>
         <severity>LOW</severity>
@@ -87,8 +87,8 @@
 
     <!-- Property 11 bug pattern -->
     <bugPattern>
-        <name>Unignored Authentication Request</name>
-        <bugLanguage>auth_not_ignored.dot</bugLanguage>
+        <name>Unignored Authentication Request After UA_SUCCESS</name>
+        <bugLanguage>unignored_auth_request_after_ua_success.dot</bugLanguage>
         <description>An authentication request received after a UA_SUCCESS is
             not ignored (Property 11).</description>
         <severity>MEDIUM</severity>
@@ -96,8 +96,8 @@
 
     <!-- Property 12 bug pattern -->
     <bugPattern>
-        <name>Invalid Closure Response</name>
-        <bugLanguage>invalid_closure_response.dot</bugLanguage>
+        <name>Invalid CH_CLOSE Response</name>
+        <bugLanguage>invalid_ch_close_response.dot</bugLanguage>
         <description>Server does not respond to a CH_CLOSE with a CH_CLOSE
             (Property 12).</description>
         <severity>LOW</severity>
@@ -105,22 +105,22 @@
 
     <!-- Other Rekey Properties  -->
     <bugPattern>
-        <name>Authentication Failure After Rekey</name>
-        <bugLanguage>ua_failure_after_rekey.dot</bugLanguage>
-        <description>Following a rekey, client authentication using valid
-            credentials is unsuccessful.</description>
+        <name>Auth Fail After Rekey</name>
+        <bugLanguage>auth_fail_after_rekey.dot</bugLanguage>
+        <description>Client authentication using valid
+            credentials is unsuccessful following a rekey.</description>
     </bugPattern>
 
     <bugPattern>
-        <name>Channel Open Failure After Rekey</name>
-        <bugLanguage>channel_open_failure_after_rekey.dot</bugLanguage>
+        <name>Channel Open Fail After Rekey</name>
+        <bugLanguage>channel_open_fail_after_rekey.dot</bugLanguage>
         <description>Following a rekey, attempt to open channel is not
             successful.</description>
     </bugPattern>
 
     <bugPattern>
-        <name>Request Failure After Rekey</name>
-        <bugLanguage>channel_request_failure_after_rekey.dot</bugLanguage>
+        <name>Channel Request Terminal Fail After Rekey</name>
+        <bugLanguage>channel_request_terminal_fail_after_rekey.dot</bugLanguage>
         <description>Following a rekey, request to open PTY is not successful.</description>
     </bugPattern>
 
@@ -141,7 +141,7 @@
     </bugPattern>
 
     <bugPattern>
-        <name>Multiple Kexinit</name>
+        <name>Multiple KEXINIT</name>
         <bugLanguage>multiple_kexinit.dot</bugLanguage>
         <description>Server sends an additional KEXINIT during a key-exchange.</description>
     </bugPattern>
@@ -150,7 +150,6 @@
         <name>Missing SR_AUTH</name>
         <bugLanguage>missing_sr_auth.dot</bugLanguage>
         <description>Authentication is performed without SR_AUTH.</description>
-        <enabled>true</enabled>
     </bugPattern>
 
     <bugPattern>

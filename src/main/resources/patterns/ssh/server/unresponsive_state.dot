@@ -4,19 +4,16 @@ start [color="red"]
 bug [shape="doublecircle"]
 
 start -> start [label="other"]
-start -> firstunresp [label="O_NO_RESP"]
+start -> kexinit [label="I_KEXINIT"] 
 
-firstunresp -> secondunresp [label="O_NO_RESP"]
-firstunresp -> start [label="other_output"]
-firstunresp -> firstunresp [label="I_KEXINIT"]
-firstunresp -> start [label="other_input"]
+kexinit -> start [label="other_output"]
+kexinit -> firstunresp [label="other_input"]
 
-secondunresp -> bug [label="O_NO_RESP"]
+firstunresp -> start [label="other"]
+firstunresp -> secondunresp [label="I_KEXINIT"]
+
 secondunresp -> start [label="other_output"]
-secondunresp -> secondunresp [label="I_KEXINIT"]
-secondunresp -> start [label="other_input"]
-
-bug -> bug [label="other"]
+secondunresp -> bug [label="other_input"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
