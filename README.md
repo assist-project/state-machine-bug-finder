@@ -150,4 +150,8 @@ A good example is:
 [dtlsfuzzer]:https://github.com/assist-project/dtls-fuzzer
 [sshfuzzer]:https://github.com/assist-project/ssh-fuzzer
 [ndss2023]:https://www.ndss-symposium.org/wp-content/uploads/2023/02/ndss2023_s68_paper.pdf
+<<<<<<< HEAD
 [sshharness]:https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:77503
+=======
+[sshharness]:https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:77503
+>>>>>>> 1449423de7106c5ef8a947179502be02ed0c8170
