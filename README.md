@@ -21,7 +21,7 @@ Suppose we want to test the SSH server implementation of [Dropbear][dropbear] V2
 From within **SMBugFinder**'s directory, we then run:
 
     > mvn install
-    > java -jar target/sm-bug-finder.jar -m /models/ssh/server/Dropbear-v2020.81.dot -p /patterns/ssh/server/ -eo NO_RESP
+    > java -jar target/sm-bug-finder.jar -m src/main/resources/models/ssh/server/Dropbear-v2020.81.dot -p src/main/resources/patterns/ssh/server/ -eo NO_RESP
 
 First command installs **SMBugFinder**.
 Second command executes **SMBugFinder** using two mandatory arguments, and an optional one:
@@ -118,9 +118,9 @@ For the *Missing SR_AUTH* bug, the input sequence would be `KEXINIT KEX30 NEWKEY
 Validation is disabled by default, and can be enabled via the `-vb` option.
 
 Suppose that our test harness for SSH listens at address `localhost:7000`.
-To run bug detection on Dropbear with validation enabled, one would run:
+To run bug detection on Dropbear with validation enabled, one would run[^1]:
 
-    > java -jar target/sm-bug-finder.jar -m /models/ssh/Dropbear-v2020.81.dot -p /patterns/ssh/ -vb -ha localhost:7000
+    > java -jar target/sm-bug-finder.jar -m /models/ssh/server/Dropbear-v2020.81.dot -p /patterns/ssh/server/ -vb -ha localhost:7000
 
 ## Arguments
 
@@ -138,12 +138,13 @@ Below is an an example which includes some of the arguments we have just covered
 ## Useful links
 
 * the [NDSS'2023 publication][ndss23paper], describing the bug detection technique and its evaluation on DTLS and SSH;
-* the [NDSS'2023 artifact][ndss23artifact], which is a VM that can be used to reproduce the NDSS'2023 experiments[^1];
+* the [NDSS'2023 artifact][ndss23artifact], which is a VM that can be used to reproduce the NDSS'2023 experiments[^2];
 * the [DTLS component of the artifact][dtlsartifact], which is [DTLS-Fuzzer][dtlsfuzzer] incorporating **SMBugFinder** to perform bug detection automatically;
-* the [SSH compomponent of the artifact][sshartifact], containing additional scripts to reproduce experiments for SSH;
+* the [SSH component of the artifact][sshartifact], containing additional scripts to reproduce experiments for SSH;
 * [DTLS-Fuzzer][dtlsfuzzer], [EDHOC-Fuzzer][edhocfuzzer] and [SSH-Fuzzer][sshfuzzer], fuzzers for DTLS, EDHOC and SSH (the latter is WIP) which can generate SUT models.
 
-[^1]:Note that **SMBugFinder** has seen significant updates since the artifact. We cannot guarantee compatibility with the version that was used in the artifact.
+[^1]:For convenience, **SMBugFinder** resolves `/models/ssh/Dropbear-v2020.81.dot` and `src/main/resources/models/ssh/Dropbear-v2020.81.dot` to the same file. When resolving a path starting with `/`, **SMBugFinder** first checks it in its source directories (e.g., `src/main/resources/`), and only if unsuccessful, in the root directory.
+[^2]:Note that **SMBugFinder** has seen significant updates since the artifact. We cannot guarantee compatibility with the version that was used in the artifact.
 
 
 [ndss23paper]:https://www.ndss-symposium.org/wp-content/uploads/2023/02/ndss2023_s68_paper.pdf
