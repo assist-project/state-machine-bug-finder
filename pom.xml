@@ -36,7 +36,7 @@
     <dependency-plugin.version>3.6.1</dependency-plugin.version>
     <deploy-plugin.version>3.1.1</deploy-plugin.version>
     <install-plugin.version>3.1.1</install-plugin.version>
-    <jacoco-plugin.version>0.8.8</jacoco-plugin.version>
+    <jacoco-plugin.version>0.8.11</jacoco-plugin.version>
     <jar-plugin.version>3.3.0</jar-plugin.version>
     <javacc-plugin.version>3.0.1</javacc-plugin.version>
     <project-info-reports-plugin.version>3.4.5</project-info-reports-plugin.version>
@@ -379,11 +379,11 @@
                   <rule>
                     <element>BUNDLE</element>
                     <limits>
-                      <!-- 40% total line coverage -->
+                      <!-- 42% total line coverage -->
                       <limit>
                         <counter>LINE</counter>
                         <value>COVEREDRATIO</value>
-                        <minimum>0.40</minimum>
+                        <minimum>0.42</minimum>
                       </limit>
                     </limits>
                   </rule>
