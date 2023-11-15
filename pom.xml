@@ -17,7 +17,7 @@
     <maven.compiler.source>17</maven.compiler.source>
     <maven.compiler.target>17</maven.compiler.target>
 
-    <!-- Dependencies appear alphabetically sorted below -->
+    <!-- Dependency versions in alphabetical order -->
     <automatalib.version>0.11.0</automatalib.version>
     <checker-qual.version>3.40.0</checker-qual.version>
     <commons.version>3.13.0</commons.version>
@@ -28,6 +28,22 @@
     <junit.version>4.13.2</junit.version>
     <logback.version>1.4.11</logback.version>
     <slf4j.version>2.0.9</slf4j.version>
+
+    <!-- Plugin versions in alphabetical order -->
+    <assembly-plugin.version>3.6.0</assembly-plugin.version>
+    <clean-plugin.version>3.3.2</clean-plugin.version>
+    <compiler-plugin.version>3.11.0</compiler-plugin.version>
+    <dependency-plugin.version>3.6.1</dependency-plugin.version>
+    <deploy-plugin.version>3.1.1</deploy-plugin.version>
+    <install-plugin.version>3.1.1</install-plugin.version>
+    <jacoco-plugin.version>0.8.8</jacoco-plugin.version>
+    <jar-plugin.version>3.3.0</jar-plugin.version>
+    <javacc-plugin.version>3.0.1</javacc-plugin.version>
+    <project-info-reports-plugin.version>3.4.5</project-info-reports-plugin.version>
+    <resources-plugin.version>3.3.1</resources-plugin.version>
+    <site-plugin.version>3.12.1</site-plugin.version>
+    <spotless-plugin.version>2.40.0</spotless-plugin.version>
+    <spotbugs-plugin.version>4.8.1.0</spotbugs-plugin.version>
   </properties>
 
   <dependencies>
@@ -139,16 +155,16 @@
         <!-- clean lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#clean_Lifecycle -->
         <plugin>
           <artifactId>maven-clean-plugin</artifactId>
-          <version>3.3.2</version>
+          <version>${clean-plugin.version}</version>
         </plugin>
         <!-- default lifecycle, jar packaging: see https://maven.apache.org/ref/current/maven-core/default-bindings.html#Plugin_bindings_for_jar_packaging -->
         <plugin>
           <artifactId>maven-resources-plugin</artifactId>
-          <version>3.3.1</version>
+          <version>${resources-plugin.version}</version>
         </plugin>
         <plugin>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.11.0</version>
+          <version>${compiler-plugin.version}</version>
           <configuration>
             <showWarnings>true</showWarnings>
             <compilerArgs>
@@ -173,31 +189,28 @@
         </plugin>
         -->
         <plugin>
-          <artifactId>maven-jar-plugin</artifactId>
-          <version>3.3.0</version>
-        </plugin>
-        <plugin>
           <artifactId>maven-install-plugin</artifactId>
-          <version>3.1.1</version>
+          <version>${install-plugin.version}</version>
         </plugin>
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
-          <version>3.1.1</version>
+          <version>${deploy-plugin.version}</version>
         </plugin>
         <!-- site lifecycle, see https://maven.apache.org/ref/current/maven-core/lifecycles.html#site_Lifecycle -->
         <plugin>
           <artifactId>maven-site-plugin</artifactId>
-          <version>3.12.1</version>
+          <version>${site-plugin.version}</version>
         </plugin>
         <plugin>
           <artifactId>maven-project-info-reports-plugin</artifactId>
-          <version>3.4.5</version>
+          <version>${project-info-reports-plugin.version}</version>
         </plugin>
       </plugins>
     </pluginManagement>
     <plugins>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
+        <version>${assembly-plugin.version}</version>
         <configuration>
           <archive>
             <manifest>
@@ -215,7 +228,7 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>javacc-maven-plugin</artifactId>
-        <version>3.0.1</version>
+        <version>${javacc-plugin.version}</version>
         <configuration>
           <sourceDirectory>${basedir}/src/main/java/se/uu/it/smbugfinder/encoding/javacc/</sourceDirectory>
         </configuration>
@@ -229,11 +242,26 @@
         </executions>
       </plugin>
 
+      <!-- Build an executable JAR -->
+      <plugin>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>${jar-plugin.version}</version>
+        <configuration>
+          <archive>
+            <manifest>
+              <addClasspath>true</addClasspath>
+              <classpathPrefix>lib/</classpathPrefix>
+              <mainClass>se.uu.it.smbugfinder.Main</mainClass>
+            </manifest>
+          </archive>
+        </configuration>
+      </plugin>
+
       <!-- Dependency analysis -->
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-dependency-plugin</artifactId>
-        <version>3.6.1</version>
+        <version>${dependency-plugin.version}</version>
         <executions>
           <execution>
             <id>analyze</id>
@@ -262,7 +290,7 @@
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>
-        <version>2.40.0</version>
+        <version>${spotless-plugin.version}</version>
         <configuration>
           <formats>
             <format>
@@ -307,7 +335,7 @@
       <plugin>
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
-        <version>4.8.1.0</version>
+        <version>${spotbugs-plugin.version}</version>
         <configuration>
           <includeFilterFile>.spotbugs/include.xml</includeFilterFile>
           <excludeFilterFile>.spotbugs/exclude.xml</excludeFilterFile>
@@ -321,20 +349,48 @@
         </executions>
       </plugin>
 
-      <!-- Build an executable JAR -->
+      <!-- Code coverage -->
       <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jar-plugin</artifactId>
-        <version>2.6</version>
-        <configuration>
-          <archive>
-            <manifest>
-              <addClasspath>true</addClasspath>
-              <classpathPrefix>lib/</classpathPrefix>
-              <mainClass>se.uu.it.smbugfinder.Main</mainClass>
-            </manifest>
-          </archive>
-        </configuration>
+        <groupId>org.jacoco</groupId>
+        <artifactId>jacoco-maven-plugin</artifactId>
+        <version>${jacoco-plugin.version}</version>
+        <executions>
+          <execution>
+            <id>prepare-report</id>
+            <goals>
+              <goal>prepare-agent</goal>
+            </goals>
+          </execution>
+          <execution>
+            <id>report</id>
+            <phase>test</phase>
+            <goals>
+              <goal>report</goal>
+            </goals>
+          </execution>
+          <execution>
+            <!-- code coverage checks https://www.eclemma.org/jacoco/trunk/doc/check-mojo.html -->
+            <id>jacoco-check</id>
+              <goals>
+                <goal>check</goal>
+              </goals>
+              <configuration>
+                <rules>
+                  <rule>
+                    <element>BUNDLE</element>
+                    <limits>
+                      <!-- 40% total line coverage -->
+                      <limit>
+                        <counter>LINE</counter>
+                        <value>COVEREDRATIO</value>
+                        <minimum>0.40</minimum>
+                      </limit>
+                    </limits>
+                  </rule>
+                </rules>
+              </configuration>
+          </execution>
+        </executions>
       </plugin>
     </plugins>
   </build>
