@@ -5,8 +5,9 @@ options {
 PARSER_BEGIN(LabelParser)
 package se.uu.it.smbugfinder.encoding.javacc;
 
-import se.uu.it.smbugfinder.encoding.*;
 import java.util.*;
+
+import se.uu.it.smbugfinder.encoding.*;
 
 class LabelParser extends AbstractLabelParser {
     
