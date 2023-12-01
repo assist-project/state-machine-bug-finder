@@ -26,7 +26,7 @@
     <jaxb-impl.version>4.0.4</jaxb-impl.version>
     <jcommander.version>1.82</jcommander.version>
     <junit.version>4.13.2</junit.version>
-    <logback.version>1.4.13</logback.version>
+    <logback.version>1.4.14</logback.version>
     <slf4j.version>2.0.9</slf4j.version>
 
     <!-- Plugin versions in alphabetical order -->
