@@ -1,0 +1,40 @@
+<bugPatterns>
+  <defaultBugSeverity>LOW</defaultBugSeverity>
+  <defaultEnabled>true</defaultEnabled>
+
+  <bugPattern>
+    <name>Server Successful OSCORE exchange and then forced to terminate</name>
+    <bugLanguage>../IR_oscore_exchange_and_force_terminate.dot</bugLanguage>
+    <description>Successful OSCORE exchange and then forced to terminate.</description>
+  </bugPattern>
+
+  <bugPattern>
+    <name>Server Respond to CoAP app messages</name>
+    <bugLanguage>../IR_respond_to_coap_app.dot</bugLanguage>
+    <description>Server responds to CoAP app messages.</description>
+  </bugPattern>
+
+  <bugPattern>
+    <name>Responder Accept consecutive message 3</name>
+    <bugLanguage>../../common/R_accept_consecutive_m3.dot</bugLanguage>
+    <description>Responder accepts consecutive message 3.</description>
+  </bugPattern>
+
+  <bugPattern>
+    <name>Responder Ignore EDHOC error during exchange</name>
+    <bugLanguage>../../common/R_ignore_edhoc_error.dot</bugLanguage>
+    <description>Responder ignores EDHOC error during exchange.</description>
+  </bugPattern>
+
+  <bugPattern>
+    <name>EDHOC Error after exchange deletes derived OSCORE context</name>
+    <bugLanguage>../../common/IR_edhoc_error_deletes_oscore_context.dot</bugLanguage>
+    <description>EDHOC Error after exchange deletes derived OSCORE context.</description>
+  </bugPattern>
+
+  <bugPattern>
+    <name>Unsupported sink state</name>
+    <bugLanguage>../../common/IR_unsupported_sink_state.dot</bugLanguage>
+    <description>Unsupported sink state.</description>
+  </bugPattern>
+</bugPatterns>

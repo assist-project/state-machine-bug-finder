@@ -1,0 +1,16 @@
+digraph G {
+bug [shape="doublecircle"]
+
+snt_m1 -> rcv_m2 [label="I_EDHOC_MESSAGE_2"]
+
+rcv_m2 -> end [label="{O_EDHOC_MESSAGE_3, O_EDHOC_MESSAGE_3_OSCORE_APP}"]
+rcv_m2 -> snt_error [label="O_EDHOC_ERROR_MESSAGE"]
+rcv_m2 -> bug [label="other_output"]
+
+snt_error -> snt_error_i [label="other_input"]
+snt_error_i -> end [label="{O_TIMEOUT, O_SOCKET_CLOSED, O_UNSUPPORTED_MESSAGE, O_UNKNOWN_MESSAGE}"]
+snt_error_i -> bug [label="other_output"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> snt_m1;
+}

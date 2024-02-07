@@ -1,0 +1,16 @@
+digraph G {
+bug [shape="doublecircle"]
+
+start -> start [label="other"]
+start -> rcv_oapp [label="I_OSCORE_APP_MESSAGE"]
+
+rcv_oapp -> snt_oapp [label="O_OSCORE_APP_MESSAGE"]
+
+snt_oapp -> rcv_any [label="other_input"]
+
+rcv_any -> rcv_any [label="other"]
+rcv_any -> bug [label="O_SOCKET_CLOSED"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}

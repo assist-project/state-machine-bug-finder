@@ -1,0 +1,12 @@
+digraph G {
+bug [shape="doublecircle"]
+
+start -> start [label="other"]
+start -> snt_error [label="O_EDHOC_ERROR_MESSAGE"]
+
+snt_error -> snt_error [label="other_input"]
+snt_error -> bug [label="other_output - {O_TIMEOUT, O_SOCKET_CLOSED, O_UNSUPPORTED_MESSAGE, O_UNKNOWN_MESSAGE}"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}
