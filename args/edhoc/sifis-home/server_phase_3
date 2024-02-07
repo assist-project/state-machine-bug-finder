@@ -1,0 +1,8 @@
+-m
+/models/edhoc/server/sifis-home_phase_3.dot
+
+-p
+/patterns/edhoc/server/R_m3/
+
+-od
+output/edhoc/server/sifis-home_phase_3

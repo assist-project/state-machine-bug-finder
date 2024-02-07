@@ -1,0 +1,8 @@
+-m
+/models/edhoc/client/rise_m4_app.dot
+
+-p
+/patterns/edhoc/client/I_m4/
+
+-od
+output/edhoc/client/rise_m4_app

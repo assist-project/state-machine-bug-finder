@@ -1,0 +1,8 @@
+-m
+/models/edhoc/client/uoscore-uedhoc_linux_edhoc_oscore.dot
+
+-p
+/patterns/edhoc/client/I_m3/
+
+-od
+output/edhoc/client/uoscore-uedhoc_linux_edhoc_oscore
