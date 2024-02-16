@@ -1,8 +1,0 @@
--m
-/models/edhoc/server/edhoc-rs.dot
-
--p
-/patterns/edhoc/server/R_m3/
-
--od
-output/edhoc/server/edhoc-rs
