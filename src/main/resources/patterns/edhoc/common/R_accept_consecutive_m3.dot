@@ -1,0 +1,23 @@
+digraph G {
+bug [shape="doublecircle"]
+
+start -> start [label="other"]
+start -> rcv_m1 [label="I_EDHOC_MESSAGE_1"]
+
+rcv_m1 -> snt_m2 [label="O_EDHOC_MESSAGE_2"]
+
+snt_m2 -> rcv_m3 [label="{I_EDHOC_MESSAGE_3, I_EDHOC_MESSAGE_3_OSCORE_APP}"]
+
+rcv_m3 -> snt_m3_resp [label="other_output - {O_EDHOC_ERROR_MESSAGE, O_COAP_ERROR_MESSAGE, O_TIMEOUT, O_SOCKET_CLOSED, O_UNKNOWN_MESSAGE}"]
+
+snt_m3_resp -> rcv_2nd_m3 [label="{I_EDHOC_MESSAGE_3, I_EDHOC_MESSAGE_3_OSCORE_APP}"]
+
+rcv_2nd_m3 -> snt_2nd_m3_resp [label="other_output - {O_EDHOC_ERROR_MESSAGE, O_COAP_ERROR_MESSAGE, O_TIMEOUT, O_SOCKET_CLOSED, O_UNKNOWN_MESSAGE}"]
+
+snt_2nd_m3_resp -> rcv_3rd_m3 [label="{I_EDHOC_MESSAGE_3, I_EDHOC_MESSAGE_3_OSCORE_APP}"]
+
+rcv_3rd_m3 -> bug [label="other_output - {O_EDHOC_ERROR_MESSAGE, O_COAP_ERROR_MESSAGE, O_TIMEOUT, O_SOCKET_CLOSED, O_UNKNOWN_MESSAGE}"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}

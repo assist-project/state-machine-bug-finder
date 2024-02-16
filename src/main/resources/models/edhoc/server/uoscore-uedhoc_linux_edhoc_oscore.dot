@@ -1,0 +1,47 @@
+digraph g {
+
+	s0 [shape="circle" label="s0"];
+	s1 [shape="circle" label="s1"];
+	s2 [shape="circle" label="s2"];
+	s3 [shape="circle" label="s3"];
+	s0 -> s1 [label="EDHOC_MESSAGE_1 / EDHOC_MESSAGE_2"];
+	s0 -> s2 [label="EDHOC_MESSAGE_2 / TIMEOUT"];
+	s0 -> s2 [label="EDHOC_MESSAGE_3 / TIMEOUT"];
+	s0 -> s2 [label="EDHOC_MESSAGE_4 / TIMEOUT"];
+	s0 -> s2 [label="EDHOC_ERROR_MESSAGE / TIMEOUT"];
+	s0 -> s2 [label="EDHOC_MESSAGE_3_OSCORE_APP / TIMEOUT"];
+	s0 -> s2 [label="OSCORE_APP_MESSAGE / TIMEOUT"];
+	s0 -> s2 [label="COAP_APP_MESSAGE / TIMEOUT"];
+	s0 -> s2 [label="COAP_EMPTY_MESSAGE / TIMEOUT"];
+	s1 -> s2 [label="EDHOC_MESSAGE_1 / TIMEOUT"];
+	s1 -> s2 [label="EDHOC_MESSAGE_2 / TIMEOUT"];
+	s1 -> s3 [label="EDHOC_MESSAGE_3 / TIMEOUT"];
+	s1 -> s2 [label="EDHOC_MESSAGE_4 / TIMEOUT"];
+	s1 -> s2 [label="EDHOC_ERROR_MESSAGE / TIMEOUT"];
+	s1 -> s2 [label="EDHOC_MESSAGE_3_OSCORE_APP / TIMEOUT"];
+	s1 -> s2 [label="OSCORE_APP_MESSAGE / TIMEOUT"];
+	s1 -> s2 [label="COAP_APP_MESSAGE / TIMEOUT"];
+	s1 -> s2 [label="COAP_EMPTY_MESSAGE / TIMEOUT"];
+	s2 -> s2 [label="EDHOC_MESSAGE_1 / SOCKET_CLOSED"];
+	s2 -> s2 [label="EDHOC_MESSAGE_2 / SOCKET_CLOSED"];
+	s2 -> s2 [label="EDHOC_MESSAGE_3 / SOCKET_CLOSED"];
+	s2 -> s2 [label="EDHOC_MESSAGE_4 / SOCKET_CLOSED"];
+	s2 -> s2 [label="EDHOC_ERROR_MESSAGE / SOCKET_CLOSED"];
+	s2 -> s2 [label="EDHOC_MESSAGE_3_OSCORE_APP / SOCKET_CLOSED"];
+	s2 -> s2 [label="OSCORE_APP_MESSAGE / SOCKET_CLOSED"];
+	s2 -> s2 [label="COAP_APP_MESSAGE / SOCKET_CLOSED"];
+	s2 -> s2 [label="COAP_EMPTY_MESSAGE / SOCKET_CLOSED"];
+	s3 -> s3 [label="EDHOC_MESSAGE_1 / COAP_MESSAGE"];
+	s3 -> s3 [label="EDHOC_MESSAGE_2 / COAP_MESSAGE"];
+	s3 -> s3 [label="EDHOC_MESSAGE_3 / COAP_MESSAGE"];
+	s3 -> s3 [label="EDHOC_MESSAGE_4 / COAP_MESSAGE"];
+	s3 -> s3 [label="EDHOC_ERROR_MESSAGE / COAP_MESSAGE"];
+	s3 -> s3 [label="EDHOC_MESSAGE_3_OSCORE_APP / TIMEOUT"];
+	s3 -> s3 [label="OSCORE_APP_MESSAGE / OSCORE_APP_MESSAGE"];
+	s3 -> s3 [label="COAP_APP_MESSAGE / COAP_APP_MESSAGE"];
+	s3 -> s3 [label="COAP_EMPTY_MESSAGE / COAP_MESSAGE"];
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> s0;
+
+}

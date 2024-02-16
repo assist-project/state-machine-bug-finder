@@ -1,0 +1,37 @@
+digraph G {
+start
+bug [shape="doublecircle"]
+
+start -> start [label="other"]
+start -> in_1 [label="I_EDHOC_MESSAGE_1"]
+
+in_1 -> out_1 [label="O_UNSUPPORTED_MESSAGE"]
+
+out_1 -> in_2 [label="I_EDHOC_MESSAGE_2"]
+in_2 -> out_2 [label="O_UNSUPPORTED_MESSAGE"]
+
+out_2 -> in_3 [label="I_EDHOC_MESSAGE_3"]
+in_3 -> out_3 [label="O_UNSUPPORTED_MESSAGE"]
+
+out_3 -> in_4 [label="I_EDHOC_MESSAGE_4"]
+in_4 -> out_4 [label="O_UNSUPPORTED_MESSAGE"]
+
+out_4 -> in_5 [label="I_EDHOC_ERROR_MESSAGE"]
+in_5 -> out_5 [label="O_UNSUPPORTED_MESSAGE"]
+
+out_5 -> in_6 [label="I_EDHOC_MESSAGE_3_OSCORE_APP"]
+in_6 -> out_6 [label="O_UNSUPPORTED_MESSAGE"]
+
+out_6-> in_7 [label="I_OSCORE_APP_MESSAGE"]
+in_7 -> out_7 [label="O_UNSUPPORTED_MESSAGE"]
+
+out_7 -> in_8 [label="I_COAP_APP_MESSAGE"]
+in_8 -> out_8 [label="O_UNSUPPORTED_MESSAGE"]
+
+out_8 -> in_9 [label="I_COAP_EMPTY_MESSAGE"]
+in_9 -> bug [label="O_UNSUPPORTED_MESSAGE"]
+
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}

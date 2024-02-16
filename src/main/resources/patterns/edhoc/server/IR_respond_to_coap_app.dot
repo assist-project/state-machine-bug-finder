@@ -1,0 +1,11 @@
+digraph G {
+bug [shape="doublecircle"]
+
+start -> start [label="other"]
+start -> rcv_coap_app [label= "I_COAP_APP_MESSAGE"]
+
+rcv_coap_app -> bug [label="other_output - {O_EDHOC_ERROR_MESSAGE, O_COAP_ERROR_MESSAGE, O_TIMEOUT, O_SOCKET_CLOSED, O_UNKNOWN_MESSAGE}"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}

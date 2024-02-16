@@ -1,0 +1,18 @@
+digraph G {
+bug [shape="doublecircle"]
+
+start -> start [label="other"]
+start -> rcv_oapp [label="I_OSCORE_APP_MESSAGE"]
+
+rcv_oapp -> snt_oapp [label="O_OSCORE_APP_MESSAGE"]
+
+snt_oapp -> rcv_eerr [label="I_EDHOC_ERROR_MESSAGE"]
+
+rcv_eerr -> snt_eerr_resp [label="other_output"]
+
+snt_eerr_resp -> rcv_2nd_oapp [label="I_OSCORE_APP_MESSAGE"]
+rcv_2nd_oapp -> bug [label="other_output - O_OSCORE_APP_MESSAGE"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}
