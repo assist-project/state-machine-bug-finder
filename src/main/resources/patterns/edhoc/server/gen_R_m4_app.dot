@@ -8,22 +8,22 @@ rcv_m1 -> snt_error [label="O_EDHOC_ERROR_MESSAGE"]
 rcv_m1 -> bug [label="other_output"]
 
 snt_m2 -> rcv_m3 [label="I_EDHOC_MESSAGE_3"]
-snt_m2 -> rcv_other [label="other_input - I_EDHOC_MESSAGE_1"]
+snt_m2 -> rcv_other [label="other_input - {I_EDHOC_MESSAGE_1}"]
 
 rcv_m3 -> snt_m4 [label="O_EDHOC_MESSAGE_4"]
 rcv_m3 -> snt_error [label="O_EDHOC_ERROR_MESSAGE"]
 rcv_m3 -> bug [label="other_output"]
 
 snt_m4 -> rcv_oapp [label="I_OSCORE_APP_MESSAGE"]
-snt_m4 -> rcv_other [label="other_input - I_EDHOC_MESSAGE_1"]
+snt_m4 -> rcv_other [label="other_input - {I_EDHOC_MESSAGE_1}"]
 
-rcv_oapp -> end [label="O_OSCORE_APP_MESSAGE"]
-rcv_oapp -> bug [label="other_output"]
+rcv_oapp -> bug [label="other_output - {O_OSCORE_APP_MESSAGE}"]
+rcv_oapp -> snt_error [label="O_EDHOC_ERROR_MESSAGE"]
 
 rcv_other -> bug [label="other_output - {O_COAP_ERROR_MESSAGE, O_TIMEOUT, O_SOCKET_CLOSED, O_UNKNOWN_MESSAGE}"]
 rcv_other -> snt_error [label="O_EDHOC_ERROR_MESSAGE"]
 
-snt_error -> snt_error_i [label="other_input - I_EDHOC_MESSAGE_1"]
+snt_error -> snt_error_i [label="other_input - {I_EDHOC_MESSAGE_1}"]
 snt_error_i -> bug [label="other_output - {O_COAP_ERROR_MESSAGE, O_TIMEOUT, O_SOCKET_CLOSED, O_UNKNOWN_MESSAGE}"]
 
 __start0 [label="" shape="none" width="0" height="0"];

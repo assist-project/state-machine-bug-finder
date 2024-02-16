@@ -11,17 +11,14 @@ rcv_m2 -> bug [label="other_output"]
 snt_m3 -> rcv_m4 [label="I_EDHOC_MESSAGE_4"]
 snt_m3 -> rcv_other [label="other_input"]
 
-rcv_m4 -> end [label="O_OSCORE_APP_MESSAGE"]
 rcv_m4 -> snt_error [label="O_EDHOC_ERROR_MESSAGE"]
-rcv_m4 -> bug [label="other_output"]
+rcv_m4 -> bug [label="other_output - {O_OSCORE_APP_MESSAGE}"]
 
-rcv_other -> bug [label="other_output"]
+rcv_other -> bug [label="other_output - {O_TIMEOUT, O_SOCKET_CLOSED, O_UNSUPPORTED_MESSAGE, O_UNKNOWN_MESSAGE}"]
 rcv_other -> snt_error [label="O_EDHOC_ERROR_MESSAGE"]
-rcv_other -> end [label="{O_TIMEOUT, O_SOCKET_CLOSED, O_UNSUPPORTED_MESSAGE, O_UNKNOWN_MESSAGE}"]
 
 snt_error -> snt_error_i [label="other_input"]
-snt_error_i -> end [label="{O_TIMEOUT, O_SOCKET_CLOSED, O_UNSUPPORTED_MESSAGE, O_UNKNOWN_MESSAGE}"]
-snt_error_i -> bug [label="other_output"]
+snt_error_i -> bug [label="other_output - {O_TIMEOUT, O_SOCKET_CLOSED, O_UNSUPPORTED_MESSAGE, O_UNKNOWN_MESSAGE}"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> snt_m1;
