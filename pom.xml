@@ -30,9 +30,9 @@
     <slf4j.version>2.0.12</slf4j.version>
 
     <!-- Plugin versions in alphabetical order -->
-    <assembly-plugin.version>3.7.0</assembly-plugin.version>
+    <assembly-plugin.version>3.7.1</assembly-plugin.version>
     <clean-plugin.version>3.3.2</clean-plugin.version>
-    <compiler-plugin.version>3.12.1</compiler-plugin.version>
+    <compiler-plugin.version>3.13.0</compiler-plugin.version>
     <dependency-plugin.version>3.6.1</dependency-plugin.version>
     <deploy-plugin.version>3.1.1</deploy-plugin.version>
     <install-plugin.version>3.1.1</install-plugin.version>
