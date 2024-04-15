@@ -37,7 +37,7 @@
     <deploy-plugin.version>3.1.1</deploy-plugin.version>
     <install-plugin.version>3.1.1</install-plugin.version>
     <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
-    <jar-plugin.version>3.3.0</jar-plugin.version>
+    <jar-plugin.version>3.4.0</jar-plugin.version>
     <javacc-plugin.version>3.1.0</javacc-plugin.version>
     <project-info-reports-plugin.version>3.5.0</project-info-reports-plugin.version>
     <resources-plugin.version>3.3.1</resources-plugin.version>
