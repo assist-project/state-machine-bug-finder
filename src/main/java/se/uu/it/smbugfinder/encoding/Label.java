@@ -6,8 +6,8 @@ public class Label {
     private Guard guard;
 
     public Label(DescriptionToken description) {
-        guard = Guard.trueGuard();
-        update = Update.emptyUpdate();
+        guard = new Guard();
+        update = new Update();
         this.description = description;
     }
 
@@ -76,7 +76,7 @@ public class Label {
             .append(update.toString());
             builder.append("]");
         }
-        if (!guard.equals(Guard.trueGuard())) {
+        if (!guard.equals(new Guard())) {
             builder.append(" where ")
             .append(guard.toString());
         }

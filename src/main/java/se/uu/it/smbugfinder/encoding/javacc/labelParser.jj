@@ -73,9 +73,9 @@ TOKEN : { < ENUM_START : "{" >: ENUM_STATE }
 Label label():
 {
     DescriptionToken description;
-    Guard guard = Guard.trueGuard();
+    Guard guard = new Guard();
     BooleanExpression expr;
-    Update update = Update.emptyUpdate();
+    Update update = new Update();
 }
 {
     (

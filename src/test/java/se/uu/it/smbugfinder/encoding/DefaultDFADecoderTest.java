@@ -260,10 +260,10 @@ public class DefaultDFADecoderTest {
         Symbol o1 = new OutputSymbol("o1");
         Symbol o2 = new OutputSymbol("o2");
 
-        Label aOrO1 = new Label(new SetExpressionToken(new SymbolToken(a), SetOperator.UNION, new SymbolToken(o1)), Guard.trueGuard(), Update.emptyUpdate());
-        Label otherOutput = new Label(new OtherToken(OtherTokenType.OUTPUT), Guard.trueGuard(), Update.emptyUpdate());
-        Label otherInput = new Label(new OtherToken(OtherTokenType.INPUT), Guard.trueGuard(), Update.emptyUpdate());
-        Label other = new Label(new OtherToken(OtherTokenType.ALL), Guard.trueGuard(), Update.emptyUpdate());
+        Label aOrO1 = new Label(new SetExpressionToken(new SymbolToken(a), SetOperator.UNION, new SymbolToken(o1)), new Guard(), new Update());
+        Label otherOutput = new Label(new OtherToken(OtherTokenType.OUTPUT), new Guard(), new Update());
+        Label otherInput = new Label(new OtherToken(OtherTokenType.INPUT), new Guard(), new Update());
+        Label other = new Label(new OtherToken(OtherTokenType.ALL), new Guard(), new Update());
 
         List<Label> specLabels = Arrays.asList(aOrO1, otherOutput, otherInput, other);
 
