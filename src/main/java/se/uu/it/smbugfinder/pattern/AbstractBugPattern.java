@@ -15,7 +15,7 @@ public abstract class AbstractBugPattern extends Pattern {
     private static int CUR_ID = 1;
     private static AbstractBugPattern UNCATEGORIZED;
 
-    public static AbstractBugPattern uncategorized() {
+    public static synchronized AbstractBugPattern uncategorized() {
         if (AbstractBugPattern.UNCATEGORIZED == null) {
             AbstractBugPattern bp = new AbstractBugPattern() {
                 @Override
@@ -27,7 +27,6 @@ public abstract class AbstractBugPattern extends Pattern {
                 public boolean isGeneral() {
                     return true;
                 }
-
             };
             bp.id = 0;
             bp.name = "Uncategorized";

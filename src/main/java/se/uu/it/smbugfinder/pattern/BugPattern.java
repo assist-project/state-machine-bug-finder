@@ -13,8 +13,6 @@ public class BugPattern extends AbstractBugPattern {
         super();
     }
 
-
-
     @XmlElement(name="bugLanguage", required = true)
     private String bugLanguagePath;
 
