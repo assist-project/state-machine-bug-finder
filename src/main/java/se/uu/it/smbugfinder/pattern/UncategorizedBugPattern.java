@@ -6,7 +6,7 @@ import se.uu.it.smbugfinder.dfa.DFAAdapter;
 public class UncategorizedBugPattern extends AbstractBugPattern {
     private static UncategorizedBugPattern INSTANCE;
 
-    static final synchronized UncategorizedBugPattern getInstance() {
+    public static final synchronized UncategorizedBugPattern getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new UncategorizedBugPattern();
         }
