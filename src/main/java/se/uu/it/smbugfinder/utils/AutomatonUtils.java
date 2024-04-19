@@ -117,21 +117,21 @@ public class AutomatonUtils {
         }
     }
 
-
     public static class PredMap <S,I> extends LinkedHashMap<S, Collection<PredStruct<S, I>>>{
         /**
          *
          */
         private static final long serialVersionUID = 1L;
-
     }
 
     public static class PredStruct <S,I> {
         private S state;
         private I input;
+
         public S getState() {
             return state;
         }
+
         public PredStruct(S state, I input) {
             super();
             this.state = state;
@@ -141,6 +141,5 @@ public class AutomatonUtils {
         public I getInput() {
             return input;
         }
-
     }
 }

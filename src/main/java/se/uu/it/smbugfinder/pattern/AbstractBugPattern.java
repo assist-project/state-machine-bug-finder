@@ -13,33 +13,16 @@ import se.uu.it.smbugfinder.dfa.DFAAdapter;
  */
 public abstract class AbstractBugPattern extends Pattern {
     private static int CUR_ID = 1;
-    private static AbstractBugPattern UNCATEGORIZED;
-
-    public static AbstractBugPattern uncategorized() {
-        if (AbstractBugPattern.UNCATEGORIZED == null) {
-            AbstractBugPattern bp = new AbstractBugPattern() {
-                @Override
-                DFAAdapter doGenerateBugLanguage() {
-                    throw new RuntimeException("Uncategorized bug pattern does not provide a bug language.");
-                }
-
-                @Override
-                public boolean isGeneral() {
-                    return true;
-                }
-
-            };
-            bp.id = 0;
-            bp.name = "Uncategorized";
-            bp.description = "Uncategorized behavior which does not conform to the specification.";
-            bp.severity = BugSeverity.UNKNOWN;
-            AbstractBugPattern.UNCATEGORIZED = bp;
-        }
-        return AbstractBugPattern.UNCATEGORIZED;
-    }
 
     public AbstractBugPattern() {
         id = CUR_ID ++;
+    }
+
+    protected AbstractBugPattern(String name, String description, BugSeverity severity) {
+        this();
+        this.name = name;
+        this.description = description;
+        this.severity = severity;
     }
 
     @XmlTransient

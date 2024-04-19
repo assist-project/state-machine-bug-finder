@@ -73,9 +73,9 @@ TOKEN : { < ENUM_START : "{" >: ENUM_STATE }
 Label label():
 {
     DescriptionToken description;
-    Guard guard = Guard.trueGuard();
+    Guard guard = new Guard();
     BooleanExpression expr;
-    Update update = Update.emptyUpdate();
+    Update update = new Update();
 }
 {
     (
@@ -123,7 +123,6 @@ Update update():
         assignments.add(assignment);
     }
     (
-        
         < UPDATE_SEP >
         assignment = assignment()
         {
@@ -342,7 +341,6 @@ DescriptionToken description():
     DescriptionToken right = null;
 }
 {
-    
     ( left = enumtoken() |
       left = regex() |
       left = other() |
@@ -359,7 +357,6 @@ DescriptionToken description():
             right = regex() |
             right = enumtoken() |
             right = symbol()
-            
         )
         {
             left = new SetExpressionToken(left, op, right);

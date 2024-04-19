@@ -5,8 +5,7 @@ import se.uu.it.smbugfinder.dfa.Symbol;
 public class TrueExpression implements BooleanExpression {
     private static TrueExpression INSTANCE;
 
-
-    public static final TrueExpression getInstance() {
+    public static final synchronized TrueExpression getInstance() {
         if (INSTANCE == null) {
             INSTANCE = new TrueExpression();
         }

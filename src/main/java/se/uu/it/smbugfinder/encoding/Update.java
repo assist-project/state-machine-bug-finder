@@ -6,14 +6,6 @@ import java.util.Collection;
 import se.uu.it.smbugfinder.dfa.Symbol;
 
 public class Update {
-    private static Update EMPTY;
-
-    public static final Update emptyUpdate() {
-        if (EMPTY == null) {
-            EMPTY = new Update();
-        }
-        return EMPTY;
-    }
 
     private Assignment[] assignments;
 

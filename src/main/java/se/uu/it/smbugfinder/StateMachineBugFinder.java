@@ -30,6 +30,7 @@ import se.uu.it.smbugfinder.pattern.AbstractBugPattern;
 import se.uu.it.smbugfinder.pattern.BugPattern;
 import se.uu.it.smbugfinder.pattern.BugPatterns;
 import se.uu.it.smbugfinder.pattern.GeneralBugPattern;
+import se.uu.it.smbugfinder.pattern.UncategorizedBugPattern;
 import se.uu.it.smbugfinder.sut.Counter;
 import se.uu.it.smbugfinder.sut.InputCountingSUT;
 import se.uu.it.smbugfinder.sut.ResetCountingSUT;
@@ -356,7 +357,7 @@ public class StateMachineBugFinder<I,O> {
                 }
 
                 Trace<I,O> trace = mapping.toExecutionTrace(sequence);
-                StateMachineBug<I,O> bug = new StateMachineBug<>(trace, AbstractBugPattern.uncategorized());
+                StateMachineBug<I,O> bug = new StateMachineBug<>(trace, UncategorizedBugPattern.getInstance());
                 bugs.add(bug);
                 uncategorizedFlows ++;
                 if (uncategorizedFlows >= config.getUncategorizedBugBound()) {
