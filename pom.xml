@@ -43,7 +43,7 @@
     <resources-plugin.version>3.3.1</resources-plugin.version>
     <site-plugin.version>3.12.1</site-plugin.version>
     <spotless-plugin.version>2.43.0</spotless-plugin.version>
-    <spotbugs-plugin.version>4.8.4.0</spotbugs-plugin.version>
+    <spotbugs-plugin.version>4.8.5.0</spotbugs-plugin.version>
   </properties>
 
   <dependencies>
