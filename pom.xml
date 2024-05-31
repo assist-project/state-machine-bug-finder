@@ -21,7 +21,7 @@
     <automatalib.version>0.11.0</automatalib.version>
     <checker-qual.version>3.43.0</checker-qual.version>
     <commons.version>3.14.0</commons.version>
-    <error-prone.version>2.27.1</error-prone.version>
+    <error-prone.version>2.28.0</error-prone.version>
     <jaxb-api.version>4.0.2</jaxb-api.version>
     <jaxb-runtime.version>4.0.5</jaxb-runtime.version>
     <jcommander.version>1.82</jcommander.version>
