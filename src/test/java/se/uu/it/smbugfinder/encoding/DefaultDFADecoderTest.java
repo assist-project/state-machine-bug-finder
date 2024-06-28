@@ -287,7 +287,7 @@ public class DefaultDFADecoderTest {
 
         DFA<?, Symbol> expectedDfa = TestUtils.completeDFA(expectedMut, alphabet);
         DefaultDFADecoder dfaDecoder = new DefaultDFADecoder();
-        DFAAdapter actualDfa = dfaDecoder.decode(new DFAEncoding(spec, specLabels), symbols);
+        DFAAdapter actualDfa = dfaDecoder.decode(new EncodedDFA(spec, specLabels), symbols);
 
         assertEquivalent(expectedDfa, actualDfa.getDfa(), symbols, spec, specLabels);
     }

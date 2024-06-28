@@ -7,22 +7,21 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-import net.automatalib.automaton.fsa.DFA;
 import net.automatalib.ts.acceptor.DeterministicAcceptorTS;
 import se.uu.it.smbugfinder.dfa.Symbol;
 
 public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>, Symbol> {
 
-        private DFA<S, Label> encodedDfa;
+        private DeterministicAcceptorTS<S, Label> encodedTs;
         private RegisterState<S> initial;
         private RegisterState<S> sink;
         private TokenMatcher tokenMatcher;
         private Collection<Label> labels;
 
-        public DecodingTS(DFA<S, Label> encodedDfa, Collection<Label> labels) {
-            this.encodedDfa = encodedDfa;
-            this.initial = new RegisterState<S>(encodedDfa.getInitialState(), new Valuation());
-            this.sink = new RegisterState<S>(encodedDfa.getInitialState(), null);
+        public DecodingTS(DeterministicAcceptorTS<S, Label> encodedTs, Collection<Label> labels) {
+            this.encodedTs = encodedTs;
+            this.initial = new RegisterState<S>(encodedTs.getInitialState(), new Valuation());
+            this.sink = new RegisterState<S>(encodedTs.getInitialState(), null);
             this.tokenMatcher = new DefaultTokenMatcher();
             this.labels = labels;
         }
@@ -59,7 +58,7 @@ public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>,
                 Label previouslyMatchedLabel = null;
 
                 for (Label label : labels) {
-                    if (encodedDfa.getSuccessor(dfaState, label) == null) {
+                    if (encodedTs.getSuccessor(dfaState, label) == null) {
                         continue;
                     }
 
@@ -116,7 +115,7 @@ public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>,
 
         private RegisterState<S> transition(RegisterState<S> state, Symbol symbol, Label label) {
             S encodedDfaState = state.getState();
-            S nextEncodedDfaState = encodedDfa.getTransition(encodedDfaState, label);
+            S nextEncodedDfaState = encodedTs.getTransition(encodedDfaState, label);
             RegisterState<S> nextState = null;
             if (nextEncodedDfaState != null) {
                 nextState = transition(state, symbol, label, nextEncodedDfaState);
@@ -148,10 +147,10 @@ public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>,
 
         @Override
         public Boolean getStateProperty(RegisterState<S> state) {
-            return isAccepting(encodedDfa, state);
+            return isAccepting(encodedTs, state);
         }
 
-        private boolean isAccepting(DFA<S, Label> encodedDfa, RegisterState<S> state ) {
+        private boolean isAccepting(DeterministicAcceptorTS<S, Label> encodedDfa, RegisterState<S> state ) {
             return encodedDfa.isAccepting( state.getState());
         }
 
@@ -165,7 +164,7 @@ public class DecodingTS <S> implements DeterministicAcceptorTS<RegisterState<S>,
             if (state.equals(sink)) {
                 return false;
             } else {
-                return isAccepting(encodedDfa, state);
+                return isAccepting(encodedTs, state);
             }
         }
 }

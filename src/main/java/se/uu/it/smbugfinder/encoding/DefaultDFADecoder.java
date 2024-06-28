@@ -6,8 +6,8 @@ import java.util.Collection;
 
 import net.automatalib.alphabet.Alphabet;
 import net.automatalib.alphabet.ListAlphabet;
-import net.automatalib.automaton.fsa.DFA;
 import net.automatalib.automaton.fsa.FastDFA;
+import net.automatalib.ts.acceptor.DeterministicAcceptorTS;
 import net.automatalib.util.automaton.fsa.DFAs;
 import net.automatalib.util.ts.copy.TSCopy;
 import net.automatalib.util.ts.traversal.TSTraversalMethod;
@@ -16,14 +16,14 @@ import se.uu.it.smbugfinder.dfa.Symbol;
 
 public class DefaultDFADecoder implements DFADecoder {
     private TokenMatcher tokenMatcher = new DefaultTokenMatcher();
-    private DFAEncodingParser parser;
+    private EncodedTSParser parser;
 
-    public DefaultDFADecoder(DFAEncodingParser parser) {
+    public DefaultDFADecoder(EncodedTSParser parser) {
         this.parser = parser;
     }
 
     public DefaultDFADecoder() {
-        this(new DefaultDFAEncodingParser());
+        this(new DefaultEncodedDFAParser());
     }
 
     public void setTokenMatcher(TokenMatcher tokenMatcher) {
@@ -31,25 +31,25 @@ public class DefaultDFADecoder implements DFADecoder {
     }
 
     @Override
-    public DFAAdapter decode(InputStream dfaEncodingStream, Collection<Symbol> symbols) throws Exception  {
-        DFAEncoding dfaEncoding = parser.parse(dfaEncodingStream);
-        DFAAdapter decodedDfa = decode(dfaEncoding, symbols);
+    public DFAAdapter decode(InputStream encodedTsStream, Collection<Symbol> symbols) throws Exception  {
+        EncodedTS encodedTs = parser.parse(encodedTsStream);
+        DFAAdapter decodedDfa = decode(encodedTs, symbols);
         return decodedDfa;
     }
 
-    DFAAdapter decode(DFAEncoding dfaEncoding,
+    DFAAdapter decode(EncodedTS encodedTs,
             Collection<Symbol> symbols) {
-        FastDFA<Symbol> decodedDfa = decode(dfaEncoding.getEncodedDfa(), dfaEncoding.getLabels(), symbols);
+        FastDFA<Symbol> decodedDfa = decode(encodedTs.getEncodedTS(), encodedTs.getLabels(), symbols);
         FastDFA<Symbol> inputCompleteDfa = new FastDFA<Symbol>(new ListAlphabet<Symbol>(new ArrayList<>(symbols)));
         DFAs.complete(decodedDfa, inputCompleteDfa.getInputAlphabet(), inputCompleteDfa);
         DFAAdapter dfaAdapter = new DFAAdapter(decodedDfa, decodedDfa.getInputAlphabet());
         return dfaAdapter.minimize();
     }
 
-    private <S> FastDFA<Symbol> decode(DFA<S, Label> encodedDfa, Collection<Label> labels, Collection<Symbol> symbols) {
+    private <S> FastDFA<Symbol> decode(DeterministicAcceptorTS<S, Label> encodedTs, Collection<Label> labels, Collection<Symbol> symbols) {
         Alphabet<Symbol> alphabet = new ListAlphabet<>(new ArrayList<>(symbols));
         FastDFA<Symbol> decodedDfa = new FastDFA<>(alphabet);
-        DecodingTS<S> decodingTS = new DecodingTS<S>(encodedDfa, labels);
+        DecodingTS<S> decodingTS = new DecodingTS<S>(encodedTs, labels);
         decodingTS.setTokenMatcher(tokenMatcher);
         TSCopy.copy(TSTraversalMethod.DEPTH_FIRST, decodingTS, -1, symbols, decodedDfa);
         return decodedDfa;
