@@ -44,6 +44,9 @@ import se.uu.it.smbugfinder.sut.SocketSUT;
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
+    private static final String BUG_REPORT = "bug_report.tx";
+    private static final String WITNESS_FOLDER = "bug_witnesses";
+
     public static void main(String args[]) throws FileNotFoundException, IOException {
         if (args.length > 0 && !args[0].startsWith("@")  && new File(args[0]).exists()) {
             LOGGER.info("Noticed that the first argument is a file. Processing it as an argument file.");
@@ -70,16 +73,16 @@ public class Main {
     }
 
     /**
-     * Creates and launches the bug finder, creating an output directory containing the results (statistics, bugs, and generated bug patterns).
+     * Creates and launches the bug finder, creating an output directory containing the results (statistics, bugs, generated bug patterns and statistics).
      * @param  config  configuration containing the bug finder config, plus other options relevant when running the bug finder from the console.
      * @throws FileNotFoundException if the directory to save files cannot be found
      * @throws IOException           if there a problen when writing files
      */
-    public static void launchBugFinder(StateMachineBugFinderToolConfig config) throws FileNotFoundException, IOException {
+    public static void launchBugFinder(StateMachineBugFinderToolConfig config) throws IOException {
         Files.createDirectories(Paths.get(config.getOutputDir()));
         DirectoryDFAExporter exporter = new DFAExporter.DirectoryDFAExporter(config.getOutputDir());
         BugFinderResult<String, String> result = launchBugFinder(config, exporter);
-        export(result, config.getOutputDir(), "bug_report.txt");
+        export(result, config.getOutputDir());
     }
 
     /**
@@ -123,9 +126,20 @@ public class Main {
         return result;
     }
 
-    private static void export(ExportableResult result, String outputDirectory, String filename) throws FileNotFoundException {
+    private static void export(BugFinderResult<String, String> result, String outputDirectory) throws IOException {
         result.doExport(new PrintWriter(new OutputStreamWriter(System.out, StandardCharsets.UTF_8), true));
-        result.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, filename).toFile()), StandardCharsets.UTF_8), true));
+        result.doExport(new PrintWriter(new OutputStreamWriter(new FileOutputStream(Paths.get(outputDirectory, BUG_REPORT).toFile()), StandardCharsets.UTF_8), true));
+        File witnessFolder = Paths.get(outputDirectory, WITNESS_FOLDER).toFile();
+        if (witnessFolder.exists()) {
+            if (!witnessFolder.isDirectory()) {
+                throw new RuntimeException("File %s already exists and is not a folder".formatted(witnessFolder.toString()));
+            }
+        } else {
+            if (!witnessFolder.mkdirs()) {
+                throw new RuntimeException("Failed to create witness folder");
+            }
+        }
+        result.generateExecutableWitnesses(witnessFolder);
     }
 
     private static InputStream getResource(String path) throws FileNotFoundException {
