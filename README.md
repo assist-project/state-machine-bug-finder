@@ -21,7 +21,7 @@ Suppose we want to test the SSH server implementation of [Dropbear][dropbear] V2
 From within **SMBugFinder**'s directory, we then run:
 
     > mvn install
-    > java -jar target/sm-bug-finder.jar -m src/main/resources/models/ssh/server/Dropbear-v2020.81.dot -p src/main/resources/patterns/ssh/server/ -eo NO_RESP
+    > java -jar target/sm-bug-finder.jar -m src/main/resources/models/ssh/server/Dropbear-v2020.81.dot -c src/main/resources/patterns/ssh/server/patterns.xml -eo NO_RESP
 
 First command installs **SMBugFinder**.
 Second command executes **SMBugFinder** using two mandatory arguments, and an optional one:
@@ -67,7 +67,7 @@ See the respective fuzzer repositories for scripts to trim the models.
 
 ## Bug patterns
 
-**SMBugFinder** takes as argument the path to a folder containing bug paterns, which form our bug pattern catalogue.
+**SMBugFinder** takes as argument the path to a bug pattern catalogue which indexes bug patterns.
 Bug patterns are specified as DOT graphs, and currently have to be manually written.
 A bug pattern defines a DFA which accepts only sequences exposing the presence of the bug.
 The directory [src/main/resources/models](src/main/resources/models) contains an extensive set of bug patterns for SSH (including all used in the NDSS'2023 paper), and a few bug patterns for DTLS.
@@ -97,8 +97,7 @@ __start0 -> start;
 }
 ```
 
-The bug pattern folder must also include a mandatory `patterns.xml` file.
-This file specifies the bug patterns to check and information on them (e.g., name, bug severity).
+This bug pattern catalogue is given in XML, and specifies the bug patterns to check and information on them (e.g., name, bug severity).
 Below is the excerpt specifying the  *Missing SR_AUTH* bug pattern:
 
 ```xml
@@ -120,11 +119,11 @@ Validation is disabled by default, and can be enabled via the `-vb` option.
 Suppose that our test harness for SSH listens at address `localhost:7000`.
 To run bug detection on Dropbear with validation enabled, one would run[^1]:
 
-    > java -jar target/sm-bug-finder.jar -m /models/ssh/server/Dropbear-v2020.81.dot -p /patterns/ssh/server/ -vb -ha localhost:7000
+    > java -jar target/sm-bug-finder.jar -m /models/ssh/server/Dropbear-v2020.81.dot -c /patterns/ssh/server/patterns.xml -vb -ha localhost:7000
 
 ## Arguments
 
-**SMBugFinder** supports many other useful options, e.g., for configuring the algorithm used to generate witnesses.
+**SMBugFinder** supports many other options, e.g., for configuring the algorithm used to generate witnesses.
 For a full list of options run:
 
     > java -jar target/sm-bug-finder.jar
@@ -144,7 +143,7 @@ Below is an an example which includes some of the arguments we have just covered
 * [DTLS-Fuzzer][dtlsfuzzer], [EDHOC-Fuzzer][edhocfuzzer] and [SSH-Fuzzer][sshfuzzer], fuzzers for DTLS, EDHOC and SSH (the latter is WIP) which can generate SUT models.
 
 [^1]:For convenience, **SMBugFinder** resolves `/models/ssh/Dropbear-v2020.81.dot` and `src/main/resources/models/ssh/Dropbear-v2020.81.dot` to the same file. When resolving a path starting with `/`, **SMBugFinder** first checks it in its source directories (e.g., `src/main/resources/`), and only if unsuccessful, in the root directory.
-[^2]:Note that **SMBugFinder** has seen significant updates since the artifact. We cannot guarantee compatibility with the version that was used in the artifact.
+[^2]:Note that **SMBugFinder** has seen significant updates since the artifact. As a result, it is no longer compatible with the version that was used in the artifact.
 
 
 [ndss23paper]:https://www.ndss-symposium.org/wp-content/uploads/2023/02/ndss2023_s68_paper.pdf

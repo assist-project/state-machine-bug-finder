@@ -118,7 +118,7 @@ public class Main {
             }
         }
 
-        StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<String, String>(finderConfig);
+        StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<>(finderConfig);
         if (exporter != null) {
             modelBugFinder.setExporter(exporter);
         }

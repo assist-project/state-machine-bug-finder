@@ -19,7 +19,7 @@ public class StateMachineBugFinderConfig {
     private SearchConfig searchConfig;
 
     @Parameter(names = {"-vb", "-validateBugs"}, required = false,
-               description = "Validate the bugs found. Validation requires either an online test harness or a Mealy machine.")
+               description = "Validate the bugs found. Validation requires either an online test harness or a Mealy machine which simulates the SUT.")
     private boolean validate = false;
 
     @Parameter(names = { "-vtl", "-validationTimeLimit" }, required = false,
