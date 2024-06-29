@@ -8,6 +8,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Path;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -37,8 +38,6 @@ public class BugPatternLoader {
     private static final Logger LOGGER = LoggerFactory.getLogger(BugPatternLoader.class);
     private static JAXBContext context;
 
-    private static final String PATTERNS_FILE = "patterns.xml";
-
     private static synchronized JAXBContext getJAXBContext()
             throws JAXBException, IOException {
         if (context == null) {
@@ -61,20 +60,22 @@ public class BugPatternLoader {
         this.dfaDecoder = dfaDecoder;
     }
 
-    public BugPatterns loadPatterns(String patternsDirectory, Collection<Symbol> symbols) throws BugPatternLoadingException {
+    public BugPatterns loadPatterns(String patternsFile, Collection<Symbol> symbols) throws BugPatternLoadingException {
         BugPatterns bugPatterns = null;
         LOGGER.info("Loading bug patterns");
-        URI patternsURI = URI.create(patternsDirectory);
-        String patternsFile = patternsURI.resolve(PATTERNS_FILE).getPath();
+        String patternsFileName = Path.of(patternsFile).getFileName().toString();
+        URI parentFolderURI = URI.create(
+                patternsFile.substring(0,
+                        patternsFile.length() - (patternsFileName.length())));
         InputStream patternsStream = getResourceAsStream(patternsFile);
         try {
             bugPatterns = loadPatterns(patternsStream);
         } catch (Exception e) {
-            throw new BugPatternLoadingException("Failed to load patterns from patterns XML file from folder " + patternsDirectory, e);
+            throw new BugPatternLoadingException("Failed to load patterns from catalogue " + patternsFile, e);
         }
 
-        preparePatterns(bugPatterns, patternsURI, symbols);
-        LOGGER.info("Successfully loaded {} bug patterns from file {}", bugPatterns.getBugPatterns().size(), patternsDirectory);
+        preparePatterns(bugPatterns, parentFolderURI, symbols);
+        LOGGER.info("Successfully loaded {} bug patterns from catalogue {}", bugPatterns.getBugPatterns().size(), patternsFile);
         return bugPatterns;
     }
 

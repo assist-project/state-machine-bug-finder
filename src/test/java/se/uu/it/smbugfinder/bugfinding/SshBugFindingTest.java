@@ -18,7 +18,7 @@ import se.uu.it.smbugfinder.bug.StateMachineBug;
  */
 public class SshBugFindingTest extends BugFindingTest {
     private static final String SSH_SERVER_MODEL_FOLDER = "/models/ssh/server/";
-    private static final String SSH_SERVER_BUG_PATTERNS = "/patterns/ssh/server/";
+    private static final String SSH_SERVER_BUG_PATTERNS = "/patterns/ssh/server/patterns.xml";
     private static final String SSH_EMPTY_OUTPUT = "NO_RESP";
 
     private String sshServerModel(String sut) {

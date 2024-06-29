@@ -50,7 +50,7 @@ public class BugPatterns {
         removeDisabled();
     }
 
-    /*
+    /**
      * Adjusts the contained bug patterns according to the default values of this container.
      */
     private void updateDefaults() {
@@ -64,7 +64,7 @@ public class BugPatterns {
         }
     }
 
-    /*
+    /**
      * Removes bug patterns that have not been enabled
      */
     private void removeDisabled() {
@@ -73,7 +73,7 @@ public class BugPatterns {
         this.bugPatterns = bugPatterns;
     }
 
-    /*
+    /**
      * Removes bug patterns for which the selector returns false.
      */
     public void applySelector(Predicate<BugPattern> selector) {
