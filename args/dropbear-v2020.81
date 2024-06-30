@@ -1,7 +1,7 @@
 -m
 /models/ssh/server/Dropbear-v2020.81.dot
--p
-/patterns/ssh/server/
+-c
+/patterns/ssh/server/patterns.xml
 -eo
 NO_RESP
 -od

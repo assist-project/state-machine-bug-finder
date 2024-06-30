@@ -1,8 +1,8 @@
 -m
 /models/edhoc/server/uoscore-uedhoc_linux_edhoc.dot
 
--p
-/patterns/edhoc/server/R_m3/
+-c
+/patterns/edhoc/server/R_m3/patterns.xml
 
 -od
 output/edhoc/server/uoscore-uedhoc_linux_edhoc

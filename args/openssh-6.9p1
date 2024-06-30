@@ -1,7 +1,7 @@
 -m
 /models/ssh/server/OpenSSH-6.9p1.dot
--p
-/patterns/ssh/server/
+-c
+/patterns/ssh/server/patterns.xml
 -eo
 NO_RESP
 -od

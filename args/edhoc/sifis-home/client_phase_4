@@ -1,8 +1,8 @@
 -m
 /models/edhoc/client/sifis-home_phase_4.dot
 
--p
-/patterns/edhoc/client/I_m3/
+-c
+/patterns/edhoc/client/I_m3/patterns.xml
 
 -od
 output/edhoc/client/sifis-home_phase_4
