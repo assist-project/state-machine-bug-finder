@@ -44,10 +44,10 @@ public class StatisticsTracker {
     private boolean timeout;
 
 
-    private StateMachineBugFinderConfig config;
+    private StateMachineBugFinderCoreConfig config;
     private Collection<?> inputAlphabet;
 
-    public StatisticsTracker(StateMachineBugFinderConfig config, BugPatterns bugPatterns) {
+    public StatisticsTracker(StateMachineBugFinderCoreConfig config, BugPatterns bugPatterns) {
         this.config = config;
         loadedBugPatterns = new TreeSet<>(bpComp());
         loadedBugPatterns.addAll(bugPatterns.getBugPatterns());

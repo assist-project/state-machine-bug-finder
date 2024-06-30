@@ -1,135 +1,104 @@
 package se.uu.it.smbugfinder;
 
-import java.time.Duration;
-import java.util.List;
-
 import com.beust.jcommander.Parameter;
 import com.beust.jcommander.ParametersDelegate;
 
-import se.uu.it.smbugfinder.witness.GenerationStrategy;
-import se.uu.it.smbugfinder.witness.SearchConfig;
-
 public class StateMachineBugFinderConfig {
 
-    @Parameter(names = {"-gs", "-generationStrategy"}, required = false,
-               description = "Witness generation strategy.")
-    private GenerationStrategy witnessGenerationStrategy = GenerationStrategy.SHORTEST;
+    @Parameter(names = {"-m", "-model"}, required = true, description = "Mealy machine of the SUT in DOT format with which bug detection is performed.")
+    private String model;
+
+    @Parameter(names = {"-c", "-catalogue"}, required = true, description = "XML file which catalogues DFA-encoded bug patterns, expressed in DOT format.")
+    private String patterns;
+
+    @Parameter(names = {"-ha", "-harnessAddress"}, required = false, description = "Listening address of the test harness used to validate bugs. "
+            + "The harness should be able to apply inputs on the SUT, retrieve its outputs and reset it.")
+    private String harnessAddress;
+
+    @Parameter(names = {"-vm", "-validationModel"}, required = false, description = "Mealy machine in DOT format used to simulate a SUT.")
+    private String validationModel;
+
+    @Parameter(names = {"-os", "-outputSeparator"}, required = false, description = "Separator used to split compound outputs into atomic outputs.")
+    private String separator = "+";
+
+    @Parameter(names = {"-eo", "-emptyOutput"}, required = false, description = "String corresponding to the empty output."
+            + "An empty output is mapped to an empty set of DFA symbols. ")
+    private String emptyOutput = "TIMEOUT";
+
+    @Parameter(names = {"-od", "-outputDir"}, required = false, description = "Directory to export DFA models, statistics and the bug report to.")
+    private String outputDir = "output";
+
+    @Parameter(names = {"-rm", "-resetMessage"}, required = false, description = "Message to send to the test harness in order to reset the SUT.")
+    private String resetMessage = "reset";
+
+    @Parameter(names = {"-rcm", "-resetConfirmationMessage"}, required = false, description = "Confirmation message to read from the test harness after resetting the SUT. "
+            + "If unset, no confirmation message is read.")
+    private String resetConfirmationMessage = null;
 
     @ParametersDelegate
-    private SearchConfig searchConfig;
-
-    @Parameter(names = {"-vb", "-validateBugs"}, required = false,
-               description = "Validate the bugs found. Validation requires either an online test harness or a Mealy machine which simulates the SUT.")
-    private boolean validate = false;
-
-    @Parameter(names = { "-vtl", "-validationTimeLimit" }, required = false,
-               description = "Bound on the time spent validating.", converter = DurationConverter.class)
-    private Duration validationTimeLimit;
-
-    @Parameter(names = {"-ub", "-uncategorizedBound"}, required = false,
-               description = "Bound on the number sequences generated for a general bug pattern that have not been identified by any of the specific bug patterns.")
-    private int uncategorizedBugBound = 10;
-
-    @Parameter(names = {"-ncb", "-nonConformingBound"}, required = false,
-               description = "Bound on the number non-conforming sequences generated for a correctness specification.")
-    private int nonConformingSequenceBound = 10000;
-
-    @Parameter(names = {"-tb", "-testBound"}, required = false,
-               description = "Bound on the number of tests executed to validate bugs.")
-    private int bound = 100;
-
-    @Parameter(names = {"-d", "-debug"}, required = false,
-               description = "Enables a specific debug mode. "
-                 + "EVALUATE_SPECIFIC_BUG_PATTERNS generates and validates witnesses for each general bug pattern until validated witnesses cover all specific bug patterns. "
-                 + "COUNT_GENERATED_WITNESSES counts the number of witnesses that would be generated for each specific bug pattern.")
-    private DebugMode debugMode;
-
-    @Parameter(names = { "-dwb", "-debugWitnessBound" }, required = false,
-               description = "Bound on the number of witnesses generated/counted in debug modes EVALUATE_SPECIFIC_BUG_PATTERNS/COUNT_GENERATED_WITNESSES")
-    private int debugWitnessBound = 100000;
-
-    @Parameter(names = { "-dtl", "-debugTimeLimit" }, required = false,
-               description = "Time bound for the debug mode EVALUATE_SPECIFIC_BUG_PATTERNS.", converter = DurationConverter.class)
-    private Duration debugTimeLimit = Duration.ofDays(1);
-
-    @Parameter(names = { "-sbp", "-selectBugPatterns" }, required = false,
-               description = "Only uses the following bug patterns from the catalogue. To be used, these should be enabled in the patterns file.")
-    private List<String> selectedBugPatterns;
+    private StateMachineBugFinderCoreConfig smBugFinderConfig;
 
     public StateMachineBugFinderConfig() {
-        searchConfig = new SearchConfig();
+        smBugFinderConfig = new StateMachineBugFinderCoreConfig();
     }
 
-    public GenerationStrategy getWitnessGenerationStrategy() {
-        return witnessGenerationStrategy;
+    public String getModel() {
+        return model;
     }
 
-    public SearchConfig getSearchConfig() {
-        return searchConfig;
+    public String getHarnessAddress() {
+        return harnessAddress;
     }
 
-    public int getBound() {
-        return bound;
+    public String getValidationModel() {
+        return validationModel;
     }
 
-    public DebugMode getDebugMode() {
-        return debugMode;
+    public String getSeparator() {
+        return separator;
     }
 
-    public int getDebugWitnessBound() {
-        return debugWitnessBound;
+    public String getEmptyOutput() {
+        return emptyOutput;
     }
 
-    public Duration getDebugTimeLimit() {
-        return debugTimeLimit;
+    public StateMachineBugFinderCoreConfig getSmBugFinderConfig() {
+        return smBugFinderConfig;
     }
 
-    public boolean isValidate() {
-        return validate;
+    public String getPatterns() {
+        return patterns;
     }
 
-    public Duration getValidationTimeLimit() {
-        return validationTimeLimit;
+    public String getOutputDir() {
+        return outputDir;
     }
 
-    public int getUncategorizedBugBound() {
-        return uncategorizedBugBound;
+    public String getResetMessage() {
+        return resetMessage;
     }
 
-    public int getNonConformingSequenceBound() {
-        return nonConformingSequenceBound;
+    public String getResetConfirmationMessage() {
+        return resetConfirmationMessage;
     }
 
-    public List<String> getSelectedBugPatterns() {
-        return selectedBugPatterns;
+    public void setModel(String model) {
+        this.model = model;
     }
 
-    public void setWitnessGenerationStrategy(GenerationStrategy witnessGenerationStrategy) {
-        this.witnessGenerationStrategy = witnessGenerationStrategy;
+    public void setValidationModel(String validationModel) {
+        this.validationModel = validationModel;
     }
 
-    public void setSearchConfig(SearchConfig searchConfig) {
-        this.searchConfig = searchConfig;
+    public void setSeparator(String separator) {
+        this.separator = separator;
     }
 
-    public void setValidate(boolean validate) {
-        this.validate = validate;
+    public void setEmptyOutput(String emptyOutput) {
+        this.emptyOutput = emptyOutput;
     }
 
-    public void setUncategorizedBugBound(int uncategorizedBugBound) {
-        this.uncategorizedBugBound = uncategorizedBugBound;
+    public void setPatterns(String patterns) {
+        this.patterns = patterns;
     }
-
-    public void setNonConformingSequenceBound(int nonConformingSequenceBound) {
-        this.nonConformingSequenceBound = nonConformingSequenceBound;
-    }
-
-    public void setBound(int bound) {
-        this.bound = bound;
-    }
-
-    public void setDebugMode(DebugMode debugMode) {
-        this.debugMode = debugMode;
-    }
-
 }

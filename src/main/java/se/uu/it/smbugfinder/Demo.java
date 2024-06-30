@@ -117,7 +117,7 @@ public class Demo {
         SUT<String,String> sut = null;
         MealySymbolExtractor.extractSymbols(sutModelData.model, sutModelData.alphabet, symbolMapping, allSymbols);
         BugPatterns bp = loader.loadPatterns(patternsDir, allSymbols);
-        StateMachineBugFinderConfig config = new StateMachineBugFinderConfig();
+        StateMachineBugFinderCoreConfig config = new StateMachineBugFinderCoreConfig();
         if (validationModel == null) {
             config.setValidate(false);
         } else {
@@ -125,7 +125,7 @@ public class Demo {
             InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> validationModelPath = mealyParser.readModel(getResource(validationModel));
             sut = new SimulatedMealySUT<String, String>(validationModelPath.model);
         }
-        StateMachineBugFinder<String, String> modelBugFinder = new StateMachineBugFinder<String, String>(config);
+        StateMachineBugFinderCore<String, String> modelBugFinder = new StateMachineBugFinderCore<>(config);
 
         Files.createDirectories(Paths.get(outputDirectory));
         modelBugFinder.setExporter(new DFAExporter.DirectoryDFAExporter(outputDirectory));

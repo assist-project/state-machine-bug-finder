@@ -28,14 +28,14 @@ public class Statistics extends ExportableResult {
     private Map<GeneralBugPattern, Long> gbpSequenceCount;
     private Map<GeneralBugPattern, Long> gbpUncategorizedSequenceCount;
 
-    private StateMachineBugFinderConfig config;
+    private StateMachineBugFinderCoreConfig config;
     private Collection<?> inputAlphabet;
     private boolean timeout;
     private Map<AbstractBugPattern, Long> validatedTSBugPatterns;
     private Map<GeneralBugPattern, Long> gbpValidatedSequenceCount;
     private Map<GeneralBugPattern, Long> gbpValidatedUncategorizedSequenceCount;
 
-    public Statistics(StateMachineBugFinderConfig config) {
+    public Statistics(StateMachineBugFinderCoreConfig config) {
         this.config = config;
         foundBugPatterns = Collections.emptyList();
         loadedBugPatterns = Collections.emptyList();
@@ -101,7 +101,7 @@ public class Statistics extends ExportableResult {
         out.println();
     }
 
-    public void generateRunDescription(PrintWriter out, StateMachineBugFinderConfig config, Collection<?> alphabet) {
+    public void generateRunDescription(PrintWriter out, StateMachineBugFinderCoreConfig config, Collection<?> alphabet) {
         section("State Machine Bug Finder Parameters", out);
         out.println("Alphabet: " + alphabet);
 

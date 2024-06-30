@@ -7,8 +7,8 @@ import java.util.List;
 import org.junit.Test;
 
 import se.uu.it.smbugfinder.BugFinderResult;
-import se.uu.it.smbugfinder.Main;
-import se.uu.it.smbugfinder.StateMachineBugFinderToolConfig;
+import se.uu.it.smbugfinder.StateMachineBugFinder;
+import se.uu.it.smbugfinder.StateMachineBugFinderConfig;
 import se.uu.it.smbugfinder.bug.StateMachineBug;
 
 /**
@@ -48,7 +48,7 @@ public class SshBugFindingTest extends BugFindingTest {
 
     @Test
     public void testValidationPass() throws FileNotFoundException, IOException {
-        StateMachineBugFinderToolConfig config = new StateMachineBugFinderToolConfig();
+        StateMachineBugFinderConfig config = new StateMachineBugFinderConfig();
         config.setValidationModel(sshServerModel("Dropbear-v2020.81.dot"));
         config.getSmBugFinderConfig().setValidate(true);
         List<StateMachineBug<String, String>> bugs = runBugFinder(sshServerModel("Dropbear-v2020.81.dot"), config);
@@ -57,7 +57,7 @@ public class SshBugFindingTest extends BugFindingTest {
 
     @Test
     public void testValidationFail() throws FileNotFoundException, IOException {
-        StateMachineBugFinderToolConfig config = new StateMachineBugFinderToolConfig();
+        StateMachineBugFinderConfig config = new StateMachineBugFinderConfig();
         config.setValidationModel(sshServerModel("Dropbear-v2020.81.dot"));
         config.getSmBugFinderConfig().setValidate(true);
         List<StateMachineBug<String, String>> bugs = runBugFinder(sshServerModel("BitVise-8.49.dot"), config);
@@ -65,15 +65,15 @@ public class SshBugFindingTest extends BugFindingTest {
     }
 
     private List<StateMachineBug<String, String>> runBugFinder(String model) throws FileNotFoundException, IOException {
-        List<StateMachineBug<String, String>> bugs = runBugFinder(model, new StateMachineBugFinderToolConfig());
+        List<StateMachineBug<String, String>> bugs = runBugFinder(model, new StateMachineBugFinderConfig());
         return bugs;
     }
 
-    private List<StateMachineBug<String, String>> runBugFinder(String model, StateMachineBugFinderToolConfig config) throws FileNotFoundException, IOException {
+    private List<StateMachineBug<String, String>> runBugFinder(String model, StateMachineBugFinderConfig config) throws FileNotFoundException, IOException {
         config.setModel(model);
         config.setPatterns(SSH_SERVER_BUG_PATTERNS);
         config.setEmptyOutput(SSH_EMPTY_OUTPUT);
-        BugFinderResult<String, String> result = Main.launchBugFinder(config, null);
+        BugFinderResult<String, String> result = new StateMachineBugFinder(config).launch(null);
         return result.getBugs();
     }
 }

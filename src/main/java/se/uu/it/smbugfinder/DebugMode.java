@@ -9,7 +9,7 @@ public enum DebugMode {
     /* counts the number of witnesses that would be generated for each specific bug pattern */
     COUNT_GENERATED_WITNESSES;
 
-    public boolean isEnabled(StateMachineBugFinderConfig config) {
+    public boolean isEnabled(StateMachineBugFinderCoreConfig config) {
         return this.equals(config.getDebugMode());
     }
 }
