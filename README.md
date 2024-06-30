@@ -132,7 +132,7 @@ For ease of use, **SMBugFinder** includes in the [args folder](args), *argument 
 **SMBugFinder** can be run on these argument files.
 Below is an an example which includes some of the arguments we have just covered:
 
-    > java -jar target/sm-bug-finder.jar args/dropbear-v2020.81
+    > java -jar target/sm-bug-finder.jar args/ssh/dropbear-v2020.81
 
 ## Useful links
 

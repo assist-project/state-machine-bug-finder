@@ -1,7 +1,7 @@
 -m
 /models/ssh/server/BitVise-7.23.dot
--p
-/patterns/ssh/server/
+-c
+/patterns/ssh/server/patterns.xml
 -eo
 NO_RESP
 -od
