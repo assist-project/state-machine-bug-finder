@@ -21,7 +21,7 @@ Suppose we want to test the SSH server implementation of [Dropbear][dropbear] V2
 From within **SMBugFinder**'s directory, we then run:
 
     > mvn install
-    > java -jar target/sm-bug-finder.jar -m src/main/resources/models/ssh/server/Dropbear-v2020.81.dot -c src/main/resources/patterns/ssh/server/patterns.xml -eo NO_RESP
+    > java -jar target/sm-bug-finder.jar -m src/main/resources/models/ssh/server/Dropbear-v2020.81_server.dot -c src/main/resources/patterns/ssh/server/patterns.xml -eo NO_RESP
 
 First command installs **SMBugFinder**.
 Second command executes **SMBugFinder** using two mandatory arguments, and an optional one:
@@ -70,7 +70,7 @@ See the respective fuzzer repositories for scripts to trim the models.
 **SMBugFinder** takes as argument the path to a bug pattern catalogue which indexes bug patterns.
 Bug patterns are specified as DOT graphs, and currently have to be manually written.
 A bug pattern defines a DFA which accepts only sequences exposing the presence of the bug.
-The directory [src/main/resources/models](src/main/resources/models) contains an extensive set of bug patterns for SSH (including all used in the NDSS'2023 paper), and a few bug patterns for DTLS.
+The directory [src/main/resources/models](src/main/resources/models) contains an extensive set of bug patterns for EDHOC and SSH (including all used in the NDSS'2023 publication), and a few bug patterns for DTLS.
 (The complete set of bug patterns used in the publication experiments can be found [here](https://gitlab.com/pfg666/dtls-fuzzer/-/tree/bugcheck-artifact/src/main/resources/patterns)).
 Below is the pattern for the *Missing SR_AUTH* bug we found in Dropbear, which we visualize by running:
 
@@ -119,7 +119,7 @@ Validation is disabled by default, and can be enabled via the `-vb` option.
 Suppose that our test harness for SSH listens at address `localhost:7000`.
 To run bug detection on Dropbear with validation enabled, one would run[^1]:
 
-    > java -jar target/sm-bug-finder.jar -m /models/ssh/server/Dropbear-v2020.81.dot -c /patterns/ssh/server/patterns.xml -vb -ha localhost:7000
+    > java -jar target/sm-bug-finder.jar -m /models/ssh/server/Dropbear-v2020.81_server.dot -c /patterns/ssh/server/patterns.xml -vb -ha localhost:7000
 
 ## Arguments
 
@@ -132,7 +132,7 @@ For ease of use, **SMBugFinder** includes in the [args folder](args), *argument 
 **SMBugFinder** can be run on these argument files.
 Below is an an example which includes some of the arguments we have just covered:
 
-    > java -jar target/sm-bug-finder.jar args/ssh/dropbear-v2020.81
+    > java -jar target/sm-bug-finder.jar args/ssh/dropbear-v2020.81_server
 
 ## Useful links
 

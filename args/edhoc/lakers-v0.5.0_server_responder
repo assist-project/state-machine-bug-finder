@@ -1,0 +1,6 @@
+-m
+/models/edhoc/server/lakers-v0.5.0_server_responder.dot
+-c
+/patterns/edhoc/server/R_m3/patterns.xml
+-od
+output/edhoc/lakers-v0.5.0_server_responder

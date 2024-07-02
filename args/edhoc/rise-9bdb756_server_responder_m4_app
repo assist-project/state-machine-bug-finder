@@ -1,0 +1,8 @@
+-m
+/models/edhoc/server/rise-9bdb756_server_responder_m4_app.dot
+
+-c
+/patterns/edhoc/server/R_m4/patterns.xml
+
+-od
+output/edhoc/rise-9bdb756_server_responder_m4_app

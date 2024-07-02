@@ -27,7 +27,7 @@ public class SshBugFindingTest extends BugFindingTest {
 
     @Test
     public void testBitViseServer() throws FileNotFoundException, IOException {
-        List<StateMachineBug<String, String>> bugs = runBugFinder(sshServerModel("BitVise-8.49.dot"));
+        List<StateMachineBug<String, String>> bugs = runBugFinder(sshServerModel("BitVise-8.49_server.dot"));
         // Unresponsive State was not reported in the paper (it was reported in Patrick's MSc thesis on fuzzing SSH servers)
         assertFoundSpecificBugPatterns(bugs, "Rekey Fail After Auth", "Invalid SR_AUTH Response",
                 "Unignored Authentication Request After UA_SUCCESS", "Missing NEWKEYS", "Unresponsive State");
@@ -35,13 +35,13 @@ public class SshBugFindingTest extends BugFindingTest {
 
     @Test
     public void testDropbearServer() throws FileNotFoundException, IOException {
-        List<StateMachineBug<String, String>> bugs = runBugFinder(sshServerModel("Dropbear-v2020.81.dot"));
+        List<StateMachineBug<String, String>> bugs = runBugFinder(sshServerModel("Dropbear-v2020.81_server.dot"));
         assertFoundSpecificBugPatterns(bugs, "Invalid CH_CLOSE Response", "Missing SR_AUTH");
     }
 
     @Test
     public void testOpenSSHServer() throws FileNotFoundException, IOException {
-        List<StateMachineBug<String, String>> bugs = runBugFinder(sshServerModel("OpenSSH-8.8p1.dot"));
+        List<StateMachineBug<String, String>> bugs = runBugFinder(sshServerModel("OpenSSH-8.8p1_server.dot"));
         assertFoundSpecificBugPatterns(bugs, "Rekey Fail Before Auth", "Invalid SR_AUTH Response",
                 "Unignored Authentication Request After UA_SUCCESS", "Invalid CH_CLOSE Response", "Missing NEWKEYS");
     }
@@ -49,18 +49,18 @@ public class SshBugFindingTest extends BugFindingTest {
     @Test
     public void testValidationPass() throws FileNotFoundException, IOException {
         StateMachineBugFinderConfig config = new StateMachineBugFinderConfig();
-        config.setValidationModel(sshServerModel("Dropbear-v2020.81.dot"));
+        config.setValidationModel(sshServerModel("Dropbear-v2020.81_server.dot"));
         config.getSmBugFinderConfig().setValidate(true);
-        List<StateMachineBug<String, String>> bugs = runBugFinder(sshServerModel("Dropbear-v2020.81.dot"), config);
+        List<StateMachineBug<String, String>> bugs = runBugFinder(sshServerModel("Dropbear-v2020.81_server.dot"), config);
         assertValidationSuccess(bugs);
     }
 
     @Test
     public void testValidationFail() throws FileNotFoundException, IOException {
         StateMachineBugFinderConfig config = new StateMachineBugFinderConfig();
-        config.setValidationModel(sshServerModel("Dropbear-v2020.81.dot"));
+        config.setValidationModel(sshServerModel("Dropbear-v2020.81_server.dot"));
         config.getSmBugFinderConfig().setValidate(true);
-        List<StateMachineBug<String, String>> bugs = runBugFinder(sshServerModel("BitVise-8.49.dot"), config);
+        List<StateMachineBug<String, String>> bugs = runBugFinder(sshServerModel("BitVise-8.49_server.dot"), config);
         assertValidationFail(bugs);
     }
 

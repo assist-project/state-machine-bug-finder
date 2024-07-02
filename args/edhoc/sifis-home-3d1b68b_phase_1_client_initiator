@@ -1,0 +1,8 @@
+-m
+/models/edhoc/client/sifis-home-3d1b68b_phase_1_client_initiator.dot
+
+-c
+/patterns/edhoc/client/I_m3/patterns.xml
+
+-od
+output/edhoc/sifis-home-3d1b68b_phase_1_client_initiator

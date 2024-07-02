@@ -1,0 +1,8 @@
+-m
+/models/edhoc/server/uoscore-uedhoc-v3.0.3_linux_edhoc_oscore_server_responder.dot
+
+-c
+/patterns/edhoc/server/R_m3/patterns.xml
+
+-od
+output/edhoc/uoscore-uedhoc-v3.0.3_linux_edhoc_oscore_server_responder

@@ -1,13 +1,13 @@
 -m
-/models/ssh/server/OpenSSH-8.8p1.dot
+/models/ssh/server/BitVise-7.23_server.dot
 -c
 /patterns/ssh/server/patterns.xml
 -eo
 NO_RESP
 -od
-output/OpenSSH-8.8p1
+output/ssh/BitVise-7.23_server
 -ha
-localhost:8000
+localhost:8001
 -rcm
 resetok
 -generationStrategy

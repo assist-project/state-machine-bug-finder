@@ -1,8 +1,0 @@
--m
-/models/edhoc/client/lakers.dot
-
--c
-/patterns/edhoc/client/I_m3/patterns.xml
-
--od
-output/edhoc/client/lakers

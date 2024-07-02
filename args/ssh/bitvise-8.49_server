@@ -1,13 +1,13 @@
 -m
-/models/ssh/server/Dropbear-v2014.65.dot
+/models/ssh/server/BitVise-8.49_server.dot
 -c
 /patterns/ssh/server/patterns.xml
 -eo
 NO_RESP
 -od
-output/Dropbear-v2014.65
+output/ssh/BitVise-8.49_server
 -ha
-localhost:7001
+localhost:8001
 -rcm
 resetok
 -generationStrategy

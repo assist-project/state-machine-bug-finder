@@ -1,8 +1,0 @@
--m
-/models/edhoc/client/rise.dot
-
--c
-/patterns/edhoc/client/I_m3/patterns.xml
-
--od
-output/edhoc/client/rise

@@ -1,11 +1,11 @@
 -m
-/models/ssh/server/BitVise-8.49.dot
+/models/ssh/server/OpenSSH-6.9p1_server.dot
 -c
 /patterns/ssh/server/patterns.xml
 -eo
 NO_RESP
 -od
-output/BitVise-8.49
+output/ssh/OpenSSH-6.9p1_server
 -ha
 localhost:8001
 -rcm

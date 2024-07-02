@@ -1,0 +1,8 @@
+-m
+/models/edhoc/client/rise-9bdb756_client_initiator_m4_app.dot
+
+-c
+/patterns/edhoc/client/I_m4/patterns.xml
+
+-od
+output/edhoc/rise-9bdb756_client_initiator_m4_app

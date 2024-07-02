@@ -1,0 +1,12 @@
+-m
+/models/ssh/Dropbear-v2020.81_server.dot 
+-c
+/bugpatterns/ssh/patterns.xml
+-eo
+NO_RESP 
+-od
+output/ssh/Dropbear-v2022.81_server
+-ha
+localhost:7002 
+-rcm
+resetok

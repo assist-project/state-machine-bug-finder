@@ -1,8 +1,0 @@
--m
-/models/edhoc/server/uoscore-uedhoc_linux_edhoc_oscore.dot
-
--c
-/patterns/edhoc/server/R_m3/patterns.xml
-
--od
-output/edhoc/server/uoscore-uedhoc_linux_edhoc_oscore
