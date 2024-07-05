@@ -142,7 +142,7 @@ Below is an an example which includes some of the arguments we have just covered
 * the [SSH component of the artifact][sshartifact], containing additional scripts to reproduce experiments for SSH;
 * [DTLS-Fuzzer][dtlsfuzzer], [EDHOC-Fuzzer][edhocfuzzer] and [SSH-Fuzzer][sshfuzzer], fuzzers for DTLS, EDHOC and SSH (the latter is WIP) which can generate SUT models.
 
-[^1]:For convenience, **SMBugFinder** resolves `/models/ssh/Dropbear-v2020.81.dot` and `src/main/resources/models/ssh/Dropbear-v2020.81.dot` to the same file. When resolving a path starting with `/`, **SMBugFinder** first checks it in its source directories (e.g., `src/main/resources/`), and only if unsuccessful, in the root directory.
+[^1]:For convenience, **SMBugFinder** resolves `/models/ssh/server/Dropbear-v2020.81_server.dot` and `src/main/resources/models/ssh/server/Dropbear-v2020.81_server.dot` to the same file. When resolving a path starting with `/`, **SMBugFinder** first checks it in its source directories (e.g., `src/main/resources/`), and only if unsuccessful, in the root directory.
 [^2]:Note that **SMBugFinder** has seen significant updates since the artifact. As a result, it is no longer compatible with the version that was used in the artifact.
 
 
