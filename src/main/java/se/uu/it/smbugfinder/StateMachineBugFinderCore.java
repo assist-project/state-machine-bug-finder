@@ -88,8 +88,8 @@ public class StateMachineBugFinderCore<I,O> {
         }
         tracker.startStateMachineBugFinding(inputs);
         if (validate) {
-            ResetCountingSUT<I, O> resetCountingSut = new ResetCountingSUT<I, O>(sut, new Counter("resets"));
-            InputCountingSUT<I, O> inputCountingSut = new InputCountingSUT<I, O>(resetCountingSut, new Counter("inputs"));
+            ResetCountingSUT<I, O> resetCountingSut = new ResetCountingSUT<>(sut, new Counter("resets"));
+            InputCountingSUT<I, O> inputCountingSut = new InputCountingSUT<>(resetCountingSut, new Counter("inputs"));
             sut = inputCountingSut;
             tracker.setSutTracking(inputCountingSut.getCounter(), resetCountingSut.getCounter());
             if (config.getValidationTimeLimit() != null) {
@@ -151,8 +151,8 @@ public class StateMachineBugFinderCore<I,O> {
                             // could not validate bug
                             Trace<I,O> counterexample = witnessFinder.findCounterexample(sut, mapping, sutBugLanguage, bugPattern.generateBugLanguage());
                             Word<O> mealyOutput = mealy.computeOutput(counterexample.getInputWord());
-                            Trace<I,O> falseAlarm = new Trace<I,O> (counterexample.getInputWord(), mealyOutput);
-                            StateMachineBug<I,O> bug = new StateMachineBug<I,O>(falseAlarm, bugPattern);
+                            Trace<I,O> falseAlarm = new Trace<> (counterexample.getInputWord(), mealyOutput);
+                            StateMachineBug<I,O> bug = new StateMachineBug<>(falseAlarm, bugPattern);
                             bug.validationFailed(counterexample);
                             bugs.add(bug);
                             LOGGER.info("Could not find valid witness, giving counterexample {}", counterexample.toCompactString());
@@ -164,7 +164,7 @@ public class StateMachineBugFinderCore<I,O> {
                 } else {
                     Word<Symbol> acceptingSequence = sutBugLanguage.getShortestAcceptingSequence();
                     Trace<I,O> trace = mapping.toExecutionTrace(acceptingSequence);
-                    StateMachineBug<I,O> bug = new StateMachineBug<I,O>(trace, bugPattern);
+                    StateMachineBug<I,O> bug = new StateMachineBug<>(trace, bugPattern);
                     bugs.add(bug);
                     LOGGER.info("Found witness {}", trace.toCompactString());
                 }
@@ -260,7 +260,7 @@ public class StateMachineBugFinderCore<I,O> {
                 try {
                     Trace<I,O> trace = mapping.toExecutionTrace(sequence);
                     Word<O> outputWord = sut.execute(trace.getInputWord());
-                    Trace<I,O> actualTrace = new Trace<I,O> (trace.getInputWord(), outputWord);
+                    Trace<I,O> actualTrace = new Trace<> (trace.getInputWord(), outputWord);
                     Word<Symbol> actualSequence= mapping.fromExecutionTrace(actualTrace);
                     boolean exhibitsBug = bugLanguage.accepts(actualSequence);
                     if (exhibitsBug) {

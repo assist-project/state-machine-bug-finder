@@ -3,19 +3,20 @@
   <defaultEnabled>true</defaultEnabled>
 
   <bugPattern>
-    <name>Client Alive after sending EDHOC error message</name>
+    <name>Client Alive after sending EDHOC ERR</name>
     <bugLanguage>../IR_alive_after_sending_error_message.dot</bugLanguage>
     <description>Implementation sends EDHOC error message and keeps the session alive.</description>
   </bugPattern>
 
   <bugPattern>
-    <name>Initiator completes EDHOC without message 4</name>
-    <bugLanguage>../../common/I_without_required_m4_send_oscore.dot</bugLanguage>
-    <description>Initiator, who requires message 4, completes EDHOC protocol without receiving a message 4.</description>
+    <name>Initiator completes EDHOC without M4 or APPo</name>
+    <bugLanguage>../../common/I_without_m4_appo.dot</bugLanguage>
+    <description>Initiator completes EDHOC protocol without receiving a message 4 or OSCORE-secured application data.</description>
+    <severity>HIGH</severity>
   </bugPattern>
 
   <bugPattern>
-    <name>EDHOC Error after exchange deletes derived OSCORE context</name>
+    <name>EDHOC ERR after exchange deletes derived OSCORE context</name>
     <bugLanguage>../../common/IR_edhoc_error_deletes_oscore_context.dot</bugLanguage>
     <description>EDHOC Error after exchange deletes derived OSCORE context.</description>
   </bugPattern>
