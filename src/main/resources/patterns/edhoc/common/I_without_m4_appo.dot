@@ -2,7 +2,7 @@ digraph G {
 start
 bug [shape="doublecircle"]
 
-start -> start [label="other - {EDHOC_MESSAGE_4}"]
+start -> start [label="other - {I_EDHOC_MESSAGE_4, I_OSCORE_APP_MESSAGE}"]
 start -> bug [label="O_OSCORE_APP_MESSAGE"]
 
 __start0 [label="" shape="none" width="0" height="0"];

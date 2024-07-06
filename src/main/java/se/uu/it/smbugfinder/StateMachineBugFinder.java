@@ -43,7 +43,7 @@ import se.uu.it.smbugfinder.sut.SocketSUT;
  *
  */
 public class StateMachineBugFinder {
-    private static final String BUG_REPORT = "bug_report.tx";
+    private static final String BUG_REPORT = "bug_report.txt";
     private static final String WITNESS_FOLDER = "bug_witnesses";
 
     private final StateMachineBugFinderConfig config;
