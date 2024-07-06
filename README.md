@@ -60,7 +60,7 @@ When executed, **SMBugFinder** generates an output directory, named `output` by 
 ## Models
 
 SUT models are specified as DOT graphs, and can be obtained automatically using existing protocol state fuzzers.
-The directory [src/main/resources/models](src/main/resources/models) contains sample models for DTLS and SSH, named after the SUT for which they were generated, which was done using [DTLS-Fuzzer][dtlsfuzzer] and an [SSH fuzzer](https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:77503).
+The directory [src/main/resources/models](src/main/resources/models) contains sample models for DTLS, EDHOC and SSH, named after the SUT for which they were generated, which was done using [DTLS-Fuzzer][dtlsfuzzer], [EDHOC-Fuzzer][edhocfuzzer] and an [SSH fuzzer](https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:77503).
 The models can be visualized with the help of [GraphViz][graphviz]'s `dot` utility, or better still, the `xdot` Python [utility][xdot] which builds on [GraphViz][graphviz].
 Oftentimes, the models are large, making visualization difficult.
 See the respective fuzzer repositories for scripts to trim the models.
