@@ -66,7 +66,7 @@ public class BugPatternLoader {
         String patternsFileName = Path.of(patternsFile).getFileName().toString();
         URI parentFolderURI = URI.create(
                 patternsFile.substring(0,
-                        patternsFile.length() - (patternsFileName.length())));
+                        patternsFile.length() - patternsFileName.length()));
         InputStream patternsStream = getResourceAsStream(patternsFile);
         try {
             bugPatterns = loadPatterns(patternsStream);
