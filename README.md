@@ -141,8 +141,11 @@ Below is an an example which includes some of the arguments we have just covered
 * the [NDSS'2023 artifact][ndss23artifact], which is a VM that can be used to reproduce the NDSS'2023 experiments[^2];
 * the [DTLS component of the artifact][dtlsartifact], which is [DTLS-Fuzzer][dtlsfuzzer] incorporating **SMBugFinder** to perform bug detection automatically;
 * the [SSH component of the artifact][sshartifact], containing additional scripts to reproduce experiments for SSH;
-* [DTLS-Fuzzer][dtlsfuzzer], [EDHOC-Fuzzer][edhocfuzzer] and [SSH-Fuzzer][sshfuzzer], fuzzers for DTLS, EDHOC and SSH (the latter is WIP) which can generate SUT models;
-* [video demonstration][smbugfindervideo] showing how to install and run **SMBugFinder** to test an EDHOC implementation.
+* the [ISSTA'2024 artifact][issta24artifact], which contains the source code of the [ISSTA24-Demo release](https://github.com/assist-project/state-machine-bug-finder/tree/ISSTA24-Demo);
+* [video demonstration][smbugfindervideo] showing how to install and run **SMBugFinder** to test an EDHOC implementation;
+* [ProtocolState-Fuzzer][psf], a framework for building learning setups (protocol state fuzzers) for network protocols, and its [adaptation][psfadapted] which allows these setups to be used as test harnesses by **SMBugFinder**;
+* [DTLS-Fuzzer][dtlsfuzzer], [EDHOC-Fuzzer][edhocfuzzer] and [SSH-Fuzzer][sshfuzzer], learning setups for DTLS, EDHOC and SSH (the latter is WIP) which can generate SUT models.
+
 
 [^1]:For convenience, **SMBugFinder** resolves `/models/ssh/server/Dropbear-v2020.81_server.dot` and `src/main/resources/models/ssh/server/Dropbear-v2020.81_server.dot` to the same file. When resolving a path starting with `/`, **SMBugFinder** first checks it in its source directories (e.g., `src/main/resources/`), and only if unsuccessful, in the root directory.
 [^2]:Note that **SMBugFinder** has seen significant updates since the artifact. As a result, it is no longer compatible with the version that was used in the artifact.
@@ -159,4 +162,7 @@ Below is an an example which includes some of the arguments we have just covered
 [edhocfuzzer]:https://github.com/protocol-fuzzing/edhoc-fuzzer
 [sshfuzzer]:https://github.com/assist-project/ssh-fuzzer
 [sshharness]:https://easy.dans.knaw.nl/ui/datasets/id/easy-dataset:77503
+[issta24artifact]:https://doi.org/10.5281/zenodo.12665353
 [smbugfindervideo]:https://www.youtube.com/watch?v=B0P-MPse1D0
+[psf]:https://github.com/protocol-fuzzing/protocol-state-fuzzer
+[psfadapted]:https://github.com/protocol-fuzzing/protocol-state-fuzzer/tree/issta24-artifact
