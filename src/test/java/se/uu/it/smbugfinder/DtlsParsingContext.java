@@ -119,7 +119,7 @@ public class DtlsParsingContext extends ParsingContext {
                     certTypes.add("ECDSA_SIGN");
                     break;
                 default:
-                    new NotImplementedException("Unsupported key type " + keyType);
+                    throw new NotImplementedException("Unsupported key type " + keyType);
             }
 
             return new Value(certTypes);
