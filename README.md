@@ -142,7 +142,7 @@ Below is an an example which includes some of the arguments we have just covered
 * the [DTLS component of the artifact][dtlsartifact], which is [DTLS-Fuzzer][dtlsfuzzer] incorporating **SMBugFinder** to perform bug detection automatically;
 * the [SSH component of the artifact][sshartifact], containing additional scripts to reproduce experiments for SSH;
 * the [ISSTA'2024 artifact][issta24artifact], which contains the source code of the [ISSTA24-Demo release](https://github.com/assist-project/state-machine-bug-finder/tree/ISSTA24-Demo);
-* [video demonstration][smbugfindervideo] showing how to install and run **SMBugFinder** to test an EDHOC implementation;
+* [video demonstration][smbugfindervideo] supporting our ISSTA'2024 publication which shows how to install and run **SMBugFinder** to test an EDHOC implementation;
 * [ProtocolState-Fuzzer][psf], a framework for building learning setups (protocol state fuzzers) for network protocols, and its [adaptation][psfadapted] which allows these setups to be used as test harnesses by **SMBugFinder**;
 * [DTLS-Fuzzer][dtlsfuzzer], [EDHOC-Fuzzer][edhocfuzzer] and [SSH-Fuzzer][sshfuzzer], learning setups for DTLS, EDHOC and SSH (the latter is WIP) which can generate SUT models.
 
