@@ -27,7 +27,7 @@
     <jcommander.version>1.82</jcommander.version>
     <junit.version>4.13.2</junit.version>
     <logback.version>1.5.6</logback.version>
-    <slf4j.version>2.0.13</slf4j.version>
+    <slf4j.version>2.0.14</slf4j.version>
 
     <!-- Plugin versions in alphabetical order -->
     <assembly-plugin.version>3.7.1</assembly-plugin.version>
