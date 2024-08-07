@@ -1,0 +1,22 @@
+digraph G {
+label=""
+init [color="red"]
+bug [shape="doublecircle"]
+
+init -> sh1 [label="I_ServerHello[x:=cipher_suite]"]
+init -> init [label="other"]
+
+sh1 -> sh2 [label="I_ServerHello[y:=cipher_suite] where x != y"]
+sh1 -> init [label="I_HelloRequest"]
+sh1 -> ccs [label="O_ChangeCipherSpec"]
+sh1 -> sh1 [label="other"]
+
+sh2 -> bug [label="O_Application"]
+sh2 -> sh2 [label="other"]
+
+ccs -> init [label="I_HelloRequest"]
+ccs -> ccs [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}
