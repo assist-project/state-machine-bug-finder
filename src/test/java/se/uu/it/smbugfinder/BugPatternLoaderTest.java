@@ -1,5 +1,9 @@
 package se.uu.it.smbugfinder;
 
+import static se.uu.it.smbugfinder.DtlsResources.*;
+import static se.uu.it.smbugfinder.DtlsResources.DtlsClientAlphabet.*;
+
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashSet;
@@ -7,10 +11,11 @@ import java.util.List;
 
 import org.junit.Assert;
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
+import net.automatalib.word.Word;
 import se.uu.it.smbugfinder.MappingTokenMatcher.MappingTokenMatcherBuilder;
-import se.uu.it.smbugfinder.dfa.InputSymbol;
-import se.uu.it.smbugfinder.dfa.OutputSymbol;
 import se.uu.it.smbugfinder.dfa.Symbol;
 import se.uu.it.smbugfinder.encoding.DefaultDFADecoder;
 import se.uu.it.smbugfinder.encoding.DefaultEncodedDFAParser;
@@ -20,21 +25,21 @@ import se.uu.it.smbugfinder.pattern.BugPatternLoader;
 import se.uu.it.smbugfinder.pattern.BugPatterns;
 
 public class BugPatternLoaderTest {
+    public static Logger LOGGER = LoggerFactory.getLogger(BugPatternLoaderTest.class);
 
     @Test
     public void loadParametricBugPatternTest() {
-//    	Pattern SERVER_HELLO_PATTERN = Pattern.compile("(?<ciphersuite>[A-Za-z]*)_SERVER_HELLO");
         DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser(() -> new DtlsParsingContext());
         DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
         MappingTokenMatcherBuilder builder = new MappingTokenMatcher.MappingTokenMatcherBuilder();
         builder
-        .map(new SymbolToken(true, "Application"), new InputSymbol("APPLICATION"))
-        .map(new SymbolToken(false, "Application"), new OutputSymbol("APPLICATION"))
-        .map(new SymbolToken(true, "CertificateRequest"), new InputSymbol("RSA_SIGN_CERTIFICATE_REQUEST"), new InputSymbol("ECDSA_SIGN_CERTIFICATE_REQUEST"))
-        .map(new SymbolToken(false, "Certificate"), new OutputSymbol("RSA_CERTIFICATE"), new OutputSymbol("ECDSA_CERTIFICATE"))
-        .map(new SymbolToken(false, "ChangeCipherSpec"), new OutputSymbol("CHANGE_CIPHER_SPEC"))
-        .map(new SymbolToken(true, "HelloRequest"), new InputSymbol("HELLO_REQUEST"))
-        .map(new SymbolToken(true, "ServerHello"), new InputSymbol("PSK_SERVER_HELLO"), new InputSymbol("RSA_SERVER_HELLO"));
+        .map(new SymbolToken(true, "Application"), I_APPLICATION)
+        .map(new SymbolToken(false, "Application"), O_APPLICATION)
+        .map(new SymbolToken(true, "CertificateRequest"), I_RSA_SIGN_CERTIFICATE_REQUEST, I_ECDSA_SIGN_CERTIFICATE_REQUEST)
+        .map(new SymbolToken(false, "Certificate"), O_RSA_CERTIFICATE, O_ECDSA_CERTIFICATE)
+        .map(new SymbolToken(false, "ChangeCipherSpec"), O_CHANGE_CIPHER_SPEC)
+        .map(new SymbolToken(true, "HelloRequest"), I_HELLO_REQUEST)
+        .map(new SymbolToken(true, "ServerHello"), I_PSK_SERVER_HELLO, I_RSA_SERVER_HELLO);
 
         MappingTokenMatcher matcher = builder.build();
         List<Symbol> symbols = new ArrayList<>();
@@ -42,17 +47,38 @@ public class BugPatternLoaderTest {
         decoder.setTokenMatcher(matcher);
 
         BugPatternLoader loader = new BugPatternLoader(decoder);
-        BugPatterns bugCatalogue = loader.loadPatterns(DtlsResources.DTLS_CLIENT_PARAMETRIC_BUG_PATTERNS, symbols);
+        BugPatterns bugCatalogue = loader.loadPatterns(DTLS_CLIENT_PARAMETRIC_BUG_PATTERNS, symbols);
         List<BugPattern> patterns = bugCatalogue.getBugPatterns();
         Assert.assertEquals(2, patterns.size());
         BugPattern switchingCS = patterns.get(0);
-        checkPattern(switchingCS, symbols, 7);
+
+        checkPattern(switchingCS, symbols, 7,
+                new TestCase(Word.fromSymbols(I_RSA_SERVER_HELLO, I_PSK_SERVER_HELLO, O_APPLICATION), Boolean.TRUE),
+                new TestCase(Word.fromSymbols(I_RSA_SERVER_HELLO, I_RSA_SERVER_HELLO, O_APPLICATION), Boolean.FALSE));
         BugPattern wrongCertType = patterns.get(1);
-        checkPattern(wrongCertType, symbols, 5);
+        checkPattern(wrongCertType, symbols, 5,
+                new TestCase(Word.fromSymbols(I_RSA_SIGN_CERTIFICATE_REQUEST, O_ECDSA_CERTIFICATE), Boolean.TRUE),
+                new TestCase(Word.fromSymbols(I_RSA_SIGN_CERTIFICATE_REQUEST, O_RSA_CERTIFICATE), Boolean.FALSE));
     }
 
-    public void checkPattern(BugPattern bp, Collection<Symbol> expectedSymbols, int expectedSize) {
+    public void checkPattern(BugPattern bp, Collection<Symbol> expectedSymbols, int expectedSize, TestCase ...testCases) {
         Assert.assertEquals(new LinkedHashSet<>(expectedSymbols), new LinkedHashSet<>(bp.generateBugLanguage().getSymbols()));
         Assert.assertEquals(expectedSize, bp.generateBugLanguage().getDfa().getStates().size());
+        for (TestCase testCase : testCases) {
+            testCase.check(bp);
+        }
+        java.io.StringWriter sw = new java.io.StringWriter();
+        try {
+            bp.generateBugLanguage().export(sw);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        LOGGER.debug(sw.toString());
+    }
+
+    static record TestCase(Word<Symbol> test, Boolean outcome) {
+        public void check(BugPattern bp) {
+            Assert.assertEquals(bp.generateBugLanguage().getDfa().computeOutput(test), outcome);
+        }
     }
 }

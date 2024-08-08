@@ -1,5 +1,7 @@
 package se.uu.it.smbugfinder.bugfinding;
 
+import static se.uu.it.smbugfinder.DtlsResources.*;
+
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
@@ -10,10 +12,6 @@ import se.uu.it.smbugfinder.StateMachineBugFinder;
 import se.uu.it.smbugfinder.StateMachineBugFinderConfig;
 
 public class DtlsBugFindingTest extends BugFindingTest {
-    public static final String DTLS_CLIENT_MODEL = "/models/dtls/client/MbedTLS-2.26.0_client_psk_reneg.dot";
-    public static final String DTLS_CLIENT_BUG_PATTERNS = "/patterns/dtls/client/patterns.xml";
-    public static final String DTLS_SERVER_MODEL = "/models/dtls/server/MbedTLS-2.26.0_server_all_cert_req.dot";
-    public static final String DTLS_SERVER_BUG_PATTERNS = "/patterns/dtls/server/patterns.xml";
 
     @Test
     public void testDtlsClient() throws FileNotFoundException, IOException {
