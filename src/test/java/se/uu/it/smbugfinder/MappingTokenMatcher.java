@@ -22,6 +22,7 @@ public class MappingTokenMatcher extends DefaultTokenMatcher {
         this.map = map;
     }
 
+    @Override
     public DescriptionToken matchingAtomicToken(Symbol symbol, DescriptionToken description) {
         if (description.getType() == DescriptionType.SYMBOL) {
             Set<Symbol> mappedSymbols = map.get(new Key(((SymbolToken) description)));
