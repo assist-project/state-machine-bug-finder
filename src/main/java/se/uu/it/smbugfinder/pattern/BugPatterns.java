@@ -82,6 +82,13 @@ public class BugPatterns {
         this.bugPatterns = bugPatterns;
     }
 
+    /**
+     * Returns the bug pattern with a matching name, or null if no such bug pattern could be found.
+     */
+    public BugPattern getBugPattern(String name) {
+        return bugPatterns.stream().filter(bp -> bp.getName().equals(name)).findAny().orElse(null);
+    }
+
     public String getSpecificationLanguagePath() {
         return specificationLanguagePath;
     }

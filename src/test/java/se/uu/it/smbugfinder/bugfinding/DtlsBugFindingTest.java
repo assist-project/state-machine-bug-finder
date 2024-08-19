@@ -5,11 +5,13 @@ import static se.uu.it.smbugfinder.DtlsResources.*;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
+import org.junit.Assert;
 import org.junit.Test;
 
 import se.uu.it.smbugfinder.BugFinderResult;
 import se.uu.it.smbugfinder.StateMachineBugFinder;
 import se.uu.it.smbugfinder.StateMachineBugFinderConfig;
+import se.uu.it.smbugfinder.pattern.BugPattern;
 
 public class DtlsBugFindingTest extends BugFindingTest {
 
@@ -30,6 +32,8 @@ public class DtlsBugFindingTest extends BugFindingTest {
         config.setPatterns(DTLS_SERVER_BUG_PATTERNS);
         config.setSeparator("|");
         BugFinderResult<String, String> result = new StateMachineBugFinder(config).launch(null);
+        BugPattern bp = result.getBugPatterns().getBugPattern(DTLS_BUG_PATTERN_EARLY_FINISHED);
+        Assert.assertEquals(3, bp.generateBugLanguage().getDfa().size());
         assertFoundSpecificBugPatterns(result.getBugs(), "Non-conforming Cookie");
     }
 }

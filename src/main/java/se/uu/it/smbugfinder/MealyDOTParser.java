@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import net.automatalib.automaton.AutomatonCreator;
+import net.automatalib.automaton.transducer.CompactMealy;
 import net.automatalib.automaton.transducer.MutableMealyMachine;
 import net.automatalib.common.util.Pair;
 import net.automatalib.serialization.InputModelData;
@@ -22,6 +23,10 @@ public class MealyDOTParser {
                     return ioPair;
                 });
         return parser.readModel(inputStream);
+    }
+
+    public static InputModelData<String, CompactMealy<String, String>> parse(InputStream inputStream) throws IOException {
+        return parse(new CompactMealy.Creator<String, String>(), inputStream, (i,o) -> Pair.of(i.toString(), o.toString()));
     }
 
     public static interface MealyInputOutputProcessor <I, O> {

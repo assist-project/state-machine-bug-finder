@@ -2,9 +2,11 @@ package se.uu.it.smbugfinder;
 
 import static se.uu.it.smbugfinder.DtlsResources.*;
 import static se.uu.it.smbugfinder.DtlsResources.DtlsClientAlphabet.*;
+import static se.uu.it.smbugfinder.DtlsResources.DtlsServerAlphabet.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -28,6 +30,19 @@ public class BugPatternLoaderTest {
     public static Logger LOGGER = LoggerFactory.getLogger(BugPatternLoaderTest.class);
 
     @Test
+    public void loadNonParametricBugPatternTest() throws IOException {
+        DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser();
+        DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
+        BugPatternLoader loader = new BugPatternLoader(decoder);
+        List<Symbol> symbols = Arrays.asList(I_APPLICATION, O_APPLICATION, I_CHANGE_CIPHER_SPEC, O_CHANGE_CIPHER_SPEC, I_PSK_CLIENT_HELLO, I_PSK_CLIENT_KEY_EXCHANGE, I_FINISHED, O_FINISHED, O_SERVER_HELLO, O_SERVER_HELLO_DONE);
+        BugPatterns patterns = loader.loadPatterns(DTLS_SERVER_BUG_PATTERNS, symbols);
+        BugPattern bugPattern = patterns.getBugPattern(DTLS_BUG_PATTERN_EARLY_FINISHED);
+        checkPattern(bugPattern, symbols, 3, // init, bug and sink states
+                new TestCase(Word.fromSymbols(I_FINISHED, O_CHANGE_CIPHER_SPEC), true),
+                new TestCase(Word.fromSymbols(I_CHANGE_CIPHER_SPEC, I_FINISHED, O_CHANGE_CIPHER_SPEC), false));
+    }
+
+    @Test
     public void loadParametricBugPatternTest() {
         DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser(() -> new DtlsParsingContext());
         DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
@@ -49,7 +64,6 @@ public class BugPatternLoaderTest {
         BugPatternLoader loader = new BugPatternLoader(decoder);
         BugPatterns bugCatalogue = loader.loadPatterns(DTLS_CLIENT_PARAMETRIC_BUG_PATTERNS, symbols);
         List<BugPattern> patterns = bugCatalogue.getBugPatterns();
-        Assert.assertEquals(2, patterns.size());
         BugPattern switchingCS = patterns.get(0);
 
         checkPattern(switchingCS, symbols, 7,

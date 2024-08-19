@@ -11,20 +11,27 @@ import java.util.List;
 import net.automatalib.common.util.Pair;
 import se.uu.it.smbugfinder.bug.Bug;
 import se.uu.it.smbugfinder.bug.StateMachineBug;
+import se.uu.it.smbugfinder.pattern.BugPatterns;
 
 public class BugFinderResult<I,O> extends ExportableResult {
     private static final int  BUG_ID_LENGTH = 3;
 
+    private BugPatterns bugPatterns;
     private List<StateMachineBug<I,O>> bugs;
     private Statistics statistics;
 
-    public BugFinderResult(List<StateMachineBug<I,O>> bugs, Statistics statistics) {
+    public BugFinderResult(BugPatterns bugPatterns, List<StateMachineBug<I,O>> bugs, Statistics statistics) {
+        this.bugPatterns = bugPatterns;
         this.bugs = bugs;
         this.statistics = statistics;
     }
 
     public List<StateMachineBug<I, O>> getBugs() {
         return Collections.unmodifiableList(bugs);
+    }
+
+    public BugPatterns getBugPatterns() {
+        return bugPatterns;
     }
 
     public Statistics getStatistics() {

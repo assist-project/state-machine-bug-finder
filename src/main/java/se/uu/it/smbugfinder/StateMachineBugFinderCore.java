@@ -185,7 +185,7 @@ public class StateMachineBugFinderCore<I,O> {
             handleUncategorizedSpecificationBugs(spec, sutLanguage, detectedPatterns, mealy, mapping, bugs);
         }
         tracker.finishStateMachineBugFinding(bugs);
-        return new BugFinderResult<>(bugs, tracker.generateStatistics());
+        return new BugFinderResult<>(patterns, bugs, tracker.generateStatistics());
     }
 
     private void handleGeneralBugPattern(GeneralBugPattern generalBugPattern, DFAAdapter sutLanguage, Collection<BugPattern> specificBugPatterns, SymbolMapping<I,O> mapping, List<StateMachineBug<I,O>> bugs) {
