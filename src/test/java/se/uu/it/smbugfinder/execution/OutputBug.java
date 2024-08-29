@@ -2,6 +2,8 @@ package se.uu.it.smbugfinder.execution;
 
 import java.util.Objects;
 
+import com.google.common.base.Ascii;
+
 import se.uu.it.smbugfinder.bug.BugSeverity;
 
 public class OutputBug {
@@ -44,7 +46,7 @@ public class OutputBug {
   }
 
   private static BugSeverity mapStringtoEnum(String s) {
-    switch (s.toUpperCase()/*Ascii.toUpperCase(s)*/) { //.toUpperCase()
+    switch (Ascii.toUpperCase(s)) {
       case "LOW":
         return BugSeverity.LOW;
       case "MEDIUM":

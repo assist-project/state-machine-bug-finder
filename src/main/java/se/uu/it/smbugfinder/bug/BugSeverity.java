@@ -1,5 +1,7 @@
 package se.uu.it.smbugfinder.bug;
 
+import com.google.common.base.Ascii;
+
 public enum BugSeverity {
     /**
      * Unknown impact.
@@ -19,7 +21,7 @@ public enum BugSeverity {
     HIGH;
 
     public static BugSeverity ofString(String s) {
-        switch (s.toUpperCase()) {
+        switch (Ascii.toUpperCase(s)) {
             case "LOW":
                 return BugSeverity.LOW;
             case "MEDIUM":

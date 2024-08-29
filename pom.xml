@@ -22,6 +22,7 @@
     <checker-qual.version>3.46.0</checker-qual.version>
     <commons.version>3.16.0</commons.version>
     <error-prone.version>2.31.0</error-prone.version>
+    <guava.version>33.3.0-jre</guava.version>
     <jaxb-api.version>4.0.2</jaxb-api.version>
     <jaxb-runtime.version>4.0.5</jaxb-runtime.version>
     <jcommander.version>1.82</jcommander.version>
@@ -131,6 +132,13 @@
       <groupId>com.google.code.findbugs</groupId>
       <artifactId>jsr305</artifactId>
       <version>3.0.2</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
+    <dependency>
+       <groupId>com.google.guava</groupId>
+       <artifactId>guava</artifactId>
+       <version>${guava.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.beust/jcommander -->
