@@ -17,4 +17,17 @@ public enum BugSeverity {
      * Non-conformance bug with significant security impact.
      */
     HIGH;
+
+    public static BugSeverity ofString(String s) {
+        switch (s.toUpperCase()) {
+            case "LOW":
+                return BugSeverity.LOW;
+            case "MEDIUM":
+                return BugSeverity.MEDIUM;
+            case "HIGH":
+                return BugSeverity.HIGH;
+            default:
+                return BugSeverity.UNKNOWN;
+        }
+    }
 }
