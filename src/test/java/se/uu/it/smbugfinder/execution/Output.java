@@ -17,13 +17,10 @@ public class Output {
     return this.getSet().equals(output.getSet());
   }
 
-  // @Override
-  // public String toString() {
-  //   return "{" +
-  //           "Set='" + bugs + '\'' +
-  //           '}';
-  // }
-
+  @Override
+  public String toString() {
+    return "{Set='" + bugs + '\'' + "}";
+  }
 
   private Set<OutputBug> bugs;
 
