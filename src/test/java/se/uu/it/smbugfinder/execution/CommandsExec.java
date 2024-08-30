@@ -1,8 +1,10 @@
 package se.uu.it.smbugfinder.execution;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.PrintStream;
+import java.io.StringReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -11,15 +13,18 @@ import java.util.stream.Stream;
 
 import org.junit.Assert;
 
+import se.uu.it.smbugfinder.Main;
+
 public class CommandsExec {
   protected void assertCorrectOutput(Output expectedOutput, Output output) {
     Assert.assertEquals(expectedOutput.getSet(), output.getSet());
   }
 
-  private static Output getBugs(Process process) throws IOException {
+  // Parse the output produced by Main.main and store it in an output object
+  private static Output getBugs(ByteArrayOutputStream outputStream) throws IOException {
     Output bugs = new Output();
     String pattern = null, severity = null, trace = null, inputs = null;
-    BufferedReader reader = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
+    BufferedReader reader = new BufferedReader(new StringReader(outputStream.toString(StandardCharsets.UTF_8)));
     String line;
 
     while ((line = reader.readLine()) != null) {
@@ -43,12 +48,11 @@ public class CommandsExec {
     return bugs;
   }
 
+  // Adjust the output stream of Main.main so we can store it in a stream of our own
   public static Output runCommand(String model, String patterns, boolean eo) throws IOException, InterruptedException {
-    List<String> command = new ArrayList<String>(Arrays.asList(
-      "java", "-jar", "target/sm-bug-finder.jar",
+    List<String> command = new ArrayList<>(Arrays.asList(
       "-m", model,
-      "-c", patterns,
-      "-eo", "NO_RESP"
+      "-c", patterns
     ));
 
     if (eo) {
@@ -56,9 +60,12 @@ public class CommandsExec {
       command.add("NO_RESP");
     }
 
-    Process process = new ProcessBuilder(command).start();
-    Output output = getBugs(process);
-    process.waitFor();
-    return output;
+    ByteArrayOutputStream outputStream = new ByteArrayOutputStream(); //create a stream to hold the output of main
+    PrintStream ps = new PrintStream(outputStream);
+    System.setOut(ps); //redirect sysout to the new printstream
+    Main.main(command.toArray(new String[0]));
+    System.setOut(System.out); //restore the original sysout
+
+    return getBugs(outputStream);
   }
 }
