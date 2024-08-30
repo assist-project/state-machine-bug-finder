@@ -20,7 +20,7 @@
     <!-- Dependency versions in alphabetical order -->
     <automatalib.version>0.11.0</automatalib.version>
     <checker-qual.version>3.46.0</checker-qual.version>
-    <commons.version>3.16.0</commons.version>
+    <commons.version>3.17.0</commons.version>
     <error-prone.version>2.31.0</error-prone.version>
     <jaxb-api.version>4.0.2</jaxb-api.version>
     <jaxb-runtime.version>4.0.5</jaxb-runtime.version>
