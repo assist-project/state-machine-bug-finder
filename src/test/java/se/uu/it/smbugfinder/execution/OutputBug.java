@@ -14,7 +14,6 @@ public class OutputBug {
 
   @Override
   public boolean equals(Object o) {
-    // if (getClass() != o.getClass()) return false;
     if (!(o instanceof OutputBug)) return false;
     OutputBug bug = (OutputBug) o;
     return this.bugPattern.equals(bug.bugPattern)
@@ -23,15 +22,14 @@ public class OutputBug {
         && this.inputs.equals(bug.inputs);
   }
 
-  // @Override
-  // public String toString() {
-  //   return "\n{" + bugPattern +
-  //           "   inputs='" + inputs + '\'' +
-  //           "   severity='" + getSeverity() + '\'' +
-  //           "   trace='" + trace + '\'' +
-  //           "   inputs='" + inputs + '\'' +
-  //           '}';
-  // }
+  @Override
+  public String toString() {
+    return "{" + bugPattern + ":" +
+            " severity=" + severity +
+            " trace=" + trace +
+            " inputs=" + inputs +
+            '}';
+  }
 
   private String bugPattern;
   private BugSeverity severity;
