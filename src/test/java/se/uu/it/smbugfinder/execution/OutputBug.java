@@ -1,36 +1,14 @@
 package se.uu.it.smbugfinder.execution;
 
-import java.util.Objects;
 
 import com.google.common.base.Ascii;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import se.uu.it.smbugfinder.bug.BugSeverity;
 
+@ToString @EqualsAndHashCode
 public class OutputBug {
-  @Override
-  public int hashCode() {
-    return Objects.hash(bugPattern, severity, trace, inputs);
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (!(o instanceof OutputBug)) return false;
-    OutputBug bug = (OutputBug) o;
-    return this.bugPattern.equals(bug.bugPattern)
-        && this.severity.equals(bug.severity)
-        && this.trace.equals(bug.trace)
-        && this.inputs.equals(bug.inputs);
-  }
-
-  @Override
-  public String toString() {
-    return "{" + bugPattern + ":" +
-            " severity=" + severity +
-            " trace=" + trace +
-            " inputs=" + inputs +
-            '}';
-  }
-
   private String bugPattern;
   private BugSeverity severity;
   private String trace;

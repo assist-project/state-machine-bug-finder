@@ -17,7 +17,7 @@ import se.uu.it.smbugfinder.Main;
 
 public class CommandsExec {
   protected void assertCorrectOutput(Output expectedOutput, Output output) {
-    Assert.assertEquals(expectedOutput.getSet(), output.getSet());
+    Assert.assertEquals(expectedOutput.getBugs(), output.getBugs());
   }
 
   // Parse the output produced by Main.main and store it in an output object
