@@ -29,9 +29,9 @@ public class BugFindingTest {
         for (var bug : bugs) {
             // only specific bug patterns are validated
             if (!bug.getBugPattern().isGeneral()) {
-                Assert.assertEquals(bug.getStatus(), BugValidationStatus.VALIDATION_SUCCESSFUL);
+                Assert.assertEquals(BugValidationStatus.VALIDATION_SUCCESSFUL, bug.getStatus());
             } else {
-                Assert.assertEquals(bug.getStatus(), BugValidationStatus.NOT_VALIDATED);
+                Assert.assertEquals(BugValidationStatus.NOT_VALIDATED, bug.getStatus());
             }
         }
     }
@@ -43,9 +43,9 @@ public class BugFindingTest {
         for (var bug : bugs) {
             // only specific bug patterns are validated
             if (!bug.getBugPattern().isGeneral()) {
-                Assert.assertEquals(bug.getStatus(), BugValidationStatus.VALIDATION_FAILED);
+                Assert.assertEquals(BugValidationStatus.VALIDATION_FAILED, bug.getStatus());
             } else {
-                Assert.assertEquals(bug.getStatus(), BugValidationStatus.NOT_VALIDATED);
+                Assert.assertEquals(BugValidationStatus.NOT_VALIDATED, bug.getStatus());
             }
         }
     }
