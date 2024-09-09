@@ -1,0 +1,16 @@
+digraph G {
+label=""
+init [color="red"]
+bug [shape="doublecircle"]
+init -> should_close [label="{I_Alert(WARNING,CLOSE_NOTIFY), O_Alert(WARNING,CLOSE_NOTIFY)}"]
+init -> init [label="other"]
+
+should_close -> bug [label="O_CHANGE_CIPHER_SPEC"]
+should_close -> init [label="O_SERVER_HELLO"]
+should_close -> should_close [label="other"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}
