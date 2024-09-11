@@ -1,0 +1,22 @@
+digraph G {
+label=""
+init [color="red"]
+sent_cert 
+bug [shape="doublecircle"]
+
+init -> sent_cke [label="{I_DH_CLIENT_KEY_EXCHANGE, I_ECDH_CLIENT_KEY_EXCHANGE, I_RSA_CLIENT_KEY_EXCHANGE}"]
+init -> init [label="other - {I_CERTIFICATE}"]
+
+sent_cke -> sent_cert [label="I_CERTIFICATE"]
+sent_cke -> init [label="O_SERVER_HELLO"]
+sent_cke -> sent_cke [label="other - {O_CHANGE_CIPHER_SPEC}"]
+
+sent_cert -> init [label="O_SERVER_HELLO"]
+sent_cert -> bug [label="O_CHANGE_CIPHER_SPEC"]
+sent_cert -> sent_cert [label="other"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}

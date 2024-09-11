@@ -14,6 +14,8 @@ public final class DtlsResources {
     public static final String FATAL_ERROR = "Continue After Fatal Error Alert";
     public static final String INVALID_FIN_AS_RETRANSMISSION = "Invalid Finished as Retransmission";
     public static final String CCS_BEFORE_CERTVER = "ChangeCipherSpec before CertificateVerify";
+    public static final String CERTLESS_AUTH = "Authenticate Client without Receiving Certificate";
+    public static final String CKE_AFTER_CERTVER = "ClientKeyExchange after CertificateVerify";
 
     public static class DtlsJointAlphabet {
         public static final InputSymbol I_APPLICATION = new InputSymbol("APPLICATION");

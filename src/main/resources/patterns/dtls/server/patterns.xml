@@ -17,6 +17,34 @@
     </bugPattern>
     
     <bugPattern>
+        <name>Authenticate Client without Receiving Certificate</name>
+        <bugLanguage>certificate-less_client_authentication.dot</bugLanguage>
+        <description>A server, which is configured to require a valid certificate from the client, requests a certificate (CertificateRequest) and enters the phase that completes the handshake without receiving a certificate message from the client.</description>
+        <severity>UNKNOWN</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>Authenticate Client without Receiving CertificateVerify</name>
+        <bugLanguage>certificateverify-less_client_authentication.dot</bugLanguage>
+        <description>In a server, which is configured to require a valid certificate from the client, the handshake is completed with the client sending a Certificate but without sending a CertificateVerify to the server.</description>
+        <severity>HIGH</severity>
+    </bugPattern>
+
+    <bugPattern>
+        <name>ClientKeyExchange before Certificate</name>
+        <bugLanguage>clientkeyexchange_before_certificate.dot</bugLanguage>
+        <description>A server completes the handshake with the client, but consumes a ClientKeyExchange before a client Certificate.</description>
+        <severity>UNKNOWN</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>ClientKeyExchange after CertificateVerify</name>
+        <bugLanguage>clientkeyexchange_before_certificate.dot</bugLanguage>
+        <description>A server completes the handshake with the client, but consumes a ClientKeyExchange before a client Certificate.</description>
+        <severity>UNKNOWN</severity>
+    </bugPattern>
+    
+    <bugPattern>
         <name>ChangeCipherSpec before CertificateVerify</name>
         <bugLanguage>changecipherspec_before_certificateverify.dot</bugLanguage>
         <description>A server, which is configured to require a valid certificate from the client, completes a handshake or re-handshake wherein a ChangeCipherSpec from the client is consumed by the server before a CertificateVerify.</description>

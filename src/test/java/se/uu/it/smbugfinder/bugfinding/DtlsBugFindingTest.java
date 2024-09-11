@@ -43,5 +43,9 @@ public class DtlsBugFindingTest extends BugFindingTest {
         Assert.assertEquals(6, invalid_fin.generateBugLanguage().getDfa().size());
         BugPattern ccs_before_certver = result.getBugPatterns().getBugPattern(CCS_BEFORE_CERTVER);
         Assert.assertEquals(5, ccs_before_certver.generateBugLanguage().getDfa().size());
+        BugPattern certificateless_auth = result.getBugPatterns().getBugPattern(CERTLESS_AUTH);
+        Assert.assertEquals(4, certificateless_auth.generateBugLanguage().getDfa().size());
+        BugPattern cke_after_certver = result.getBugPatterns().getBugPattern(CKE_AFTER_CERTVER);
+        Assert.assertEquals(5, cke_after_certver.generateBugLanguage().getDfa().size());
     }
 }
