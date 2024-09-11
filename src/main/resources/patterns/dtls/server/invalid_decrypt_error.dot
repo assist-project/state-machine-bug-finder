@@ -1,0 +1,18 @@
+digraph G {
+label=""
+init [color="red"]
+sent_cke
+bug [shape="doublecircle"]
+
+init -> bug [label="O_Alert(FATAL,DECRYPT_ERROR)"]
+init -> sent_cke [label="F_I_.*CLIENT_KEY_EXCHANGE"]
+init -> init [label="other"]
+
+sent_cke -> bug [label="O_Alert(FATAL,DECRYPT_ERROR)"]
+sent_cke -> sent_cke [label="other - {I_CHANGE_CIPHER_SPEC}"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}

@@ -10,7 +10,10 @@ public final class DtlsResources {
     public static final String DTLS_SERVER_MODEL = "/models/dtls/server/MbedTLS-2.26.0_server_all_cert_req.dot";
     public static final String DTLS_SERVER_BUG_PATTERNS = "/patterns/dtls/server/patterns.xml";
 
-    public static final String DTLS_BUG_PATTERN_EARLY_FINISHED = "Early Finished";
+    public static final String EARLY_FINISHED = "Early Finished";
+    public static final String FATAL_ERROR = "Continue After Fatal Error Alert";
+    public static final String INVALID_FIN_AS_RETRANSMISSION = "Invalid Finished as Retransmission";
+    public static final String CCS_BEFORE_CERTVER = "ChangeCipherSpec before CertificateVerify";
 
     public static class DtlsJointAlphabet {
         public static final InputSymbol I_APPLICATION = new InputSymbol("APPLICATION");

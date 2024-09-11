@@ -1,0 +1,17 @@
+digraph G {
+label=""
+init [color="red"] 
+bug [shape="doublecircle"]
+
+init -> should_abort [label="F_I_.*FATAL.*"]
+init -> init [label="other"]
+
+should_abort -> bug [label="O_CHANGE_CIPHER_SPEC"]
+should_abort -> init [label="O_SERVER_HELLO"]
+should_abort -> should_abort [label="other"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}

@@ -26,14 +26,22 @@ public class DtlsBugFindingTest extends BugFindingTest {
     }
 
     @Test
-    public void testDtlsServer()  throws FileNotFoundException, IOException {
+    public void testDtlsServer() throws FileNotFoundException, IOException {
         StateMachineBugFinderConfig config = new StateMachineBugFinderConfig();
         config.setModel(DTLS_SERVER_MODEL);
         config.setPatterns(DTLS_SERVER_BUG_PATTERNS);
         config.setSeparator("|");
         BugFinderResult<String, String> result = new StateMachineBugFinder(config).launch(null);
-        BugPattern bp = result.getBugPatterns().getBugPattern(DTLS_BUG_PATTERN_EARLY_FINISHED);
-        Assert.assertEquals(3, bp.generateBugLanguage().getDfa().size());
         assertFoundSpecificBugPatterns(result.getBugs(), "Non-conforming Cookie");
+
+        // Check if bug patterns are expanded correctly
+        BugPattern earlyFinished = result.getBugPatterns().getBugPattern(EARLY_FINISHED);
+        Assert.assertEquals(3, earlyFinished.generateBugLanguage().getDfa().size());
+        BugPattern fatalError = result.getBugPatterns().getBugPattern(FATAL_ERROR);
+        Assert.assertEquals(3, fatalError.generateBugLanguage().getDfa().size());
+        BugPattern invalid_fin = result.getBugPatterns().getBugPattern(INVALID_FIN_AS_RETRANSMISSION);
+        Assert.assertEquals(6, invalid_fin.generateBugLanguage().getDfa().size());
+        BugPattern ccs_before_certver = result.getBugPatterns().getBugPattern(CCS_BEFORE_CERTVER);
+        Assert.assertEquals(5, ccs_before_certver.generateBugLanguage().getDfa().size());
     }
 }

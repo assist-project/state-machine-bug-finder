@@ -36,7 +36,7 @@ public class BugPatternLoaderTest {
         BugPatternLoader loader = new BugPatternLoader(decoder);
         List<Symbol> symbols = Arrays.asList(I_APPLICATION, O_APPLICATION, I_CHANGE_CIPHER_SPEC, O_CHANGE_CIPHER_SPEC, I_PSK_CLIENT_HELLO, I_PSK_CLIENT_KEY_EXCHANGE, I_FINISHED, O_FINISHED, O_SERVER_HELLO, O_SERVER_HELLO_DONE);
         BugPatterns patterns = loader.loadPatterns(DTLS_SERVER_BUG_PATTERNS, symbols);
-        BugPattern bugPattern = patterns.getBugPattern(DTLS_BUG_PATTERN_EARLY_FINISHED);
+        BugPattern bugPattern = patterns.getBugPattern(EARLY_FINISHED);
         checkPattern(bugPattern, symbols, 3, // init, bug and sink states
                 new TestCase(Word.fromSymbols(I_FINISHED, O_CHANGE_CIPHER_SPEC), true),
                 new TestCase(Word.fromSymbols(I_CHANGE_CIPHER_SPEC, I_FINISHED, O_CHANGE_CIPHER_SPEC), false));
