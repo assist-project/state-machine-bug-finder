@@ -28,23 +28,23 @@
 	</bugPattern>
 	
 	<bugPattern>
-    	<name>Multiple Certificate</name>
-    	<bugLanguage>multiple_certificate.dot</bugLanguage>
-    	<description>Handshake contains repeated Certificate records.</description>
-    	<severity>LOW</severity>
+		<name>Multiple Certificate</name>
+		<bugLanguage>multiple_certificate.dot</bugLanguage>
+		<description>Handshake contains repeated Certificate records.</description>
+		<severity>LOW</severity>
 	</bugPattern>
     
 	<bugPattern>
-    	<name>Reorder Cert CertReq</name>
-    	<bugLanguage>certreq_before_cert.dot</bugLanguage>
-    	<description>Sending CertReq before Cert</description>
-    	<severity>LOW</severity>
+		<name>Reorder Cert CertReq</name>
+		<bugLanguage>certreq_before_cert.dot</bugLanguage>
+		<description>Sending CertReq before Cert</description>
+		<severity>LOW</severity>
 	</bugPattern>
     
 	<bugPattern>
-    	<name>ServerHello Flight Restart</name>
-    	<bugLanguage>serverhello_flight_restart.dot</bugLanguage>
-    	<description>ServerHello flight restarted after a ServerHelloDone</description>
+		<name>ServerHello Flight Restart</name>
+		<bugLanguage>serverhello_flight_restart.dot</bugLanguage>
+		<description>ServerHello flight restarted after a ServerHelloDone</description>
 	</bugPattern>
     
 	<bugPattern>
