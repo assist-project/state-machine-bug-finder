@@ -2,11 +2,11 @@
     <defaultBugSeverity>LOW</defaultBugSeverity>
     <defaultEnabled>true</defaultEnabled>
 	<bugPattern>
-        <name>Early Finished</name>
-        <bugLanguage>early_finished.dot</bugLanguage>
-        <description>Handshake is missing ChangeCipherSpec.</description>
-        <severity>HIGH</severity>   
-    </bugPattern>
+		<name>Early Finished</name>
+		<bugLanguage>early_finished.dot</bugLanguage>
+		<description>Handshake is missing ChangeCipherSpec.</description>
+		<severity>HIGH</severity>   
+	</bugPattern>
     
 	<bugPattern>
 		<name>Premature HelloRequest</name>
@@ -27,25 +27,25 @@
 		<description>Allowing handshake to continue after a CloseNotify alert.</description>
 	</bugPattern>
 	
-    <bugPattern>
+	<bugPattern>
     	<name>Multiple Certificate</name>
     	<bugLanguage>multiple_certificate.dot</bugLanguage>
     	<description>Handshake contains repeated Certificate records.</description>
     	<severity>LOW</severity>
-    </bugPattern>
+	</bugPattern>
     
-    <bugPattern>
+	<bugPattern>
     	<name>Reorder Cert CertReq</name>
     	<bugLanguage>certreq_before_cert.dot</bugLanguage>
     	<description>Sending CertReq before Cert</description>
     	<severity>LOW</severity>
-    </bugPattern>
+	</bugPattern>
     
-    <bugPattern>
+	<bugPattern>
     	<name>ServerHello Flight Restart</name>
     	<bugLanguage>serverhello_flight_restart.dot</bugLanguage>
     	<description>ServerHello flight restarted after a ServerHelloDone</description>
-    </bugPattern>
+	</bugPattern>
     
 	<bugPattern>
 		<name>Unrequested Certificate</name>
