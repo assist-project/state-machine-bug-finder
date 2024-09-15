@@ -36,9 +36,9 @@ public class BugPatternLoaderTest {
         BugPatternLoader loader = new BugPatternLoader(decoder);
         //symbols contains the alphabet for the expansion of but-pattern. normally symbols are taken from the Mealy SUT
         List<Symbol> symbols = Arrays.asList(I_APPLICATION, O_APPLICATION, I_CHANGE_CIPHER_SPEC, O_CHANGE_CIPHER_SPEC, I_PSK_CLIENT_HELLO, I_PSK_CLIENT_KEY_EXCHANGE, I_FINISHED, O_FINISHED, O_SERVER_HELLO, O_SERVER_HELLO_DONE);
-        BugPatterns patterns = loader.loadPatterns(DTLS_SERVER_BUG_PATTERNS, symbols); //Here bug patterns are returned expanded with symbols as defined aboved and not from the Mealy SUT
+        BugPatterns patterns = loader.loadPatterns(DTLS_SERVER_BUG_PATTERNS, symbols); //Here bug patterns are returned expanded with symbols as defined above and not from the Mealy SUT
         BugPattern bugPattern = patterns.getBugPattern(EARLY_FINISHED);
-        // check that bugPattern contains symbols (this is true for this pattern but it is not guaranted)
+        // check that bugPattern contains symbols (this is true for this pattern but it is not guaranteed)
         checkPattern(bugPattern, symbols, 3, // init, bug and sink states
                 new TestCase(Word.fromSymbols(I_FINISHED, O_CHANGE_CIPHER_SPEC), true),
                 new TestCase(Word.fromSymbols(I_CHANGE_CIPHER_SPEC, I_FINISHED, O_CHANGE_CIPHER_SPEC), false));
