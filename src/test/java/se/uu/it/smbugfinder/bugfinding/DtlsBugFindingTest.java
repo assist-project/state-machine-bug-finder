@@ -23,6 +23,14 @@ public class DtlsBugFindingTest extends BugFindingTest {
         config.setSeparator("|");
         BugFinderResult<String, String> result = new StateMachineBugFinder(config).launch(null);
         assertFoundSpecificBugPatterns(result.getBugs(), "Premature HelloRequest");
+
+        // Check if bug patterns are expanded correctly
+        BugPattern earlyFinished = result.getBugPatterns().getBugPattern(EARLY_FINISHED);
+        Assert.assertEquals(4, earlyFinished.generateBugLanguage().getDfa().size());
+        BugPattern close_alert = result.getBugPatterns().getBugPattern(CONTINUE_AFTER_CLOSE);
+        Assert.assertEquals(4, close_alert.generateBugLanguage().getDfa().size());
+        BugPattern flight_restart = result.getBugPatterns().getBugPattern(SH_FLIGHT_RESTART);
+        Assert.assertEquals(5, flight_restart.generateBugLanguage().getDfa().size());
     }
 
     @Test

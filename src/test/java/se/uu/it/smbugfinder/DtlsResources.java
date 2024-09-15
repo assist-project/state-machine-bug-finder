@@ -17,6 +17,10 @@ public final class DtlsResources {
     public static final String CERTLESS_AUTH = "Certificate-less Client Authentication";
     public static final String CKE_AFTER_CERTVER = "ClientKeyExchange after CertificateVerify";
 
+    public static final String CONTINUE_AFTER_CLOSE = "Continue After CloseNotify";
+    public static final String SH_FLIGHT_RESTART = "ServerHello Flight Restart";
+
+
     public static class DtlsJointAlphabet {
         public static final InputSymbol I_APPLICATION = new InputSymbol("APPLICATION");
         public static final InputSymbol I_CHANGE_CIPHER_SPEC = new InputSymbol("CHANGE_CIPHER_SPEC");

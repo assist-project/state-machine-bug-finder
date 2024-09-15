@@ -1,0 +1,21 @@
+digraph G {
+label=""
+init [color="red"]
+bug [shape="doublecircle"]
+
+init -> one_cert [label="{I_CERTIFICATE, I_EMPTY_CERTIFICATE}"]
+init -> fin [label="O_CHANGE_CIPHER_SPEC"]
+init -> init [label="other"]
+one_cert -> two_cert [label="{I_CERTIFICATE, I_EMPTY_CERTIFICATE}"]
+one_cert -> fin [label="O_CHANGE_CIPHER_SPEC"]
+one_cert -> one_cert [label="other"]
+fin -> init [label="I_HELLO_REQUEST"]
+fin -> fin [label="other"]
+two_cert -> bug [label="O_CHANGE_CIPHER_SPEC"]
+two_cert -> two_cert [label="other"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}

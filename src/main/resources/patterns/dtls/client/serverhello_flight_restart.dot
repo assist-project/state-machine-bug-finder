@@ -1,0 +1,17 @@
+digraph G {
+label=""
+init [color="red"]
+bug [shape="doublecircle"]
+
+init -> shd [label="I_SERVER_HELLO_DONE"]
+init -> init [label="other"]
+shd -> new_sh [label="F_I_.*SERVER_HELLO"]
+shd -> init [label="I_HELLO_REQUEST"]
+shd -> shd [label="other - I_FINISHED"]
+new_sh -> bug [label="O_APPLICATION"]
+new_sh -> new_sh [label="other"]
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}
