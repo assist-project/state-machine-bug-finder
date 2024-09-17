@@ -9,6 +9,7 @@ public final class DtlsResources {
     public static final String DTLS_CLIENT_PARAMETRIC_BUG_PATTERNS = "/patterns/dtls/client/parametric/patterns.xml";
     public static final String DTLS_SERVER_MODEL = "/models/dtls/server/MbedTLS-2.26.0_server_all_cert_req.dot";
     public static final String DTLS_SERVER_BUG_PATTERNS = "/patterns/dtls/server/patterns.xml";
+    public static final String DTLS_SERVER_PARAMETRIC_BUG_PATTERNS = "/patterns/dtls/server/parametric/patterns.xml";
 
     public static final String EARLY_FINISHED = "Early Finished";
     public static final String FATAL_ERROR = "Continue After Fatal Error Alert";
@@ -44,6 +45,8 @@ public final class DtlsResources {
     }
 
     public static class DtlsServerAlphabet extends DtlsJointAlphabet {
+        public static final InputSymbol I_ECDH_CLIENT_HELLO = new InputSymbol("ECDH_CLIENT_HELLO");
+        public static final InputSymbol I_DH_CLIENT_HELLO = new InputSymbol("DH_CLIENT_HELLO");
         public static final InputSymbol I_PSK_CLIENT_HELLO = new InputSymbol("PSK_CLIENT_HELLO");
         public static final InputSymbol I_RSA_CLIENT_HELLO = new InputSymbol("RSA_CLIENT_HELLO");
         public static final InputSymbol I_PSK_CLIENT_KEY_EXCHANGE = new InputSymbol("PSK_CLIENT_KEY_EXCHANGE");
@@ -53,5 +56,7 @@ public final class DtlsResources {
         public static final OutputSymbol O_CERTIFICATE_VERIFY = new OutputSymbol("CERTIFICATE_VERIFY");
         public static final OutputSymbol O_SERVER_HELLO = new OutputSymbol("SERVER_HELLO");
         public static final OutputSymbol O_SERVER_HELLO_DONE = new OutputSymbol("SERVER_HELLO_DONE");
+        public static final OutputSymbol O_HELLO_VERIFY_REQUEST = new OutputSymbol("HELLO_VERIFY_REQUEST");
+
     }
 }

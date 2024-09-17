@@ -45,7 +45,7 @@ public class BugPatternLoaderTest {
     }
 
     @Test
-    public void loadParametricBugPatternTest() {
+    public void loadClientParametricBugPatternTest() {
         DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser(() -> new DtlsParsingContext());
         DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
 
@@ -71,13 +71,43 @@ public class BugPatternLoaderTest {
 
         BugPattern switchingCS = patterns.get(0);
         checkPattern(switchingCS, symbols, 7,
-                new TestCase(Word.fromSymbols(I_RSA_SERVER_HELLO, I_PSK_SERVER_HELLO, O_APPLICATION), Boolean.TRUE),
-                new TestCase(Word.fromSymbols(I_RSA_SERVER_HELLO, I_RSA_SERVER_HELLO, O_APPLICATION), Boolean.FALSE));
+                new TestCase(Word.fromSymbols(I_RSA_SERVER_HELLO, I_PSK_SERVER_HELLO, O_APPLICATION), true),
+                new TestCase(Word.fromSymbols(I_RSA_SERVER_HELLO, I_RSA_SERVER_HELLO, O_APPLICATION), false));
 
         BugPattern wrongCertType = patterns.get(1);
         checkPattern(wrongCertType, symbols, 5,
-                new TestCase(Word.fromSymbols(I_RSA_SIGN_CERTIFICATE_REQUEST, O_ECDSA_CERTIFICATE), Boolean.TRUE),
-                new TestCase(Word.fromSymbols(I_RSA_SIGN_CERTIFICATE_REQUEST, O_RSA_CERTIFICATE), Boolean.FALSE));
+                new TestCase(Word.fromSymbols(I_RSA_SIGN_CERTIFICATE_REQUEST, O_ECDSA_CERTIFICATE), true),
+                new TestCase(Word.fromSymbols(I_RSA_SIGN_CERTIFICATE_REQUEST, O_RSA_CERTIFICATE), false));
+    }
+
+    @Test
+    public void loadServerParametricBugPatternTest() {
+        DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser(() -> new DtlsParsingContext());
+        DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
+
+        MappingTokenMatcherBuilder builder = new MappingTokenMatcher.MappingTokenMatcherBuilder();
+        builder
+        .map(new SymbolToken(true, "ClientHello"), I_ECDH_CLIENT_HELLO, I_DH_CLIENT_HELLO, I_PSK_CLIENT_HELLO, I_RSA_CLIENT_HELLO)
+        .map(new SymbolToken(false, "HelloVerifyRequest"), O_HELLO_VERIFY_REQUEST)
+        .map(new SymbolToken(false, "ServerHello"), O_SERVER_HELLO)
+        .map(new SymbolToken(false, "ServerHelloDone"), O_SERVER_HELLO_DONE)
+        .map(new SymbolToken(false, "CertificateRequest"), O_CERTIFICATE_REQUEST);
+        // builder now contains a mapping from SymbolToken to Symbol list
+
+        MappingTokenMatcher matcher = builder.build();
+        List<Symbol> symbols = new ArrayList<>();
+        matcher.collectSymbols(symbols);
+        decoder.setTokenMatcher(matcher);
+
+        BugPatternLoader loader = new BugPatternLoader(decoder);
+        BugPatterns bugCatalogue = loader.loadPatterns(DTLS_SERVER_PARAMETRIC_BUG_PATTERNS, symbols);
+        List<BugPattern> patterns = bugCatalogue.getBugPatterns();
+
+        BugPattern nonConformingCookie = patterns.get(0);
+        checkPattern(nonConformingCookie, symbols, 12,
+                new TestCase(Word.fromSymbols(I_PSK_CLIENT_HELLO, O_HELLO_VERIFY_REQUEST, I_RSA_CLIENT_HELLO, O_SERVER_HELLO), true),
+                new TestCase(Word.fromSymbols(I_PSK_CLIENT_HELLO, O_HELLO_VERIFY_REQUEST, I_PSK_CLIENT_HELLO, O_SERVER_HELLO), false),
+                new TestCase(Word.fromSymbols(I_RSA_CLIENT_HELLO, O_HELLO_VERIFY_REQUEST, I_RSA_CLIENT_HELLO, O_SERVER_HELLO), false));
     }
 
     public void checkPattern(BugPattern bp, Collection<Symbol> expectedSymbols, int expectedSize, TestCase ...testCases) {
