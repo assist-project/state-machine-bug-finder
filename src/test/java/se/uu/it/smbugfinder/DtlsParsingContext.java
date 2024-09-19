@@ -40,14 +40,16 @@ public class DtlsParsingContext extends ParsingContext {
     static class DtlsFields extends Fields {
         private static final long serialVersionUID = 1L;
         public DtlsFields() {
-            super(new CertificateType(), new CipherSuite(), new KeyType());
+            super();
+            initialize(new CertificateType(), new CipherSuite(), new KeyType());
         }
     }
 
     static class DtlsFunctions extends Functions {
         private static final long serialVersionUID = 1L;
         public DtlsFunctions() {
-            super(new FunCertType());
+            super();
+            initialize(new FunCertType());
         }
     }
 
