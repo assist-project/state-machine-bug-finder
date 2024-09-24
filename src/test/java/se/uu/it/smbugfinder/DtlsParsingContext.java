@@ -57,7 +57,7 @@ public class DtlsParsingContext extends ParsingContext {
             Matcher matcher = CERTIFICATE_REQUEST_PATTERN.matcher(symbol.name());
             if (matcher.matches()) {
                 String certType = matcher.group("certType");
-                Set<String> certTypes = new LinkedHashSet<>();
+                Set<String> certTypes = new LinkedHashSet<>(); //always create a set with one object (currently there are no patterns that need more than that, but generally this is wrong)
                 certTypes.add(certType);
                 return new Value(certTypes);
             }

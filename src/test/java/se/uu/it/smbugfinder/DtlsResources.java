@@ -17,6 +17,8 @@ public final class DtlsResources {
     public static final String CCS_BEFORE_CERTVER = "ChangeCipherSpec before CertificateVerify";
     public static final String CERTLESS_AUTH = "Certificate-less Client Authentication";
     public static final String CKE_AFTER_CERTVER = "ClientKeyExchange after CertificateVerify";
+    public static final String MULT_CCS = "Multiple ChangeCipherSpec";
+
 
     public static final String CONTINUE_AFTER_CLOSE = "Continue After CloseNotify";
     public static final String SH_FLIGHT_RESTART = "ServerHello Flight Restart";
@@ -45,6 +47,7 @@ public final class DtlsResources {
     }
 
     public static class DtlsServerAlphabet extends DtlsJointAlphabet {
+        public static final InputSymbol I_CERTIFICATE = new InputSymbol("CERTIFICATE");
         public static final InputSymbol I_ECDH_CLIENT_HELLO = new InputSymbol("ECDH_CLIENT_HELLO");
         public static final InputSymbol I_DH_CLIENT_HELLO = new InputSymbol("DH_CLIENT_HELLO");
         public static final InputSymbol I_PSK_CLIENT_HELLO = new InputSymbol("PSK_CLIENT_HELLO");
