@@ -36,7 +36,7 @@ public class DtlsParsingContext extends ParsingContext {
     static class DtlsFields extends Fields {
         private static final long serialVersionUID = 1L;
         public DtlsFields() {
-            super(new CertificateType(), new CipherSuite(), new CipherSuites(), new KeyType());
+            super(new CertificateTypes(), new CipherSuite(), new CipherSuites(), new KeyType());
         }
     }
 
@@ -47,8 +47,8 @@ public class DtlsParsingContext extends ParsingContext {
         }
     }
 
-    static class CertificateType extends Field {
-        public CertificateType () {
+    static class CertificateTypes extends Field {
+        public CertificateTypes () {
             super("cert_type");
         }
 
