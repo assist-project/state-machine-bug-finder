@@ -14,4 +14,109 @@
         <description>The first two ClientHello messages use different cipher suites, indicating that cipher suites are not included in the cookie computation.</description>
         <severity>LOW</severity>
     </bugPattern>
+    
+   <bugPattern>
+        <name>CertificateVerify-less Client Authentication</name>
+        <bugLanguage>certificateverify-less_client_authentication.dot</bugLanguage>
+        <description>Handshake is missing CertificateVerify but has Certificate when certificate authentication is required.</description>
+        <severity>HIGH</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>Certificate-less Client Authentication</name>
+        <bugLanguage>certificate-less_client_authentication.dot</bugLanguage>
+        <description>Handshake is missing a client Certificate when certificate authentication is required.</description>
+        <severity>HIGH</severity>
+    </bugPattern>
+
+    <bugPattern>
+        <name>ClientKeyExchange before Certificate</name>
+        <bugLanguage>clientkeyexchange_before_certificate.dot</bugLanguage>
+        <description>A server completes the handshake with the client, but consumes a ClientKeyExchange before a client Certificate.</description>
+        <severity>HIGH</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>ClientKeyExchange after CertificateVerify</name>
+        <bugLanguage>clientkeyexchange_before_certificate.dot</bugLanguage>
+        <description>A server completes the handshake with the client, but consumes a ClientKeyExchange before a client Certificate.</description>
+        <severity>HIGH</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>ChangeCipherSpec before CertificateVerify</name>
+        <bugLanguage>changecipherspec_before_certificateverify.dot</bugLanguage>
+        <description>A server, which is configured to require a valid certificate from the client, completes a handshake or re-handshake wherein a ChangeCipherSpec from the client is consumed by the server before a CertificateVerify.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>Continue After Closure Alert</name>
+        <bugLanguage>continue_after_close.dot</bugLanguage>
+        <description>A server does not close down the connection on receiving or sending a close_notify alert.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>Continue After Fatal Error Alert</name>
+        <bugLanguage>invalid_helloverifyrequest.dot</bugLanguage>
+        <description>A server does not terminate the connection on receiving a fatal error alert.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>Finished Before ChangeCipherSpec</name>
+        <bugLanguage>finished_before_changecipherspec.dot</bugLanguage>
+        <description>A server, which is configured to echo application data, completes a handshake or re-handshake wherein Finished is received before ChangeCipherSpec from the client</description>
+        <severity>LOW</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>HelloVerifyRequest Retransmission</name>
+        <bugLanguage>helloverifyrequest_retransmission.dot</bugLanguage>
+        <description>A server sends more than one HelloVerifyRequest, one after the other.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>Internal Error on Finished</name>
+        <bugLanguage>internal_alert_on_finished.dot</bugLanguage>
+        <description>Sending an out-of-order client Finished causes an Internal Error alert.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>Invalid DecryptError Alert</name>
+        <bugLanguage>invalid_decrypt_error.dot</bugLanguage>
+        <description>A server responds with DecryptError to plaintext messages.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>Invalid Finished as Retransmission</name>
+        <bugLanguage>invalid_finished_as_retransmission.dot</bugLanguage>
+        <description>A server, which is configured to require a valid certificate from the client, completes a handshake or re-handshake during which it receives multiple Certificate messages.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>Invalid HelloVerifyRequest</name>
+        <bugLanguage>invalid_helloverifyrequest.dot</bugLanguage>
+        <description>A server treats a second Finished as a retransmission, and then retransmits the last flight.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>Multiple Certificate</name>
+        <bugLanguage>multiple_certificate.dot</bugLanguage>
+        <description>A server, which is configured to require a valid certificate from the client, completes a handshake or re-handshake during which it receives multiple Certificate messages.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+    
+    <bugPattern>
+        <name>Multiple ChangeCipherSpec</name>
+        <bugLanguage>multiple_changecipherspec.dot</bugLanguage>
+        <description>A server completes a hand- shake or re-handshake during which it receives multiple ChangeCipherSpec messages from the client.</description>
+        <severity>LOW</severity>
+    </bugPattern>
 </bugPatterns>

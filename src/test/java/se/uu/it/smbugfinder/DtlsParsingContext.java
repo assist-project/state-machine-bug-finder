@@ -20,18 +20,14 @@ public class DtlsParsingContext extends ParsingContext {
     private static Pattern SERVER_HELLO_PATTERN = Pattern.compile("(?<cipherSuite>[A-Za-z_]*)_SERVER_HELLO");
     private static Pattern CERTIFICATE_REQUEST_PATTERN = Pattern.compile("(?<certType>[A-Za-z_]*)_CERTIFICATE_REQUEST");
     private static Pattern CERTIFICATE_PATTERN = Pattern.compile("(?<keyType>[A-Za-z_]*)_CERTIFICATE");
+    private static Pattern CLIENT_HELLO_PATTERN = Pattern.compile("(?<cipherSuite>[A-Za-z_]*)_CLIENT_HELLO");
 
     public DtlsParsingContext() {
         super(new DtlsConstants(), new DtlsFields(), new DtlsFunctions());
     }
 
     static class DtlsConstants extends Constants {
-
-        /**
-         *
-         */
         private static final long serialVersionUID = 1L;
-
         public DtlsConstants() {
             super();
         }
@@ -40,7 +36,7 @@ public class DtlsParsingContext extends ParsingContext {
     static class DtlsFields extends Fields {
         private static final long serialVersionUID = 1L;
         public DtlsFields() {
-            super(new CertificateType(), new CipherSuite(), new KeyType());
+            super(new CertificateTypes(), new CipherSuite(), new CipherSuites(), new KeyType());
         }
     }
 
@@ -48,6 +44,24 @@ public class DtlsParsingContext extends ParsingContext {
         private static final long serialVersionUID = 1L;
         public DtlsFunctions() {
             super(new FunCertType());
+        }
+    }
+
+    static class CertificateTypes extends Field {
+        public CertificateTypes () {
+            super("cert_type");
+        }
+
+        @Override
+        protected Value getValue(Symbol symbol) {
+            Matcher matcher = CERTIFICATE_REQUEST_PATTERN.matcher(symbol.name());
+            if (matcher.matches()) {
+                String certType = matcher.group("certType");
+                Set<String> certTypes = new LinkedHashSet<>(); //always create a set with one object (currently there are no patterns that need more than that, but generally this is wrong)
+                certTypes.add(certType);
+                return new Value(certTypes);
+            }
+            return undefined(symbol);
         }
     }
 
@@ -67,19 +81,19 @@ public class DtlsParsingContext extends ParsingContext {
         }
     }
 
-    static class CertificateType extends Field {
-        public CertificateType () {
-            super("cert_type");
+    static class CipherSuites extends Field {
+        public CipherSuites () {
+            super("cipher_suites");
         }
 
         @Override
         protected Value getValue(Symbol symbol) {
-            Matcher matcher = CERTIFICATE_REQUEST_PATTERN.matcher(symbol.name());
+            Matcher matcher = CLIENT_HELLO_PATTERN.matcher(symbol.name());
             if (matcher.matches()) {
-                String certType = matcher.group("certType");
-                Set<String> certTypes = new LinkedHashSet<>();
-                certTypes.add(certType);
-                return new Value(certTypes);
+                String suite = matcher.group("cipherSuite");
+                Set<String> suites = new LinkedHashSet<>();
+                suites.add(suite);
+                return new Value(suites);
             }
             return undefined(symbol);
         }

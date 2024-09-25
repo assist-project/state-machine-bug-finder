@@ -1,0 +1,18 @@
+digraph G {
+label=""
+init [color="red"]
+recv_certreq
+bug  [shape="doublecircle"]
+
+init -> init [label="other"]
+init -> recv_certreq [label="O_CERTIFICATE_REQUEST"]
+
+recv_certreq -> recv_certreq [label="other - {I_CERTIFICATE}"]
+recv_certreq -> bug [label="O_CHANGE_CIPHER_SPEC"]
+recv_certreq -> init[label="O_SERVER_HELLO"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}

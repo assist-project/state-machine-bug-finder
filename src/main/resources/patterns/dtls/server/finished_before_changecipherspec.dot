@@ -1,0 +1,23 @@
+digraph G {
+label=""
+init [color="red"]
+sent_fin 
+sent_ccs
+bug [shape="doublecircle"]
+
+init -> sent_fin [label="I_FINISHED"]
+init -> init [label="other - {I_CHANGE_CIPHER_SPEC}"]
+
+sent_fin -> sent_ccs [label="I_CHANGE_CIPHER_SPEC"]
+sent_fin -> init [label="O_SERVER_HELLO"]
+sent_fin -> sent_fin [label="other"]
+
+sent_ccs -> bug [label="O_APPLICATION"]
+sent_ccs -> init [label="O_SERVER_HELLO"] 
+sent_ccs -> sent_ccs [label="other - {I_FINISHED}"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}

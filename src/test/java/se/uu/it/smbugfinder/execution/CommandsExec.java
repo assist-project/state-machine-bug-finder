@@ -49,7 +49,7 @@ public class CommandsExec {
   }
 
   // Adjust the output stream of Main.main so we can store it in a stream of our own
-  public static Output runCommand(String model, String patterns, boolean eo) throws IOException, InterruptedException {
+  public static Output runCommand(String model, String patterns, boolean eo, String... os) throws IOException, InterruptedException {
     List<String> command = new ArrayList<>(Arrays.asList(
       "-m", model,
       "-c", patterns
@@ -58,6 +58,11 @@ public class CommandsExec {
     if (eo) {
       command.add("-eo");
       command.add("NO_RESP");
+    }
+
+    if (os.length == 1) {
+      command.add("-os");
+      command.add(os[0]);
     }
 
     ByteArrayOutputStream outputStream = new ByteArrayOutputStream(); //create a stream to hold the output of main

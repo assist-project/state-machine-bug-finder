@@ -1,0 +1,25 @@
+digraph G {
+label=""
+init [color="red"]
+sent_fin1
+processed_fin1
+sent_fin2
+bug [shape="doublecircle"]
+
+init -> sent_fin1 [label="I_FINISHED"]
+init -> init [label="other"]
+
+sent_fin1 -> processed_fin1 [label="I_CHANGE_CIPHER_SPEC"]
+sent_fin1 -> init [label="O_SERVER_HELLO"]
+
+processed_fin1 -> sent_fin2 [label="I_FINISHED"]
+processed_fin1 -> init [label="O_SERVER_HELLO"]
+processed_fin1 -> processed_fin1 [label="other"]
+
+sent_fin2 -> bug [label="O_CHANGE_CIPHER_SPEC"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}

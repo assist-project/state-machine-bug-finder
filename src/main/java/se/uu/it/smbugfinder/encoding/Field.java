@@ -9,7 +9,6 @@ public abstract class Field implements ValueExpression {
 
     private final String name;
 
-
     public Field(String name) {
         this.name = name;
     }

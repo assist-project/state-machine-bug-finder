@@ -1,0 +1,16 @@
+digraph G {
+label=""
+init [color="red"]
+received_hvr
+bug [shape="doublecircle"]
+
+init -> received_hvr [label="O_HELLO_VERIFY_REQUEST"]
+init -> init [label="other"]
+
+received_hvr -> bug [label="O_HELLO_VERIFY_REQUEST"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}

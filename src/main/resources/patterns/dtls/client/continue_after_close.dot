@@ -1,0 +1,17 @@
+digraph G {
+label=""
+init [color="red"]
+has_failed
+bug [shape="doublecircle"]
+init -> has_failed [label="{I_Alert(WARNING,CLOSE_NOTIFY), O_Alert(WARNING,CLOSE_NOTIFY)}"]
+init -> init [label="other"]
+
+has_failed -> has_failed [label="F_I_.*"]
+has_failed -> init [label="O_CLIENT_HELLO"]
+has_failed -> bug [label="other - F_O_Alert.* - {O_DISABLED, O_SOCKET_CLOSED, O_UNKNOWN_MESSAGE}"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}

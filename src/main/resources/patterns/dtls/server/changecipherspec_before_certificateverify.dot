@@ -1,0 +1,23 @@
+digraph G {
+label=""
+init [color="red"]
+sent_ccs
+sent_certver
+bug [shape="doublecircle"]
+
+init -> sent_ccs [label="I_CHANGE_CIPHER_SPEC"]
+init -> init [label="other - {I_CERTIFICATE_VERIFY}"]
+
+sent_ccs -> sent_certver [label="I_CERTIFICATE_VERIFY"]
+sent_ccs -> sent_ccs [label="other - {O_CHANGE_CIPHER_SPEC}"]
+sent_ccs -> init [label="O_SERVER_HELLO"]
+
+sent_certver -> bug [label="O_CHANGE_CIPHER_SPEC"]
+sent_certver -> sent_certver [label="other"]
+sent_certver -> init [label="O_SERVER_HELLO"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}

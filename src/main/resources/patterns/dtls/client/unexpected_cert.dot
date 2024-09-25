@@ -1,0 +1,16 @@
+digraph G {
+label=""
+init [color="red"]
+bug [shape="doublecircle"]
+
+init -> bug [label="F_O_.*CERTIFICATE"]
+init -> certreq_sent [label="F_I_.*CERTIFICATE_REQUEST"]
+init -> init [label="other"]
+certreq_sent -> init [label="I_HELLO_REQUEST"]
+certreq_sent -> certreq_sent [label="other"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}

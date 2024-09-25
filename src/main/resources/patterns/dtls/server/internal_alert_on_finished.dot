@@ -1,0 +1,17 @@
+digraph G {
+label=""
+init [color="red"]
+sent_fin
+bug [shape="doublecircle"]
+
+init -> init [label="other"]
+init -> sent_fin [label="I_FINISHED"]
+
+sent_fin -> init [label="other"]
+sent_fin -> bug [label="O_Alert(FATAL,INTERNAL_ERROR)"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}
