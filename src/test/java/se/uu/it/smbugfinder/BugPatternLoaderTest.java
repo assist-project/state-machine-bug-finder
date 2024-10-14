@@ -26,6 +26,7 @@ import se.uu.it.smbugfinder.pattern.BugPattern;
 import se.uu.it.smbugfinder.pattern.BugPatternLoader;
 import se.uu.it.smbugfinder.pattern.BugPatterns;
 
+
 public class BugPatternLoaderTest {
     public static Logger LOGGER = LoggerFactory.getLogger(BugPatternLoaderTest.class);
 
@@ -34,18 +35,36 @@ public class BugPatternLoaderTest {
         DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser();
         DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
         BugPatternLoader loader = new BugPatternLoader(decoder);
-        List<Symbol> symbols = Arrays.asList(I_APPLICATION, O_APPLICATION, I_CHANGE_CIPHER_SPEC, O_CHANGE_CIPHER_SPEC, I_PSK_CLIENT_HELLO, I_PSK_CLIENT_KEY_EXCHANGE, I_FINISHED, O_FINISHED, O_SERVER_HELLO, O_SERVER_HELLO_DONE);
-        BugPatterns patterns = loader.loadPatterns(DTLS_SERVER_BUG_PATTERNS, symbols);
-        BugPattern bugPattern = patterns.getBugPattern(DTLS_BUG_PATTERN_EARLY_FINISHED);
-        checkPattern(bugPattern, symbols, 3, // init, bug and sink states
+        //symbols contains the alphabet for the expansion of but-pattern. normally symbols are taken from the Mealy SUT
+        List<Symbol> symbols = Arrays.asList(I_APPLICATION, O_APPLICATION, I_CHANGE_CIPHER_SPEC, O_CHANGE_CIPHER_SPEC, I_PSK_CLIENT_HELLO, I_PSK_CLIENT_KEY_EXCHANGE, I_FINISHED, O_FINISHED, O_SERVER_HELLO, O_SERVER_HELLO_DONE, O_CERTIFICATE_REQUEST, I_CERTIFICATE, O_HELLO_VERIFY_REQUEST);
+        BugPatterns patterns = loader.loadPatterns(DTLS_SERVER_BUG_PATTERNS, symbols); //Here bug patterns are returned expanded with symbols as defined above and not from the Mealy SUT
+
+        BugPattern earlyFinishedPattern = patterns.getBugPattern(EARLY_FINISHED);
+        checkPattern(earlyFinishedPattern, symbols, 3, // init, bug and sink states
                 new TestCase(Word.fromSymbols(I_FINISHED, O_CHANGE_CIPHER_SPEC), true),
+                new TestCase(Word.fromSymbols(I_CHANGE_CIPHER_SPEC, I_FINISHED, O_CHANGE_CIPHER_SPEC), false));
+        BugPattern certlessAuthPattern = patterns.getBugPattern(CERTLESS_AUTH);
+        checkPattern(certlessAuthPattern, symbols, 4,
+                new TestCase(Word.fromSymbols(O_CERTIFICATE_REQUEST, O_CHANGE_CIPHER_SPEC), true),
+                new TestCase(Word.fromSymbols(O_CERTIFICATE_REQUEST, O_APPLICATION, O_HELLO_VERIFY_REQUEST, O_CHANGE_CIPHER_SPEC), true),
+                new TestCase(Word.fromSymbols(O_CERTIFICATE_REQUEST, O_APPLICATION, O_HELLO_VERIFY_REQUEST, I_CERTIFICATE, O_CHANGE_CIPHER_SPEC), false),
+                new TestCase(Word.fromSymbols(O_CERTIFICATE_REQUEST, O_SERVER_HELLO), false));
+        BugPattern multCCSPattern = patterns.getBugPattern(MULT_CCS);
+        checkPattern(multCCSPattern, symbols, 5, // init, bug and sink states
+                new TestCase(Word.fromSymbols(I_CHANGE_CIPHER_SPEC, O_SERVER_HELLO), false),
+                new TestCase(Word.fromSymbols(I_CHANGE_CIPHER_SPEC, I_APPLICATION, O_APPLICATION, I_FINISHED), false),
+                new TestCase(Word.fromSymbols(I_CHANGE_CIPHER_SPEC, I_APPLICATION, O_APPLICATION, I_FINISHED, O_CHANGE_CIPHER_SPEC, I_CHANGE_CIPHER_SPEC, O_CHANGE_CIPHER_SPEC), false),
+                new TestCase(Word.fromSymbols(I_CHANGE_CIPHER_SPEC, O_SERVER_HELLO, I_CHANGE_CIPHER_SPEC, I_CHANGE_CIPHER_SPEC, O_CHANGE_CIPHER_SPEC), true),
+                new TestCase(Word.fromSymbols(I_CHANGE_CIPHER_SPEC, I_CHANGE_CIPHER_SPEC, O_SERVER_HELLO, I_CHANGE_CIPHER_SPEC, I_CHANGE_CIPHER_SPEC, O_CHANGE_CIPHER_SPEC), true),
+                new TestCase(Word.fromSymbols(I_CHANGE_CIPHER_SPEC, I_CHANGE_CIPHER_SPEC, O_CHANGE_CIPHER_SPEC, I_CHANGE_CIPHER_SPEC, I_CHANGE_CIPHER_SPEC, O_CHANGE_CIPHER_SPEC, I_APPLICATION, I_PSK_CLIENT_HELLO), true),
                 new TestCase(Word.fromSymbols(I_CHANGE_CIPHER_SPEC, I_FINISHED, O_CHANGE_CIPHER_SPEC), false));
     }
 
     @Test
-    public void loadParametricBugPatternTest() {
+    public void loadClientParametricBugPatternTest() {
         DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser(() -> new DtlsParsingContext());
         DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
+
         MappingTokenMatcherBuilder builder = new MappingTokenMatcher.MappingTokenMatcherBuilder();
         builder
         .map(new SymbolToken(true, "Application"), I_APPLICATION)
@@ -55,6 +74,7 @@ public class BugPatternLoaderTest {
         .map(new SymbolToken(false, "ChangeCipherSpec"), O_CHANGE_CIPHER_SPEC)
         .map(new SymbolToken(true, "HelloRequest"), I_HELLO_REQUEST)
         .map(new SymbolToken(true, "ServerHello"), I_PSK_SERVER_HELLO, I_RSA_SERVER_HELLO);
+        // builder now contains a mapping from SymbolToken to Symbol list
 
         MappingTokenMatcher matcher = builder.build();
         List<Symbol> symbols = new ArrayList<>();
@@ -64,15 +84,46 @@ public class BugPatternLoaderTest {
         BugPatternLoader loader = new BugPatternLoader(decoder);
         BugPatterns bugCatalogue = loader.loadPatterns(DTLS_CLIENT_PARAMETRIC_BUG_PATTERNS, symbols);
         List<BugPattern> patterns = bugCatalogue.getBugPatterns();
-        BugPattern switchingCS = patterns.get(0);
 
+        BugPattern switchingCS = patterns.get(0);
         checkPattern(switchingCS, symbols, 7,
-                new TestCase(Word.fromSymbols(I_RSA_SERVER_HELLO, I_PSK_SERVER_HELLO, O_APPLICATION), Boolean.TRUE),
-                new TestCase(Word.fromSymbols(I_RSA_SERVER_HELLO, I_RSA_SERVER_HELLO, O_APPLICATION), Boolean.FALSE));
+                new TestCase(Word.fromSymbols(I_RSA_SERVER_HELLO, I_PSK_SERVER_HELLO, O_APPLICATION), true),
+                new TestCase(Word.fromSymbols(I_RSA_SERVER_HELLO, I_RSA_SERVER_HELLO, O_APPLICATION), false));
+
         BugPattern wrongCertType = patterns.get(1);
         checkPattern(wrongCertType, symbols, 5,
-                new TestCase(Word.fromSymbols(I_RSA_SIGN_CERTIFICATE_REQUEST, O_ECDSA_CERTIFICATE), Boolean.TRUE),
-                new TestCase(Word.fromSymbols(I_RSA_SIGN_CERTIFICATE_REQUEST, O_RSA_CERTIFICATE), Boolean.FALSE));
+                new TestCase(Word.fromSymbols(I_RSA_SIGN_CERTIFICATE_REQUEST, O_ECDSA_CERTIFICATE), true),
+                new TestCase(Word.fromSymbols(I_RSA_SIGN_CERTIFICATE_REQUEST, O_RSA_CERTIFICATE), false));
+    }
+
+    @Test
+    public void loadServerParametricBugPatternTest() {
+        DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser(() -> new DtlsParsingContext());
+        DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
+
+        MappingTokenMatcherBuilder builder = new MappingTokenMatcher.MappingTokenMatcherBuilder();
+        builder
+        .map(new SymbolToken(true, "ClientHello"), I_ECDH_CLIENT_HELLO, I_DH_CLIENT_HELLO, I_PSK_CLIENT_HELLO, I_RSA_CLIENT_HELLO)
+        .map(new SymbolToken(false, "HelloVerifyRequest"), O_HELLO_VERIFY_REQUEST)
+        .map(new SymbolToken(false, "ServerHello"), O_SERVER_HELLO)
+        .map(new SymbolToken(false, "ServerHelloDone"), O_SERVER_HELLO_DONE)
+        .map(new SymbolToken(false, "CertificateRequest"), O_CERTIFICATE_REQUEST);
+        // builder now contains a mapping from SymbolToken to Symbol list
+
+        MappingTokenMatcher matcher = builder.build();
+        List<Symbol> symbols = new ArrayList<>();
+        matcher.collectSymbols(symbols);
+        decoder.setTokenMatcher(matcher);
+
+        BugPatternLoader loader = new BugPatternLoader(decoder);
+        BugPatterns bugCatalogue = loader.loadPatterns(DTLS_SERVER_PARAMETRIC_BUG_PATTERNS, symbols);
+        List<BugPattern> patterns = bugCatalogue.getBugPatterns();
+
+        BugPattern nonConformingCookie = patterns.get(0);
+        checkPattern(nonConformingCookie, symbols, 12,
+                new TestCase(Word.fromSymbols(I_PSK_CLIENT_HELLO, O_HELLO_VERIFY_REQUEST, I_RSA_CLIENT_HELLO, O_SERVER_HELLO), true),
+                new TestCase(Word.fromSymbols(I_PSK_CLIENT_HELLO, O_HELLO_VERIFY_REQUEST, I_PSK_CLIENT_HELLO, O_SERVER_HELLO), false),
+                new TestCase(Word.fromSymbols(I_RSA_CLIENT_HELLO, O_HELLO_VERIFY_REQUEST, I_RSA_CLIENT_HELLO, O_SERVER_HELLO), false));
     }
 
     public void checkPattern(BugPattern bp, Collection<Symbol> expectedSymbols, int expectedSize, TestCase ...testCases) {
