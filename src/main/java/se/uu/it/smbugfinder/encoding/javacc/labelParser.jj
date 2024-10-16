@@ -1,7 +1,10 @@
 options {
     STATIC = false;
     GENERATE_ANNOTATIONS = true;
+    BUILD_TOKEN_MANAGER = false;
 }
+
+
 PARSER_BEGIN(LabelParser)
 package se.uu.it.smbugfinder.encoding.javacc;
 
