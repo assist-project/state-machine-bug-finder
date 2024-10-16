@@ -188,7 +188,7 @@
             <showWarnings>true</showWarnings>
             <compilerArgs>
               <arg>-Werror</arg>
-              <arg>-Xlint:all,-processing,-this-escape</arg>
+              <arg>-Xlint:all,-processing</arg>
               <arg>-XDcompilePolicy=simple</arg>
               <arg>-Xplugin:ErrorProne -XepExcludedPaths:.*/target/generated-sources/javacc/.* -XepExcludedPaths:.*se/uu/it/smbugfinder/encoding/javacc/.* -Xep:AddressSelection:OFF -Xep:MissingSummary:OFF </arg>
             </compilerArgs>
