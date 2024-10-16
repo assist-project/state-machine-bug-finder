@@ -15,6 +15,7 @@ public final class StateMachineBug<I, O> extends Bug<I, O> {
         }
         this.bugPattern = bugPattern;
         setSeverity(bugPattern.getSeverity());
+        initialize();
     }
 
     public AbstractBugPattern getBugPattern() {

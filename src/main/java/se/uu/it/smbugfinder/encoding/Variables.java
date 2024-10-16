@@ -8,7 +8,7 @@ public class Variables extends LinkedHashMap<String, Variable>{
      */
     private static final long serialVersionUID = 1L;
 
-    public Variables(Variable ...variables) {
+    protected void initialize(Variable ...variables) {
         for (Variable variable : variables) {
             put(variable.getName(), variable);
         }

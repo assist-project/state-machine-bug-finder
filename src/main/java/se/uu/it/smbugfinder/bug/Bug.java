@@ -17,8 +17,11 @@ public abstract class Bug<I,O> {
     public Bug(Trace<I,O>  trace) {
         this.trace = trace;
         id = getFreshBugId();
-        severity = getDefaultSeverity();
-        status = getDefaultStatus();
+    }
+
+    protected void initialize() {
+        this.severity = getDefaultSeverity();
+        this.status = getDefaultStatus();
     }
 
     public abstract String getDescription();
