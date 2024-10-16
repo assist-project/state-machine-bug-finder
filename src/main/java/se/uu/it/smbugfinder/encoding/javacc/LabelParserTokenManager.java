@@ -1059,7 +1059,7 @@ private void jjCheckNAddTwoStates(int state1, int state2)
 
   /** Reinitialise parser. */
 
-  public void ReInit(SimpleCharStream stream)
+  public final void ReInit(SimpleCharStream stream)
   {
 
 
@@ -1088,7 +1088,7 @@ private void jjCheckNAddTwoStates(int state1, int state2)
   }
 
   /** Switch to specified lex state. */
-  public void SwitchTo(int lexState)
+  public final void SwitchTo(int lexState)
   {
     if (lexState >= 3 || lexState < 0)
       throw new TokenMgrError("Error: Ignoring invalid lexical state : " + lexState + ". State unchanged.", TokenMgrError.INVALID_LEXICAL_STATE);
