@@ -1,6 +1,6 @@
-/* adder.jj Adding up numbers */
 options {
     STATIC = false;
+    GENERATE_ANNOTATIONS = true;
 }
 PARSER_BEGIN(LabelParser)
 package se.uu.it.smbugfinder.encoding.javacc;
