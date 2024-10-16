@@ -37,7 +37,7 @@ public class DtlsParsingContext extends ParsingContext {
         private static final long serialVersionUID = 1L;
         public DtlsFields() {
             super();
-            initialize(new CertificateTypes(), new CipherSuite(), new KeyType());
+            initialize(new CertificateTypes(), new CipherSuite(), new CipherSuites(), new KeyType());
         }
     }
 
