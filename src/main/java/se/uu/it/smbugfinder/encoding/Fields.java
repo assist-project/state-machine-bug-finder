@@ -9,8 +9,7 @@ public class Fields extends LinkedHashMap<String, Field> {
      */
     private static final long serialVersionUID = 1L;
 
-    public Fields(Field ... fields) {
-        super();
+    protected void initialize(Field ... fields) {
         for (Field field : fields) {
             put(field.getName(), field);
         }
