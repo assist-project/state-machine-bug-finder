@@ -21,7 +21,7 @@
     <automatalib.version>0.11.0</automatalib.version>
     <checker-qual.version>3.48.1</checker-qual.version>
     <commons.version>3.17.0</commons.version>
-    <error-prone.version>2.33.0</error-prone.version>
+    <error-prone.version>2.34.0</error-prone.version>
     <guava.version>33.3.1-jre</guava.version>
     <jaxb-api.version>4.0.2</jaxb-api.version>
     <jaxb-runtime.version>4.0.5</jaxb-runtime.version>
