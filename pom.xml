@@ -47,7 +47,7 @@
     <resources-plugin.version>3.3.1</resources-plugin.version>
     <site-plugin.version>3.21.0</site-plugin.version>
     <spotless-plugin.version>2.43.0</spotless-plugin.version>
-    <spotbugs-plugin.version>4.8.6.5</spotbugs-plugin.version>
+    <spotbugs-plugin.version>4.8.6.6</spotbugs-plugin.version>
     <surefire-plugin.version>3.5.2</surefire-plugin.version>
   </properties>
 
