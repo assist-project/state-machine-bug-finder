@@ -71,7 +71,7 @@ See the respective fuzzer repositories for scripts to trim the models.
 **SMBugFinder** takes as argument the path to a bug pattern catalogue which indexes bug patterns.
 Bug patterns are specified as DOT graphs, and currently have to be manually written.
 A bug pattern defines a DFA which accepts only sequences exposing the presence of the bug.
-The directory [src/main/resources/models](src/main/resources/models) contains an extensive set of bug patterns for EDHOC and SSH (including all used in the NDSS'2023 publication), and a few bug patterns for DTLS.
+The directory [src/main/resources/patterns](src/main/resources/patterns) contains an extensive set of bug patterns for EDHOC clients and servers, SSH servers (including all used in the NDSS'2023 publication), and a few bug patterns for DTLS.
 (The complete set of bug patterns used in the publication experiments can be found [here](https://gitlab.com/pfg666/dtls-fuzzer/-/tree/bugcheck-artifact/src/main/resources/patterns)).
 Below is the pattern for the *Missing SR_AUTH* bug we found in Dropbear, which we visualize by running:
 
