@@ -8,10 +8,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import net.automatalib.alphabet.Alphabet;
-import net.automatalib.alphabet.ListAlphabet;
+import net.automatalib.alphabet.impl.ListAlphabet;
 import net.automatalib.automaton.fsa.DFA;
-import net.automatalib.automaton.fsa.FastDFA;
-import net.automatalib.automaton.fsa.FastDFAState;
+import net.automatalib.automaton.fsa.impl.FastDFA;
+import net.automatalib.automaton.fsa.impl.FastDFAState;
 import net.automatalib.util.automaton.Automata;
 import net.automatalib.word.Word;
 import se.uu.it.smbugfinder.dfa.DFAAdapter;
