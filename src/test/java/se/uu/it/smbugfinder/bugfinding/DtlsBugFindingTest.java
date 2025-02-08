@@ -8,6 +8,7 @@ import java.io.IOException;
 import org.junit.Assert;
 import org.junit.Test;
 
+import net.automatalib.exception.FormatException;
 import se.uu.it.smbugfinder.BugFinderResult;
 import se.uu.it.smbugfinder.StateMachineBugFinder;
 import se.uu.it.smbugfinder.StateMachineBugFinderConfig;
@@ -16,7 +17,7 @@ import se.uu.it.smbugfinder.pattern.BugPattern;
 public class DtlsBugFindingTest extends BugFindingTest {
 
     @Test
-    public void testDtlsClient() throws FileNotFoundException, IOException {
+    public void testDtlsClient() throws FileNotFoundException, IOException, FormatException {
         StateMachineBugFinderConfig config = new StateMachineBugFinderConfig();
         config.setModel(DTLS_CLIENT_MODEL);
         config.setPatterns(DTLS_CLIENT_BUG_PATTERNS);
@@ -34,7 +35,7 @@ public class DtlsBugFindingTest extends BugFindingTest {
     }
 
     @Test
-    public void testDtlsServer() throws FileNotFoundException, IOException {
+    public void testDtlsServer() throws FileNotFoundException, IOException, FormatException {
         StateMachineBugFinderConfig config = new StateMachineBugFinderConfig();
         config.setModel(DTLS_SERVER_MODEL);
         config.setPatterns(DTLS_SERVER_BUG_PATTERNS);

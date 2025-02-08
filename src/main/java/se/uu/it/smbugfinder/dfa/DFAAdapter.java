@@ -6,11 +6,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import net.automatalib.alphabet.ListAlphabet;
-import net.automatalib.automaton.fsa.CompactDFA;
+import net.automatalib.alphabet.impl.ListAlphabet;
+import net.automatalib.automaton.fsa.impl.CompactDFA;
 import net.automatalib.automaton.fsa.DFA;
-import net.automatalib.automaton.fsa.FastDFA;
-import net.automatalib.automaton.fsa.FastDFAState;
+import net.automatalib.automaton.fsa.impl.FastDFA;
+import net.automatalib.automaton.fsa.impl.FastDFAState;
 import net.automatalib.serialization.dot.GraphDOT;
 import net.automatalib.util.automaton.copy.AutomatonCopyMethod;
 import net.automatalib.util.automaton.copy.AutomatonLowLevelCopy;
@@ -20,7 +20,7 @@ import net.automatalib.word.Word;
 import se.uu.it.smbugfinder.utils.DFAUtils;
 
 /**
- * DFA adapter class that facilitates performing fundamental DFA operations such as complementing, intersection etc.
+ * DFA adapter class that facilitates performing fundamental DFA operations such as complementing, intersection, etc.
  */
 public class DFAAdapter {
     private DFA<?, Symbol> dfa;
@@ -39,7 +39,7 @@ public class DFAAdapter {
         return symbols;
     }
 
-    private FastDFA<Symbol>  newDfa() {
+    private FastDFA<Symbol> newDfa() {
         return new FastDFA<>(new ListAlphabet<Symbol>(symbols));
     }
 
@@ -97,7 +97,7 @@ public class DFAAdapter {
     }
 
     /**
-     * Returns an adapter containing the a fully specified copy of the underlying DFA.
+     * Returns an adapter containing a fully specified copy of the underlying DFA.
      */
     public DFAAdapter complete() {
         FastDFA<Symbol> fullySpecifiedDfa = newDfa();

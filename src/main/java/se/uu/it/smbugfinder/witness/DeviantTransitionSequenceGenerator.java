@@ -5,10 +5,10 @@ import java.util.Collection;
 import java.util.Iterator;
 import java.util.NoSuchElementException;
 
-import net.automatalib.alphabet.ListAlphabet;
+import net.automatalib.alphabet.impl.ListAlphabet;
 import net.automatalib.automaton.fsa.DFA;
-import net.automatalib.automaton.fsa.FastDFA;
-import net.automatalib.automaton.fsa.FastDFAState;
+import net.automatalib.automaton.fsa.impl.FastDFA;
+import net.automatalib.automaton.fsa.impl.FastDFAState;
 import net.automatalib.automaton.fsa.MutableDFA;
 import net.automatalib.util.automaton.copy.AutomatonCopyMethod;
 import net.automatalib.util.automaton.copy.AutomatonLowLevelCopy;

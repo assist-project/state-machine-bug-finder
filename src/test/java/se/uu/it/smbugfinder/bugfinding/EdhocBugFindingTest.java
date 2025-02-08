@@ -5,6 +5,7 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import net.automatalib.exception.FormatException;
 import se.uu.it.smbugfinder.BugFinderResult;
 import se.uu.it.smbugfinder.StateMachineBugFinder;
 import se.uu.it.smbugfinder.StateMachineBugFinderConfig;
@@ -24,7 +25,7 @@ public class EdhocBugFindingTest extends BugFindingTest {
         return EDHOC_SERVER_MODELS + sut;
     }
 
-    private BugFinderResult<String, String> runBugFinder(String model, String patterns) throws FileNotFoundException, IOException {
+    private BugFinderResult<String, String> runBugFinder(String model, String patterns) throws FileNotFoundException, IOException, FormatException {
         StateMachineBugFinderConfig config = new StateMachineBugFinderConfig();
         config.setModel(model);
         config.setPatterns(patterns);
@@ -36,7 +37,7 @@ public class EdhocBugFindingTest extends BugFindingTest {
     /* CLIENTS */
 
     @Test
-    public void testLakersClient() throws FileNotFoundException, IOException {
+    public void testLakersClient() throws FileNotFoundException, IOException, FormatException {
         String model = edhocClientModel("lakers-v0.5.0_client_initiator.dot");
         BugFinderResult<String, String> bugs = runBugFinder(model, EDHOC_CLIENT_M3_BUG_PATTERNS);
         assertFoundSpecificBugPatterns(bugs.getBugs());
@@ -45,21 +46,21 @@ public class EdhocBugFindingTest extends BugFindingTest {
     }
 
     @Test
-    public void testRise_9bdb756_client() throws FileNotFoundException, IOException {
+    public void testRise_9bdb756_client() throws FileNotFoundException, IOException, FormatException, FormatException {
         String model = edhocClientModel("rise-9bdb756_client_initiator_m4_app.dot");
         BugFinderResult<String, String> bugs = runBugFinder(model, EDHOC_CLIENT_M4_BUG_PATTERNS);
         assertFoundSpecificBugPatterns(bugs.getBugs());
     }
 
     @Test
-    public void testRise_f994359_client() throws FileNotFoundException, IOException {
+    public void testRise_f994359_client() throws FileNotFoundException, IOException, FormatException {
         String model = edhocClientModel("rise-f994359_client_initiator_m4_app.dot");
         BugFinderResult<String, String> bugs = runBugFinder(model, EDHOC_CLIENT_M4_BUG_PATTERNS);
         assertFoundSpecificBugPatterns(bugs.getBugs(), "Client Alive after sending EDHOC ERR", "Initiator completes EDHOC without M4 or APPo");
     }
 
     @Test
-    public void testSifisClient() throws FileNotFoundException, IOException {
+    public void testSifisClient() throws FileNotFoundException, IOException, FormatException {
         String model = edhocClientModel("sifis-home-3d1b68b_phase_1_client_initiator.dot");
         BugFinderResult<String, String> bugs = runBugFinder(model, EDHOC_CLIENT_M3_BUG_PATTERNS);
         assertFoundSpecificBugPatterns(bugs.getBugs(), "Unsupported sink state");
@@ -68,7 +69,7 @@ public class EdhocBugFindingTest extends BugFindingTest {
     }
 
     @Test
-    public void testUoscoreClient() throws FileNotFoundException, IOException {
+    public void testUoscoreClient() throws FileNotFoundException, IOException, FormatException {
         String model = edhocClientModel("uoscore-uedhoc-v3.0.3_linux_edhoc_oscore_client_initiator.dot");
         BugFinderResult<String, String> bugs = runBugFinder(model, EDHOC_CLIENT_M3_BUG_PATTERNS);
         assertFoundSpecificBugPatterns(bugs.getBugs());
@@ -80,28 +81,28 @@ public class EdhocBugFindingTest extends BugFindingTest {
     /* SERVERS */
 
     @Test
-    public void testLakersServer() throws FileNotFoundException, IOException {
+    public void testLakersServer() throws FileNotFoundException, IOException, FormatException {
         String model = edhocServerModel("lakers-v0.5.0_server_responder.dot");
         BugFinderResult<String, String> bugs = runBugFinder(model, EDHOC_SERVER_M4_BUG_PATTERNS);
         assertFoundSpecificBugPatterns(bugs.getBugs());
     }
 
     @Test
-    public void testRise_9bdb756_server() throws FileNotFoundException, IOException {
+    public void testRise_9bdb756_server() throws FileNotFoundException, IOException, FormatException {
         String model = edhocServerModel("rise-9bdb756_server_responder_m4_app.dot");
         BugFinderResult<String, String> bugs = runBugFinder(model, EDHOC_SERVER_M4_BUG_PATTERNS);
         assertFoundSpecificBugPatterns(bugs.getBugs(), "Server Respond to CoAP app messages", "EDHOC Error after exchange deletes derived OSCORE context");
     }
 
     @Test
-    public void testSifisServer() throws FileNotFoundException, IOException {
+    public void testSifisServer() throws FileNotFoundException, IOException, FormatException {
         String model = edhocServerModel("sifis-home-3d1b68b_phase_1_server_responder.dot");
         BugFinderResult<String, String> bugs = runBugFinder(model, EDHOC_SERVER_M4_BUG_PATTERNS);
         assertFoundSpecificBugPatterns(bugs.getBugs(), "EDHOC Error after exchange deletes derived OSCORE context");
     }
 
     @Test
-    public void testUoscoreServer() throws FileNotFoundException, IOException {
+    public void testUoscoreServer() throws FileNotFoundException, IOException, FormatException {
         String model = edhocServerModel("uoscore-uedhoc-v3.0.3_linux_edhoc_oscore_server_responder.dot");
         BugFinderResult<String, String> bugs = runBugFinder(model, EDHOC_SERVER_M4_BUG_PATTERNS);
         assertFoundSpecificBugPatterns(bugs.getBugs(), "Server Respond to CoAP app messages");
