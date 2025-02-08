@@ -4,8 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 import net.automatalib.automaton.AutomatonCreator;
-import net.automatalib.automaton.transducer.impl.CompactMealy;
 import net.automatalib.automaton.transducer.MutableMealyMachine;
+import net.automatalib.automaton.transducer.impl.CompactMealy;
 import net.automatalib.common.util.Pair;
 import net.automatalib.exception.FormatException;
 import net.automatalib.serialization.InputModelData;

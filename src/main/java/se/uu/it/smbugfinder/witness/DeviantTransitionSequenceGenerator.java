@@ -7,9 +7,9 @@ import java.util.NoSuchElementException;
 
 import net.automatalib.alphabet.impl.ListAlphabet;
 import net.automatalib.automaton.fsa.DFA;
+import net.automatalib.automaton.fsa.MutableDFA;
 import net.automatalib.automaton.fsa.impl.FastDFA;
 import net.automatalib.automaton.fsa.impl.FastDFAState;
-import net.automatalib.automaton.fsa.MutableDFA;
 import net.automatalib.util.automaton.copy.AutomatonCopyMethod;
 import net.automatalib.util.automaton.copy.AutomatonLowLevelCopy;
 import net.automatalib.word.Word;

@@ -7,10 +7,10 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import net.automatalib.exception.FormatException;
-
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
+
+import net.automatalib.exception.FormatException;
 
 /**
  * Console application for running the bug finder to test network protocol implementations.
