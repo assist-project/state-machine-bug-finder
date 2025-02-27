@@ -9,10 +9,10 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 import net.automatalib.alphabet.Alphabet;
-import net.automatalib.alphabet.ListAlphabet;
-import net.automatalib.automaton.fsa.FastDFA;
-import net.automatalib.automaton.fsa.FastDFAState;
+import net.automatalib.alphabet.impl.ListAlphabet;
 import net.automatalib.automaton.fsa.MutableDFA;
+import net.automatalib.automaton.fsa.impl.FastDFA;
+import net.automatalib.automaton.fsa.impl.FastDFAState;
 import net.automatalib.automaton.transducer.MealyMachine;
 import net.automatalib.common.util.Pair;
 import net.automatalib.common.util.mapping.Mapping;

@@ -7,10 +7,10 @@ import java.util.Collection;
 
 import org.junit.Assert;
 
-import net.automatalib.alphabet.ListAlphabet;
+import net.automatalib.alphabet.impl.ListAlphabet;
 import net.automatalib.automaton.Automaton;
 import net.automatalib.automaton.fsa.DFA;
-import net.automatalib.automaton.fsa.FastDFA;
+import net.automatalib.automaton.fsa.impl.FastDFA;
 import net.automatalib.serialization.dot.GraphDOT;
 import net.automatalib.util.automaton.fsa.DFAs;
 import se.uu.it.smbugfinder.pattern.BugPattern;

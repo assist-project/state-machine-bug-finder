@@ -10,6 +10,8 @@ import org.slf4j.LoggerFactory;
 import com.beust.jcommander.JCommander;
 import com.beust.jcommander.ParameterException;
 
+import net.automatalib.exception.FormatException;
+
 /**
  * Console application for running the bug finder to test network protocol implementations.
  * For validation, it assumes a test harness, with which it communicates over TCP sockets.
@@ -17,7 +19,7 @@ import com.beust.jcommander.ParameterException;
 public class Main {
     private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 
-    public static void main(String args[]) throws FileNotFoundException, IOException {
+    public static void main(String args[]) throws FileNotFoundException, IOException, FormatException {
         if (args.length > 0 && !args[0].startsWith("@")  && new File(args[0]).exists()) {
             LOGGER.info("Noticed that the first argument is a file. Processing it as an argument file.");
             args[0] = "@" + args[0];

@@ -22,7 +22,8 @@ import java.util.List;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import net.automatalib.automaton.transducer.CompactMealy;
+import net.automatalib.automaton.transducer.impl.CompactMealy;
+import net.automatalib.exception.FormatException;
 import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
@@ -98,7 +99,7 @@ public class Demo {
         return resource;
     }
 
-    public void run() throws IOException {
+    public void run() throws IOException, FormatException {
         displayIntro();
         String sutModel = askOrDefault("SUT model path: ", "/models/dtls/server/MbedTLS.dot");
         String patternsDir = askOrDefault("Bug patterns directory: ", "/patterns/dtls/server/");
@@ -134,7 +135,7 @@ public class Demo {
         export(result, outputDirectory, "bug_report.txt");
     }
 
-    public static void main(String args []) throws IOException {
+    public static void main(String args []) throws IOException, FormatException {
         Demo demo = new Demo();
         demo.bufferCommands(Arrays.asList(args));
         demo.run();

@@ -17,7 +17,8 @@ import java.util.List;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import net.automatalib.automaton.transducer.CompactMealy;
+import net.automatalib.automaton.transducer.impl.CompactMealy;
+import net.automatalib.exception.FormatException;
 import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
@@ -61,7 +62,7 @@ public class StateMachineBugFinder {
      * @throws FileNotFoundException if the directory to save files cannot be found
      * @throws IOException           if there a problen when writing files
      */
-    public BugFinderResult<String, String>  launch() throws IOException {
+    public BugFinderResult<String, String>  launch() throws IOException, FormatException {
         Files.createDirectories(Paths.get(config.getOutputDir()));
         DirectoryDFAExporter exporter = new DFAExporter.DirectoryDFAExporter(config.getOutputDir());
         BugFinderResult<String, String> result = launch(exporter);
@@ -74,7 +75,7 @@ public class StateMachineBugFinder {
      * @param exporter - if not null, will receive for export the bugs detected by the bug finder.
      * @return result containing the bugs found plus statistics of the bug detection experiment.
      */
-    public BugFinderResult<String, String> launch(@Nullable DFAExporter exporter) throws IOException {
+    public BugFinderResult<String, String> launch(@Nullable DFAExporter exporter) throws IOException, FormatException {
         InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
         InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(getResource(config.getModel()));
 
