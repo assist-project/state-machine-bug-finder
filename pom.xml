@@ -39,7 +39,7 @@
     <dependency-plugin.version>3.8.1</dependency-plugin.version>
     <deploy-plugin.version>3.1.4</deploy-plugin.version>
     <failsafe-plugin.version>3.5.2</failsafe-plugin.version>
-    <install-plugin.version>3.1.3</install-plugin.version>
+    <install-plugin.version>3.1.4</install-plugin.version>
     <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
     <jar-plugin.version>3.4.2</jar-plugin.version>
     <javacc-plugin.version>3.1.0</javacc-plugin.version>
