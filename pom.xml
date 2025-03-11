@@ -18,7 +18,7 @@
     <maven.compiler.target>17</maven.compiler.target>
 
     <!-- Dependency versions in alphabetical order -->
-    <automatalib.version>0.11.0</automatalib.version>
+    <automatalib.version>0.12.1</automatalib.version>
     <checker-qual.version>3.49.1</checker-qual.version>
     <commons.version>3.17.0</commons.version>
     <error-prone.version>2.36.0</error-prone.version>
@@ -113,11 +113,6 @@
     <dependency>
       <groupId>net.automatalib</groupId>
       <artifactId>automata-core</artifactId>
-      <version>${automatalib.version}</version>
-    </dependency>
-    <dependency>
-      <groupId>net.automatalib</groupId>
-      <artifactId>automata-serialization-core</artifactId>
       <version>${automatalib.version}</version>
     </dependency>
     <dependency>
@@ -400,6 +395,7 @@
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>${spotbugs-plugin.version}</version>
         <configuration>
+          <threshold>Medium</threshold>
           <includeFilterFile>.spotbugs/include.xml</includeFilterFile>
           <excludeFilterFile>.spotbugs/exclude.xml</excludeFilterFile>
         </configuration>
