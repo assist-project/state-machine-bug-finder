@@ -47,9 +47,8 @@ public abstract class Function {
             return true;
         if (obj == null)
             return false;
-        if (! (obj instanceof Function))
+        if (! (obj instanceof Function other))
             return false;
-        Function other = (Function) obj;
         if (numArgs != other.numArgs)
             return false;
         if (name == null) {

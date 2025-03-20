@@ -85,7 +85,7 @@ public interface SymbolMapping <I,O> {
         boolean first = true;
 
         for (Symbol symbol : symbolWord) {
-            if (symbol instanceof InputSymbol) {
+            if (symbol instanceof InputSymbol inputSymbol) {
                 if (!first) {
                     if (!outputSymbols.isEmpty()) {
                         outputWordBuilder.append(toOutput(outputSymbols));
@@ -94,7 +94,7 @@ public interface SymbolMapping <I,O> {
                         outputWordBuilder.add(emptyOutput());
                     }
                 }
-                inputWordBuilder.add( toInput( (InputSymbol) symbol) );
+                inputWordBuilder.add(toInput(inputSymbol));
             } else {
                 outputSymbols.add((OutputSymbol) symbol);
             }

@@ -46,9 +46,8 @@ public class Assignment {
             return true;
         if (obj == null)
             return false;
-        if (! (obj instanceof Assignment))
+        if (! (obj instanceof Assignment other))
             return false;
-        Assignment other = (Assignment) obj;
         if (field == null) {
             if (other.field != null)
                 return false;

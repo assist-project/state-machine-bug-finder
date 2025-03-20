@@ -61,7 +61,7 @@ public class Demo {
         this.commands.addAll(commands);
     }
 
-    private String ask(String msg, boolean required) throws IOException{
+    private String ask(String msg, boolean required) throws IOException {
         out.println(msg);
         if (!commands.isEmpty()) {
             String command = commands.remove();
@@ -69,7 +69,9 @@ public class Demo {
             return command;
         }
         String newCommands;
-        while ((newCommands = in.readLine().trim()).isEmpty() && required);
+        do {
+            newCommands = in.readLine().trim();
+        } while (newCommands.isEmpty() && required);
         String[] commandSplit = newCommands.split("\\s", -1);
         if (commandSplit.length > 1) {
             Arrays.stream(commandSplit, 1, commandSplit.length).forEach(cmd -> commands.add(cmd));

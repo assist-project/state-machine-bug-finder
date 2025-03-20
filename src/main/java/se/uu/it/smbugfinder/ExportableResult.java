@@ -10,7 +10,7 @@ public abstract class ExportableResult {
     private static String TITLE_DELIM = "=".repeat(80);
 
     public void export(Writer writer) {
-        PrintWriter pw = writer instanceof PrintWriter ? (PrintWriter) writer : new PrintWriter(writer);
+        PrintWriter pw = writer instanceof PrintWriter printWriter ? printWriter : new PrintWriter(writer);
         doExport(pw);
         pw.close();
     }

@@ -65,9 +65,8 @@ public class RelationalExpression  implements BooleanExpression {
             return true;
         if (obj == null)
             return false;
-        if (! (obj instanceof RelationalExpression))
+        if (! (obj instanceof RelationalExpression other))
             return false;
-        RelationalExpression other = (RelationalExpression) obj;
         if (expr1 == null) {
             if (other.expr1 != null)
                 return false;

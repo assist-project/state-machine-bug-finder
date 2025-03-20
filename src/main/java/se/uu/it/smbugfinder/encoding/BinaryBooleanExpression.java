@@ -16,26 +16,21 @@ public class BinaryBooleanExpression implements BooleanExpression {
 
     @Override
     public boolean eval(Symbol label, Valuation valuation) {
-        boolean result = false;
         boolean leftTrue = left.eval(label, valuation);
         boolean rightTrue = right.eval(label, valuation);
-        switch(op) {
-        case AND:
-            result = leftTrue && rightTrue;
-            break;
-        case OR:
-            result = leftTrue || rightTrue;
-            break;
-        default:
-            throw new RuntimeDecodingException(String.format("Operator %s not supported", op.name()));
-        }
 
-        return result;
+        return switch(op) {
+            case AND -> leftTrue && rightTrue;
+            case OR -> leftTrue || rightTrue;
+            default -> {
+                throw new RuntimeDecodingException(String.format("Operator %s not supported", op.name()));
+            }
+        };
     }
 
     @Override
     public String toString() {
-        return left +  op.getSign() + right;
+        return left + op.getSign() + right;
     }
 
 }
