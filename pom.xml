@@ -22,7 +22,7 @@
     <checker-qual.version>3.49.1</checker-qual.version>
     <commons.version>3.17.0</commons.version>
     <error-prone.version>2.37.0</error-prone.version>
-    <guava.version>33.4.0-jre</guava.version>
+    <guava.version>33.4.5-jre</guava.version>
     <jaxb-api.version>4.0.2</jaxb-api.version>
     <jaxb-runtime.version>4.0.5</jaxb-runtime.version>
     <jcommander.version>1.82</jcommander.version>
