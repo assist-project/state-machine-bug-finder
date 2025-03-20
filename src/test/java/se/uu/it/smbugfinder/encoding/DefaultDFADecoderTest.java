@@ -358,8 +358,7 @@ public class DefaultDFADecoderTest {
 
     private void assertEquivalent(DFA<?, Symbol> expected, DFA<?, Symbol> actual, Collection<Symbol> messageLabels, DFA<?, Label> spec, Collection<Label> specLabels) {
         Word<Symbol> sepWord = Automata.findSeparatingWord(expected, actual, messageLabels);
-        Assert.assertNull(String.format("The DFA resulting from the unfolding of a test specification differs from what is expected. \n"
-                + "Specification: %s\n Expected: %s\n Actual: %s\n SepWord: %s\n",
+        Assert.assertNull(String.format("The DFA resulting from the unfolding of a test specification differs from what is expected. \nSpecification: %s\n Expected: %s\n Actual: %s\n SepWord: %s\n",
                 TestUtils.getAutomataString(spec, specLabels),
                 TestUtils.getAutomataString(expected, messageLabels),
                 TestUtils.getAutomataString(actual, messageLabels),

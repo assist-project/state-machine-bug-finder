@@ -11,7 +11,6 @@ public class Label {
         this.description = description;
     }
 
-
     public Label(DescriptionToken description, Guard guard, Update update) {
         this.guard = guard;
         this.update = update;
@@ -45,9 +44,8 @@ public class Label {
             return true;
         if (obj == null)
             return false;
-        if (! (obj instanceof Label))
+        if (! (obj instanceof Label other))
             return false;
-        Label other = (Label) obj;
         if (description == null) {
             if (other.description != null)
                 return false;

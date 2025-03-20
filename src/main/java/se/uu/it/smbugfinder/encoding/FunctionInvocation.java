@@ -64,9 +64,8 @@ public final class FunctionInvocation implements ValueExpression {
             return true;
         if (obj == null)
             return false;
-        if (! (obj instanceof FunctionInvocation))
+        if (! (obj instanceof FunctionInvocation other))
             return false;
-        FunctionInvocation other = (FunctionInvocation) obj;
         if (function == null) {
             if (other.function != null)
                 return false;

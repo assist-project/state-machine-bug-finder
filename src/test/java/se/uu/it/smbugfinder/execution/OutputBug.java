@@ -1,6 +1,5 @@
 package se.uu.it.smbugfinder.execution;
 
-
 import com.google.common.base.Ascii;
 
 import lombok.EqualsAndHashCode;
@@ -22,15 +21,11 @@ public class OutputBug {
   }
 
   private static BugSeverity mapStringtoEnum(String s) {
-    switch (Ascii.toUpperCase(s)) {
-      case "LOW":
-        return BugSeverity.LOW;
-      case "MEDIUM":
-        return BugSeverity.MEDIUM;
-      case "HIGH":
-        return BugSeverity.HIGH;
-      default:
-        return BugSeverity.UNKNOWN;
-    }
+    return switch (Ascii.toUpperCase(s)) {
+      case "LOW" -> BugSeverity.LOW;
+      case "MEDIUM" -> BugSeverity.MEDIUM;
+      case "HIGH" -> BugSeverity.HIGH;
+      default -> BugSeverity.UNKNOWN;
+    };
   }
 }

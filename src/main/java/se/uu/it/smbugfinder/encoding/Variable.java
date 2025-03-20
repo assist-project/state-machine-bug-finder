@@ -38,9 +38,8 @@ public class Variable implements ValueExpression {
             return true;
         if (obj == null)
             return false;
-        if (! (obj instanceof Variable))
+        if (! (obj instanceof Variable other))
             return false;
-        Variable other = (Variable) obj;
         if (name == null) {
             if (other.name != null)
                 return false;
