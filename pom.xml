@@ -28,7 +28,7 @@
     <jcommander.version>1.82</jcommander.version>
     <junit.version>4.13.2</junit.version>
     <logback.version>1.5.18</logback.version>
-    <lombok.version>1.18.36</lombok.version>
+    <lombok.version>1.18.38</lombok.version>
     <slf4j.version>2.0.17</slf4j.version>
 
     <!-- Plugin versions in alphabetical order -->
@@ -38,7 +38,7 @@
     <coveralls-plugin.version>4.3.0</coveralls-plugin.version>
     <dependency-plugin.version>3.8.1</dependency-plugin.version>
     <deploy-plugin.version>3.1.4</deploy-plugin.version>
-    <failsafe-plugin.version>3.5.2</failsafe-plugin.version>
+    <failsafe-plugin.version>3.5.3</failsafe-plugin.version>
     <install-plugin.version>3.1.4</install-plugin.version>
     <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
     <jar-plugin.version>3.4.2</jar-plugin.version>
@@ -48,7 +48,7 @@
     <site-plugin.version>3.21.0</site-plugin.version>
     <spotless-plugin.version>2.44.3</spotless-plugin.version>
     <spotbugs-plugin.version>4.9.3.0</spotbugs-plugin.version>
-    <surefire-plugin.version>3.5.2</surefire-plugin.version>
+    <surefire-plugin.version>3.5.3</surefire-plugin.version>
   </properties>
 
   <dependencies>
