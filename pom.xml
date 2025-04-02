@@ -19,7 +19,7 @@
 
     <!-- Dependency versions in alphabetical order -->
     <automatalib.version>0.12.1</automatalib.version>
-    <checker-qual.version>3.49.1</checker-qual.version>
+    <checker-qual.version>3.49.2</checker-qual.version>
     <commons.version>3.17.0</commons.version>
     <error-prone.version>2.37.0</error-prone.version>
     <guava.version>33.4.6-jre</guava.version>
@@ -40,7 +40,7 @@
     <deploy-plugin.version>3.1.4</deploy-plugin.version>
     <failsafe-plugin.version>3.5.3</failsafe-plugin.version>
     <install-plugin.version>3.1.4</install-plugin.version>
-    <jacoco-plugin.version>0.8.12</jacoco-plugin.version>
+    <jacoco-plugin.version>0.8.13</jacoco-plugin.version>
     <jar-plugin.version>3.4.2</jar-plugin.version>
     <javacc-plugin.version>3.1.1</javacc-plugin.version>
     <project-info-reports-plugin.version>3.9.0</project-info-reports-plugin.version>
