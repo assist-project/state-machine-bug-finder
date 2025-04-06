@@ -354,6 +354,9 @@
                 <include>**/*.xml</include>
                 <include>.spotbugs/*.xml</include>
               </includes>
+              <excludes>
+                <exclude>target/**/*.xml</exclude>
+              </excludes>
               <endWithNewline />
               <indent>
                 <spaces>true</spaces>
