@@ -159,7 +159,7 @@
     </bugPattern>
 
     <!-- General bug patterns -->
-    
+
     <generalBugPattern>
         <name>Connection Layer Bug</name>
         <bugLanguage>connection_layer_bug.dot</bugLanguage>
@@ -184,4 +184,3 @@
     </bugPattern>
 
 </bugPatterns>
-
