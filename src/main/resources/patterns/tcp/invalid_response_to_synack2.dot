@@ -5,7 +5,7 @@ bug [shape="doublecircle"]
 
 start -> est [label="I_SYN_ACK(V,V,0)"]
 start -> start [label="other - {I_ACK_RST(V,V,0), I_CLOSE, I_RST(V,V,0), I_SYN(V,V,0)}"]
-est -> est [label="other - {I_ACK_RST(V,V,0), I_CLOSE, I_ACK_PSH(V,V,1), I_RST(V,V,0), I_FIN_ACK(V,V,0), I_RCV}"]
+est -> est [label="other - {I_ACK_RST(V,V,0), I_CLOSE, I_ACK_PSH(V,V,1), I_RST(V,V,0), I_FIN_ACK(V,V,0), I_SYN(V,V,0), I_RCV}"]
 est -> est2  [label="I_SYN_ACK(V,V,0)"]
 est2 -> est2  [label="other"]
 est2 -> bug [label="O_ACK(NEXT,CURRENT,0)"]
