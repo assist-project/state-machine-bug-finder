@@ -2,7 +2,7 @@
     <defaultBugSeverity>LOW</defaultBugSeverity>
     <defaultEnabled>true</defaultEnabled>
 	<bugPattern>
-		<name>bug_first try</name>
+		<name>Unexpected_RST</name>
 		<bugLanguage>Unexpected_RST.dot</bugLanguage>
 		<description>incorrect response with an unexpected RST on state of established(during rcv).</description>
 		<severity>LOW</severity>   
