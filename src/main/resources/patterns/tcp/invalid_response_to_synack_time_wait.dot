@@ -3,14 +3,15 @@ label=""
 start [color="red"]
 bug [shape="doublecircle"]
 
-start -> finish [label="I_CLOSE"]
 start -> start [label="other"]
-finish -> finish [label="other - {I_FIN_ACK(V,V,0)}"]
-finish -> bug [label="O_ACK(NEXT,CURRENT,0)"]
+start -> fin [label="I_CLOSE"]
+fin -> fin [label="other"]
+fin -> time_wait [label="I_FIN_ACK(V,V,0)"]
+time_wait -> time_wait [label="other"]
+time_wait -> bug [label="O_ACK(NEXT,CURRENT,0)"]
 
 bug -> bug [label="other"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
 }
-

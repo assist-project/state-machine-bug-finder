@@ -3,11 +3,11 @@ label=""
 start [color="red"]
 bug [shape="doublecircle"]
 
-start -> start [label="other"]
+start -> start [label="other - {I_CLOSE}"]
 start -> close_wait [label="I_FIN_ACK(V,V,0)"]
 close_wait -> close_wait [label="other"]
 close_wait -> last_ack [label="I_CLOSE"]
-last_ack -> last_ack [label="other"]
+last_ack -> last_ack [label="other - {I_FIN_ACK(V,V,0)}"]
 last_ack -> bug [label="O_ACK(NEXT,CURRENT,0)"]
 
 bug -> bug [label="other"]

@@ -3,9 +3,9 @@ label=""
 start [color="red"]
 bug [shape="doublecircle"]
 
-start -> start [label="other"]
+start -> start [label="other - {I_CLOSE}"]
 start -> close_wait [label="I_FIN_ACK(V,V,0)"]
-close_wait -> close_wait [label="other"]
+close_wait -> close_wait [label="other - {I_FIN_ACK(V,V,0)}"]
 close_wait -> bug [label="O_ACK(NEXT,CURRENT,0)"]
 
 
