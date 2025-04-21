@@ -128,15 +128,12 @@ public class DtlsParsingContext extends ParsingContext {
             Set<String> certTypes = new LinkedHashSet<String>();
 
             switch(keyType) {
-                case "RSA":
-                    certTypes.add("RSA_SIGN");
-                    break;
-                case "ECDSA":
-                    certTypes.add("ECDSA_SIGN");
-                    break;
-                default:
+                case "RSA" -> certTypes.add("RSA_SIGN");
+                case "ECDSA" -> certTypes.add("ECDSA_SIGN");
+                default -> {
                     throw new NotImplementedException("Unsupported key type " + keyType);
-            }
+                }
+            };
 
             return new Value(certTypes);
         }

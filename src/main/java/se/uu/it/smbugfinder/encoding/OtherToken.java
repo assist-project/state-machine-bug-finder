@@ -25,10 +25,10 @@ public class OtherToken extends DescriptionToken {
     public String toString() {
         StringBuilder sb = new StringBuilder("other");
         switch(otherTokenType) {
-        case ALL: break;
-        case INPUT: sb.append("_input"); break;
-        case OUTPUT: sb.append("_output"); break;
-        }
+        case ALL -> { }
+        case INPUT -> { sb.append("_input"); }
+        case OUTPUT -> { sb.append("_output"); }
+        };
         return sb.toString();
     }
 
