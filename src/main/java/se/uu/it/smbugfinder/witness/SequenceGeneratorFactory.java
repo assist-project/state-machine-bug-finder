@@ -16,7 +16,7 @@ import se.uu.it.smbugfinder.utils.DFAUtils;
 
 public class SequenceGeneratorFactory {
 
-
+    @SuppressWarnings("StatementSwitchToExpressionSwitch")
     public static <I> SequenceGenerator<I> buildGenerator(GenerationStrategy generationStrategy, @Nullable SearchConfig config, @Nullable DFA<?,I> specification) {
         switch(generationStrategy) {
         case SHORTEST:
@@ -56,7 +56,7 @@ public class SequenceGeneratorFactory {
             this.config = config;
         }
 
-       @Override
+        @Override
         public <S> Iterable<Word<I>> generateSequences(DFA<S, I> bugLanguage, Collection<I> alphabet) {
             Set<S> acceptingStates = bugLanguage.getStates().stream().filter(s -> bugLanguage.isAccepting(s)).collect(Collectors.toSet());
             ModelExplorer<S,I> explorer = new ModelExplorer<>(bugLanguage, alphabet);
