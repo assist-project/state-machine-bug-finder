@@ -211,7 +211,7 @@
           <artifactId>maven-surefire-plugin</artifactId>
           <version>${surefire-plugin.version}</version>
           <configuration>
-            <argLine>${surefire.jacoco.args}</argLine>
+            <argLine>-Djava.library.path=${project.basedir}/pattern-language ${surefire.jacoco.args}</argLine>
           </configuration>
         </plugin>
         <plugin>
@@ -256,7 +256,7 @@
         <artifactId>maven-failsafe-plugin</artifactId>
         <version>${failsafe-plugin.version}</version>
         <configuration>
-          <argLine>${failsafe.jacoco.args}</argLine>
+          <argLine>-Djava.library.path=${project.basedir}/pattern-language ${failsafe.jacoco.args}</argLine>
         </configuration>
         <executions>
           <execution>

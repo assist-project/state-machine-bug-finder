@@ -13,6 +13,7 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
@@ -25,7 +26,12 @@ import se.uu.it.smbugfinder.DFAExporter.DirectoryDFAExporter;
 import se.uu.it.smbugfinder.dfa.MealySymbolExtractor;
 import se.uu.it.smbugfinder.dfa.Symbol;
 import se.uu.it.smbugfinder.dfa.SymbolMapping;
+import se.uu.it.smbugfinder.encoding.CustomParsingContext;
 import se.uu.it.smbugfinder.encoding.DefaultDFADecoder;
+import se.uu.it.smbugfinder.encoding.DefaultEncodedDFAParser;
+import se.uu.it.smbugfinder.encoding.MappingTokenMatcher;
+import se.uu.it.smbugfinder.encoding.MappingTokenMatcher.MappingTokenMatcherBuilder;
+import se.uu.it.smbugfinder.encoding.OcamlValues;
 import se.uu.it.smbugfinder.pattern.BugPatternLoader;
 import se.uu.it.smbugfinder.pattern.BugPatterns;
 import se.uu.it.smbugfinder.sut.SUT;
@@ -61,7 +67,7 @@ public class StateMachineBugFinder {
      * @throws FileNotFoundException if the directory to save files cannot be found
      * @throws IOException           if there a problen when writing files
      */
-    public BugFinderResult<String, String>  launch() throws IOException {
+    public BugFinderResult<String, String> launch() throws IOException {
         Files.createDirectories(Paths.get(config.getOutputDir()));
         DirectoryDFAExporter exporter = new DFAExporter.DirectoryDFAExporter(config.getOutputDir());
         BugFinderResult<String, String> result = launch(exporter);
@@ -78,14 +84,15 @@ public class StateMachineBugFinder {
         InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
         InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(getResource(config.getModel()));
 
-        BugPatternLoader loader = new BugPatternLoader(new DefaultDFADecoder());
-
         SymbolMapping<String, String> symbolMapping = new StringSymbolMapper(config.getEmptyOutput(), config.getSeparator());
         List<Symbol> allSymbols = new ArrayList<>();
-        SUT<String,String> sut = null;
-        MealySymbolExtractor.extractSymbols(sutModelData.model, sutModelData.alphabet, symbolMapping, allSymbols);
+        MealySymbolExtractor.extractSymbols(sutModelData.model, sutModelData.alphabet, symbolMapping, allSymbols); //allSymbols now has input + output symbols from SUT
+
+        BugPatternLoader loader = handle_parameters(allSymbols);
+
         BugPatterns bp = loader.loadPatterns(config.getPatterns(), allSymbols);
         StateMachineBugFinderCoreConfig finderConfig = config.getSmBugFinderConfig();
+        SUT<String,String> sut = null;
         if (finderConfig.isValidate()) {
             if (config.getHarnessAddress() != null) {
                 String[] hostPort = config.getHarnessAddress().split("\\:", -1);
@@ -131,5 +138,22 @@ public class StateMachineBugFinder {
             resource = new FileInputStream(path);
         }
         return resource;
+    }
+
+    private BugPatternLoader handle_parameters(Collection<Symbol> symbols) {
+        if (config.getParameters() == null) {
+            return new BugPatternLoader(new DefaultDFADecoder());
+        } else {
+            OcamlValues parameters = new OcamlValues(Paths.get(config.getParameters()).toAbsolutePath().toString());
+            DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser(() -> new CustomParsingContext(parameters));
+            DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
+
+            MappingTokenMatcherBuilder builder = new MappingTokenMatcher.MappingTokenMatcherBuilder();
+            builder.addMapFromSymbols(parameters, symbols);
+            MappingTokenMatcher matcher = builder.build();
+            decoder.setTokenMatcher(matcher);
+
+            return new BugPatternLoader(decoder);
+        }
     }
 }

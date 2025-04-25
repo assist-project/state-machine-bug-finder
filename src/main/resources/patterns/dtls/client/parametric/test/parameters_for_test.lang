@@ -1,0 +1,13 @@
+fields =
+	key_type -> RSA, ECDSA
+	cert_type -> RSA_SIGN, ECDSA_SIGN
+	cipher_suite -> RSA, PSK
+
+parametric_messages =
+	SERVER_HELLO -> [cipher_suite]
+	CERTIFICATE -> [key_type]
+	CERTIFICATE_REQUEST -> {cert_type}
+	
+func cert_type : mapping =
+	RSA -> RSA_SIGN
+	ECDSA -> ECDSA_SIGN

@@ -2,12 +2,22 @@ package se.uu.it.smbugfinder;
 
 import static se.uu.it.smbugfinder.DtlsResources.*;
 import static se.uu.it.smbugfinder.DtlsResources.DtlsClientAlphabet.*;
+import static se.uu.it.smbugfinder.DtlsResources.DtlsJointAlphabet.I_APPLICATION;
+import static se.uu.it.smbugfinder.DtlsResources.DtlsJointAlphabet.I_CHANGE_CIPHER_SPEC;
+import static se.uu.it.smbugfinder.DtlsResources.DtlsJointAlphabet.I_FINISHED;
+import static se.uu.it.smbugfinder.DtlsResources.DtlsJointAlphabet.O_APPLICATION;
+import static se.uu.it.smbugfinder.DtlsResources.DtlsJointAlphabet.O_CHANGE_CIPHER_SPEC;
+import static se.uu.it.smbugfinder.DtlsResources.DtlsJointAlphabet.O_ECDSA_CERTIFICATE;
+import static se.uu.it.smbugfinder.DtlsResources.DtlsJointAlphabet.O_FINISHED;
+import static se.uu.it.smbugfinder.DtlsResources.DtlsJointAlphabet.O_RSA_CERTIFICATE;
 import static se.uu.it.smbugfinder.DtlsResources.DtlsServerAlphabet.*;
 
 import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
 
@@ -17,10 +27,13 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.automatalib.word.Word;
-import se.uu.it.smbugfinder.MappingTokenMatcher.MappingTokenMatcherBuilder;
 import se.uu.it.smbugfinder.dfa.Symbol;
+import se.uu.it.smbugfinder.encoding.CustomParsingContext;
 import se.uu.it.smbugfinder.encoding.DefaultDFADecoder;
 import se.uu.it.smbugfinder.encoding.DefaultEncodedDFAParser;
+import se.uu.it.smbugfinder.encoding.MappingTokenMatcher;
+import se.uu.it.smbugfinder.encoding.MappingTokenMatcher.MappingTokenMatcherBuilder;
+import se.uu.it.smbugfinder.encoding.OcamlValues;
 import se.uu.it.smbugfinder.encoding.SymbolToken;
 import se.uu.it.smbugfinder.pattern.BugPattern;
 import se.uu.it.smbugfinder.pattern.BugPatternLoader;
@@ -32,10 +45,9 @@ public class BugPatternLoaderTest {
 
     @Test
     public void loadNonParametricBugPatternTest() throws IOException {
-        DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser();
-        DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
-        BugPatternLoader loader = new BugPatternLoader(decoder);
-        //symbols contains the alphabet for the expansion of but-pattern. normally symbols are taken from the Mealy SUT
+        BugPatternLoader loader = new BugPatternLoader(new DefaultDFADecoder());
+
+        //symbols contains the entire alphabet to be used for the expansion of bug-pattern. normally symbols are taken from the Mealy SUT
         List<Symbol> symbols = Arrays.asList(I_APPLICATION, O_APPLICATION, I_CHANGE_CIPHER_SPEC, O_CHANGE_CIPHER_SPEC, I_PSK_CLIENT_HELLO, I_PSK_CLIENT_KEY_EXCHANGE, I_FINISHED, O_FINISHED, O_SERVER_HELLO, O_SERVER_HELLO_DONE, O_CERTIFICATE_REQUEST, I_CERTIFICATE, O_HELLO_VERIFY_REQUEST);
         BugPatterns patterns = loader.loadPatterns(DTLS_SERVER_BUG_PATTERNS, symbols); //Here bug patterns are returned expanded with symbols as defined above and not from the Mealy SUT
 
@@ -97,6 +109,48 @@ public class BugPatternLoaderTest {
     }
 
     @Test
+    public void loadClientParametricBugPatternTestFromFile() {
+        String fullPath = Paths.get("src/main/resources/patterns/dtls/client/parametric/test/parameters_for_test.lang").toAbsolutePath().toString();
+        OcamlValues parameters = new OcamlValues(fullPath);
+
+        DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser(() -> new CustomParsingContext(parameters));
+        DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
+
+        MappingTokenMatcherBuilder builder = new MappingTokenMatcher.MappingTokenMatcherBuilder();
+
+        List<SymbolToken> symbolTokens = new ArrayList<SymbolToken>();
+        Collections.addAll(symbolTokens,
+            new SymbolToken(true, "APPLICATION"),
+            new SymbolToken(false, "APPLICATION"),
+            new SymbolToken(false, "CHANGE_CIPHER_SPEC"),
+            new SymbolToken(true, "HELLO_REQUEST")
+        );
+        // we add symbols from the language file (params) + from the symbolTokens list (in order to achieve the same result as loadClientParametricBugPatternTest)
+        // this has been simplified so that Input & Output Symbols are automatically generated from SymbolTokens when only one variant exists
+        // SymbolTokens are capitalized as the parametric bug patterns will have capitalized messages (as in plain bug patterns)
+        builder.addSymbolTokens(parameters, symbolTokens);
+
+        MappingTokenMatcher matcher = builder.build();
+        List<Symbol> symbols = new ArrayList<>();
+        matcher.collectSymbols(symbols); //symbols now has all the symbols from above (I_APPLICATION etc)
+        decoder.setTokenMatcher(matcher);
+
+        BugPatternLoader loader = new BugPatternLoader(decoder);
+        BugPatterns bugCatalogue = loader.loadPatterns("/patterns/dtls/client/parametric/test/patterns.xml", symbols); //in test directory, we have the same patterns as above but words are capitalised
+        List<BugPattern> patterns = bugCatalogue.getBugPatterns();
+
+        BugPattern switchingCS = patterns.get(0);
+        checkPattern(switchingCS, symbols, 7,
+                new TestCase(Word.fromSymbols(I_RSA_SERVER_HELLO, I_PSK_SERVER_HELLO, O_APPLICATION), true),
+                new TestCase(Word.fromSymbols(I_RSA_SERVER_HELLO, I_RSA_SERVER_HELLO, O_APPLICATION), false));
+
+        BugPattern wrongCertType = patterns.get(1);
+        checkPattern(wrongCertType, symbols, 5,
+                new TestCase(Word.fromSymbols(I_RSA_SIGN_CERTIFICATE_REQUEST, O_ECDSA_CERTIFICATE), true),
+                new TestCase(Word.fromSymbols(I_RSA_SIGN_CERTIFICATE_REQUEST, O_RSA_CERTIFICATE), false));
+    }
+
+    @Test
     public void loadServerParametricBugPatternTest() {
         DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser(() -> new DtlsParsingContext());
         DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
@@ -126,6 +180,43 @@ public class BugPatternLoaderTest {
                 new TestCase(Word.fromSymbols(I_RSA_CLIENT_HELLO, O_HELLO_VERIFY_REQUEST, I_RSA_CLIENT_HELLO, O_SERVER_HELLO), false));
     }
 
+    @Test
+    public void loadServerParametricBugPatternTestFromFile() {
+        String fullPath = Paths.get("src/main/resources/patterns/dtls/server/parametric/test/parameters_for_test.lang").toAbsolutePath().toString();
+        OcamlValues parameters = new OcamlValues(fullPath);
+
+        DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser(() -> new CustomParsingContext(parameters));
+        DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
+
+        MappingTokenMatcherBuilder builder = new MappingTokenMatcher.MappingTokenMatcherBuilder();
+
+        List<SymbolToken> symbolTokens = new ArrayList<SymbolToken>();
+        Collections.addAll(symbolTokens,
+            new SymbolToken(false, "HELLO_VERIFY_REQUEST"),
+            new SymbolToken(false, "SERVER_HELLO"),
+            new SymbolToken(false, "SERVER_HELLO_DONE"),
+            new SymbolToken(false, "CERTIFICATE_REQUEST")
+        );
+
+        builder.addSymbolTokens(parameters, symbolTokens);
+
+        MappingTokenMatcher matcher = builder.build();
+        List<Symbol> symbols = new ArrayList<>();
+        matcher.collectSymbols(symbols);
+        decoder.setTokenMatcher(matcher);
+
+        BugPatternLoader loader = new BugPatternLoader(decoder);
+        BugPatterns bugCatalogue = loader.loadPatterns("/patterns/dtls/server/parametric/test/patterns.xml", symbols);
+        List<BugPattern> patterns = bugCatalogue.getBugPatterns();
+
+        BugPattern nonConformingCookie = patterns.get(0);
+        checkPattern(nonConformingCookie, symbols, 12,
+                new TestCase(Word.fromSymbols(I_PSK_CLIENT_HELLO, O_HELLO_VERIFY_REQUEST, I_RSA_CLIENT_HELLO, O_SERVER_HELLO), true),
+                new TestCase(Word.fromSymbols(I_PSK_CLIENT_HELLO, O_HELLO_VERIFY_REQUEST, I_PSK_CLIENT_HELLO, O_SERVER_HELLO), false),
+                new TestCase(Word.fromSymbols(I_RSA_CLIENT_HELLO, O_HELLO_VERIFY_REQUEST, I_RSA_CLIENT_HELLO, O_SERVER_HELLO), false));
+    }
+
+    // helpers
     public void checkPattern(BugPattern bp, Collection<Symbol> expectedSymbols, int expectedSize, TestCase ...testCases) {
         Assert.assertEquals(new LinkedHashSet<>(expectedSymbols), new LinkedHashSet<>(bp.generateBugLanguage().getSymbols()));
         Assert.assertEquals(expectedSize, bp.generateBugLanguage().getDfa().getStates().size());
