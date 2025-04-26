@@ -741,4 +741,7 @@ s56 -> s56 [label="RCV / TIMEOUT"];
 s56 -> s54 [label="ACK_RST(V,V,0) / TIMEOUT"];
 s56 -> s8 [label="CLOSE / TIMEOUT"];
 s56 -> s56 [label="ACK(V,V,0) / TIMEOUT"];
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> s0;
 }
