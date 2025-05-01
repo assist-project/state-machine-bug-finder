@@ -3,7 +3,7 @@
     <defaultEnabled>true</defaultEnabled>
 	<bugPattern>
 		<name>unexpected_rst</name>
-		<bugLanguage>unexpected_rsy.dot</bugLanguage>
+		<bugLanguage>unexpected_rst.dot</bugLanguage>
 		<description>incorrect response with an unexpected RST on state of established(during rcv).</description>
 		<severity>LOW</severity>   
 	</bugPattern>

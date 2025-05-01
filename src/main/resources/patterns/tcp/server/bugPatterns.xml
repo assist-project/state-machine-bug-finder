@@ -1,0 +1,16 @@
+<bugPatterns>
+    <defaultBugSeverity>LOW</defaultBugSeverity>
+    <defaultEnabled>true</defaultEnabled> 
+		<bugPattern>
+		<name>rst_absence_on_close_state</name>
+		<bugLanguage>rst_absence_on_close_state.dot</bugLanguage>
+		<description>fails to respond with a RST one close state while receiving unexpected message.</description>
+		<severity>LOW</severity>   
+	  </bugPattern>
+	  <bugPattern>
+		<name>rst_absence_on_listen_state</name>
+		<bugLanguage>rst_absence_on_listen_state.dot</bugLanguage>
+		<description>fails to respond with a RST one listen state while receiving unexpected message.</description>
+		<severity>LOW</severity>   
+	  </bugPattern>
+</bugPatterns>
