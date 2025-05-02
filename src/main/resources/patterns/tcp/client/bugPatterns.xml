@@ -14,13 +14,13 @@
 		<severity>LOW</severity>   
 	</bugPattern>
   <bugPattern>
-		<name>invalid_response(established)</name>
+		<name>invalid_response_to_synack(established)</name>
 		<bugLanguage>invalid_response_to_synack_established.dot</bugLanguage>
 		<description>response with out a correct RST for SYN_ACK input on state of established.</description>
 		<severity>LOW</severity>   
 	</bugPattern>
 	 <bugPattern>
-		<name>invalid_response(last_ack)</name>
+		<name>invalid_response_to_synack(last_ack)</name>
 		<bugLanguage>invalid_response_to_synack_last_ack.dot</bugLanguage>
 		<description>response with out a correct RST for SYN_ACK input on state of last_ack.</description>
 		<severity>LOW</severity>   

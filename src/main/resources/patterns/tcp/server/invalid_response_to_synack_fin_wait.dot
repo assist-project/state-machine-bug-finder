@@ -3,11 +3,10 @@ label=""
 start [color="red"]
 bug [shape="doublecircle"]
 
-start -> start [label="other - {I_SYN(V,V,0)}"]
-start -> est [label="I_SYN_ACK(V,V,0)"]
-est -> est [label="other - {I_CLOSE}"]
-est -> bug [label="O_ACK(NEXT,CURRENT,0)"]
-
+start -> finish [label="I_CLOSECONNECTION"]
+start -> start [label="other"]
+finish -> finish [label="other - {I_FIN_ACK(V,V,0)}"]
+finish -> bug [label="O_ACK(NEXT,CURRENT,0)"]
 
 bug -> bug [label="other"]
 

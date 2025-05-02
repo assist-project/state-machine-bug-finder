@@ -13,4 +13,28 @@
 		<description>fails to respond with a RST one listen state while receiving unexpected message.</description>
 		<severity>LOW</severity>   
 	  </bugPattern>
+	  <bugPattern>
+		<name>invalid_response_to_synack(close_wait and time_wait)</name>
+		<bugLanguage>invalid_response_to_synack_close_wait_time_wait.dot</bugLanguage>
+		<description>response with out a correct RST for SYN_ACK input on state of close_wait and time wait.</description>
+		<severity>LOW</severity>   
+	  </bugPattern>
+	  <bugPattern>
+		<name>invalid_response_to_synack(established)</name>
+		<bugLanguage>invalid_response_to_synack_established.dot</bugLanguage>
+		<description>response with out a correct RST for SYN_ACK input on state of established.</description>
+		<severity>LOW</severity>   
+	</bugPattern>
+	<bugPattern>
+		<name>invalid_response_to_synack(fin_wait)</name>
+		<bugLanguage>invalid_response_to_synack_fin_wait.dot</bugLanguage>
+		<description>response with out a correct RST for SYN_ACK input on state of fin_wait1/2.</description>
+		<severity>LOW</severity>   
+	</bugPattern>
+	<bugPattern>
+		<name>invalid_response_to_synack(last_ack)</name>
+		<bugLanguage>invalid_response_to_synack_last_ack.dot</bugLanguage>
+		<description>response with out a correct RST for SYN_ACK input on state of last_ack.</description>
+		<severity>LOW</severity>   
+	</bugPattern>
 </bugPatterns>
