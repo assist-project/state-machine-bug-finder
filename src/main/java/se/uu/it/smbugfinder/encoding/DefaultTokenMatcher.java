@@ -17,21 +17,21 @@ public class DefaultTokenMatcher implements TokenMatcher {
     public DescriptionToken matchingAtomicToken(Symbol symbol, DescriptionToken description) {
         DescriptionToken matchingToken = null;
         switch(description.getType()) {
-        case SYMBOL:
+        case SYMBOL -> {
             SymbolToken symbolToken = (SymbolToken) description;
             if (symbolToken.getSymbolString().equals(symbol.name())) {
                 if (symbolToken.isInput() == null || symbolToken.isInput().booleanValue() == symbol.isInput()) {
                     matchingToken = symbolToken;
                 }
             }
-            break;
-        case FILTER:
+          }
+        case FILTER -> {
             RegexToken regexDescription = (RegexToken) description;
             if (symbol.toString().matches(regexDescription.getRegexFilter())) {
                 matchingToken = regexDescription;
             }
-            break;
-        case BINARY_EXPRESSION:
+          }
+        case BINARY_EXPRESSION -> {
             SetExpressionToken expressionToken = (SetExpressionToken) description;
             SetOperator operation = expressionToken.getOperator();
             DescriptionToken leftMatchingToken = matchingAtomicToken(symbol, expressionToken.getLeft());
@@ -43,7 +43,7 @@ public class DefaultTokenMatcher implements TokenMatcher {
                 }
                 break;
             case UNION:
-                if ( leftMatchingToken != null) {
+                if (leftMatchingToken != null) {
                     matchingToken = leftMatchingToken;
                 } else {
                     if (rightMatchingToken != null) {
@@ -54,9 +54,8 @@ public class DefaultTokenMatcher implements TokenMatcher {
             default:
                 throw new RuntimeDecodingException(String.format("Unsupported binary operation type %s", operation.name()));
             }
-            break;
-
-        case ENUMERATION:
+          }
+        case ENUMERATION -> {
             EnumerationToken enumerationDescription = (EnumerationToken) description;
             for (DescriptionToken token : enumerationDescription.getSubTokens()) {
                 matchingToken = matchingAtomicToken(symbol, token);
@@ -64,31 +63,31 @@ public class DefaultTokenMatcher implements TokenMatcher {
                     break;
                 }
             }
-            break;
-        case OTHER:
+          }
+        case OTHER -> {
             OtherToken otherToken = (OtherToken) description;
             switch(otherToken.getOtherTokenType()) {
             case ALL:
                 matchingToken = otherToken;
                 break;
             case INPUT:
-                if ( symbol.isInput() ) {
+                if (symbol.isInput()) {
                     matchingToken = otherToken;
                 }
                 break;
             case OUTPUT:
-                if ( !symbol.isInput()) {
+                if (!symbol.isInput()) {
                     matchingToken = otherToken;
                 }
                 break;
             default:
                 throw new RuntimeDecodingException(String.format("Unsupported other token type %s", otherToken.getOtherTokenType().name()));
             }
-            break;
-        default:
+          }
+        default -> {
             throw new RuntimeDecodingException(String.format("Unsupported symbol description type %s", description.getType().name()));
-
-        }
+          }
+        };
 
         return matchingToken;
     }
