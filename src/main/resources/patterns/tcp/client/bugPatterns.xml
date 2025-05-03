@@ -1,46 +1,46 @@
 <bugPatterns>
     <defaultBugSeverity>LOW</defaultBugSeverity>
     <defaultEnabled>true</defaultEnabled>
-	<bugPattern>
-		<name>unexpected_rst</name>
-		<bugLanguage>unexpected_rst.dot</bugLanguage>
-		<description>incorrect response with an unexpected RST on state of established(during rcv).</description>
-		<severity>LOW</severity>   
-	</bugPattern>
-	<bugPattern>
-		<name>invalid_response_to_synack(fin_wait)</name>
-		<bugLanguage>invalid_response_to_synack_fin_wait.dot</bugLanguage>
-		<description>response with out a correct RST for SYN_ACK input on state of fin_wait1/2.</description>
-		<severity>LOW</severity>   
-	</bugPattern>
+    <bugPattern>
+        <name>unexpected_rst</name>
+        <bugLanguage>unexpected_rst.dot</bugLanguage>
+        <description>incorrect response with an unexpected RST on state of established(during rcv).</description>
+        <severity>LOW</severity>
+    </bugPattern>
+    <bugPattern>
+        <name>invalid_response_to_synack(fin_wait)</name>
+        <bugLanguage>invalid_response_to_synack_fin_wait.dot</bugLanguage>
+        <description>response with out a correct RST for SYN_ACK input on state of fin_wait1/2.</description>
+        <severity>LOW</severity>
+    </bugPattern>
   <bugPattern>
-		<name>invalid_response_to_synack(established)</name>
-		<bugLanguage>invalid_response_to_synack_established.dot</bugLanguage>
-		<description>response with out a correct RST for SYN_ACK input on state of established.</description>
-		<severity>LOW</severity>   
-	</bugPattern>
-	 <bugPattern>
-		<name>invalid_response_to_synack(last_ack)</name>
-		<bugLanguage>invalid_response_to_synack_last_ack.dot</bugLanguage>
-		<description>response with out a correct RST for SYN_ACK input on state of last_ack.</description>
-		<severity>LOW</severity>   
-	</bugPattern>
-		 <bugPattern>
-		<name>invalid_response_to_synack(close_wait)</name>
-		<bugLanguage>invalid_response_to_synack_close_wait.dot</bugLanguage>
-		<description>response with out a correct RST for SYN_ACK input on state of close_wait.</description>
-		<severity>LOW</severity>   
-	</bugPattern>
-			 <bugPattern>
-		<name>invalid_response_to_synack(time_wait)</name>
-		<bugLanguage>invalid_response_to_synack_time_wait.dot</bugLanguage>
-		<description>response with out a correct RST for SYN_ACK input on state of time_wait.</description>
-		<severity>LOW</severity>   
-	</bugPattern>
-		 <bugPattern>
-		<name>rst_absence_on_close_state</name>
-		<bugLanguage>rst_absence_on_close_state.dot</bugLanguage>
-		<description>fails to respond with a RST one close state while receiving unexpected message.</description>
-		<severity>LOW</severity>   
-	</bugPattern>
+        <name>invalid_response_to_synack(established)</name>
+        <bugLanguage>invalid_response_to_synack_established.dot</bugLanguage>
+        <description>response with out a correct RST for SYN_ACK input on state of established.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+     <bugPattern>
+        <name>invalid_response_to_synack(last_ack)</name>
+        <bugLanguage>invalid_response_to_synack_last_ack.dot</bugLanguage>
+        <description>response with out a correct RST for SYN_ACK input on state of last_ack.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+         <bugPattern>
+        <name>invalid_response_to_synack(close_wait)</name>
+        <bugLanguage>invalid_response_to_synack_close_wait.dot</bugLanguage>
+        <description>response with out a correct RST for SYN_ACK input on state of close_wait.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+             <bugPattern>
+        <name>invalid_response_to_synack(time_wait)</name>
+        <bugLanguage>invalid_response_to_synack_time_wait.dot</bugLanguage>
+        <description>response with out a correct RST for SYN_ACK input on state of time_wait.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+         <bugPattern>
+        <name>rst_absence_on_close_state</name>
+        <bugLanguage>rst_absence_on_close_state.dot</bugLanguage>
+        <description>fails to respond with a RST one close state while receiving unexpected message.</description>
+        <severity>LOW</severity>
+    </bugPattern>
 </bugPatterns>
