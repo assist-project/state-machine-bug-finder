@@ -21,7 +21,7 @@ jobs:
           ocaml-compiler: 5.3.0
       - name: Initialize OPAM environment
         run: |
-          echo "eval $(opam env)" >> $GITHUB_ENV
+          echo "eval $(opam env --shell=sh)" >> $GITHUB_ENV
       - name: Verify OCaml installation
         run: |
           eval $(opam env)
