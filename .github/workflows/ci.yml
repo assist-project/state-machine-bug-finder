@@ -15,6 +15,7 @@ jobs:
         with:
           java-version: '17'
           distribution: 'temurin'
+          
       - name: Set up OCaml
         uses: ocaml/setup-ocaml@v3
         with:
@@ -22,12 +23,19 @@ jobs:
       - name: Initialize OPAM environment
         run: |
           echo "eval $(opam env --shell=sh)" >> $GITHUB_ENV
+      - name: Install Menhir
+        run: |
+          eval $(opam env)
+          opam install menhir -y
       - name: Verify OCaml installation
         run: |
           eval $(opam env)
           ocaml -version
           which ocaml
+          ocamlc -where
+          
       - name: Build and run checks
         run: |
           eval $(opam env)
+          export LD_LIBRARY_PATH=$(ocamlc -where):$LD_LIBRARY_PATH
           mvn verify
