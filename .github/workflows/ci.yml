@@ -28,4 +28,6 @@ jobs:
           ocaml -version
           which ocaml
       - name: Build and run checks
-        run: mvn verify
+        run: |
+          eval $(opam env)
+          mvn verify
