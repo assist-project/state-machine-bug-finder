@@ -22,7 +22,8 @@ import java.util.List;
 
 import org.checkerframework.checker.nullness.qual.Nullable;
 
-import net.automatalib.automaton.transducer.CompactMealy;
+import net.automatalib.automaton.transducer.impl.CompactMealy;
+import net.automatalib.exception.FormatException;
 import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
@@ -60,7 +61,7 @@ public class Demo {
         this.commands.addAll(commands);
     }
 
-    private String ask(String msg, boolean required) throws IOException{
+    private String ask(String msg, boolean required) throws IOException {
         out.println(msg);
         if (!commands.isEmpty()) {
             String command = commands.remove();
@@ -68,7 +69,9 @@ public class Demo {
             return command;
         }
         String newCommands;
-        while ((newCommands = in.readLine().trim()).isEmpty() && required);
+        do {
+            newCommands = in.readLine().trim();
+        } while (newCommands.isEmpty() && required);
         String[] commandSplit = newCommands.split("\\s", -1);
         if (commandSplit.length > 1) {
             Arrays.stream(commandSplit, 1, commandSplit.length).forEach(cmd -> commands.add(cmd));
@@ -98,7 +101,7 @@ public class Demo {
         return resource;
     }
 
-    public void run() throws IOException {
+    public void run() throws IOException, FormatException {
         displayIntro();
         String sutModel = askOrDefault("SUT model path: ", "/models/dtls/server/MbedTLS.dot");
         String patternsDir = askOrDefault("Bug patterns directory: ", "/patterns/dtls/server/");
@@ -134,7 +137,7 @@ public class Demo {
         export(result, outputDirectory, "bug_report.txt");
     }
 
-    public static void main(String args []) throws IOException {
+    public static void main(String args []) throws IOException, FormatException {
         Demo demo = new Demo();
         demo.bufferCommands(Arrays.asList(args));
         demo.run();

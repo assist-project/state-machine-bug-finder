@@ -4,13 +4,15 @@ import java.io.IOException;
 
 import org.junit.Test;
 
+import net.automatalib.exception.FormatException;
+
 // Some tests to check if the program detects correctly the bug patterns found in SSH server SUTs
 public class SshCommandsExecIT extends CommandsExec {
   private static final String SSH_SERVER_MODEL_FOLDER = "src/main/resources/models/ssh/server/";
   private static final String SSH_SERVER_BUG_PATTERNS = "src/main/resources/patterns/ssh/server/patterns.xml";
 
   @Test
-  public void testBitViseServers () throws IOException, InterruptedException {
+  public void testBitViseServers () throws IOException, FormatException, InterruptedException {
     Output expectedOutput = new Output();
     expectedOutput.addBug(new OutputBug("Rekey Fail After Auth", "LOW", "KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SR_AUTH/SR_ACCEPT KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS UA_PK_OK/UA_SUCCESS KEXINIT/DISCONNECT", "KEXINIT KEX30 NEWKEYS SR_AUTH KEXINIT KEX30 UA_PK_OK KEXINIT"));
     expectedOutput.addBug(new OutputBug("Invalid SR_AUTH Response", "LOW", "KEXINIT/KEXINIT NEWKEYS/NO_RESP SR_AUTH/NO_RESP SR_CONN/NO_RESP", "KEXINIT NEWKEYS SR_AUTH SR_CONN"));
@@ -32,7 +34,7 @@ public class SshCommandsExecIT extends CommandsExec {
   }
 
   @Test
-  public void testDropbearServer2014_65 () throws IOException, InterruptedException {
+  public void testDropbearServer2014_65 () throws IOException, FormatException, InterruptedException {
     Output expectedOutput = new Output();
     expectedOutput.addBug(new OutputBug("Multiple UA_SUCCESS", "MEDIUM", "KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP UA_PK_OK/UA_SUCCESS KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP UA_PK_OK/UA_SUCCESS", "KEXINIT KEX30 NEWKEYS UA_PK_OK KEXINIT KEX30 NEWKEYS UA_PK_OK"));
     expectedOutput.addBug(new OutputBug("Unignored Authentication Request After UA_SUCCESS", "MEDIUM", "KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP UA_PK_OK/UA_SUCCESS KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP UA_PK_OK/UA_SUCCESS", "KEXINIT KEX30 NEWKEYS UA_PK_OK KEXINIT KEX30 NEWKEYS UA_PK_OK"));
@@ -44,7 +46,7 @@ public class SshCommandsExecIT extends CommandsExec {
   }
 
   @Test
-  public void testDropbearServer2020_81 () throws IOException, InterruptedException {
+  public void testDropbearServer2020_81 () throws IOException, FormatException, InterruptedException {
     Output expectedOutput = new Output();
     expectedOutput.addBug(new OutputBug("Invalid CH_CLOSE Response", "LOW", "KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP UA_PK_OK/UA_SUCCESS CH_OPEN/CH_OPEN_SUCCESS CH_CLOSE/CH_EOF", "KEXINIT KEX30 NEWKEYS UA_PK_OK CH_OPEN CH_CLOSE"));
     expectedOutput.addBug(new OutputBug("Missing SR_AUTH", "LOW", "KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP UA_PK_OK/UA_SUCCESS", "KEXINIT KEX30 NEWKEYS UA_PK_OK"));
@@ -53,7 +55,7 @@ public class SshCommandsExecIT extends CommandsExec {
   }
 
   @Test
-  public void testOpenSSHServer6_9 () throws IOException, InterruptedException {
+  public void testOpenSSHServer6_9 () throws IOException, FormatException, InterruptedException {
     Output expectedOutput = new Output();
     expectedOutput.addBug(new OutputBug("Rekey Fail Before Auth", "LOW", "SR_CONN/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SR_AUTH/SR_ACCEPT KEXINIT/UNIMPL", "SR_CONN KEX30 NEWKEYS SR_AUTH KEXINIT"));
     expectedOutput.addBug(new OutputBug("Invalid SR_AUTH Response", "LOW", "SR_CONN/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SR_AUTH/SR_ACCEPT UA_PW_OK/UA_SUCCESS+GLOBAL_REQUEST SR_AUTH/UNIMPL", "SR_CONN KEX30 NEWKEYS SR_AUTH UA_PW_OK SR_AUTH"));
@@ -70,7 +72,7 @@ public class SshCommandsExecIT extends CommandsExec {
   }
 
   @Test
-  public void testOpenSSHServer8_2 () throws IOException, InterruptedException {
+  public void testOpenSSHServer8_2 () throws IOException, FormatException, InterruptedException {
     Output expectedOutput = new Output();
     expectedOutput.addBug(new OutputBug("Rekey Fail Before Auth", "LOW", "KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SR_AUTH/SR_ACCEPT KEXINIT/UNIMPL", "KEXINIT KEX30 NEWKEYS SR_AUTH KEXINIT"));
     expectedOutput.addBug(new OutputBug("Invalid SR_AUTH Response", "LOW", "KEXINIT/KEXINIT SR_AUTH/UNIMPL", "KEXINIT SR_AUTH"));
@@ -82,7 +84,7 @@ public class SshCommandsExecIT extends CommandsExec {
   }
 
   @Test
-  public void testOpenSSHServer8_8 () throws IOException, InterruptedException {
+  public void testOpenSSHServer8_8 () throws IOException, FormatException, InterruptedException {
     Output expectedOutput = new Output();
     expectedOutput.addBug(new OutputBug("Rekey Fail Before Auth", "LOW", "KEXINIT/KEXINIT KEX30/KEX31+NEWKEYS NEWKEYS/NO_RESP SR_AUTH/SR_ACCEPT KEXINIT/UNIMPL", "KEXINIT KEX30 NEWKEYS SR_AUTH KEXINIT"));
     expectedOutput.addBug(new OutputBug("Invalid SR_AUTH Response", "LOW", "KEXINIT/KEXINIT SR_AUTH/UNIMPL", "KEXINIT SR_AUTH"));

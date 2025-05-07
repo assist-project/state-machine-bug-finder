@@ -48,9 +48,8 @@ public class Update {
             return true;
         if (obj == null)
             return false;
-        if (! (obj instanceof Update))
+        if (! (obj instanceof Update other))
             return false;
-        Update other = (Update) obj;
         if (!Arrays.equals(assignments, other.assignments))
             return false;
         return true;

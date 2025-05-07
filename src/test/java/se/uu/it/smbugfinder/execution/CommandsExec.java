@@ -13,6 +13,7 @@ import java.util.stream.Stream;
 
 import org.junit.Assert;
 
+import net.automatalib.exception.FormatException;
 import se.uu.it.smbugfinder.Main;
 
 public class CommandsExec {
@@ -49,7 +50,7 @@ public class CommandsExec {
   }
 
   // Adjust the output stream of Main.main so we can store it in a stream of our own
-  public static Output runCommand(String model, String patterns, boolean eo, String... os) throws IOException, InterruptedException {
+  public static Output runCommand(String model, String patterns, boolean eo, String... os) throws IOException, FormatException, InterruptedException {
     List<String> command = new ArrayList<>(Arrays.asList(
       "-m", model,
       "-c", patterns

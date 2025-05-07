@@ -5,7 +5,8 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.automatalib.automaton.fsa.CompactDFA;
+import net.automatalib.automaton.fsa.impl.CompactDFA;
+import net.automatalib.exception.FormatException;
 import net.automatalib.serialization.InputModelData;
 import net.automatalib.serialization.InputModelDeserializer;
 import net.automatalib.serialization.dot.DOTParsers;
@@ -27,7 +28,7 @@ public class DefaultEncodedDFAParser implements EncodedTSParser {
     }
 
     @Override
-    public EncodedDFA parse(InputStream encodedDfaStream) throws IOException {
+    public EncodedDFA parse(InputStream encodedDfaStream) throws IOException, FormatException {
         ParsingContext context = factory.newContext();
         cache = new HashMap<>();
         InputModelDeserializer<Label, CompactDFA<Label>> deserializer = DOTParsers.dfa(

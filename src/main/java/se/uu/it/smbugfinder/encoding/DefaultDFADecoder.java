@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import net.automatalib.alphabet.Alphabet;
-import net.automatalib.alphabet.ListAlphabet;
-import net.automatalib.automaton.fsa.FastDFA;
+import net.automatalib.alphabet.impl.ListAlphabet;
+import net.automatalib.automaton.fsa.impl.FastDFA;
 import net.automatalib.ts.acceptor.DeterministicAcceptorTS;
 import net.automatalib.util.automaton.fsa.DFAs;
 import net.automatalib.util.ts.copy.TSCopy;

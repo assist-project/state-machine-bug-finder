@@ -58,7 +58,6 @@ public class ModelExplorer<S, I> {
         };
     }
 
-
     private class BFSPathToStateIterator implements Iterator<Word<I>> {
         private Queue<SearchState> toVisit;
         private Word<I> nextWord;
@@ -76,84 +75,76 @@ public class ModelExplorer<S, I> {
             this.queueBound = options.getQueueBound();
             SearchOrder order = options.getOrder();
 
-            switch(order) {
-            case MIN_VISIT:
-                toVisit = new PriorityQueue<SearchState>(new Comparator<SearchState>(){
-                    @Override
-                    public int compare(SearchState s1, SearchState s2) {
-                        // we prioritize states based on the max visited value and on the order in which they were created.
-                        int compMax = Integer.compare(s1.maxVisited(), s2.maxVisited());
-                        if (compMax == 0) {
-                            return Long.compare(s1.getId(), s2.getId());
+            toVisit = switch(order) {
+                case MIN_VISIT ->
+                    new PriorityQueue<SearchState>(new Comparator<SearchState>(){
+                        @Override
+                        public int compare(SearchState s1, SearchState s2) {
+                            // we prioritize states based on the max visited value and on the order in which they were created.
+                            int compMax = Integer.compare(s1.maxVisited(), s2.maxVisited());
+                            if (compMax == 0) {
+                                return Long.compare(s1.getId(), s2.getId());
+                            }
+                            return compMax;
                         }
-                        return compMax;
-                    }
-                });
-                break;
-            case MIN_STATE:
-                toVisit = new PriorityQueue<SearchState>(new Comparator<SearchState>(){
-                    @Override
-                    public int compare(SearchState s1, SearchState s2) {
-                        // we prioritize states based on the max visited value and on the order in which they were created.
-                        int compStates = Integer.compare(s1.distinctStatesVisited(), s2.distinctStatesVisited());
-                        if (compStates == 0) {
-                            return Long.compare(s1.getId(), s2.getId());
-                        }
-                        return compStates;
-                    }
-                });
-                break;
-            case MIN_STATE_MIN_VISIT:
-                toVisit = new PriorityQueue<SearchState>(new Comparator<SearchState>(){
-                    @Override
-                    public int compare(SearchState s1, SearchState s2) {
-                        // we prioritize states based on the max visited value and on the order in which they were created.
-                        int compStates = Integer.compare(s1.distinctStatesVisited(), s2.distinctStatesVisited());
-                        if (compStates == 0) {
-                            compStates = Integer.compare(s1.maxVisited(), s2.maxVisited());
+                    });
+                case MIN_STATE ->
+                    new PriorityQueue<SearchState>(new Comparator<SearchState>(){
+                        @Override
+                        public int compare(SearchState s1, SearchState s2) {
+                            // we prioritize states based on the max visited value and on the order in which they were created.
+                            int compStates = Integer.compare(s1.distinctStatesVisited(), s2.distinctStatesVisited());
                             if (compStates == 0) {
                                 return Long.compare(s1.getId(), s2.getId());
                             }
+                            return compStates;
                         }
-                        return compStates;
-                    }
-                });
-                break;
-
-            case MIN_VISIT_MIN_STATE:
-                toVisit = new PriorityQueue<SearchState>(new Comparator<SearchState>(){
-                    @Override
-                    public int compare(SearchState s1, SearchState s2) {
-                        // we prioritize states based on the max visited value and on the order in which they were created.
-                        int compStates = Integer.compare(s1.maxVisited(), s2.maxVisited());
-                        if (compStates == 0) {
-                            compStates = Integer.compare(s1.distinctStatesVisited(), s2.distinctStatesVisited());
+                    });
+                case MIN_STATE_MIN_VISIT ->
+                    new PriorityQueue<SearchState>(new Comparator<SearchState>(){
+                        @Override
+                        public int compare(SearchState s1, SearchState s2) {
+                            // we prioritize states based on the max visited value and on the order in which they were created.
+                            int compStates = Integer.compare(s1.distinctStatesVisited(), s2.distinctStatesVisited());
+                            if (compStates == 0) {
+                                compStates = Integer.compare(s1.maxVisited(), s2.maxVisited());
+                                if (compStates == 0) {
+                                    return Long.compare(s1.getId(), s2.getId());
+                                }
+                            }
+                            return compStates;
+                        }
+                    });
+                case MIN_VISIT_MIN_STATE ->
+                    new PriorityQueue<SearchState>(new Comparator<SearchState>(){
+                        @Override
+                        public int compare(SearchState s1, SearchState s2) {
+                            // we prioritize states based on the max visited value and on the order in which they were created.
+                            int compStates = Integer.compare(s1.maxVisited(), s2.maxVisited());
+                            if (compStates == 0) {
+                                compStates = Integer.compare(s1.distinctStatesVisited(), s2.distinctStatesVisited());
+                                if (compStates == 0) {
+                                    return Long.compare(s1.getId(), s2.getId());
+                                }
+                            }
+                            return compStates;
+                        }
+                    });
+                case MAX_STATE ->
+                    new PriorityQueue<SearchState>(new Comparator<SearchState>(){
+                        @Override
+                        public int compare(SearchState s1, SearchState s2) {
+                            // we prioritize states based on the max visited value and on the order in which they were created.
+                            int compStates = Integer.compare(s2.distinctStatesVisited(), s1.distinctStatesVisited());
                             if (compStates == 0) {
                                 return Long.compare(s1.getId(), s2.getId());
                             }
+                            return compStates;
                         }
-                        return compStates;
-                    }
-                });
-                break;
-
-            case MAX_STATE:
-                toVisit = new PriorityQueue<SearchState>(new Comparator<SearchState>(){
-                    @Override
-                    public int compare(SearchState s1, SearchState s2) {
-                        // we prioritize states based on the max visited value and on the order in which they were created.
-                        int compStates = Integer.compare(s2.distinctStatesVisited(), s1.distinctStatesVisited());
-                        if (compStates == 0) {
-                            return Long.compare(s1.getId(), s2.getId());
-                        }
-                        return compStates;
-                    }
-                });
-                break;
-            default:
-                toVisit = new ArrayDeque<>();
-                break;
-            }
+                    });
+                default ->
+                    new ArrayDeque<>();
+                };
 
             for (S targetState : targetStates) {
                 toVisit.add(new SearchState(targetState));

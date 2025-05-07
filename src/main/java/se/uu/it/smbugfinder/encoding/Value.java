@@ -25,9 +25,8 @@ public class Value implements ValueExpression {
             return true;
         if (obj == null)
             return false;
-        if (! (obj instanceof Value))
+        if (! (obj instanceof Value other))
             return false;
-        Value other = (Value) obj;
         if (storedValue == null) {
             if (other.storedValue != null)
                 return false;

@@ -16,6 +16,7 @@ public class RelationalExpression  implements BooleanExpression {
     }
 
     @Override
+    @SuppressWarnings("StatementSwitchToExpressionSwitch")
     public boolean eval(Symbol symbol, Valuation valuation) {
         Value value1 = expr1.eval(symbol, valuation);
         Value value2 = expr2.eval(symbol, valuation);
@@ -65,9 +66,8 @@ public class RelationalExpression  implements BooleanExpression {
             return true;
         if (obj == null)
             return false;
-        if (! (obj instanceof RelationalExpression))
+        if (! (obj instanceof RelationalExpression other))
             return false;
-        RelationalExpression other = (RelationalExpression) obj;
         if (expr1 == null) {
             if (other.expr1 != null)
                 return false;

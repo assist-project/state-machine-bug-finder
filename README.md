@@ -71,7 +71,7 @@ See the respective fuzzer repositories for scripts to trim the models.
 **SMBugFinder** takes as argument the path to a bug pattern catalogue which indexes bug patterns.
 Bug patterns are specified as DOT graphs, and currently have to be manually written.
 A bug pattern defines a DFA which accepts only sequences exposing the presence of the bug.
-The directory [src/main/resources/models](src/main/resources/models) contains an extensive set of bug patterns for EDHOC and SSH (including all used in the NDSS'2023 publication), and a few bug patterns for DTLS.
+The directory [src/main/resources/patterns](src/main/resources/patterns) contains an extensive set of bug patterns for EDHOC clients and servers, SSH servers (including all used in the NDSS'2023 publication), and a few bug patterns for DTLS.
 (The complete set of bug patterns used in the publication experiments can be found [here](https://gitlab.com/pfg666/dtls-fuzzer/-/tree/bugcheck-artifact/src/main/resources/patterns)).
 Below is the pattern for the *Missing SR_AUTH* bug we found in Dropbear, which we visualize by running:
 
@@ -142,12 +142,13 @@ Some important options that we have not covered are:
 
 ## Useful links
 
-* the [NDSS'2023 publication][ndss23paper], describing the bug detection technique and its evaluation on DTLS and SSH;
-* the [NDSS'2023 artifact][ndss23artifact], which is a VM that can be used to reproduce the NDSS'2023 experiments[^2];
+* the [ISSTA 2024 tool paper][issta24paper], which gives a high-level description of the **SMBugFinder** supported by an application to EDHOC;
+* the [archived **SMBugFinder** source code][issta24artifact] that was used in the ISSTA 2024 publication, this code is also available as a [release](https://github.com/assist-project/state-machine-bug-finder/tree/ISSTA24-Demo);
+* [video demonstration][smbugfindervideo] supporting our ISSTA 2024 publication which shows how to install and run **SMBugFinder** to test an EDHOC implementation;
+* the [NDSS 2023 publication][ndss23paper] which describes the bug detection technique implemented by **SMBugFinder**, and its evaluation on DTLS and SSH;
+* the [NDSS 2023 artifact][ndss23artifact], which is a VM that can be used to reproduce the NDSS'2023 experiments[^2];
 * the [DTLS component of the artifact][dtlsartifact], which is [DTLS-Fuzzer][dtlsfuzzer] incorporating **SMBugFinder** to perform bug detection automatically;
 * the [SSH component of the artifact][sshartifact], containing additional scripts to reproduce experiments for SSH;
-* the [ISSTA'2024 artifact][issta24artifact], which contains the source code of the [ISSTA24-Demo release](https://github.com/assist-project/state-machine-bug-finder/tree/ISSTA24-Demo);
-* [video demonstration][smbugfindervideo] supporting our ISSTA'2024 publication which shows how to install and run **SMBugFinder** to test an EDHOC implementation;
 * [ProtocolState-Fuzzer][psf], a framework for building learning setups (protocol state fuzzers) for network protocols, and its [adaptation][psfadapted] which allows these setups to be used as test harnesses by **SMBugFinder**;
 * [DTLS-Fuzzer][dtlsfuzzer], [EDHOC-Fuzzer][edhocfuzzer] and [SSH-Fuzzer][sshfuzzer], learning setups for DTLS, EDHOC and SSH (the latter is WIP) which can generate SUT models.
 
@@ -156,6 +157,7 @@ Some important options that we have not covered are:
 [^2]:Note that **SMBugFinder** has seen significant updates since the artifact. As a result, it is no longer compatible with the version that was used in the artifact.
 
 
+[issta24paper]:https://dl.acm.org/doi/abs/10.1145/3650212.3685310
 [ndss23paper]:https://www.ndss-symposium.org/wp-content/uploads/2023/02/ndss2023_s68_paper.pdf
 [ndss23artifact]:https://doi.org/10.5281/zenodo.7129240
 [dtlsartifact]:https://gitlab.com/pfg666/dtls-fuzzer/-/blob/bugcheck-artifact
