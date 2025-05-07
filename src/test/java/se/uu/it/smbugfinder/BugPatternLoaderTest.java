@@ -125,7 +125,7 @@ public class BugPatternLoaderTest {
             new SymbolToken(false, "CHANGE_CIPHER_SPEC"),
             new SymbolToken(true, "HELLO_REQUEST")
         );
-        // we add symbols from the language file (params) + from the symbolTokens list (in order to achieve the same result as loadClientParametricBugPatternTest)
+        // we add symbols from the language file (parameters) + from the symbolTokens list (in order to achieve the same result as loadClientParametricBugPatternTest)
         // this has been simplified so that Input & Output Symbols are automatically generated from SymbolTokens when only one variant exists
         // SymbolTokens are capitalized as the parametric bug patterns will have capitalized messages (as in plain bug patterns)
         builder.addSymbolTokens(parameters, symbolTokens);
