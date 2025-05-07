@@ -498,6 +498,7 @@
                 <include>.spotbugs/*.xml</include>
               </includes>
               <excludes>
+                <exclude>_opam/**/*.md</exclude>
                 <exclude>target/**/*.xml</exclude>
               </excludes>
               <endWithNewline />
