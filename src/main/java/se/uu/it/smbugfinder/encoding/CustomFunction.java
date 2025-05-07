@@ -46,12 +46,9 @@ public class CustomFunction extends Function {
     }
 
     public static Type stringToFuncType (String s) {
-        switch (s) {
-            case "Map":
-                return Type.Map;
-
-            default:
-                throw new IllegalArgumentException("Undefined function type in parsing context: " + s);
-        }
+        return switch (s) {
+            case "Map" -> Type.Map;
+            default    -> throw new IllegalArgumentException("Undefined function type in parsing context: " + s);
+        };
     }
 }
