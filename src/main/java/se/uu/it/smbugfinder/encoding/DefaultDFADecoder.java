@@ -37,8 +37,7 @@ public class DefaultDFADecoder implements DFADecoder {
         return decodedDfa;
     }
 
-    DFAAdapter decode(EncodedTS encodedTs,
-            Collection<Symbol> symbols) {
+    DFAAdapter decode(EncodedTS encodedTs, Collection<Symbol> symbols) {
         FastDFA<Symbol> decodedDfa = decode(encodedTs.getEncodedTS(), encodedTs.getLabels(), symbols);
         FastDFA<Symbol> inputCompleteDfa = new FastDFA<Symbol>(new ListAlphabet<Symbol>(new ArrayList<>(symbols)));
         DFAs.complete(decodedDfa, inputCompleteDfa.getInputAlphabet(), inputCompleteDfa);

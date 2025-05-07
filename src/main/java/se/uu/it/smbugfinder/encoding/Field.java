@@ -7,7 +7,7 @@ import se.uu.it.smbugfinder.dfa.Symbol;
  */
 public abstract class Field implements ValueExpression {
 
-    private final String name;
+    protected final String name;
 
     public Field(String name) {
         this.name = name;
@@ -25,7 +25,7 @@ public abstract class Field implements ValueExpression {
     protected abstract Value getValue(Symbol symbol);
 
     protected Value undefined(Symbol symbol) {
-        throw new RuntimeDecodingException(String.format("Field %s is undefined for symbol %s", name, symbol.name()));
+        throw new RuntimeDecodingException(String.format("Field %s is undefined for symbol %s", name, symbol.getName()));
     }
 
 }

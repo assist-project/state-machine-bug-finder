@@ -1,0 +1,10 @@
+<bugPatterns>
+    <defaultBugSeverity>LOW</defaultBugSeverity>
+    <defaultEnabled>true</defaultEnabled>
+    <bugPattern>
+        <name>Non-conforming Cookie</name>
+        <bugLanguage>non-conforming_cookie.dot</bugLanguage>
+        <description>The first two ClientHello messages use different cipher suites, indicating that cipher suites are not included in the cookie computation.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+</bugPatterns>

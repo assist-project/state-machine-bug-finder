@@ -1,5 +1,7 @@
 package se.uu.it.smbugfinder.encoding;
 
+import se.uu.it.smbugfinder.dfa.InputSymbol;
+import se.uu.it.smbugfinder.dfa.OutputSymbol;
 import se.uu.it.smbugfinder.dfa.Symbol;
 
 public class SymbolToken extends DescriptionToken {
@@ -19,7 +21,7 @@ public class SymbolToken extends DescriptionToken {
 
     public SymbolToken(Symbol symbol) {
         this.input = symbol.isInput();
-        this.symbolString = symbol.name();
+        this.symbolString = symbol.getName();
     }
 
     @Override
@@ -41,6 +43,14 @@ public class SymbolToken extends DescriptionToken {
     @Override
     public String toString() {
         return (input != null ? (input.booleanValue() == true ? "I_" : "O_") : "") + symbolString;
+    }
+
+    public Symbol getSymbol() {
+        if (isInput()) {
+            return new InputSymbol(symbolString);
+        } else {
+            return new OutputSymbol(symbolString);
+        }
     }
 
 }

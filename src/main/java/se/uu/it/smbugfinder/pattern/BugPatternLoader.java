@@ -75,7 +75,7 @@ public class BugPatternLoader {
         }
 
         preparePatterns(bugPatterns, parentFolderURI, symbols);
-        LOGGER.info("Successfully loaded {} bug patterns from catalogue {}", bugPatterns.getBugPatterns().size(), patternsFile);
+        LOGGER.info("Successfully loaded {} bug pattern(s) from catalogue {}", bugPatterns.getBugPatterns().size(), patternsFile);
         return bugPatterns;
     }
 
@@ -106,7 +106,7 @@ public class BugPatternLoader {
         }
     }
 
-    private DFAAdapter loadDfa(String encodedDfaPath, URI location, Collection<Symbol> symbols){
+    private DFAAdapter loadDfa(String encodedDfaPath, URI location, Collection<Symbol> symbols) {
         LOGGER.info("Loading DFA at path: {}", encodedDfaPath);
         URI encodedDfaLocation = location.resolve(encodedDfaPath);
         InputStream encodedDfaStream = getResourceAsStream(encodedDfaLocation.getPath());
