@@ -37,4 +37,16 @@
         <description>response with out a correct RST for SYN_ACK input on state of last_ack.</description>
         <severity>LOW</severity>
     </bugPattern>
+         <bugPattern>
+        <name>errorr_response_to_send_when_connection_not_exit</name>
+        <bugLanguage>errorr_response_to_send_when_connection_not_exit.dot</bugLanguage>
+        <description>fails to answer a error(Timeout) receiving SEND when a connection have not been set up.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+         <bugPattern>
+        <name>fail_back_to_listen_state</name>
+        <bugLanguage>fail_back_to_listen_state.dot</bugLanguage>
+        <description>fails to go back to listen state after receive a RST on syn_rcvd state.</description>
+        <severity>LOW</severity>
+    </bugPattern>
 </bugPatterns>
