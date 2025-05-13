@@ -20,19 +20,10 @@ jobs:
         uses: ocaml/setup-ocaml@v3
         with:
           ocaml-compiler: 5.3.0
-      # - name: Initialize OPAM environment
-      #   run: |
-      #     echo "eval $(opam env --shell=sh)" >> $GITHUB_ENV
       - name: Install Menhir
         run: |
           eval $(opam env)
           opam install menhir -y
-      # - name: Verify OCaml installation
-      #   run: |
-      #     eval $(opam env)
-      #     ocaml -version
-      #     which ocaml
-      #     ocamlc -where
           
       - name: Build and run checks
         run: |
