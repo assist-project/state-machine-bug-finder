@@ -34,16 +34,3 @@ hs_err_pid*
 
 # IntelliJ IDEA files
 .idea
-
-# Compiled OCaml files
-*.cmx 
-*.cmi 
-*.cmo
-pattern-language/lexer.ml
-pattern-language/grammar.ml
-pattern-language/grammar.mli
-
-# Compiled stubs files
-pattern-language/*.o
-pattern-language/*.so
-pattern-language/*.dylib
