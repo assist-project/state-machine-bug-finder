@@ -36,5 +36,6 @@ jobs:
           
       - name: Build and run checks
         run: |
+          eval $(opam env)
           export LD_LIBRARY_PATH=$(ocamlc -where):$LD_LIBRARY_PATH
           mvn verify
