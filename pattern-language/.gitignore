@@ -5,6 +5,7 @@
 lexer.ml
 grammar.ml
 grammar.mli
+print_ast
 
 # Compiled stubs files
 *.o

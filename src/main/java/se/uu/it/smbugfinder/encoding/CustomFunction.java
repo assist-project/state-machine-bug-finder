@@ -10,26 +10,19 @@ import se.uu.it.smbugfinder.dfa.Symbol;
 
 public class CustomFunction extends Function {
 
-    private enum Type {
-        Map;
-    }
-    private final Type type;
     private final Map<String, String> mapping;
 
-    public static CustomFunction create(String name, String type, Map<String, String> mapping) {
-        Type funcType = stringToFuncType(type);
-        return new CustomFunction(name, funcType, mapping);
+    public static CustomFunction create(String name, Map<String, String> mapping) {
+        return new CustomFunction(name, mapping);
     }
 
-    private CustomFunction(String name, Type type, Map<String, String> mapping) {
+    private CustomFunction(String name, Map<String, String> mapping) {
         super(name, 1);
-        this.type = type;
         this.mapping = mapping;
     }
 
     @Override
     protected Value doInvoke(Symbol symbol, Value... arguments) {
-        if (type.equals(Type.Map)) {
             String key = arguments[0].getStoredValue().toString();
             Set<String> values = new LinkedHashSet<String>();
 
@@ -40,15 +33,5 @@ public class CustomFunction extends Function {
             }
 
             return new Value(values);
-        } else {
-            throw new RuntimeException("Found undefined function type");
-        }
-    }
-
-    public static Type stringToFuncType (String s) {
-        return switch (s) {
-            case "Map" -> Type.Map;
-            default    -> throw new IllegalArgumentException("Undefined function type in parsing context: " + s);
-        };
     }
 }

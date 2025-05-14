@@ -2,17 +2,13 @@
 
 exception ParamLang of string
 
-(* let ast_cache = Hashtbl.create 1 *)
-
 let get_ast path =
-  Lexer.num_lines := 0; (* remove this and check *)
+  Lexer.num_lines := 0;
   let input = open_in path in
   let lexbuf = Lexing.from_channel input in
   
   (try
-    let ast = Grammar.program Lexer.lexer lexbuf in
-    (* ignore (Hashtbl.add ast_cache "ast" ast); *)
-    ast 
+    Grammar.program Lexer.lexer lexbuf
   with
   | Lexer.LexingError msg ->
       raise (ParamLang msg)

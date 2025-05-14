@@ -15,11 +15,10 @@ rule lexer = parse
   | ":"         { T_colon }
   | ","         { T_comma }
   | "="         { T_equals }
-  | "["         { T_lbracket }
-  | "]"         { T_rbracket }
+  | "("         { T_lparen }
+  | ")"         { T_rparen }
   | "{"         { T_lcbracket }
   | "}"         { T_rcbracket }
-  | "mapping"   { T_mapping }
 
   | "fields"    { T_fields }
   | "parametric_messages"  { T_pmessages }
@@ -55,16 +54,15 @@ and mcomment = parse
     | T_colon     -> ":"
     | T_comma     -> ","
     | T_equals    -> "="
-    | T_lbracket  -> "["
+    | T_lparen    -> "("
     | T_lcbracket -> "{"
-    | T_rbracket  -> "]"
+    | T_rparen    -> ")"
     | T_rcbracket -> "}"
     | T_word _    -> "T_word"
 
     | T_fields    -> "Fields_def"
     | T_pmessages -> "Pmessages_def"
     | T_func      -> "Func_def"
-    | T_mapping   -> "map_func_type"
 
     | T_eof       -> "T_eof"
 }

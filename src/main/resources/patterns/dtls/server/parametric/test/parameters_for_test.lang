@@ -2,4 +2,4 @@ fields =
 	cipher_suites -> RSA, PSK, ECDH, DH
 
 parametric_messages =
-	CLIENT_HELLO -> {cipher_suites}
+	CLIENT_HELLO {cipher_suites}

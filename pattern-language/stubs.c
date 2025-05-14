@@ -104,26 +104,25 @@ JNIEXPORT jobject JNICALL Java_se_uu_it_smbugfinder_encoding_OcamlValues_getMess
     // same for ArrayList class
     jclass arrayListClass = (*env)->FindClass(env, "java/util/ArrayList");
     jmethodID arrayListConstructor = (*env)->GetMethodID(env, arrayListClass, "<init>", "()V");
-    jmethodID arrayListAdd = (*env)->GetMethodID(env, arrayListClass, "add", "(Ljava/lang/Object;)Z"); //na dokimasw na tou valw na gyrnaei void (V anti gia Z)
+    jmethodID arrayListAdd = (*env)->GetMethodID(env, arrayListClass, "add", "(Ljava/lang/Object;)Z"); //try to return void (V instead of Z)
     
     // create a java hashmap object 
     jobject hashMap = (*env)->NewObject(env, hashMapClass, hashMapConstructor);
     
     while (Is_block(rv)) {
         value pair = Field(rv, 0);       // get head of list
-        value key = Field(pair, 0);      // get message
-        value val = Field(pair, 1);      // get field_tuple
-        value opt = Field(val, 0);       // get opt of field
-        value field = Field(val, 1);     // get field
+        value mes = Field(pair, 0);      // get message
+        value ty = Field(pair, 1);       // get field type
+        value field = Field(pair, 2);    // get field
     
-        // create java values from the ocaml ones
-        jstring jkey = (*env)->NewStringUTF(env, String_val(key));
-        jstring jopt = (*env)->NewStringUTF(env, String_val(opt));
+        // create java strings from the ocaml ones
+        jstring jkey = (*env)->NewStringUTF(env, String_val(mes));
+        jstring jty = (*env)->NewStringUTF(env, String_val(ty));
         jstring jfield = (*env)->NewStringUTF(env, String_val(field));
 
         // add the opt and field in an array
         jobject arrayList = (*env)->NewObject(env, arrayListClass, arrayListConstructor);
-        (*env)->CallBooleanMethod(env, arrayList, arrayListAdd, jopt);
+        (*env)->CallBooleanMethod(env, arrayList, arrayListAdd, jty);
         (*env)->CallBooleanMethod(env, arrayList, arrayListAdd, jfield);
 
         (*env)->CallObjectMethod(env, hashMap, hashMapPut, jkey, arrayList);
@@ -152,22 +151,20 @@ JNIEXPORT jobject JNICALL Java_se_uu_it_smbugfinder_encoding_OcamlValues_getFunc
     jobject mainList = (*env)->NewObject(env, arrayListClass, arrayListConstructor);
 
     while (Is_block(rv)) {
-        value triple = Field(rv, 0);        // get head of list
-        value name = Field(triple, 0);      // get function name
-        value type = Field(triple, 1);      // get function type
-        value mapList  = Field(triple, 2);      // get function's map (a list of pairs)
+        value func = Field(rv, 0);        // get head of list
+        value name = Field(func, 0);      // get function name
+        value mapList  = Field(func, 1);      // get function's map (a list of pairs)
 
-        // create java values from the ocaml ones
+        // create java string from ocaml string
         jstring jname = (*env)->NewStringUTF(env, String_val(name));
-        jstring jtype = (*env)->NewStringUTF(env, String_val(type));
         
         jobject hashMap = (*env)->NewObject(env, hashMapClass, hashMapConstructor);
         while (Is_block(mapList)) {
             value pair = Field(mapList, 0);  // get head of list
-            value key = Field(pair, 0);      // get message
-            value val = Field(pair, 1);      // get field
+            value key = Field(pair, 0);      // get key
+            value val = Field(pair, 1);      // get value
 
-            // create java values from the ocaml ones
+            // create java strings from the ocaml ones
             jstring jkey = (*env)->NewStringUTF(env, String_val(key));
             jstring jval = (*env)->NewStringUTF(env, String_val(val));
 
@@ -177,7 +174,6 @@ JNIEXPORT jobject JNICALL Java_se_uu_it_smbugfinder_encoding_OcamlValues_getFunc
 
         jobject functionList = (*env)->NewObject(env, arrayListClass, arrayListConstructor);
         (*env)->CallBooleanMethod(env, functionList, arrayListAdd, jname);
-        (*env)->CallBooleanMethod(env, functionList, arrayListAdd, jtype);
         (*env)->CallBooleanMethod(env, functionList, arrayListAdd, hashMap);
         
         (*env)->CallBooleanMethod(env, mainList, arrayListAdd, functionList);

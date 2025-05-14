@@ -35,8 +35,8 @@ public class CustomParsingContext extends ParsingContext {
             List<CustomFunction> functions2 = new ArrayList<>();
             for (List<Object> l : functions) {
                 @SuppressWarnings("unchecked")
-                Map<String, String> mapping = (Map<String, String>) l.get(2); //this is extremely bad. needs to change immediately + it won't compile with werror
-                functions2.add(CustomFunction.create(l.get(0).toString(), l.get(1).toString(), mapping));
+                Map<String, String> mapping = (Map<String, String>) l.get(1); // unchecked cast :(
+                functions2.add(CustomFunction.create(l.get(0).toString(), mapping));
             }
             initialize(functions2.toArray(new Function[functions2.size()]));
         }

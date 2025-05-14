@@ -4,10 +4,10 @@ fields =
 	cipher_suite -> RSA, PSK, ECDH, DH
 
 parametric_messages =
-	SERVER_HELLO -> [cipher_suite]
-	CERTIFICATE -> [key_type] //single value
-	CERTIFICATE_REQUEST -> {cert_type} //set
+	SERVER_HELLO [cipher_suite]
+	CERTIFICATE [key_type]
+	CERTIFICATE_REQUEST {cert_type}
 	
-func cert_type : mapping =
+func cert_type =
 	RSA -> RSA_SIGN
 	ECDSA -> ECDSA_SIGN

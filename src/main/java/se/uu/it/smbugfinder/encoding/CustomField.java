@@ -47,9 +47,9 @@ public class CustomField extends Field {
 
     private static Type toType(String s) {
         return switch (s) {
-            case "List" -> Type.Single;
-            case "Set"  -> Type.Set;
-            default     -> throw new IllegalArgumentException("Undefined field type in parsing context: " + s);
+            case "Single" -> Type.Single;
+            case "Set"    -> Type.Set;
+            default       -> throw new IllegalArgumentException("Undefined field type in parsing context: " + s);
         };
     }
 }
