@@ -7,14 +7,17 @@ let get_ast path =
   let input = open_in path in
   let lexbuf = Lexing.from_channel input in
   
-  (try
+  try
     Grammar.program Lexer.lexer lexbuf
+    |> Semantics.check_program 
   with
   | Lexer.LexingError msg ->
       raise (ParamLang msg)
   | Grammar.Error ->
       let n = string_of_int !Lexer.num_lines in
-      raise (ParamLang ("Syntax error in " ^ path ^ " at line " ^ n)))
+      raise (ParamLang ("Syntax error in " ^ path ^ " at line " ^ n))
+  | Semantics.SemanticError msg ->
+      raise (ParamLang ("Semantic error in " ^ path ^ ": " ^ msg))
 
 
 let get_fields lang_path =

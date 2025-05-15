@@ -59,4 +59,5 @@ let () =
         |> Printf.eprintf "Syntax Error at line %s";
         exit (-1)
     in
-  print_program ast;
+  Semantics.check_program ast
+  |> print_program;

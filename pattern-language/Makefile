@@ -21,11 +21,8 @@ grammar.ml grammar.mli: grammar.mly ast.cmx
 lexer.ml: lexer.mll
 	ocamllex lexer.mll
 
-functions_java.cmx: ast.cmx grammar.mli grammar.ml lexer.ml functions_java.ml
-	ocamlopt -c ast.cmx grammar.mli grammar.ml lexer.ml functions_java.ml
-
-main.o : functions_java.ml ast.cmx grammar.ml grammar.mli lexer.ml
-	ocamlopt -output-obj -o main.o ast.cmx grammar.mli grammar.ml lexer.ml functions_java.ml 
+main.o : functions_java.ml semantics.ml ast.cmx grammar.ml grammar.mli lexer.ml
+	ocamlopt -output-obj -o main.o ast.cmx grammar.mli grammar.ml lexer.ml semantics.ml functions_java.ml 
 
 
 # stubs and shared library compilation
@@ -46,8 +43,8 @@ libstubs.dylib: stubs.c main.o # maybe remove -shared from this
 
 
 # phony targets
-exec: ast.cmx grammar.ml grammar.mli lexer.ml
-	ocamlopt -o print_ast ast.cmx grammar.mli grammar.ml lexer.ml print_ast.ml
+exec: ast.cmx grammar.ml grammar.mli lexer.ml print_ast.ml semantics.ml
+	ocamlopt -o print_ast ast.cmx grammar.mli grammar.ml lexer.ml semantics.ml print_ast.ml
 
 clean:
 	rm -f *.cmi *.cmo *.cmx *.o *.class *.h *.log lexer.ml grammar.ml grammar.mli
