@@ -80,7 +80,6 @@ JNIEXPORT jobject JNICALL Java_se_uu_it_smbugfinder_encoding_OcamlValues_getFiel
             val_list = Field(val_list, 1);  // Move to next in the list
         }
 
-
         jmethodID hashMapPut = (*env)->GetMethodID(env, hashMapClass, "put", "(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object;");
         (*env)->CallObjectMethod(env, hashMap, hashMapPut, jkey, arrayList);
 

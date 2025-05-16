@@ -46,11 +46,9 @@ public class SymbolToken extends DescriptionToken {
     }
 
     public Symbol getSymbol() {
-        if (isInput()) {
-            return new InputSymbol(symbolString);
-        } else {
-            return new OutputSymbol(symbolString);
-        }
+        return (isInput() ?
+            new InputSymbol(symbolString) :
+            new OutputSymbol(symbolString));
     }
 
 }

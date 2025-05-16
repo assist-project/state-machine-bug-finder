@@ -7,7 +7,7 @@
 }
 
 (* definitions of useful regexps *)
-let word     = ['a'-'z' 'A'-'Z' '0'-'9' '_']+
+let word   = ['a'-'z' 'A'-'Z' '0'-'9' '_']+
 let white  = [' ' '\t' '\r']
 
 rule lexer = parse
@@ -24,28 +24,28 @@ rule lexer = parse
   | "parametric_messages"  { T_pmessages }
   | "func"      { T_func }
 
-  | word            { T_word (Lexing.lexeme lexbuf) } 
+  | word        { T_word (Lexing.lexeme lexbuf) } 
 
     (* to be ignored by parser: white chars and comments *)
-  | '\n'      { incr num_lines; lexer lexbuf}
-  | white+    { lexer lexbuf    }
+  | '\n'        { incr num_lines; lexer lexbuf}
+  | white+      { lexer lexbuf    }
 
-  |  eof      { T_eof }
+  |  eof        { T_eof }
 
-  | "//"      { comment lexbuf  }
-  | "/*"      { mcomment lexbuf }
+  | "//"        { comment lexbuf  }
+  | "/*"        { mcomment lexbuf }
 
-  |  _ as c   { raise (LexingError ("Invalid character: " ^ (String.make 1 c) ^ " (ASCII: " ^ string_of_int (Char.code c) ^ ")")) }
+  |  _ as c     { raise (LexingError ("Invalid character: " ^ (String.make 1 c) ^ " (ASCII: " ^ string_of_int (Char.code c) ^ ")")) }
 
 and comment = parse
-  | '\n'       { incr num_lines; lexer lexbuf }
-  | _          { comment lexbuf               }
+  | '\n'        { incr num_lines; lexer lexbuf }
+  | _           { comment lexbuf               }
 
 and mcomment = parse
-  | "*/"       { lexer lexbuf                    }
-  | '\n'       { incr num_lines; mcomment lexbuf }
-  | _          { mcomment lexbuf                 }
-  | eof        { raise (LexingError "Lexing Error -> Reached EOF: Missing closing '*/'\n") }
+  | "*/"        { lexer lexbuf                    }
+  | '\n'        { incr num_lines; mcomment lexbuf }
+  | _           { mcomment lexbuf                 }
+  | eof         { raise (LexingError "Lexing Error -> Reached EOF: Missing closing '*/'\n") }
 
 {
   let string_of_token token =

@@ -48,7 +48,7 @@ let check_stmt map = function
     | None -> map
 
 let check_program = function
-  (fields, messages, functions) as ast->
+  (fields, messages, functions) as ast ->
     let fields = value fields ~default: (Fields []) in
     let messages = value messages ~default: (Messages []) in
     let _ = List.fold_left check_stmt Fields.empty (fields :: messages :: functions) in
