@@ -6,7 +6,9 @@
 #   `make exec`           -> compile parser into an executable file that prints the ast (i.e. ./print_ast < input.txt)
 
 
-.PHONY: clean distclean exec
+.PHONY: clean distclean
+
+default: print_ast
 
 OCAML_LIB = `ocamlc -where`
 
@@ -42,10 +44,12 @@ libstubs.dylib: stubs.c main.o # maybe remove -shared from this
 
 
 
-# phony targets
-exec: ast.cmx grammar.mli grammar.ml lexer.ml semantics.ml print_ast.ml
-	ocamlopt -o print_ast $^
+# standalone compiler compilation
+print_ast: ast.cmx grammar.mli grammar.ml lexer.ml semantics.ml print_ast.ml
+	ocamlopt -o $@ $^
 
+
+# .PHONY targets
 clean:
 	rm -f *.cmi *.cmo *.cmx *.o *.class *.h *.log lexer.ml grammar.ml grammar.mli
 
