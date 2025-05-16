@@ -1,6 +1,10 @@
 
 
-exception ParamLang of string
+exception ParamLang
+
+(* These are for printing exception errors *)
+let red = "\027[31m" (* ANSI escape code for red *)
+let reset = "\027[0m" (* Reset to default color *)
 
 let get_ast path =
   Lexer.num_lines := 0;
@@ -12,12 +16,14 @@ let get_ast path =
     |> Semantics.check_program 
   with
   | Lexer.LexingError msg ->
-      raise (ParamLang msg)
+      Printf.eprintf "%s[%s] Lexing Error: %s%s\n" red path msg reset;
+      raise ParamLang
   | Grammar.Error ->
-      let n = string_of_int !Lexer.num_lines in
-      raise (ParamLang ("Syntax error in " ^ path ^ " at line " ^ n))
+      Printf.eprintf "%s[%s] Syntax Error at line %d%s\n" red path !Lexer.num_lines reset;
+      raise ParamLang
   | Semantics.SemanticError msg ->
-      raise (ParamLang ("Semantic error in " ^ path ^ ": " ^ msg))
+      Printf.eprintf "%s[%s] Semantic Error: %s%s\n" red path msg reset;
+      raise ParamLang
 
 
 let get_fields lang_path =

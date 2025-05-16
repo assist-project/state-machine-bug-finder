@@ -4,8 +4,8 @@ fields =
 	cipher_suite -> RSA, PSK, ECDH, DH
 
 parametric_messages =
-	SERVER_HELLO [cipher_suite]
-	CERTIFICATE [key_type]
+	SERVER_HELLO (cipher_suite)
+	CERTIFICATE (key_type)
 	CERTIFICATE_REQUEST {cert_type}
 	
 func cert_type =
