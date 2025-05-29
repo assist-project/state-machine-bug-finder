@@ -5,12 +5,10 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.StringReader;
-import java.lang.StackWalker.Option;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 import org.junit.Assert;
@@ -54,28 +52,17 @@ public class CommandsExec {
         return bugs;
     }
 
-    // Adjust the output stream of Main.main so we can store it in a stream of our own
-    // public static Output runCommand(String model, String patterns) 
-    //         throws IOException, FormatException, InterruptedException {
-    //     return runCommand(model, patterns, null, false, null);
-    // }
-
-    // public static Output runCommand(String model, String patterns, String parameters) 
-    //         throws IOException, FormatException, InterruptedException {
-    //     return runCommand(model, patterns, parameters, false, null);
-    // }
-
-    public static Output runCommand(String model, String patterns, String parameters, String os) 
+    public static Output runCommand(String model, String patterns, String parameters, String os)
             throws IOException, FormatException, InterruptedException {
         return runCommand(model, patterns, parameters, false, os);
     }
 
-    public static Output runCommand(String model, String patterns, String os) 
+    public static Output runCommand(String model, String patterns, String os)
             throws IOException, FormatException, InterruptedException {
         return runCommand(model, patterns, null, false, os);
     }
 
-    public static Output runCommand(String model, String patterns, boolean eo) 
+    public static Output runCommand(String model, String patterns, boolean eo)
             throws IOException, FormatException, InterruptedException {
         return runCommand(model, patterns, null, eo, null);
     }

@@ -1,8 +1,6 @@
 package se.uu.it.smbugfinder.execution;
 
 import java.io.IOException;
-import java.lang.StackWalker.Option;
-import java.util.Optional;
 
 import org.junit.Test;
 

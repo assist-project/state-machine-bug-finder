@@ -1,7 +1,6 @@
 package se.uu.it.smbugfinder.execution;
 
 import java.io.IOException;
-import java.util.Optional;
 
 import org.junit.Test;
 
