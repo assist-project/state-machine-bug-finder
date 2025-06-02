@@ -1,13 +1,9 @@
 package se.uu.it.smbugfinder.pattern;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -26,6 +22,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import net.automatalib.automaton.transducer.MealyMachine;
+import se.uu.it.smbugfinder.ResourceLoadingException;
+import se.uu.it.smbugfinder.ResourceManager;
 import se.uu.it.smbugfinder.dfa.DFAAdapter;
 import se.uu.it.smbugfinder.dfa.MealySymbolExtractor;
 import se.uu.it.smbugfinder.dfa.Symbol;
@@ -67,18 +65,18 @@ public class BugPatternLoader {
         this.dfaDecoder = dfaDecoder;
     }
 
-    public BugPatterns loadPatterns(String patternsFile, Collection<Symbol> symbols) throws BugPatternLoadingException {
+    public BugPatterns loadPatterns(String patternsFile, Collection<Symbol> symbols) throws ResourceLoadingException {
         BugPatterns bugPatterns = null;
         LOGGER.info("Loading bug patterns");
         String patternsFileName = Path.of(patternsFile).getFileName().toString();
         URI parentFolderURI = URI.create(
                 patternsFile.substring(0,
                         patternsFile.length() - patternsFileName.length()));
-        InputStream patternsStream = getResourceAsStream(patternsFile);
+        InputStream patternsStream = ResourceManager.getResourceAsStream(patternsFile);
         try {
             bugPatterns = loadPatterns(patternsStream);
         } catch (Exception e) {
-            throw new BugPatternLoadingException("Failed to load patterns from catalogue " + patternsFile, e);
+            throw new ResourceLoadingException("Failed to load patterns from catalogue " + patternsFile, e);
         }
 
         preparePatterns(bugPatterns, parentFolderURI, symbols);
@@ -117,7 +115,7 @@ public class BugPatternLoader {
     void applyPatternLanguage(BugPatterns patterns, URI location, Collection<Symbol> symbols) {
        if (patterns.getPatternLanguagePath() != null) {
                    URI patternLanguageLocation = location.resolve(patterns.getPatternLanguagePath());
-                   String absolutePatternLanguagePath = getResourceAsAbsolutePathString(patternLanguageLocation.getPath());
+                   String absolutePatternLanguagePath = ResourceManager.getResourceAsAbsolutePathString(patternLanguageLocation.getPath());
                 OcamlValues parameters = new OcamlValues(absolutePatternLanguagePath);
                 DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser(() -> new CustomParsingContext(parameters));
                 DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
@@ -133,51 +131,12 @@ public class BugPatternLoader {
     private DFAAdapter loadDfa(String encodedDfaPath, URI location, Collection<Symbol> symbols) {
         LOGGER.info("Loading DFA at path: {}", encodedDfaPath);
         URI encodedDfaLocation = location.resolve(encodedDfaPath);
-        InputStream encodedDfaStream = getResourceAsStream(encodedDfaLocation.getPath());
+        InputStream encodedDfaStream = ResourceManager.getResourceAsStream(encodedDfaLocation.getPath());
         try {
             DFAAdapter dfaAdapter = dfaDecoder.decode(encodedDfaStream, symbols);
             return dfaAdapter;
         } catch (Exception e) {
-            throw new BugPatternLoadingException("Error handling encoded dfa at path " + encodedDfaLocation.getPath(), e);
+            throw new ResourceLoadingException("Error handling encoded dfa at path " + encodedDfaLocation.getPath(), e);
         }
-    }
-
-    private InputStream getResourceAsStream(String resourcePath) {
-        InputStream encodedDfaStream = BugPatternLoader.class.getResourceAsStream(resourcePath);
-        if (encodedDfaStream == null) {
-            File file = new File(resourcePath);
-            if (file.exists()) {
-                try {
-                    encodedDfaStream = new FileInputStream(file);
-                } catch (FileNotFoundException e) {
-                    throw new BugPatternLoadingException("Failed to load resource at path " + resourcePath, e);
-                }
-            }
-        }
-        if (encodedDfaStream == null) {
-            throw new BugPatternLoadingException("Could not find resource at path " + resourcePath);
-        }
-
-        return encodedDfaStream;
-    }
-
-    // TODO: loading resources should be looked at again, there is duplication between the two methods
-    private String getResourceAsAbsolutePathString(String resourcePath) {
-        URL res = BugPatternLoader.class.getResource(resourcePath);
-        String absolutePath = null;
-        if (res == null ) {
-            File file = new File(resourcePath);
-            if (file.exists()) {
-                absolutePath = file.getAbsolutePath();
-            }
-        } else {
-             if (res.getFile() != null) {
-                 File file = new File(res.getFile());
-                 if (file.exists()) {
-                    absolutePath = file.getAbsolutePath();
-                }
-             }
-        }
-        return absolutePath;
     }
 }

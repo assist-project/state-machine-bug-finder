@@ -13,7 +13,6 @@ import static se.uu.it.smbugfinder.DtlsResources.DtlsJointAlphabet.O_RSA_CERTIFI
 import static se.uu.it.smbugfinder.DtlsResources.DtlsServerAlphabet.*;
 
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -110,8 +109,10 @@ public class BugPatternLoaderTest {
 
     @Test
     public void loadClientParametricBugPatternTestFromFile() {
-        String fullPath = Paths.get("src/main/resources/patterns/dtls/client/parametric/test/parameters_for_test.lang").toAbsolutePath().toString();
+
+        String fullPath = ResourceManager.getResourceAsAbsolutePathString(DTLS_CLIENT_PARAMETRIC_BUG_PATTERNS);
         OcamlValues parameters = new OcamlValues(fullPath);
+
 
         DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser(() -> new CustomParsingContext(parameters));
         DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
@@ -136,7 +137,7 @@ public class BugPatternLoaderTest {
         decoder.setTokenMatcher(matcher);
 
         BugPatternLoader loader = new BugPatternLoader(decoder);
-        BugPatterns bugCatalogue = loader.loadPatterns("/patterns/dtls/client/parametric/test/patterns.xml", symbols); //in test directory, we have the same patterns as above but words are capitalised
+        BugPatterns bugCatalogue = loader.loadPatterns(DTLS_CLIENT_PARAMETRIC_BUG_PATTERNS, symbols); //in test directory, we have the same patterns as above but words are capitalised
         List<BugPattern> patterns = bugCatalogue.getBugPatterns();
 
         BugPattern switchingCS = patterns.get(0);
@@ -182,7 +183,7 @@ public class BugPatternLoaderTest {
 
     @Test
     public void loadServerParametricBugPatternTestFromFile() {
-        String fullPath = Paths.get("src/main/resources/patterns/dtls/server/parametric/test/parameters_for_test.lang").toAbsolutePath().toString();
+        String fullPath = ResourceManager.getResourceAsAbsolutePathString(DTLS_SERVER_PATTERN_LANGUAGE);
         OcamlValues parameters = new OcamlValues(fullPath);
 
         DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser(() -> new CustomParsingContext(parameters));
@@ -206,7 +207,7 @@ public class BugPatternLoaderTest {
         decoder.setTokenMatcher(matcher);
 
         BugPatternLoader loader = new BugPatternLoader(decoder);
-        BugPatterns bugCatalogue = loader.loadPatterns("/patterns/dtls/server/parametric/test/patterns.xml", symbols);
+        BugPatterns bugCatalogue = loader.loadPatterns(DTLS_SERVER_PARAMETRIC_BUG_PATTERNS, symbols);
         List<BugPattern> patterns = bugCatalogue.getBugPatterns();
 
         BugPattern nonConformingCookie = patterns.get(0);
