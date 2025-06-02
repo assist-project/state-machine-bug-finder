@@ -52,11 +52,6 @@ public class CommandsExec {
         return bugs;
     }
 
-    public static Output runCommand(String model, String patterns, String parameters, String os)
-            throws IOException, FormatException, InterruptedException {
-        return runCommand(model, patterns, parameters, false, os);
-    }
-
     public static Output runCommand(String model, String patterns, String os)
             throws IOException, FormatException, InterruptedException {
         return runCommand(model, patterns, null, false, os);

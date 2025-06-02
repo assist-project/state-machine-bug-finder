@@ -35,7 +35,7 @@ libstubs.so: stubs.c main.o
 		-I$(JAVA_HOME)/include/linux \
 		-L$(OCAML_LIB) -lasmrun_shared
 
-libstubs.dylib: stubs.c main.o # maybe remove -shared from this
+libstubs.dylib: stubs.c main.o
 	clang -shared -Wall -o $@ $^ \
 		-I$(OCAML_LIB) \
 		-I$(JAVA_HOME)/include \
