@@ -35,6 +35,16 @@ public class DtlsBugFindingTest extends BugFindingTest {
     }
 
     @Test
+    public void testParametricDtlsClient() throws IOException, FormatException {
+        StateMachineBugFinderConfig config = new StateMachineBugFinderConfig();
+        config.setModel(DTLS_CLIENT_MODEL);
+        config.setPatterns(DTLS_CLIENT_PARAMETRIC_BUG_PATTERNS);
+        config.setSeparator("|");
+        BugFinderResult<String, String> result = new StateMachineBugFinder(config).launch(null);
+        assertFoundSpecificBugPatterns(result.getBugs(), "Switching Cipher Suite", "Wrong Certificate Type");
+    }
+
+    @Test
     public void testDtlsServer() throws FileNotFoundException, IOException, FormatException {
         StateMachineBugFinderConfig config = new StateMachineBugFinderConfig();
         config.setModel(DTLS_SERVER_MODEL);

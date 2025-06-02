@@ -18,7 +18,7 @@ public class DtlsCommandsExecIT extends CommandsExec {
         expectedOutput.addBug(new OutputBug("Non-conforming Cookie", "LOW",
                 "PSK_CLIENT_HELLO/HELLO_VERIFY_REQUEST RSA_CLIENT_HELLO/SERVER_HELLO",
                 "PSK_CLIENT_HELLO RSA_CLIENT_HELLO"));
-        Output output = CommandsExec.runCommand(DTLS_SERVER_MODEL, DTLS_SERVER_BUG_PATTERNS, "|");
+        Output output = CommandsExec.runCommand(DTLS_SERVER_MODEL, DTLS_SERVER_BUG_PATTERNS, "-os", "|");
         assertCorrectOutput(expectedOutput, output);
     }
 
@@ -27,7 +27,7 @@ public class DtlsCommandsExecIT extends CommandsExec {
         Output expectedOutput = new Output();
         expectedOutput
                 .addBug(new OutputBug("Premature HelloRequest", "LOW", "HELLO_REQUEST/CLIENT_HELLO", "HELLO_REQUEST"));
-        Output output = CommandsExec.runCommand(DTLS_CLIENT_MODEL, DTLS_CLIENT_BUG_PATTERNS, "|");
+        Output output = CommandsExec.runCommand(DTLS_CLIENT_MODEL, DTLS_CLIENT_BUG_PATTERNS, "-os", "|");
         assertCorrectOutput(expectedOutput, output);
     }
 }

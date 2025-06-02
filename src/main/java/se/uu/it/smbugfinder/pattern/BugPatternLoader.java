@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.util.Collection;
@@ -29,7 +30,13 @@ import se.uu.it.smbugfinder.dfa.DFAAdapter;
 import se.uu.it.smbugfinder.dfa.MealySymbolExtractor;
 import se.uu.it.smbugfinder.dfa.Symbol;
 import se.uu.it.smbugfinder.dfa.SymbolMapping;
+import se.uu.it.smbugfinder.encoding.CustomParsingContext;
 import se.uu.it.smbugfinder.encoding.DFADecoder;
+import se.uu.it.smbugfinder.encoding.DefaultDFADecoder;
+import se.uu.it.smbugfinder.encoding.DefaultEncodedDFAParser;
+import se.uu.it.smbugfinder.encoding.MappingTokenMatcher;
+import se.uu.it.smbugfinder.encoding.MappingTokenMatcher.MappingTokenMatcherBuilder;
+import se.uu.it.smbugfinder.encoding.OcamlValues;
 
 /**
  * Loads bug patterns from a supplied directory path.
@@ -93,6 +100,7 @@ public class BugPatternLoader {
     }
 
     private void preparePatterns(BugPatterns bugPatterns, URI location, Collection<Symbol> symbols) {
+        applyPatternLanguage(bugPatterns, location, symbols);
         Function<String, DFAAdapter> loadSpecification = p -> loadDfa(p, location, symbols);
 
         if (bugPatterns.getSpecificationLanguagePath() != null) {
@@ -104,6 +112,22 @@ public class BugPatternLoader {
             DFAAdapter bugLanguage = loadSpecification.apply(bugPattern.getBugLanguagePath());
             bugPattern.setBugLanguage(bugLanguage);
         }
+    }
+
+    void applyPatternLanguage(BugPatterns patterns, URI location, Collection<Symbol> symbols) {
+       if (patterns.getPatternLanguagePath() != null) {
+                   URI patternLanguageLocation = location.resolve(patterns.getPatternLanguagePath());
+                   String absolutePatternLanguagePath = getResourceAsAbsolutePathString(patternLanguageLocation.getPath());
+                OcamlValues parameters = new OcamlValues(absolutePatternLanguagePath);
+                DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser(() -> new CustomParsingContext(parameters));
+                DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
+
+                MappingTokenMatcherBuilder builder = new MappingTokenMatcher.MappingTokenMatcherBuilder();
+                builder.addMapFromSymbols(parameters, symbols);
+                MappingTokenMatcher matcher = builder.build();
+                decoder.setTokenMatcher(matcher);
+                dfaDecoder = decoder;
+            }
     }
 
     private DFAAdapter loadDfa(String encodedDfaPath, URI location, Collection<Symbol> symbols) {
@@ -135,5 +159,25 @@ public class BugPatternLoader {
         }
 
         return encodedDfaStream;
+    }
+
+    // TODO: loading resources should be looked at again, there is duplication between the two methods
+    private String getResourceAsAbsolutePathString(String resourcePath) {
+        URL res = BugPatternLoader.class.getResource(resourcePath);
+        String absolutePath = null;
+        if (res == null ) {
+            File file = new File(resourcePath);
+            if (file.exists()) {
+                absolutePath = file.getAbsolutePath();
+            }
+        } else {
+             if (res.getFile() != null) {
+                 File file = new File(res.getFile());
+                 if (file.exists()) {
+                    absolutePath = file.getAbsolutePath();
+                }
+             }
+        }
+        return absolutePath;
     }
 }

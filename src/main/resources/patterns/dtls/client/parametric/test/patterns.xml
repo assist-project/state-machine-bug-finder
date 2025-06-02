@@ -1,6 +1,7 @@
 <bugPatterns>
     <defaultBugSeverity>LOW</defaultBugSeverity>
     <defaultEnabled>true</defaultEnabled>
+    <patternLanguage>parameters_for_test.lang</patternLanguage>
     <bugPattern>
         <name>Switching Cipher Suite</name>
         <bugLanguage>switching_cipher_suite.dot</bugLanguage>

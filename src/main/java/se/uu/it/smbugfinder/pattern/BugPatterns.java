@@ -22,6 +22,9 @@ public class BugPatterns {
     @XmlTransient
     private DFAAdapter specificationLanguage;
 
+    @XmlElement(name = "patternLanguage", required = false)
+    private String patternLanguagePath;
+
     @XmlElements(value = {
             @XmlElement(type = BugPattern.class, name = "bugPattern"),
             @XmlElement(type = GeneralBugPattern.class, name = "generalBugPattern")
@@ -50,6 +53,7 @@ public class BugPatterns {
         removeDisabled();
     }
 
+
     /**
      * Adjusts the contained bug patterns according to the default values of this container.
      */
@@ -63,6 +67,7 @@ public class BugPatterns {
             }
         }
     }
+
 
     /**
      * Removes bug patterns that have not been enabled
@@ -99,6 +104,13 @@ public class BugPatterns {
 
     void setSpecificationLanguage(DFAAdapter specificationLanguage) {
         this.specificationLanguage = specificationLanguage;
+    }
+
+    public String getPatternLanguagePath() {
+        return this.patternLanguagePath;
+    }
+    public void setPatternLanguage(String patternLanguagePath) {
+        this.patternLanguagePath = patternLanguagePath;
     }
 
     public List<BugPattern> getBugPatterns() {
