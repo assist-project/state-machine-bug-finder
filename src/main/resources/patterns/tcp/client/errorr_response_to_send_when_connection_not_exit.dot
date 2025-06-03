@@ -3,7 +3,7 @@ label=""
 start [color="red"]
 bug [shape="doublecircle"]
 
-start -> established [label="{I_SYN_ACK(V,V,0), I_SYN(V,V,0), I_ACK(V,V,0)}"]
+start -> established [label="{I_SYN_ACK(V,V,0)}"]
 start -> start [label="other"]
 start -> bug_input_rcvd [label="I_SEND"]
 bug_input_rcvd -> start [label="O_TIMEOUT"]

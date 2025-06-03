@@ -6,7 +6,8 @@ bug [shape="doublecircle"]
 start -> finish [label="I_CLOSE"]
 start -> start [label="other"]
 finish -> finish [label="other - {I_FIN_ACK(V,V,0)}"]
-finish -> bug [label="O_ACK(NEXT,CURRENT,0)"]
+finish -> finish_inputrcvd [label="I_SYN_ACK(V,V,0)"]
+finish_inputrcvd -> bug [label="O_ACK(NEXT,CURRENT,0)"]
 
 bug -> bug [label="other"]
 

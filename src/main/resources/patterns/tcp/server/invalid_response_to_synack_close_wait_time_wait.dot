@@ -8,7 +8,8 @@ start -> listen [label="I_LISTEN"]
 listen -> listen [label="other"]
 listen -> close_wait [label="I_FIN_ACK(V,V,0)"]
 close_wait -> close_wait [label="other - {I_FIN_ACK(V,V,0)}"]
-close_wait -> bug [label="O_ACK(NEXT,CURRENT,0)"]
+close_wait -> close_wait_inputrcvd [label="I_SYN_ACK(V,V,0)"]
+close_wait_inputrcvd -> bug [label="O_ACK(NEXT,CURRENT,0)"]
 
 bug -> bug [label="other"]
 
