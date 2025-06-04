@@ -22,7 +22,7 @@
     <bugPattern>
         <name>invalid_response_to_synack(close_wait and time_wait)</name>
         <bugLanguage>invalid_response_to_synack_close_wait_time_wait.dot</bugLanguage>
-        <description>response with out a correct RST for SYN_ACK input on state of close_wait and time wait.</description>
+        <description>response with out a correct RST for SYN_ACK input on state of close_wait and time_wait.</description>
         <severity>LOW</severity>
       </bugPattern>
     <bugPattern>
