@@ -110,7 +110,7 @@ public class BugPatternLoaderTest {
     @Test
     public void loadClientParametricBugPatternTestFromFile() {
 
-        String fullPath = ResourceManager.getResourceAsAbsolutePathString(DTLS_CLIENT_PARAMETRIC_BUG_PATTERNS);
+        String fullPath = ResourceManager.getResourceAsAbsolutePathString(DTLS_CLIENT_PATTERN_LANGUAGE);
         OcamlValues parameters = new OcamlValues(fullPath);
 
 
