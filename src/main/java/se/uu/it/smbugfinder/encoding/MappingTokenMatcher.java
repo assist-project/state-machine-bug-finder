@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -113,6 +114,7 @@ public class MappingTokenMatcher extends DefaultTokenMatcher {
 
             Map<String, List<String>> fields = params.getFieldsMap();
             Map<String, List<String>> messageMap = params.getMessageMap();
+            List<Symbol> leftSymbols = new LinkedList<>(symbols);
 
             // for each message we find in lang file we generate both input and output symbols
             for (Map.Entry<String, List<String>> mesKey : messageMap.entrySet()) {
@@ -136,10 +138,12 @@ public class MappingTokenMatcher extends DefaultTokenMatcher {
                 builder = map(new SymbolToken(true, mes), inputSymbols);
                 builder = map(new SymbolToken(false, mes), outputSymbols);
 
-                symbols.removeAll(parametricSymbols);
+                leftSymbols.removeAll(parametricSymbols);
             }
 
-            for (Symbol s : symbols) {
+
+
+            for (Symbol s : leftSymbols) {
                 builder = map(s.toSymbolToken(), s);
             }
 
