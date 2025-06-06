@@ -86,7 +86,7 @@ public class BugPatternLoaderTest {
         BugPatterns bugPatterns = BugPatternLoader.loadPatternsBasic(DTLS_SERVER_PARAMETRIC_BUG_PATTERNS, symbols);
         BugPattern nonConformingCookie = bugPatterns.getBugPattern("Non-conforming Cookie");
         checkPattern(nonConformingCookie, symbols, 8,
-        		new TestCase(Word.fromSymbols(I_PSK_CLIENT_HELLO, O_HELLO_VERIFY_REQUEST, I_RSA_CLIENT_HELLO, O_SERVER_HELLO), true),
+                new TestCase(Word.fromSymbols(I_PSK_CLIENT_HELLO, O_HELLO_VERIFY_REQUEST, I_RSA_CLIENT_HELLO, O_SERVER_HELLO), true),
                 new TestCase(Word.fromSymbols(I_PSK_CLIENT_HELLO, O_HELLO_VERIFY_REQUEST, I_PSK_CLIENT_HELLO, O_SERVER_HELLO), false),
                 new TestCase(Word.fromSymbols(I_RSA_CLIENT_HELLO, O_HELLO_VERIFY_REQUEST, I_RSA_CLIENT_HELLO, O_SERVER_HELLO), false));
     }
