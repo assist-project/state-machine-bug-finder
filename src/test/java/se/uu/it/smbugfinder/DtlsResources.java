@@ -4,7 +4,8 @@ import se.uu.it.smbugfinder.dfa.InputSymbol;
 import se.uu.it.smbugfinder.dfa.OutputSymbol;
 
 public final class DtlsResources {
-    public static final String DTLS_CLIENT_MODEL = "/models/dtls/client/MbedTLS-2.26.0_client_psk_reneg.dot";
+    public static final String DTLS_CLIENT_MODEL_PSK_RENEG = "/models/dtls/client/MbedTLS-2.26.0_client_psk_reneg.dot";
+    public static final String DTLS_CLIENT_MODEL_DHE_ECDHE_RSA_CERT_RENEG = "/models/dtls/client/MbedTLS-2.26.0_client_dhe_ecdhe_rsa_cert_reneg.dot";
     public static final String DTLS_CLIENT_BUG_PATTERNS = "/patterns/dtls/client/patterns.xml";
     public static final String DTLS_CLIENT_PARAMETRIC_BUG_PATTERNS = "/patterns/dtls/client/parametric/patterns.xml";
     public static final String DTLS_CLIENT_PATTERN_LANGUAGE = "/patterns/dtls/client/parametric/parameters_for_test.lang";
