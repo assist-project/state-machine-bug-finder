@@ -1,4 +1,4 @@
-package se.uu.it.smbugfinder;
+package se.uu.it.smbugfinder.encoding;
 
 import java.io.IOException;
 import java.nio.file.*;
@@ -6,11 +6,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import org.junit.Assert;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import se.uu.it.smbugfinder.encoding.OcamlValues;
 
 public class PatternLanguageTest {
     public static Logger LOGGER = LoggerFactory.getLogger(PatternLanguageTest.class);
@@ -30,7 +30,7 @@ public class PatternLanguageTest {
                 new OcamlValues(path.toString());
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            Assert.fail(e.getMessage());
         }
     }
 }

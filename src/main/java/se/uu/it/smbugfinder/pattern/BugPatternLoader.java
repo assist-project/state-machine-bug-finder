@@ -52,11 +52,33 @@ public class BugPatternLoader {
         return context;
     }
 
-    public static <I,O> BugPatterns loadPatterns(String patternsDirectory, DFADecoder decoder, MealyMachine<?, I, ?, O> mealy, Collection<I> inputs, SymbolMapping<I,O> mapping) {
+    /**
+     * Generic method for loading bug patterns.
+     * @param <I> class of SUT inputs
+     * @param <O> class of SUT outputs
+     * @param patternsFile path to patterns XML file
+     * @param decoder transforms DOT files to  to {@link DFAAdapter} instances
+     * @param mealy is the SUT state machine
+     * @param inputs are the input symbols considered from the SUT Mealy machine
+     * @param mapping maps input/output symbols from the SUT Mealy machine to the classes used for modeling symbols that appear in e.g., the DFAs of bug patterns
+     * @return a {@link BugPatterns} instance representing the catalogue of bug patterns.
+     */
+    public static <I,O> BugPatterns loadPatterns(String patternsFile, DFADecoder decoder, MealyMachine<?, I, ?, O> mealy, Collection<I> inputs, SymbolMapping<I,O> mapping) {
         Set<Symbol> symbols = new LinkedHashSet<>();
         MealySymbolExtractor.extractSymbols(mealy, inputs, mapping, symbols);
         BugPatternLoader loader = new BugPatternLoader(decoder);
-        return loader.loadPatterns(patternsDirectory, symbols);
+        return loader.loadPatterns(patternsFile, symbols);
+    }
+
+    /**
+     * Convenient method for loading bug patterns that works with given symbols.
+     * @param patternsFile path to patterns XMl file
+     * @param symbols represents the symbols used in the bugpatterns
+     * @return a {@link BugPatterns} instance representing the catalogue of bug patterns.
+     */
+    public static BugPatterns loadPatternsBasic(String patternsFile, Collection<Symbol> symbols) {
+        BugPatternLoader loader = new BugPatternLoader(new DefaultDFADecoder());
+        return loader.loadPatterns(patternsFile, symbols);
     }
 
     private DFADecoder dfaDecoder;
