@@ -60,9 +60,9 @@ public class StateMachineBugFinder {
     /**
      * Launches the bug finder, creating an output directory containing the results (statistics, bugs, generated bug patterns, statistics, executable witnesses).
      * @throws FileNotFoundException if the directory to save files cannot be found
-     * @throws IOException           if there a problen when writing files
+     * @throws IOException           if there a problem when writing files
      */
-    public BugFinderResult<String, String>  launch() throws IOException, FormatException {
+    public BugFinderResult<String, String> launch() throws IOException, FormatException {
         Files.createDirectories(Paths.get(config.getOutputDir()));
         DirectoryDFAExporter exporter = new DFAExporter.DirectoryDFAExporter(config.getOutputDir());
         BugFinderResult<String, String> result = launch(exporter);
@@ -78,15 +78,13 @@ public class StateMachineBugFinder {
     public BugFinderResult<String, String> launch(@Nullable DFAExporter exporter) throws IOException, FormatException {
         InputModelDeserializer<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> mealyParser = DOTParsers.mealy();
         InputModelData<@Nullable String, CompactMealy<@Nullable String, @Nullable String>> sutModelData = mealyParser.readModel(getResource(config.getModel()));
-
         BugPatternLoader loader = new BugPatternLoader(new DefaultDFADecoder());
-
         SymbolMapping<String, String> symbolMapping = new StringSymbolMapper(config.getEmptyOutput(), config.getSeparator());
         List<Symbol> allSymbols = new ArrayList<>();
-        SUT<String,String> sut = null;
-        MealySymbolExtractor.extractSymbols(sutModelData.model, sutModelData.alphabet, symbolMapping, allSymbols);
+        MealySymbolExtractor.extractSymbols(sutModelData.model, sutModelData.alphabet, symbolMapping, allSymbols); //allSymbols now has input + output symbols from SUT
         BugPatterns bp = loader.loadPatterns(config.getPatterns(), allSymbols);
         StateMachineBugFinderCoreConfig finderConfig = config.getSmBugFinderConfig();
+        SUT<String,String> sut = null;
         if (finderConfig.isValidate()) {
             if (config.getHarnessAddress() != null) {
                 String[] hostPort = config.getHarnessAddress().split("\\:", -1);

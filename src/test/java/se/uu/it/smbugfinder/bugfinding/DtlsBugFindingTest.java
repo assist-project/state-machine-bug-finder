@@ -19,7 +19,7 @@ public class DtlsBugFindingTest extends BugFindingTest {
     @Test
     public void testDtlsClient() throws FileNotFoundException, IOException, FormatException {
         StateMachineBugFinderConfig config = new StateMachineBugFinderConfig();
-        config.setModel(DTLS_CLIENT_MODEL);
+        config.setModel(DTLS_CLIENT_MODEL_PSK_RENEG);
         config.setPatterns(DTLS_CLIENT_BUG_PATTERNS);
         config.setSeparator("|");
         BugFinderResult<String, String> result = new StateMachineBugFinder(config).launch(null);
@@ -32,6 +32,16 @@ public class DtlsBugFindingTest extends BugFindingTest {
         Assert.assertEquals(4, close_alert.generateBugLanguage().getDfa().size());
         BugPattern flight_restart = result.getBugPatterns().getBugPattern(SH_FLIGHT_RESTART);
         Assert.assertEquals(5, flight_restart.generateBugLanguage().getDfa().size());
+    }
+
+    @Test
+    public void testParametricDtlsClient() throws IOException, FormatException {
+        StateMachineBugFinderConfig config = new StateMachineBugFinderConfig();
+        config.setModel(DTLS_CLIENT_MODEL_DHE_ECDHE_RSA_CERT_RENEG);
+        config.setPatterns(DTLS_CLIENT_PARAMETRIC_BUG_PATTERNS);
+        config.setSeparator("|");
+        BugFinderResult<String, String> result = new StateMachineBugFinder(config).launch(null);
+        assertFoundSpecificBugPatterns(result.getBugs(), "Wrong Certificate Type");
     }
 
     @Test
