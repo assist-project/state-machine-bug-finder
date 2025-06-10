@@ -71,12 +71,6 @@ public class BugPatternLoaderTest {
         checkPattern(switchingCS, symbols, 7,
                 new TestCase(Word.fromSymbols(I_RSA_SERVER_HELLO, I_PSK_SERVER_HELLO, O_APPLICATION), true),
                 new TestCase(Word.fromSymbols(I_RSA_SERVER_HELLO, I_RSA_SERVER_HELLO, O_APPLICATION), false));
-//
-//        symbols = ImmutableList.of(I_CERTIFICATE_REQUEST,
-//        BugPattern wrongCertType = bugPatterns.getBugPattern("Wrong Certificate Type");
-//        checkPattern(wrongCertType, symbols, 5,
-//                new TestCase(Word.fromSymbols(I_RSA_SIGN_CERTIFICATE_REQUEST, O_ECDSA_CERTIFICATE), true),
-//                new TestCase(Word.fromSymbols(I_RSA_SIGN_CERTIFICATE_REQUEST, O_RSA_CERTIFICATE), false));
     }
 
     @Test

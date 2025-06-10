@@ -35,7 +35,6 @@ public class DefaultEncodedDFAParser implements EncodedTSParser {
                 DOTParsers.DEFAULT_FSA_NODE_PARSER,
                 m -> processDFALabel(DOTParsers.DEFAULT_EDGE_PARSER.apply(m), context));
         InputModelData<Label, CompactDFA<Label>> inputModel = deserializer.readModel(encodedDfaStream);
-        // System.out.println(inputModel.alphabet);
         return new EncodedDFA(inputModel.model, inputModel.alphabet);
     }
 

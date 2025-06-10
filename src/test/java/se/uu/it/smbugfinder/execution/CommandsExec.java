@@ -54,24 +54,19 @@ public class CommandsExec {
 
     public static Output runCommand(String model, String patterns, String os)
             throws IOException, FormatException, InterruptedException {
-        return runCommand(model, patterns, null, false, os);
+        return runCommand(model, patterns, false, os);
     }
 
     public static Output runCommand(String model, String patterns, boolean eo)
             throws IOException, FormatException, InterruptedException {
-        return runCommand(model, patterns, null, eo, null);
+        return runCommand(model, patterns, eo, null);
     }
 
-    private static Output runCommand(String model, String patterns, String parameters, boolean eo, String os)
+    private static Output runCommand(String model, String patterns, boolean eo, String os)
             throws IOException, FormatException, InterruptedException {
         List<String> command = new ArrayList<>(Arrays.asList(
             "-m", model,
             "-c", patterns));
-
-        if (parameters != null) {
-            command.add("-p");
-            command.add(parameters);
-        }
 
         if (eo) {
             command.add("-eo");

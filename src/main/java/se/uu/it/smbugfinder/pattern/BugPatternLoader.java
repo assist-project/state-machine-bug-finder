@@ -52,6 +52,12 @@ public class BugPatternLoader {
         return context;
     }
 
+    private DFADecoder dfaDecoder;
+
+    public BugPatternLoader(DFADecoder dfaDecoder) {
+        this.dfaDecoder = dfaDecoder;
+    }
+
     /**
      * Generic method for loading bug patterns.
      * @param <I> class of SUT inputs
@@ -79,12 +85,6 @@ public class BugPatternLoader {
     public static BugPatterns loadPatternsBasic(String patternsFile, Collection<Symbol> symbols) {
         BugPatternLoader loader = new BugPatternLoader(new DefaultDFADecoder());
         return loader.loadPatterns(patternsFile, symbols);
-    }
-
-    private DFADecoder dfaDecoder;
-
-    public BugPatternLoader(DFADecoder dfaDecoder) {
-        this.dfaDecoder = dfaDecoder;
     }
 
     public BugPatterns loadPatterns(String patternsFile, Collection<Symbol> symbols) throws ResourceLoadingException {
