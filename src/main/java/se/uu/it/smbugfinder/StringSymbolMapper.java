@@ -25,12 +25,12 @@ public class StringSymbolMapper implements SymbolMapping<String,String> {
 
     @Override
     public String toInput(InputSymbol symbol) {
-        return symbol.name();
+        return symbol.getName();
     }
 
     @Override
     public String toOutput(OutputSymbol symbol) {
-        return symbol.name();
+        return symbol.getName();
     }
 
     @Override
@@ -40,7 +40,7 @@ public class StringSymbolMapper implements SymbolMapping<String,String> {
         }
         StringBuilder builder = new StringBuilder();
         for (OutputSymbol symbol : symbols) {
-            builder.append(symbol.name() + sep);
+            builder.append(symbol.getName() + sep);
         }
         return builder.substring(0, builder.length() - sep.length()).toString();
     }

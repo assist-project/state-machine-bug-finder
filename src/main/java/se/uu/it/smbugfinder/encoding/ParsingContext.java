@@ -20,11 +20,25 @@ public class ParsingContext {
         variables = new Variables();
     }
 
+    public ParsingContext(Fields fields, Functions functions) {
+        this.constants = new Constants();
+        this.fields = fields;
+        this.functions = functions;
+        variables = new Variables();
+    }
+
     public ParsingContext(Constants constants, Fields fields, Functions functions) {
         this.constants = constants;
         this.fields = fields;
         this.functions = functions;
         variables = new Variables();
+    }
+
+    public ParsingContext(Constants constants, Fields fields, Functions functions, Variables variables) {
+        this.constants = constants;
+        this.fields = fields;
+        this.functions = functions;
+        this.variables = variables;
     }
 
     public Constants getConstants() {

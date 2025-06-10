@@ -31,7 +31,7 @@ public class DefaultEncodedDFAParser implements EncodedTSParser {
     public EncodedDFA parse(InputStream encodedDfaStream) throws IOException, FormatException {
         ParsingContext context = factory.newContext();
         cache = new HashMap<>();
-        InputModelDeserializer<Label, CompactDFA<Label>>  deserializer = DOTParsers.dfa(
+        InputModelDeserializer<Label, CompactDFA<Label>> deserializer = DOTParsers.dfa(
                 DOTParsers.DEFAULT_FSA_NODE_PARSER,
                 m -> processDFALabel(DOTParsers.DEFAULT_EDGE_PARSER.apply(m), context));
         InputModelData<Label, CompactDFA<Label>> inputModel = deserializer.readModel(encodedDfaStream);

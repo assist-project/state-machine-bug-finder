@@ -11,6 +11,9 @@ public class StateMachineBugFinderConfig {
     @Parameter(names = {"-c", "-catalogue"}, required = true, description = "XML file which catalogues DFA-encoded bug patterns, expressed in DOT format.")
     private String patterns;
 
+    @Parameter(names = {"-p", "-parameters"}, required = false, description = "Parameters file needed for parsing parametric bug patterns.")
+    private String parameters;
+
     @Parameter(names = {"-ha", "-harnessAddress"}, required = false, description = "Listening address of the test harness used to validate bugs. "
             + "The harness should be able to apply inputs on the SUT, retrieve its outputs and reset it.")
     private String harnessAddress;
@@ -100,5 +103,9 @@ public class StateMachineBugFinderConfig {
 
     public void setPatterns(String patterns) {
         this.patterns = patterns;
+    }
+
+    public String getParameters() {
+        return parameters;
     }
 }

@@ -1,0 +1,13 @@
+# Compiled OCaml files
+*.cmx 
+*.cmi 
+*.cmo
+lexer.ml
+grammar.ml
+grammar.mli
+print_ast
+
+# Compiled stubs files
+*.o
+*.so
+*.dylib
