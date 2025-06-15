@@ -37,9 +37,11 @@ public class BugPatternLoaderTest {
     public void loadNonParametricBugPatternTest() throws IOException {
         BugPatternLoader loader = new BugPatternLoader(new DefaultDFADecoder());
 
-        //symbols contains the entire alphabet to be used for the expansion of bug-pattern. normally symbols are taken from the Mealy SUT
+        // symbols contains the entire alphabet to be used for the expansion of bug-pattern.
+        // Normally symbols are taken from the Mealy SUT.
         List<Symbol> symbols = Arrays.asList(I_APPLICATION, O_APPLICATION, I_CHANGE_CIPHER_SPEC, O_CHANGE_CIPHER_SPEC, I_PSK_CLIENT_HELLO, I_PSK_CLIENT_KEY_EXCHANGE, I_FINISHED, O_FINISHED, O_SERVER_HELLO, O_SERVER_HELLO_DONE, O_CERTIFICATE_REQUEST, I_CERTIFICATE, O_HELLO_VERIFY_REQUEST);
-        BugPatterns patterns = loader.loadPatterns(DTLS_SERVER_BUG_PATTERNS, symbols); //Here bug patterns are returned expanded with symbols as defined above and not from the Mealy SUT
+        // Here bug patterns are returned expanded with symbols as defined above and not from the Mealy SUT.
+        BugPatterns patterns = loader.loadPatterns(DTLS_SERVER_BUG_PATTERNS, symbols);
 
         BugPattern earlyFinishedPattern = patterns.getBugPattern(EARLY_FINISHED);
         checkPattern(earlyFinishedPattern, symbols, 3, // init, bug and sink states
