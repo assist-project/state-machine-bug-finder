@@ -1,6 +1,7 @@
 <bugPatterns>
     <defaultBugSeverity>LOW</defaultBugSeverity>
     <defaultEnabled>true</defaultEnabled>
+    <patternLanguage>parameters_for_test.lang</patternLanguage>
     <bugPattern>
         <name>Non-conforming Cookie</name>
         <bugLanguage>non-conforming_cookie.dot</bugLanguage>
