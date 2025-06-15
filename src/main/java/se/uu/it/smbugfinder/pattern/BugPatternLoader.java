@@ -46,8 +46,7 @@ public class BugPatternLoader {
     private static synchronized JAXBContext getJAXBContext()
             throws JAXBException, IOException {
         if (context == null) {
-            context = JAXBContext.newInstance(BugPatterns.class,
-                    AbstractBugPattern.class);
+            context = JAXBContext.newInstance(BugPatterns.class, AbstractBugPattern.class);
         }
         return context;
     }
@@ -114,9 +113,7 @@ public class BugPatternLoader {
         XMLStreamReader xsr = xif.createXMLStreamReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         BugPatterns bugPatterns = (BugPatterns) unmarshaller.unmarshal(xsr);
         bugPatterns.prepare();
-
         return bugPatterns;
-
     }
 
     private void preparePatterns(BugPatterns bugPatterns, URI location, Collection<Symbol> symbols) {
@@ -135,19 +132,19 @@ public class BugPatternLoader {
     }
 
     void applyPatternLanguage(BugPatterns patterns, URI location, Collection<Symbol> symbols) {
-       if (patterns.getPatternLanguagePath() != null) {
-                   URI patternLanguageLocation = location.resolve(patterns.getPatternLanguagePath());
-                   String absolutePatternLanguagePath = ResourceManager.getResourceAsAbsolutePathString(patternLanguageLocation.getPath());
-                OcamlValues parameters = new OcamlValues(absolutePatternLanguagePath);
-                DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser(() -> new CustomParsingContext(parameters));
-                DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
+        if (patterns.getPatternLanguagePath() != null) {
+            URI patternLanguageLocation = location.resolve(patterns.getPatternLanguagePath());
+            String absolutePatternLanguagePath = ResourceManager.getResourceAsAbsolutePathString(patternLanguageLocation.getPath());
+            OcamlValues parameters = new OcamlValues(absolutePatternLanguagePath);
+            DefaultEncodedDFAParser parser = new DefaultEncodedDFAParser(() -> new CustomParsingContext(parameters));
+            DefaultDFADecoder decoder = new DefaultDFADecoder(parser);
 
-                MappingTokenMatcherBuilder builder = new MappingTokenMatcher.MappingTokenMatcherBuilder();
-                builder.addMapFromSymbols(parameters, symbols);
-                MappingTokenMatcher matcher = builder.build();
-                decoder.setTokenMatcher(matcher);
-                dfaDecoder = decoder;
-            }
+            MappingTokenMatcherBuilder builder = new MappingTokenMatcher.MappingTokenMatcherBuilder();
+            builder.addMapFromSymbols(parameters, symbols);
+            MappingTokenMatcher matcher = builder.build();
+            decoder.setTokenMatcher(matcher);
+            dfaDecoder = decoder;
+        }
     }
 
     private DFAAdapter loadDfa(String encodedDfaPath, URI location, Collection<Symbol> symbols) {
