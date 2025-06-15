@@ -25,8 +25,8 @@ public class DtlsCommandsExecIT extends CommandsExec {
     @Test
     public void testDtlsClient() throws IOException, FormatException, InterruptedException {
         Output expectedOutput = new Output();
-        expectedOutput
-                .addBug(new OutputBug("Premature HelloRequest", "LOW", "HELLO_REQUEST/CLIENT_HELLO", "HELLO_REQUEST"));
+        expectedOutput.addBug(new OutputBug("Premature HelloRequest", "LOW",
+                "HELLO_REQUEST/CLIENT_HELLO", "HELLO_REQUEST"));
         Output output = CommandsExec.runCommand(DTLS_CLIENT_MODEL, DTLS_CLIENT_BUG_PATTERNS, "|");
         assertCorrectOutput(expectedOutput, output);
     }
