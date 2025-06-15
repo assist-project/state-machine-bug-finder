@@ -6,7 +6,6 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.net.URL;
 
-
 /**
  * A class used to conveniently fetch resources at a given path which it does by:
  *  (1) using the system class loader, e.g., looking in src/test/java and src/main/java
@@ -14,6 +13,7 @@ import java.net.URL;
  *  {@link ResourceLoadingException} if it fails.
  */
 public class ResourceManager {
+
     public static final InputStream getResourceAsStream(String resourcePath) {
         InputStream encodedDfaStream = StateMachineBugFinder.class.getResourceAsStream(resourcePath);
         if (encodedDfaStream == null) {
@@ -29,7 +29,6 @@ public class ResourceManager {
         if (encodedDfaStream == null) {
             throw new ResourceLoadingException("Could not find resource at path " + resourcePath);
         }
-
         return encodedDfaStream;
     }
 
