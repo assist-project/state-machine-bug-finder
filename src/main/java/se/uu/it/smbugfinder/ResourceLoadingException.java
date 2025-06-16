@@ -1,9 +1,7 @@
 package se.uu.it.smbugfinder;
 
 public class ResourceLoadingException extends RuntimeException {
-    /**
-    *
-    */
+
    private static final long serialVersionUID = 1L;
 
    public ResourceLoadingException(Exception exception) {
