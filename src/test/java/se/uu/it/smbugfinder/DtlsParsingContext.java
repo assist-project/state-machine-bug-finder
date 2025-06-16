@@ -56,7 +56,7 @@ public class DtlsParsingContext extends ParsingContext {
 
         @Override
         protected Value getValue(Symbol symbol) {
-            Matcher matcher = CERTIFICATE_REQUEST_PATTERN.matcher(symbol.name());
+            Matcher matcher = CERTIFICATE_REQUEST_PATTERN.matcher(symbol.getName());
             if (matcher.matches()) {
                 String certType = matcher.group("certType");
                 Set<String> certTypes = new LinkedHashSet<>(); //always create a set with one object (currently there are no patterns that need more than that, but generally this is wrong)
@@ -74,7 +74,7 @@ public class DtlsParsingContext extends ParsingContext {
 
         @Override
         protected Value getValue(Symbol symbol) {
-            Matcher matcher = SERVER_HELLO_PATTERN.matcher(symbol.name());
+            Matcher matcher = SERVER_HELLO_PATTERN.matcher(symbol.getName());
             if (matcher.matches()) {
                 String cipherSuite = matcher.group("cipherSuite");
                 return new Value(cipherSuite);
@@ -90,7 +90,7 @@ public class DtlsParsingContext extends ParsingContext {
 
         @Override
         protected Value getValue(Symbol symbol) {
-            Matcher matcher = CLIENT_HELLO_PATTERN.matcher(symbol.name());
+            Matcher matcher = CLIENT_HELLO_PATTERN.matcher(symbol.getName());
             if (matcher.matches()) {
                 String suite = matcher.group("cipherSuite");
                 Set<String> suites = new LinkedHashSet<>();
@@ -108,7 +108,7 @@ public class DtlsParsingContext extends ParsingContext {
 
         @Override
         protected Value getValue(Symbol symbol) {
-            Matcher matcher = CERTIFICATE_PATTERN.matcher(symbol.name());
+            Matcher matcher = CERTIFICATE_PATTERN.matcher(symbol.getName());
             if (matcher.matches()) {
                 String cipherSuite = matcher.group("keyType");
                 return new Value(cipherSuite);
