@@ -21,7 +21,7 @@ To use **SMBugFinder**, you will need:
 Additionally, make sure that:
 
 * the environment variable `JAVA_HOME` is set correctly
-* the ocaml libraries can be seen by the system (i.e. `export LD_LIBRARY_PATH=`ocamlc -where`:$LD_LIBRARY_PATH`)
+* the ocaml libraries can be seen by the system (i.e. ```export LD_LIBRARY_PATH=`ocamlc -where`:$LD_LIBRARY_PATH```)
 
 ## Usage
 
