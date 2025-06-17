@@ -25,7 +25,7 @@ Additionally, make sure that:
 
 > **_NOTE:_**  These environment variables are needed so that `mvn install` can install ocaml files. `LD_LIBRARY_PATH` does not need to be set on macOS, but only on Linux.
 
-* For detailed instructions on how to install OCaml and Menhir, consult the README file in [*pattern-language*](/pattern-language/)
+For detailed instructions on how to install OCaml and Menhir, consult the README file in [*pattern-language*](/pattern-language/)
 
 ## Usage
 
