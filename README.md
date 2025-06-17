@@ -23,6 +23,8 @@ Additionally, make sure that:
 * the environment variable `JAVA_HOME` is set correctly
 * the ocaml libraries can be seen by the system (i.e. ```export LD_LIBRARY_PATH=`ocamlc -where`:$LD_LIBRARY_PATH```)
 
+> **_NOTE:_**  These environment variables are needed so that `mvn install` can install ocaml files. `LD_LIBRARY_PATH` does not need to be set on macOS, but only on Linux.
+
 ## Usage
 
 **SMBugFinder** can be used as a stand-alone testing tool, or as a library which can be incorporated in other protocol state fuzzers (e.g., [DTLS-Fuzzer][dtlsfuzzer] or [EDHOC-Fuzzer][edhocfuzzer]) to automate analysis of the models they generate.
