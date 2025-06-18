@@ -9,8 +9,6 @@ listen -> listen [label="other - {I_SYN(V,V,0)}"]
 listen -> listen_rcv_input [label="{I_ACK_PSH(V,V,1), I_SYN_ACK(V,V,0), I_ACK(V,V,0)}"]
 listen_rcv_input -> bug [label="other - {O_RST(ZERO,ZERO,0)}"]
 
-bug -> bug [label="other"]
-
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
 }

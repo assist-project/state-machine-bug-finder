@@ -15,8 +15,6 @@ est_rcv -> est_rcv [label="other - I_ACK_PSH(V,V,1)"]
 est_rcv -> est_inputrcvd [label="I_CLOSECONNECTION"]
 est_inputrcvd -> bug [label="O_ACK_RST(NEXT,CURRENT,0)"]
 
-bug -> bug [label="other"]
-
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
 }

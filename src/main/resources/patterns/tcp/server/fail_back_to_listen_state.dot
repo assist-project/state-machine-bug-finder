@@ -12,8 +12,6 @@ after_rst_state -> after_rst_state_rcv_listen [label="I_SYN(V,V,0)"]
 after_rst_state_rcv_listen -> syn_rcvd [label="O_ACK_SYN(FRESH,NEXT,0)"] 
 after_rst_state_rcv_listen -> bug [label="other"]
 
-bug -> bug [label="other"]
-
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
 }

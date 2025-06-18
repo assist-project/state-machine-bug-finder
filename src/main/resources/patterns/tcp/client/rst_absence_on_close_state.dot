@@ -8,9 +8,6 @@ close_rcv_input -> close [label="other - {O_ACK_FIN(NEXT,CURRENT,0)}"]
 close -> close_midstate [label="{I_ACK_PSH(V,V,1), I_FIN_ACK(V,V,0), I_SYN(V,V,0)}"]
 close_midstate -> bug [label="O_TIMEOUT"]
 
-
-bug -> bug [label="other"]
-
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
 }

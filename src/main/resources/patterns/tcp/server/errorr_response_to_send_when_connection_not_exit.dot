@@ -8,8 +8,6 @@ start -> bug_input_rcvd [label="I_SEND"]
 bug_input_rcvd -> start [label="O_TIMEOUT"]
 bug_input_rcvd -> bug [label="other"]
 
-bug -> bug [label="other"]
-
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
 }

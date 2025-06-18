@@ -9,8 +9,6 @@ finish -> finish [label="other - {I_FIN_ACK(V,V,0)}"]
 finish -> finish_inputrcvd [label="I_SYN_ACK(V,V,0)"]
 finish_inputrcvd -> bug [label="O_ACK(NEXT,CURRENT,0)"]
 
-bug -> bug [label="other"]
-
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
 }
