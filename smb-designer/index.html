@@ -1,0 +1,86 @@
+<!doctype html>
+<html><head>
+	<title>State Machine Bug Designer</title>
+  <meta charset="utf-8">
+
+	<link rel="stylesheet" type="text/css" href="styles.css">
+
+	<script src="fsm.js"></script>
+	<script>
+
+		/*
+		* base64.js - Base64 encoding and decoding functions
+		*
+		* See: http://developer.mozilla.org/en/docs/DOM:window.btoa
+		*      http://developer.mozilla.org/en/docs/DOM:window.atob
+		*
+		* Copyright (c) 2007, David Lindquist <david.lindquist@gmail.com>
+		* Released under the MIT license
+		*/
+
+		if (typeof btoa == 'undefined') {
+				function btoa(str) {
+						var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+						var encoded = [];
+						var c = 0;
+						while (c < str.length) {
+								var b0 = str.charCodeAt(c++);
+								var b1 = str.charCodeAt(c++);
+								var b2 = str.charCodeAt(c++);
+								var buf = (b0 << 16) + ((b1 || 0) << 8) + (b2 || 0);
+								var i0 = (buf & (63 << 18)) >> 18;
+								var i1 = (buf & (63 << 12)) >> 12;
+								var i2 = isNaN(b1) ? 64 : (buf & (63 << 6)) >> 6;
+								var i3 = isNaN(b2) ? 64 : (buf & 63);
+								encoded[encoded.length] = chars.charAt(i0);
+								encoded[encoded.length] = chars.charAt(i1);
+								encoded[encoded.length] = chars.charAt(i2);
+								encoded[encoded.length] = chars.charAt(i3);
+						}
+						return encoded.join('');
+				}
+		}
+	</script>
+</head>
+
+<body>
+	<h1>State Machine Bug Designer</h1>
+	<canvas id="canvas" width="800" height="600">
+		<span class="error">Your browser does not support<br>the HTML5 &lt;canvas&gt; element</span>
+	</canvas>
+	<div>
+		<input class="center" type="text" id="bugname" placeholder="Enter bug name">
+		<p class="center">Export as: 
+			<a href="javascript:saveAsPNG()">PNG</a> | 
+			<a href="javascript:saveAsSVG()">SVG</a> | 
+			<a href="javascript:saveAsLaTeX()">LaTeX</a> | 
+			<a href="javascript:saveAsJSON()">JSON</a> | 
+			<a href="javascript:saveAsDOT()">DOT</a> | 
+			<button onclick="javascript:uploadJSON()">Upload JSON</button>
+		</p>
+		<button class="center" id="clearButton" onclick="javascript:clearCanvas()">Clear everything</button>
+		<textarea id="output"></textarea>
+		<p>The big white box above is the FSM designer.&nbsp; Here's how to use it:</p>
+		<ul>
+			<li><b>Add a state:</b> double-click on the canvas</li>
+			<li><b>Add an arrow:</b> shift-drag on the canvas</li>
+			<li><b>Make accepting state:</b> double-click on an existing state</li>
+			<li><b>Move something:</b> drag it around</li>
+			<li><b>Delete something:</b> click it and press the delete key (not the backspace key)</li>
+		</ul>
+		<ul>
+			<li><b>Circle radius:</b> <input type="range" id="rangeSlider" min="20" max="80" value="30" oninput="javascript:radiusChanged();" onchange="javascript:radiusChanged();" />
+			<!-- <li><b>If you just want to add more text:</b> <button onclick="javascript:makeNodeTextOnly()">Toggle drawing the selected node's circles</button> -->
+			<li><b>Click here to clear everything:</b> <button onclick="javascript:clearCanvas()">Clear everything</button>
+		</ul>
+		<ul>
+			<li><b>Type numeric subscript:</b> put an underscore before the number (like "S_0")</li>
+			<li><b>Type greek letter:</b> put a backslash before it (like "\beta")</li>
+			<li><b>Additional symbols:</b> Type "\emptyset" for &#8709;, "\rightarrow" for &#8594;, and "\leftarrow" for &#8592;.</li>
+		</ul>
+		<p>Powered by HTML5 and JS</p>
+	</div>
+	<p>Created by <a href="http://madebyevan.com/">Evan Wallace</a> in 2010, modified by Nathan Otterness and modified even further by Kriton Iordanidis</p>
+	<!-- placeholder file upload thing to read the uploaded JSON -->
+	<input type="file" id="jsonUpload" style="opacity:0;" accept="text/json" oninput="javascript:jsonUploaded()"/>
+</body></html>
