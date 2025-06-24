@@ -1,5 +1,7 @@
 package se.uu.it.smbugfinder.dfa;
 
+import se.uu.it.smbugfinder.encoding.SymbolToken;
+
 /**
  * Implements the DFA symbols.
  *
@@ -10,10 +12,12 @@ public abstract class Symbol {
         this.name = name;
     }
 
-    public String name() {
+    public String getName() {
         return name;
     }
     public abstract boolean isInput();
+
+    public abstract SymbolToken toSymbolToken();
 
     @Override
     public int hashCode() {
