@@ -21,7 +21,7 @@
     <automatalib.version>0.12.1</automatalib.version>
     <checker-qual.version>3.49.4</checker-qual.version>
     <commons.version>3.17.0</commons.version>
-    <error-prone.version>2.38.0</error-prone.version>
+    <error-prone.version>2.39.0</error-prone.version>
     <guava.version>33.4.8-jre</guava.version>
     <jaxb-api.version>4.0.2</jaxb-api.version>
     <jaxb-runtime.version>4.0.5</jaxb-runtime.version>
@@ -48,7 +48,7 @@
     <resources-plugin.version>3.3.1</resources-plugin.version>
     <site-plugin.version>3.21.0</site-plugin.version>
     <spotless-plugin.version>2.44.5</spotless-plugin.version>
-    <spotbugs-plugin.version>4.9.3.0</spotbugs-plugin.version>
+    <spotbugs-plugin.version>4.9.3.1</spotbugs-plugin.version>
     <surefire-plugin.version>3.5.3</surefire-plugin.version>
   </properties>
 
