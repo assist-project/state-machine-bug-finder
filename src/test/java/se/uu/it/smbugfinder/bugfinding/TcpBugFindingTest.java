@@ -44,8 +44,7 @@ public class TcpBugFindingTest extends BugFindingTest {
     @Test
     public void testUbuntuClient() throws FileNotFoundException, IOException, FormatException {
         List<StateMachineBug<String, String>> bugs = runBugFinderClient(tcpClientModel("ubuntu_201601281006_client.dot"));
-        assertFoundSpecificBugPatterns(bugs, "invalid_response_to_syn_segment(fin_wait)",
-                "invalid_response_to_syn_segment(established)", "invalid_response_to_syn_segment(last_ack)",
+        assertFoundSpecificBugPatterns(bugs, "invalid_response_to_syn_segment(established)",
                 "invalid_response_to_syn_segment(close_wait)", "invalid_response_to_syn_segment(time_wait)");
     }
 
@@ -60,7 +59,7 @@ public class TcpBugFindingTest extends BugFindingTest {
     @Test
     public void testWindowsClient() throws FileNotFoundException, IOException, FormatException {
         List<StateMachineBug<String, String>> bugs = runBugFinderClient(tcpClientModel("windows8_201601271000_client.dot"));
-        assertFoundSpecificBugPatterns(bugs, "unexpected_rst", "fail_back_to_close_state");
+        assertFoundSpecificBugPatterns(bugs, "unexpected_rst", "invalid_response_to_syn_segment(time_wait)", "fail_back_to_close_state");
     }
 
     @Test

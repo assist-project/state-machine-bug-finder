@@ -4,12 +4,15 @@ start [color="red"]
 bug [shape="doublecircle"]
 
 start -> start [label="other"]
-start -> fin [label="I_CLOSE"]
-fin -> fin [label="other"]
-fin -> time_wait [label="I_FIN_ACK(V,V,0)"]
-time_wait -> time_wait [label="other"]
-time_wait -> time_wait_inputrcvd [label="{I_SYN(V,V,0), I_SYN_ACK(V,V,0)}"]
-time_wait_inputrcvd -> bug [label="O_ACK(NEXT,CURRENT,0)"]
+start -> close_rcvd [label="I_CLOSE"]
+
+close_rcvd -> fin_wait2 [label="O_ACK_FIN(NEXT,CURRENT,0)"]
+fin_wait2 -> finack_rcvd [label="I_FIN_ACK(V,V,0)"]
+
+finack_rcvd -> time_wait [label="O_ACK(NEXT,NEXT,0)"]
+
+time_wait -> time_wait_syn_segment_rcvd [label="{I_SYN(V,V,0), I_SYN_ACK(V,V,0)}"]
+time_wait_syn_segment_rcvd -> bug [label="other - {O_ACK_RST(NEXT,CURRENT,0), O_ACK_RST(ZERO,NEXT,0), O_RST(NEXT,FRESH,0)}"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
