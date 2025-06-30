@@ -30,8 +30,15 @@ public class TcpBugFindingTest extends BugFindingTest {
     @Test
     public void testFreeBSDClient() throws FileNotFoundException, IOException, FormatException {
         List<StateMachineBug<String, String>> bugs = runBugFinderClient(tcpClientModel("freebsd_2016011170941_client.dot"));
-        // Unresponsive State was not reported in the paper (it was reported in Patrick's MSc thesis on fuzzing SSH servers)
         assertFoundSpecificBugPatterns(bugs, "invalid_response_to_synack(time_wait)");
+    }
+
+
+    @Test
+    public void testFreeBSDServer() throws FileNotFoundException, IOException, FormatException {
+        List<StateMachineBug<String, String>> bugs = runBugFinderServer(tcpServerModel("freebsd_2016011170941_server.dot"));
+        assertFoundSpecificBugPatterns(bugs, "invalid_response_to_synack(close_wait and time_wait)",
+                "error_response_to_send_when_connection_not_exit", "fail_back_to_listen_state");
     }
 
     @Test
@@ -43,9 +50,23 @@ public class TcpBugFindingTest extends BugFindingTest {
     }
 
     @Test
+    public void testUbuntuServer() throws FileNotFoundException, IOException, FormatException {
+        List<StateMachineBug<String, String>> bugs = runBugFinderServer(tcpServerModel("ubuntu_201601281006_server.dot"));
+        assertFoundSpecificBugPatterns(bugs, "invalid_response_to_synack(close_wait and time_wait)",
+                "invalid_response_to_synack(established)", "invalid_response_to_synack(fin_wait)",
+                "invalid_response_to_synack(last_ack)", "fail_back_to_listen_state");
+    }
+
+    @Test
     public void testWindowsClient() throws FileNotFoundException, IOException, FormatException {
         List<StateMachineBug<String, String>> bugs = runBugFinderClient(tcpClientModel("windows8_201601271000_client.dot"));
         assertFoundSpecificBugPatterns(bugs, "unexpected_rst", "fail_back_to_close_state");
+    }
+
+    @Test
+    public void testWindowsServer() throws FileNotFoundException, IOException, FormatException {
+        List<StateMachineBug<String, String>> bugs = runBugFinderServer(tcpServerModel("windows8_201601271000_server.dot"));
+        assertFoundSpecificBugPatterns(bugs, "unexpected_rst", "rst_absence_on_listen_state", "error_response_to_send_when_connection_not_exit", "fail_back_to_listen_state");
     }
 
     private List<StateMachineBug<String, String>> runBugFinderServer(String model) throws FileNotFoundException, IOException, FormatException {
