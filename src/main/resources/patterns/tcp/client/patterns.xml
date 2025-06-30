@@ -44,7 +44,7 @@
         <severity>LOW</severity>
     </bugPattern>
          <bugPattern>
-        <name>errorr_response_to_send_when_connection_not_exit</name>
+        <name>error_response_to_send_when_connection_not_exit</name>
         <bugLanguage>../errorr_response_to_send_when_connection_not_exit.dot</bugLanguage>
         <description>fails to answer a error(Timeout) receiving SEND when a connection have not been set up.</description>
         <severity>LOW</severity>
