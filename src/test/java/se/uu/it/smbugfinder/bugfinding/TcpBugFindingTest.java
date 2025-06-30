@@ -30,7 +30,7 @@ public class TcpBugFindingTest extends BugFindingTest {
     @Test
     public void testFreeBSDClient() throws FileNotFoundException, IOException, FormatException {
         List<StateMachineBug<String, String>> bugs = runBugFinderClient(tcpClientModel("freebsd_2016011170941_client.dot"));
-        assertFoundSpecificBugPatterns(bugs, "invalid_response_to_synack(time_wait)");
+        assertFoundSpecificBugPatterns(bugs, "invalid_response_to_syn_segment(time_wait)");
     }
 
 
@@ -44,9 +44,9 @@ public class TcpBugFindingTest extends BugFindingTest {
     @Test
     public void testUbuntuClient() throws FileNotFoundException, IOException, FormatException {
         List<StateMachineBug<String, String>> bugs = runBugFinderClient(tcpClientModel("ubuntu_201601281006_client.dot"));
-        assertFoundSpecificBugPatterns(bugs, "invalid_response_to_synack(fin_wait)",
-                "invalid_response_to_synack(established)", "invalid_response_to_synack(last_ack)",
-                "invalid_response_to_synack(close_wait)", "invalid_response_to_synack(time_wait)");
+        assertFoundSpecificBugPatterns(bugs, "invalid_response_to_syn_segment(fin_wait)",
+                "invalid_response_to_syn_segment(established)", "invalid_response_to_syn_segment(last_ack)",
+                "invalid_response_to_syn_segment(close_wait)", "invalid_response_to_syn_segment(time_wait)");
     }
 
     @Test
