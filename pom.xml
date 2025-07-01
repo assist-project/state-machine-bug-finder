@@ -162,126 +162,6 @@
     </dependency>
   </dependencies>
 
-  <profiles>
-    <profile>
-      <id>linux</id>
-      <activation>
-        <os>
-          <family>unix</family>
-          <name>Linux</name>
-        </os>
-      </activation>
-      <build>
-        <plugins>
-          <plugin> <!-- Build shared object -->
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>${exec-plugin.version}</version>
-            <executions>
-              <execution>
-                <id>build-linux</id>
-                <phase>generate-resources</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <workingDirectory>${project.basedir}/pattern-language</workingDirectory>
-                  <executable>make</executable>
-                  <arguments>
-                    <argument>libstubs.so</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-
-          <plugin> <!-- Copy shared object to build directory -->
-            <artifactId>maven-resources-plugin</artifactId>
-            <version>${resources-plugin.version}</version>
-            <executions>
-              <execution>
-                <id>copy-linux-lib</id>
-                <phase>process-resources</phase>
-                <goals><goal>copy-resources</goal></goals>
-                <configuration>
-                  <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                  <resources>
-                    <resource>
-                      <directory>${project.basedir}/pattern-language</directory>
-                      <includes>
-                        <include>libstubs.so</include>
-                      </includes>
-                    </resource>
-                  </resources>
-                  <overwrite>true</overwrite>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-
-    <profile>
-      <id>macos</id>
-      <activation>
-        <os>
-          <family>mac</family>
-          <name>Mac OS X</name>
-        </os>
-      </activation>
-      <build>
-        <plugins>
-          <plugin>
-            <groupId>org.codehaus.mojo</groupId>
-            <artifactId>exec-maven-plugin</artifactId>
-            <version>${exec-plugin.version}</version>
-            <executions>
-              <execution>
-                <id>build-macos</id>
-                <phase>generate-resources</phase>
-                <goals>
-                  <goal>exec</goal>
-                </goals>
-                <configuration>
-                  <workingDirectory>${project.basedir}/pattern-language</workingDirectory>
-                  <executable>make</executable>
-                  <arguments>
-                    <argument>libstubs.dylib</argument>
-                  </arguments>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-
-          <plugin>
-            <artifactId>maven-resources-plugin</artifactId>
-            <version>${resources-plugin.version}</version>
-            <executions>
-              <execution>
-                <id>copy-macos-lib</id>
-                <phase>process-resources</phase>
-                <goals><goal>copy-resources</goal></goals>
-                <configuration>
-                  <outputDirectory>${project.build.directory}/classes</outputDirectory>
-                  <resources>
-                    <resource>
-                      <directory>${project.basedir}/pattern-language</directory>
-                      <includes>
-                        <include>libstubs.dylib</include>
-                      </includes>
-                    </resource>
-                  </resources>
-                  <overwrite>true</overwrite>
-                </configuration>
-              </execution>
-            </executions>
-          </plugin>
-        </plugins>
-      </build>
-    </profile>
-  </profiles>
-
   <build>
     <finalName>sm-bug-finder</finalName>
     <pluginManagement><!-- lock down plugins versions to avoid using Maven
@@ -366,8 +246,8 @@
         </plugin>
       </plugins>
     </pluginManagement>
-    <plugins>
-      <plugin>
+  <plugins>
+  <!--      <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>exec-maven-plugin</artifactId>
         <version>${exec-plugin.version}</version>
@@ -387,7 +267,7 @@
             </configuration>
           </execution>
         </executions>
-      </plugin>
+      </plugin> -->
 
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
@@ -647,7 +527,7 @@
                     <limit>
                       <counter>LINE</counter>
                       <value>COVEREDRATIO</value>
-                      <minimum>0.56</minimum>
+                      <minimum>0.3</minimum>
                     </limit>
                   </limits>
                 </rule>

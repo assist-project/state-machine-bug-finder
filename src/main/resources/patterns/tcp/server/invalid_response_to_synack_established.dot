@@ -4,13 +4,17 @@ start [color="red"]
 bug [shape="doublecircle"]
 
 start -> start [label="other"]
-start -> syn_rvd [label="I_SYN(V,V,0)"]
-syn_rvd -> syn_rvd [label="other - {I_ACK_PSH(V,V,1), I_CLOSECONNECTION}"]
-syn_rvd -> est [label="I_ACK(V,V,0)"]
-est -> est [label="other - {I_CLOSE, I_CLOSECONNECTION}"]
-est -> est_inputrcvd [label="I_SYN_ACK(V,V,0)"]
-est_inputrcvd -> bug [label="O_ACK(NEXT,CURRENT,0)"]
+
+start -> ack_rvd [label="I_ACK(V,V,0)"]
+
+ack_rvd -> est [label = "O_TIMEOUT"]
+
+est -> est_syn_segment_rcvd [label="{I_SYN(V,V,0), I_SYN_ACK(V,V,0)}"]
+
+// could be improved so that it also captures exchanges after which the SUT remains in state ESTABLISHED
+est_syn_segment_rcvd -> bug [label="other - {O_ACK_RST(NEXT,CURRENT,0), O_ACK_RST(ZERO,NEXT,0), O_RST(NEXT,FRESH,0)}"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;
 }
+

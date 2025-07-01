@@ -3,10 +3,9 @@ label=""
 start [color="red"]
 bug [shape="doublecircle"]
 
-start -> close_rcv_input [label="I_CLOSE"]
-close_rcv_input -> close [label="other - {O_ACK_FIN(NEXT,CURRENT,0)}"]
-close -> close_midstate [label="{I_ACK_PSH(V,V,1), I_FIN_ACK(V,V,0), I_SYN(V,V,0)}"]
-close_midstate -> bug [label="O_TIMEOUT"]
+
+start -> close_midstate [label="{I_SYN_ACK(V,V,0), I_FIN_ACK(V,V,0), I_SYN(V,V,0), I_ACK(V,V,0)}"]
+close_midstate -> bug [label="other - {O_RST(ZERO,ZERO,0), O_ACK_RST(ZERO,NEXT,0)}"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;

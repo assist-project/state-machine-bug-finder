@@ -4,13 +4,14 @@ start [color="red"]
 bug [shape="doublecircle"]
 
 start -> start [label="other - {I_CLOSE}"]
+
 start -> rcvd_finack [label="I_FIN_ACK(V,V,0)"]
 
-rcvd_finack -> close_wait [label="ACK(NEXT,NEXT,0)"]
+rcvd_finack -> close_wait [label="O_ACK(NEXT,NEXT,0)"]
 
 close_wait -> sent_closed [label="I_CLOSE"]
 
-sent_closed -> last_ack [label="O_FIN_ACK(NEXT,CURRENT,0)"]
+sent_closed -> last_ack [label="O_ACK_FIN(NEXT,CURRENT,0)"]
 
 last_ack -> last_ack_syn_segment_rcvd [label="{I_SYN(V,V,0), I_SYN_ACK(V,V,0)}"]
 

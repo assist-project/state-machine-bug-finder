@@ -37,35 +37,37 @@ public class TcpBugFindingTest extends BugFindingTest {
     @Test
     public void testFreeBSDServer() throws FileNotFoundException, IOException, FormatException {
         List<StateMachineBug<String, String>> bugs = runBugFinderServer(tcpServerModel("freebsd_2016011170941_server.dot"));
-        assertFoundSpecificBugPatterns(bugs, "invalid_response_to_synack(close_wait and time_wait)",
-                "error_response_to_send_when_connection_not_exit", "fail_back_to_listen_state");
+        assertFoundSpecificBugPatterns(bugs,  "invalid_response_to_syn_segment(time_wait)");
     }
 
     @Test
     public void testUbuntuClient() throws FileNotFoundException, IOException, FormatException {
         List<StateMachineBug<String, String>> bugs = runBugFinderClient(tcpClientModel("ubuntu_201601281006_client.dot"));
-        assertFoundSpecificBugPatterns(bugs, "invalid_response_to_syn_segment(established)",
-                "invalid_response_to_syn_segment(close_wait)", "invalid_response_to_syn_segment(time_wait)");
+        assertFoundSpecificBugPatterns(bugs, "invalid_response_to_syn_segment(fin_wait)",
+        "invalid_response_to_syn_segment(established)", "invalid_response_to_syn_segment(last_ack)", 
+        "invalid_response_to_syn_segment(close_wait)", "invalid_response_to_syn_segment(time_wait)");
     }
 
     @Test
     public void testUbuntuServer() throws FileNotFoundException, IOException, FormatException {
         List<StateMachineBug<String, String>> bugs = runBugFinderServer(tcpServerModel("ubuntu_201601281006_server.dot"));
-        assertFoundSpecificBugPatterns(bugs, "invalid_response_to_synack(close_wait and time_wait)",
-                "invalid_response_to_synack(established)", "invalid_response_to_synack(fin_wait)",
-                "invalid_response_to_synack(last_ack)", "fail_back_to_listen_state");
+        assertFoundSpecificBugPatterns(bugs, "invalid_response_to_syn_segment(close_wait)",
+                "invalid_response_to_syn_segment(established)", "invalid_response_to_syn_segment(fin_wait)",
+                "invalid_response_to_syn_segment(last_ack)", "invalid_response_to_syn_segment(time_wait)");
     }
 
     @Test
     public void testWindowsClient() throws FileNotFoundException, IOException, FormatException {
         List<StateMachineBug<String, String>> bugs = runBugFinderClient(tcpClientModel("windows8_201601271000_client.dot"));
-        assertFoundSpecificBugPatterns(bugs, "unexpected_rst", "invalid_response_to_syn_segment(time_wait)", "fail_back_to_close_state");
+        assertFoundSpecificBugPatterns(bugs, "unexpected_rst", "invalid_response_to_syn_segment(time_wait)",
+        "rst_absence_on_close_state");
     }
 
     @Test
     public void testWindowsServer() throws FileNotFoundException, IOException, FormatException {
         List<StateMachineBug<String, String>> bugs = runBugFinderServer(tcpServerModel("windows8_201601271000_server.dot"));
-        assertFoundSpecificBugPatterns(bugs, "unexpected_rst", "rst_absence_on_listen_state", "error_response_to_send_when_connection_not_exit", "fail_back_to_listen_state");
+        assertFoundSpecificBugPatterns(bugs, "unexpected_rst", "rst_absence_on_close_state",
+        "rst_absence_on_listen_state", "invalid_response_to_syn_segment(time_wait)");
     }
 
     private List<StateMachineBug<String, String>> runBugFinderServer(String model) throws FileNotFoundException, IOException, FormatException {
