@@ -75,10 +75,10 @@ What remains is to define what values Xlist and Ylist can have. This will be don
 
 ```
 fields =
-	cipher_suites -> RSA, PSK, ECDH, DH
+    cipher_suites -> RSA, PSK, ECDH, DH
 
 parametric_messages =
-	CLIENT_HELLO {cipher_suites}
+    CLIENT_HELLO {cipher_suites}
 ```
 
 First, we have defined a set of values cipher_suites can have: `RSA, PSK, ECDH, DH`. And then we declare that parametric `CLIENT_HELLO` messages will take parametric values from cipher_suites, that is `RSA, PSK, ECDH, DH` as mentioned.
