@@ -18,7 +18,7 @@
         <bugLanguage>rst_absence_on_listen_state.dot</bugLanguage>
         <description>fails to respond with a RST on listen state while receiving unexpected message.</description>
         <severity>LOW</severity>
-      </bugPattern>
+    </bugPattern>
     <bugPattern>
         <name>invalid_response_to_synack(close_wait and time_wait)</name>
         <bugLanguage>invalid_response_to_synack_close_wait_time_wait.dot</bugLanguage>
