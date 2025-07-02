@@ -5,9 +5,9 @@ bug [shape="doublecircle"]
 
 start -> start [label="other"]
 
-start -> ack_rvd [label="I_ACK(V,V,0)"]
+start -> ack_rvd [label="I_ACK_PSH(V,V,1)"]
 
-ack_rvd -> est [label = "O_TIMEOUT"]
+ack_rvd -> est [label = "O_ACK(NEXT,NEXT,0)"]
 
 est -> est_syn_segment_rcvd [label="{I_SYN(V,V,0), I_SYN_ACK(V,V,0)}"]
 
