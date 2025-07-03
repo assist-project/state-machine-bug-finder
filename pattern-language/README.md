@@ -9,9 +9,10 @@ Here, the parametric language implementation is provided in OCaml as well as stu
 3. Create an opam switch with ocaml 5.3.0 (i.e. `opam switch create pattern-language 5.3.0`)
 4. Install the menhir package using opam (i.e. `opam install menhir`)
 
-Now, ocaml should be installed and set up. As mentioned in the main README, make sure you have _clang_ and environment variables _JAVA_HOME_ and _LD_LIBRARY_PATH_ are set.
+At this point, ocaml should be installed and set up.
+As mentioned in the main README, make sure `clang` is installed, and environment variables `JAVA_HOME` and `LD_LIBRARY_PATH` are set.
 
-You should be able to compile successfully using the _Makefile_ provided here (i.e. `make libstubs.so` or `make libstubs.dylib` for Linux and macOS accordingly).
+You should now be able to compile successfully using the `Makefile` provided here (i.e. `make libstubs.so` or `make libstubs.dylib` for Linux and macOS accordingly).
 
 ## Documentation
 
@@ -41,11 +42,9 @@ The parser ([grammar.mly](grammar.mly)) implements the following grammar:
 <func_body> ::= (<word> `->` <word>)*
 ```
 
-### Examples
+### Example
 
-Let's consider the parametric bug patterns in DTLS server:
-
-[non-conforming_cookie.dot](../src/main/resources/patterns/dtls/server/parametric/non-conforming_cookie.dot)
+Let's consider the parametric bug pattern for DTLS servers in file [non-conforming_cookie.dot](../src/main/resources/patterns/dtls/server/parametric/non-conforming_cookie.dot)
 
 ```
 digraph G {
@@ -67,11 +66,10 @@ digraph G {
 }
 ```
 
-Using this syntax in DOT we have defined the parameters Xlist and Ylist on the I_CLIENT_HELLO message in transitions init -> ch1 and hvr -> ch2.
-We have also defined that the transition hvr -> ch2 will only occur when these two parameters are not equal.
-What remains is to define what values Xlist and Ylist can have. This will be done in a second file which is shown below.
-
-[parameters.lang](../src/main/resources/patterns/dtls/server/parametric/parameters_for_test.lang)
+In this DOT file, we have defined the parameters `Xlist` and `Ylist` on the `I_CLIENT_HELLO` message in transitions `init -> ch1` and `hvr -> ch2`.
+We have also defined that the transition `hvr -> ch2` will only occur when these two parameters are not equal.
+What remains is to define the values that `Xlist` and `Ylist` can have.
+This can be done in a second file, [parameters.lang](../src/main/resources/patterns/dtls/server/parametric/parameters_for_test.lang), which is shown below:
 
 ```
 fields =
@@ -81,4 +79,5 @@ parametric_messages =
     CLIENT_HELLO {cipher_suites}
 ```
 
-First, we have defined a set of values cipher_suites can have: `RSA, PSK, ECDH, DH`. And then we declare that parametric `CLIENT_HELLO` messages will take parametric values from cipher_suites, that is `RSA, PSK, ECDH, DH` as mentioned.
+Here, we have defined the list of values `cipher_suites` can have: `RSA, PSK, ECDH, DH`.
+We have also declared that parametric `CLIENT_HELLO` messages will take parameter values from `cipher_suites`, that is `RSA, PSK, ECDH, DH`, as mentioned.
