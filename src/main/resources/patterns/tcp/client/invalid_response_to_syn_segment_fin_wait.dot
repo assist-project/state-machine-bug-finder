@@ -13,7 +13,6 @@ est -> est_syn_segment_rcvd [label="I_CLOSE"]
 est_syn_segment_rcvd -> fin_wait [label="O_ACK_FIN(NEXT,CURRENT,0)"]
 
 fin_wait -> fin_wait_segment_rcvd [label="{I_SYN(V,V,0), I_SYN_ACK(V,V,0)}"]
-
 // could be improved so that it also captures exchanges after which the SUT remains in state ESTABLISHED
 fin_wait_segment_rcvd -> bug [label="other - {O_ACK_RST(NEXT,CURRENT,0), O_ACK_RST(ZERO,NEXT,0), O_RST(NEXT,FRESH,0)}"]
 

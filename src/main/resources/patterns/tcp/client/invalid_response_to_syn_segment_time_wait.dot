@@ -7,6 +7,7 @@ start -> start [label="other"]
 start -> close_rcvd [label="I_CLOSE"]
 
 close_rcvd -> fin_wait2 [label="O_ACK_FIN(NEXT,CURRENT,0)"]
+
 fin_wait2 -> finack_rcvd [label="I_FIN_ACK(V,V,0)"]
 
 finack_rcvd -> time_wait [label="O_ACK(NEXT,NEXT,0)"]

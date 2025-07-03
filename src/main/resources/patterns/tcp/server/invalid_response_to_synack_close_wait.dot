@@ -4,7 +4,6 @@ start [color="red"]
 bug [shape="doublecircle"]
 
 start -> start [label="other - {I_CLOSECONNECTION}"]
-
 start -> finack_sent [label="I_FIN_ACK(V,V,0)"]
 
 finack_sent -> close_wait [label="O_ACK(NEXT,NEXT,0)"]
