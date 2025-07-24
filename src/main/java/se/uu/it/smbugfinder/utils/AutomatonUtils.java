@@ -94,22 +94,22 @@ public class AutomatonUtils {
         private Word<I> word;
         private Set<S> visited;
         private S state;
-        public Word<I> getWord() {
+        Word<I> getWord() {
             return word;
         }
-        public S getState() {
+        S getState() {
             return state;
         }
 
-        public boolean hasVisited(S state) {
+        boolean hasVisited(S state) {
             return visited.contains(state);
         }
 
-        public Set<S> getVisited() {
+        Set<S> getVisited() {
             return visited;
         }
 
-        public VisitStruct(S state, Word<I> word, Set<S> visited) {
+        VisitStruct(S state, Word<I> word, Set<S> visited) {
             super();
             this.word = word;
             this.state = state;

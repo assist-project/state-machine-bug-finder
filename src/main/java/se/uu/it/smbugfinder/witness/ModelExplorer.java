@@ -214,10 +214,7 @@ public class ModelExplorer<S, I> {
             return nextWord;
         }
 
-
         private class SearchState {
-
-
             private I input;
             private S state;
             private long id;
@@ -225,12 +222,12 @@ public class ModelExplorer<S, I> {
             private int distinctVisited = -1;
             private int maxVisited = -1;
 
-            public SearchState(S endState) {
+            SearchState(S endState) {
                 state = endState;
                 id = idGenerator.incrementAndGet();
             }
 
-            public SearchState(S state, I input, SearchState parent) {
+            SearchState(S state, I input, SearchState parent) {
                 super();
                 this.id = idGenerator.incrementAndGet();
                 this.state = state;
@@ -238,7 +235,7 @@ public class ModelExplorer<S, I> {
                 this.parent = parent;
             }
 
-            public Word<I> getSuffix() {
+            Word<I> getSuffix() {
                 if (parent == null) {
                     return Word.epsilon();
                 } else {
@@ -246,19 +243,19 @@ public class ModelExplorer<S, I> {
                 }
             }
 
-            public S getState() {
+            S getState() {
                 return state;
             }
 
-            public long getId() {
+            long getId() {
                 return id;
             }
 
-            public SearchState getParent() {
+            SearchState getParent() {
                 return parent;
             }
 
-            public int distinctStatesVisited() {
+            int distinctStatesVisited() {
                 if (distinctVisited == -1) {
                     Set<S> visited = new HashSet<>();
                     SearchState crtExplState = this;
@@ -273,7 +270,7 @@ public class ModelExplorer<S, I> {
                 return distinctVisited;
             }
 
-            public int maxVisited() {
+            int maxVisited() {
                 if (maxVisited == -1) {
                     SearchState crtExplState = this;
                     Map<S,Integer> timesVisited = new HashMap<>();
