@@ -4,7 +4,6 @@ start [color="red"]
 bug [shape="doublecircle"]
 
 start -> start [label="other - {I_CLOSECONNECTION}"]
-
 start -> rcvd_finack [label="I_FIN_ACK(V,V,0)"]
 
 rcvd_finack -> close_wait [label="O_ACK(NEXT,NEXT,0)"]
@@ -14,7 +13,6 @@ close_wait -> sent_closed [label="I_CLOSECONNECTION"]
 sent_closed -> last_ack [label="O_ACK_FIN(NEXT,CURRENT,0)"]
 
 last_ack -> last_ack_syn_segment_rcvd [label="{I_SYN(V,V,0), I_SYN_ACK(V,V,0)}"]
-
 last_ack_syn_segment_rcvd -> bug [label="other - {O_ACK_RST(NEXT,CURRENT,0), O_ACK_RST(ZERO,NEXT,0), O_RST(NEXT,FRESH,0)}"]
 
 __start0 [label="" shape="none" width="0" height="0"];

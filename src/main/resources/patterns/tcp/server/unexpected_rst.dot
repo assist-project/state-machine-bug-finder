@@ -3,10 +3,21 @@ label=""
 start [color="red"]
 bug [shape="doublecircle"]
 
-start -> est_rcv [label="I_RCV"]
 start -> start [label="other"]
+start -> listen [label="I_LISTEN"]
+
+listen -> rcv_syn [label="I_SYN(V,V,0)"]
+
+rcv_syn -> syn_rcvd [label="O_ACK_SYN(FRESH,NEXT,0)"]
+
+syn_rcvd -> est [label="I_ACK(V,V,0)"]
+
+est -> accepted [label="I_ACCEPT"]
+
+accepted -> est_rcv [label="I_RCV"]
+
 est_rcv -> est_inputrcvd [label="I_CLOSECONNECTION"]
-est_inputrcvd -> bug [label="O_ACK_RST(NEXT,CURRENT,0)"]
+est_inputrcvd -> bug [label="other - {O_ACK_FIN(NEXT,CURRENT,0)}"]
 
 __start0 [label="" shape="none" width="0" height="0"];
 __start0 -> start;

@@ -4,10 +4,6 @@ start [color="red"]
 bug [shape="doublecircle"]
 
 start -> start [label="other"]
-//start -> syn_rcvd [label="I_SYN_ACK(V,V,0)"]
-
-//syn_rcvd -> est [label = "O_ACK(NEXT,NEXT,0)"]
-
 start -> est_syn_segment_rcvd [label="I_CLOSECONNECTION"]
 
 est_syn_segment_rcvd -> fin_wait [label="O_ACK_FIN(NEXT,CURRENT,0)"]
