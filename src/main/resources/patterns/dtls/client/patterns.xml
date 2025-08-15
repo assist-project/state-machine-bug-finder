@@ -52,4 +52,11 @@
         <bugLanguage>unexpected_cert.dot</bugLanguage>
         <description>Server sent no CertificateRequest, but client still sent a Certificate.</description>
     </bugPattern>
+
+    <generalBugPattern>
+        <name> Handshake Bug All Cert Reneg</name>
+        <bugLanguage>handshake_bug_all_cert_reneg.dot</bugLanguage>
+        <description>Generic handshake bug for clients considering the four main forms of key exchange, and renegotiation.</description>
+        <enabled>false</enabled>
+    </generalBugPattern>
 </bugPatterns>

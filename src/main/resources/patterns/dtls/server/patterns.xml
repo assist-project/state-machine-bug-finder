@@ -119,4 +119,11 @@
         <description>A server completes a hand- shake or re-handshake during which it receives multiple ChangeCipherSpec messages from the client.</description>
         <severity>LOW</severity>
     </bugPattern>
+
+    <generalBugPattern>
+        <name> Handshake Bug All Cert Reneg</name>
+        <bugLanguage>handshake_bug_all_cert_req.dot</bugLanguage>
+        <description>Generic handshake bug considering the four main forms of key exchange, for servers configured to require client certificates for authentication.</description>
+        <enabled>false</enabled>
+    </generalBugPattern>
 </bugPatterns>
