@@ -53,6 +53,12 @@
         <description>Server sent no CertificateRequest, but client still sent a Certificate.</description>
     </bugPattern>
 
+    <bugPattern>
+        <name>Invalid SHD response</name>
+        <bugLanguage>invalid_shd_response.dot</bugLanguage>
+        <description>Server responds to a ServerHelloDone in an invalid way.</description>
+    </bugPattern>
+
     <generalBugPattern>
         <name> Handshake Bug All Cert Reneg</name>
         <bugLanguage>handshake_bug_all_cert_reneg.dot</bugLanguage>

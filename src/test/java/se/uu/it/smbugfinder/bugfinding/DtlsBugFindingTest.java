@@ -23,7 +23,7 @@ public class DtlsBugFindingTest extends BugFindingTest {
         config.setPatterns(DTLS_CLIENT_BUG_PATTERNS);
         config.setSeparator("|");
         BugFinderResult<String, String> result = new StateMachineBugFinder(config).launch(null);
-        assertFoundSpecificBugPatterns(result.getBugs(), "Premature HelloRequest");
+        assertFoundSpecificBugPatterns(result.getBugs(), "Premature HelloRequest", "Invalid SHD response");
 
         // Check if bug patterns are expanded correctly
         BugPattern earlyFinished = result.getBugPatterns().getBugPattern(EARLY_FINISHED);

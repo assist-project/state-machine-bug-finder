@@ -27,6 +27,9 @@ public class DtlsCommandsExecIT extends CommandsExec {
         Output expectedOutput = new Output();
         expectedOutput.addBug(new OutputBug("Premature HelloRequest", "LOW",
                 "HELLO_REQUEST/CLIENT_HELLO", "HELLO_REQUEST"));
+        expectedOutput.addBug(new OutputBug("Invalid SHD response", "LOW",
+                "SERVER_HELLO_DONE/CLIENT_HELLO",
+                "SERVER_HELLO_DONE"));
         Output output = CommandsExec.runCommand(DTLS_CLIENT_MODEL, DTLS_CLIENT_BUG_PATTERNS, "|");
         assertCorrectOutput(expectedOutput, output);
     }
