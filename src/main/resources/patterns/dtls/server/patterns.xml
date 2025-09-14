@@ -37,7 +37,7 @@
     </bugPattern>
 
     <bugPattern>
-        <name>ClientKeyExchange after CertificateVerify</name>
+        <name>ClientKeyExchange before Certificate</name>
         <bugLanguage>clientkeyexchange_before_certificate.dot</bugLanguage>
         <description>A server completes the handshake with the client, but consumes a ClientKeyExchange before a client Certificate.</description>
         <severity>HIGH</severity>
@@ -58,14 +58,14 @@
     </bugPattern>
 
     <bugPattern>
-        <name>Continue After Fatal Error Alert</name>
+        <name>Continue after Fatal Error Alert</name>
         <bugLanguage>invalid_helloverifyrequest.dot</bugLanguage>
         <description>A server does not terminate the connection on receiving a fatal error alert.</description>
         <severity>LOW</severity>
     </bugPattern>
 
     <bugPattern>
-        <name>Finished Before ChangeCipherSpec</name>
+        <name>Finished before ChangeCipherSpec</name>
         <bugLanguage>finished_before_changecipherspec.dot</bugLanguage>
         <description>A server, which is configured to echo application data, completes a handshake or re-handshake wherein Finished is received before ChangeCipherSpec from the client</description>
         <severity>LOW</severity>

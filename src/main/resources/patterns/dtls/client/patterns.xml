@@ -22,7 +22,7 @@
     </bugPattern>
 
     <bugPattern>
-        <name>Continue After CloseNotify</name>
+        <name>Continue after CloseNotify</name>
         <bugLanguage>continue_after_close.dot</bugLanguage>
         <description>Allowing handshake to continue after a CloseNotify alert.</description>
     </bugPattern>
@@ -35,16 +35,32 @@
     </bugPattern>
 
     <bugPattern>
-        <name>Reorder Cert CertReq</name>
+        <name>CertReq before Cert</name>
         <bugLanguage>certreq_before_cert.dot</bugLanguage>
-        <description>Sending CertReq before Cert</description>
+        <description>Completing handshake in which CertReq is received before Cert.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+
+
+    <bugPattern>
+        <name>CertReq before SKE</name>
+        <bugLanguage>certreq_before_ske.dot</bugLanguage>
+        <description>Completing handshake in which CertReq is received before ServerKeyExchange.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+
+
+    <bugPattern>
+        <name>ServerHelloDone before CertReq</name>
+        <bugLanguage>shd_before_certreq.dot</bugLanguage>
+        <description>Completing handshake in which ServerHelloDone is received before CertReq.</description>
         <severity>LOW</severity>
     </bugPattern>
 
     <bugPattern>
         <name>ServerHello Flight Restart</name>
         <bugLanguage>serverhello_flight_restart.dot</bugLanguage>
-        <description>ServerHello flight restarted after a ServerHelloDone</description>
+        <description>ServerHello flight restarted after a ServerHelloDone.</description>
     </bugPattern>
 
     <bugPattern>
@@ -63,6 +79,13 @@
         <name> Handshake Bug All Cert Reneg</name>
         <bugLanguage>handshake_bug_all_cert_reneg.dot</bugLanguage>
         <description>Generic handshake bug for clients considering the four main forms of key exchange, and renegotiation.</description>
+        <enabled>false</enabled>
+    </generalBugPattern>
+
+    <generalBugPattern>
+        <name> Handshake Bug PSK Reneg</name>
+        <bugLanguage>general/handshake_bug_psk_reneg.dot</bugLanguage>
+        <description>Generic handshake bug for clients considering the psk key exchange, and renegotiation.</description>
         <enabled>false</enabled>
     </generalBugPattern>
 </bugPatterns>

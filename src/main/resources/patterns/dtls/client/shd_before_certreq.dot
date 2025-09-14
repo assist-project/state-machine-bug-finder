@@ -1,0 +1,19 @@
+digraph G {
+label=""
+init [color="red"]
+bug [shape="doublecircle"]
+
+init -> shd [label="I_SERVER_HELLO_DONE"]
+init -> init [label="other - F_I_.*CERTIFICATE_REQUEST"]
+
+shd -> certreq [label="F_I_.*CERTIFICATE_REQUEST"]
+shd -> shd [label="other"]
+shd -> init [label="I_HELLO_REQUEST"]
+certreq -> bug [label="{O_APPLICATION}"]
+certreq -> certreq [label="other"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}

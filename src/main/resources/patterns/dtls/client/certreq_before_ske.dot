@@ -4,12 +4,12 @@ init [color="red"]
 bug [shape="doublecircle"]
 
 init -> certreq [label="F_I_.*CERTIFICATE_REQUEST"]
-init -> init [label="other - {I_CERTIFICATE, I_EMPTY_CERTIFICATE}"]
-certreq -> cert [label="{I_CERTIFICATE, I_EMPTY_CERTIFICATE}"]
+init -> init [label="other - F_I_.*SERVER_KEY_EXCHANGE"]
+certreq -> ske [label="F_I_.*SERVER_KEY_EXCHANGE"]
 certreq -> init [label="I_HELLO_REQUEST"]
 certreq -> certreq [label="other"]
-cert -> bug [label="O_CHANGE_CIPHER_SPEC"]
-cert -> cert [label="other"]
+ske -> bug [label="O_CHANGE_CIPHER_SPEC"]
+ske -> ske [label="other"]
 
 bug -> bug [label="other"]
 
