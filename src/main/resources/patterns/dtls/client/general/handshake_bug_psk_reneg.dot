@@ -1,0 +1,71 @@
+digraph G {
+label=""
+wait_hvr_sh [color="red"]
+send_ch2 []
+wait_sh []
+psk_wait_ske_shd []
+psk_wait_shd []
+psk_send_cke []
+send_ccs []
+send_fin [] 
+wait_ccs [] 
+wait_fin []  
+connected []
+end []
+
+bug [shape="doublecircle"]
+
+wait_hvr_sh -> send_ch2[label="I_HELLO_VERIFY_REQUEST"]
+wait_hvr_sh -> wait_hvr_sh [label="I_APPLICATION"]
+send_ch2 -> wait_sh[label="O_CLIENT_HELLO"]
+wait_sh -> wait_sh[label="I_APPLICATION"]
+wait_hvr_sh -> psk_wait_ske_shd[label="I_PSK_SERVER_HELLO"]
+wait_sh -> psk_wait_ske_shd[label="I_PSK_SERVER_HELLO"]
+psk_wait_ske_shd -> psk_wait_ske_shd[label="I_APPLICATION"]
+psk_wait_ske_shd -> psk_send_cke[label="I_SERVER_HELLO_DONE"]
+psk_wait_shd -> psk_send_cke[label="I_SERVER_HELLO_DONE"]
+psk_wait_shd -> psk_wait_shd[label="I_APPLICATION"]
+psk_send_cke -> send_ccs[label="O_PSK_CLIENT_KEY_EXCHANGE"]
+
+send_ccs -> send_fin[label="O_CHANGE_CIPHER_SPEC"]
+send_fin -> wait_ccs[label="O_FINISHED"]
+wait_ccs -> wait_fin[label="I_CHANGE_CIPHER_SPEC"]
+wait_ccs -> wait_ccs[label="I_APPLICATION"]
+wait_fin -> connected[label="I_FINISHED"]
+wait_fin -> wait_fin[label="I_APPLICATION"]
+
+connected -> send_ch1[label="I_HELLO_REQUEST"]
+
+send_ch1 -> wait_hvr_sh[label="O_CLIENT_HELLO"]
+
+end -> end [label="other"]
+end -> bug [label="{O_APPLICATION, O_CHANGE_CIPHER_SPEC, O_CLIENT_HELLO}"]
+
+send_ch1 -> end [label="other_input U F_O_Alert.*"]
+wait_hvr_sh -> end [label="other_input U F_O_Alert.*"]
+send_ch2 -> end [label="other_input U F_O_Alert.*"]
+wait_sh -> end [label="other_input U F_O_Alert.*"]
+psk_wait_ske_shd -> end [label="other_input U F_O_Alert.*"]
+psk_wait_shd -> end [label="other_input U F_O_Alert.*"]
+psk_send_cke -> end [label="other_input U F_O_Alert.*"]
+send_ccs -> end [label="other_input U F_O_Alert.*"]
+send_fin -> end [label="other_input U F_O_Alert.*"] 
+wait_ccs -> end [label="other_input U F_O_Alert.*"] 
+wait_fin -> end [label="other_input U F_O_Alert.*"]  
+
+
+send_ch1 -> bug [label="other_output"]
+wait_hvr_sh -> bug [label="other_output"]
+send_ch2 -> bug [label="other_output"]
+wait_sh -> bug [label="other_output"]
+psk_wait_ske_shd -> bug [label="other_output"]
+psk_wait_shd -> bug [label="other_output"]
+psk_send_cke -> bug [label="other_output"]
+send_ccs -> bug [label="other_output"]
+send_fin -> bug [label="other_output"] 
+wait_ccs -> bug [label="other_output"] 
+wait_fin -> bug [label="other_output"] 
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> wait_hvr_sh;
+}

@@ -1,0 +1,15 @@
+digraph G {
+label=""
+init [color="red"]
+bug [shape="doublecircle"]
+
+init -> shd [label="I_SERVER_HELLO_DONE"]
+init -> init [label="other"]
+
+shd -> init [label="O_PSK_CLIENT_KEY_EXCHANGE U O_RSA_CERTIFICATE U F_O_Alert.* U SOCKET_CLOSED"]
+shd -> bug [label="other_output"]
+
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}
