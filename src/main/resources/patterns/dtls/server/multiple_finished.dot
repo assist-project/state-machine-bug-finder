@@ -1,0 +1,23 @@
+digraph G {
+label=""
+init [color="red"]
+one_fin
+multiple_fin
+bug [shape="doublecircle"] 
+
+init -> one_fin [label="I_FINISHED"]
+init -> init [label="other"]
+
+one_fin -> multiple_fin [label="I_FINISHED"]
+one_fin -> init [label="O_SERVER_HELLO"]
+one_fin -> one_fin [label="other - {O_APPLICATION}"]
+
+multiple_fin -> init [label="O_SERVER_HELLO"]
+multiple_fin -> bug [label="O_APPLICATION"]
+multiple_fin -> multiple_fin [label="other"]
+
+bug -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> init;
+}

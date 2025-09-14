@@ -120,6 +120,14 @@
         <severity>LOW</severity>
     </bugPattern>
 
+    <bugPattern>
+        <name>Multiple Finished</name>
+        <bugLanguage>multiple_finished.dot</bugLanguage>
+        <description>A server completes a hand- shake or re-handshake in which it accepts a Finished multiple times before exchanging application data.</description>
+        <severity>LOW</severity>
+    </bugPattern>
+
+
     <generalBugPattern>
         <name> Handshake Bug All Cert Reneg</name>
         <bugLanguage>handshake_bug_all_cert_req.dot</bugLanguage>
