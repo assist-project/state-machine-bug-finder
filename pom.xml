@@ -20,7 +20,7 @@
     <!-- Dependency versions in alphabetical order -->
     <automatalib.version>0.12.1</automatalib.version>
     <checker-qual.version>3.51.0</checker-qual.version>
-    <commons.version>3.18.0</commons.version>
+    <commons.version>3.19.0</commons.version>
     <error-prone.version>2.42.0</error-prone.version>
     <guava.version>33.5.0-jre</guava.version>
     <jaxb-api.version>4.0.4</jaxb-api.version>
@@ -47,7 +47,7 @@
     <project-info-reports-plugin.version>3.9.0</project-info-reports-plugin.version>
     <resources-plugin.version>3.3.1</resources-plugin.version>
     <site-plugin.version>3.21.0</site-plugin.version>
-    <spotless-plugin.version>2.46.1</spotless-plugin.version>
+    <spotless-plugin.version>3.0.0</spotless-plugin.version>
     <spotbugs-plugin.version>4.9.6.0</spotbugs-plugin.version>
     <surefire-plugin.version>3.5.4</surefire-plugin.version>
   </properties>
