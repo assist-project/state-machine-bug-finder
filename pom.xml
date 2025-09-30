@@ -27,7 +27,7 @@
     <jaxb-runtime.version>4.0.6</jaxb-runtime.version>
     <jcommander.version>1.82</jcommander.version>
     <junit.version>4.13.2</junit.version>
-    <logback.version>1.5.18</logback.version>
+    <logback.version>1.5.19</logback.version>
     <lombok.version>1.18.42</lombok.version>
     <slf4j.version>2.0.17</slf4j.version>
 
@@ -38,7 +38,7 @@
     <coveralls-plugin.version>4.3.0</coveralls-plugin.version>
     <dependency-plugin.version>3.8.1</dependency-plugin.version>
     <deploy-plugin.version>3.1.4</deploy-plugin.version>
-    <exec-plugin.version>3.5.1</exec-plugin.version>
+    <exec-plugin.version>3.6.0</exec-plugin.version>
     <failsafe-plugin.version>3.5.4</failsafe-plugin.version>
     <install-plugin.version>3.1.4</install-plugin.version>
     <jacoco-plugin.version>0.8.13</jacoco-plugin.version>
