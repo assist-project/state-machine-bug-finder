@@ -19,7 +19,7 @@
 
     <!-- Dependency versions in alphabetical order -->
     <automatalib.version>0.12.1</automatalib.version>
-    <checker-qual.version>3.51.0</checker-qual.version>
+    <checker-qual.version>3.51.1</checker-qual.version>
     <commons.version>3.19.0</commons.version>
     <error-prone.version>2.42.0</error-prone.version>
     <guava.version>33.5.0-jre</guava.version>
@@ -36,7 +36,7 @@
     <clean-plugin.version>3.5.0</clean-plugin.version>
     <compiler-plugin.version>3.14.1</compiler-plugin.version>
     <coveralls-plugin.version>4.3.0</coveralls-plugin.version>
-    <dependency-plugin.version>3.8.1</dependency-plugin.version>
+    <dependency-plugin.version>3.9.0</dependency-plugin.version>
     <deploy-plugin.version>3.1.4</deploy-plugin.version>
     <exec-plugin.version>3.6.0</exec-plugin.version>
     <failsafe-plugin.version>3.5.4</failsafe-plugin.version>
