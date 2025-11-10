@@ -14,20 +14,20 @@
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-    <maven.compiler.source>17</maven.compiler.source>
-    <maven.compiler.target>17</maven.compiler.target>
+    <maven.compiler.source>21</maven.compiler.source>
+    <maven.compiler.target>21</maven.compiler.target>
 
     <!-- Dependency versions in alphabetical order -->
     <automatalib.version>0.12.1</automatalib.version>
     <checker-qual.version>3.52.0</checker-qual.version>
     <commons.version>3.19.0</commons.version>
-    <error-prone.version>2.42.0</error-prone.version>
+    <error-prone.version>2.44.0</error-prone.version>
     <guava.version>33.5.0-jre</guava.version>
     <jaxb-api.version>4.0.4</jaxb-api.version>
     <jaxb-runtime.version>4.0.6</jaxb-runtime.version>
     <jcommander.version>1.82</jcommander.version>
     <junit.version>4.13.2</junit.version>
-    <logback.version>1.5.20</logback.version>
+    <logback.version>1.5.21</logback.version>
     <lombok.version>1.18.42</lombok.version>
     <slf4j.version>2.0.17</slf4j.version>
 
@@ -321,7 +321,7 @@
                 <version>${error-prone.version}</version>
               </path>
             </annotationProcessorPaths>
-            <release>17</release>
+            <release>21</release>
           </configuration>
         </plugin>
         <plugin>
