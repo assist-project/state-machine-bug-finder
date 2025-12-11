@@ -10,7 +10,7 @@ It then uses this bug catalogue to automatically detect bugs in the SUT's state 
 
 To use **SMBugFinder**, you will need:
 
-* JDK 17
+* JDK 21
 * Apache Maven
 * OCaml 5.3.0
 * Menhir (OCaml's parser generator)
