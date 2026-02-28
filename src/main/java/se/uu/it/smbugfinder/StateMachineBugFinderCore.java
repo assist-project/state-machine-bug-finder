@@ -48,6 +48,9 @@ import se.uu.it.smbugfinder.witness.WitnessFinder;
  * Implements the core of the SMBugFinder tool.
  * It receives the SUT and bug pattern state machines as class instances.
  * It can be used without the {@link StateMachineBugFinder} wrapper.
+ *
+ * @param <I>  the type of inputs
+ * @param <O>  the type of outputs
  */
 public class StateMachineBugFinderCore<I,O> {
     private static final Logger LOGGER = LoggerFactory.getLogger(StateMachineBugFinderCore.class);

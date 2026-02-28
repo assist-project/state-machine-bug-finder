@@ -11,10 +11,17 @@ import java.util.Set;
 import net.automatalib.automaton.UniversalDeterministicAutomaton;
 import net.automatalib.word.Word;
 
+/**
+ * Provides utilities for automata.
+ */
+
 public class AutomatonUtils {
 
     /**
      * Determines all the states which can be reached using the given inputs on the automaton.
+     *
+     * @param <S>              the type of states
+     * @param <I>              the type of inputs
      * @param automaton        the model expressed as an automaton
      * @param inputs           the given inputs
      * @param reachableStates  a collection of initial reachable states

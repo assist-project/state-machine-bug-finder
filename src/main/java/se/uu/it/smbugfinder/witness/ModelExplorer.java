@@ -26,6 +26,9 @@ import se.uu.it.smbugfinder.utils.AutomatonUtils.PredStruct;
 
 /**
  * Generates iterables for exploring ways to get from the initial state to target states.
+ *
+ * @param <S>  the type of states
+ * @param <I>  the type of inputs
  */
 public class ModelExplorer<S, I> {
     private PredMap<S, I> predMap;
