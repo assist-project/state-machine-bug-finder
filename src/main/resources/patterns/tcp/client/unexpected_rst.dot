@@ -1,0 +1,19 @@
+digraph G {
+label=""
+start [color="red"]
+bug [shape="doublecircle"]
+
+start -> start [label="other"]
+start -> syn_rcvd [label="I_SYN_ACK(V,V,0)"]
+
+syn_rcvd -> est [label = "O_ACK(NEXT,NEXT,0)"]
+
+est -> est_rcv [label="I_RCV"]
+
+est_rcv -> est_inputrcvd [label="I_CLOSE"]
+est_inputrcvd -> bug [label="other - {O_ACK_FIN(NEXT,CURRENT,0)}"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}
+
