@@ -546,6 +546,7 @@
           <threshold>Medium</threshold>
           <includeFilterFile>.spotbugs/include.xml</includeFilterFile>
           <excludeFilterFile>.spotbugs/exclude.xml</excludeFilterFile>
+          <includeTests>true</includeTests>
         </configuration>
         <executions>
           <execution>
