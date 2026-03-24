@@ -35,7 +35,7 @@ public final class SocketSUT implements SUT<String, String> {
             sendReset();
         }
         catch (IOException e) {
-            throw new SocketSutException("Failed to connect to the SUT", e);
+            throw new SocketSUTException("Failed to connect to the SUT", e);
         }
     }
 
@@ -45,10 +45,10 @@ public final class SocketSUT implements SUT<String, String> {
             try {
                 String readConfirmation = sockin.readLine();
                 if (!readConfirmation.equals(resetConfirmation)) {
-                    throw new SocketSutException("On reset, received \"" + readConfirmation + "\" when expected the confirmation message \"" + resetConfirmation +"\".");
+                    throw new SocketSUTException("On reset, received \"" + readConfirmation + "\" when expected the confirmation message \"" + resetConfirmation +"\".");
                 }
             } catch (IOException e) {
-                throw new SocketSutException("Could not read reset confirmation", e);
+                throw new SocketSUTException("Could not read reset confirmation", e);
             }
         }
     }
@@ -59,7 +59,7 @@ public final class SocketSUT implements SUT<String, String> {
         try {
             output = sockin.readLine();
         } catch (IOException e) {
-            throw new SocketSutException("Could not read input", e);
+            throw new SocketSUTException("Could not read input", e);
         }
         return output;
     }
