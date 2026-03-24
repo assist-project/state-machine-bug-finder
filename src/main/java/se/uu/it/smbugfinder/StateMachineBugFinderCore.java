@@ -91,10 +91,10 @@ public class StateMachineBugFinderCore<I,O> {
         }
         tracker.startStateMachineBugFinding(inputs);
         if (validate) {
-            ResetCountingSUT<I, O> resetCountingSut = new ResetCountingSUT<>(sut, new Counter("resets"));
-            InputCountingSUT<I, O> inputCountingSut = new InputCountingSUT<>(resetCountingSut, new Counter("inputs"));
-            sut = inputCountingSut;
-            tracker.setSutTracking(inputCountingSut.getCounter(), resetCountingSut.getCounter());
+            ResetCountingSUT<I, O> resetCountingSUT = new ResetCountingSUT<>(sut, new Counter("resets"));
+            InputCountingSUT<I, O> inputCountingSUT = new InputCountingSUT<>(resetCountingSUT, new Counter("inputs"));
+            sut = inputCountingSUT;
+            tracker.setSUTTracking(inputCountingSUT.getCounter(), resetCountingSUT.getCounter());
             if (config.getValidationTimeLimit() != null) {
                 sut = new TimedSUT<I, O>(sut, config.getValidationTimeLimit());
             }

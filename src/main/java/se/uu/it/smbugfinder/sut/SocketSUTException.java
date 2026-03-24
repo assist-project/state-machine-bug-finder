@@ -1,17 +1,17 @@
 package se.uu.it.smbugfinder.sut;
 
-public class SocketSutException extends RuntimeException {
+public class SocketSUTException extends RuntimeException {
 
     /**
      *
      */
     private static final long serialVersionUID = 1L;
 
-    public SocketSutException(String message) {
+    public SocketSUTException(String message) {
         super(message);
     }
 
-    public SocketSutException(String message, Exception cause) {
+    public SocketSUTException(String message, Exception cause) {
         super(message, cause);
     }
 

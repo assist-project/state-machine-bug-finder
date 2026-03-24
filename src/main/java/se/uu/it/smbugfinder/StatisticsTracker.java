@@ -66,17 +66,14 @@ public class StatisticsTracker {
         return (bp1, bp2) -> bp1.getId().compareTo(bp2.getId());
     }
 
-
-    public void setSutTracking(Counter inputCounter, Counter resetCounter) {
+    public void setSUTTracking(Counter inputCounter, Counter resetCounter) {
         this.inputCounter = inputCounter;
         this.resetCounter = resetCounter;
     }
 
-
     public void startStateMachineBugFinding(Collection<?> inputAlphabet) {
         startTime = System.currentTimeMillis();
         this.inputAlphabet = inputAlphabet;
-
     }
 
     /**
