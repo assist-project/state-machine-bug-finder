@@ -25,7 +25,7 @@
     <error-prone.version>2.49.0</error-prone.version>
     <guava.version>33.6.0-jre</guava.version>
     <jaxb-api.version>4.0.5</jaxb-api.version>
-    <jaxb-runtime.version>4.0.8</jaxb-runtime.version>
+    <jaxb-runtime.version>4.0.9</jaxb-runtime.version>
     <jcommander.version>1.82</jcommander.version>
     <junit.version>4.13.2</junit.version>
     <logback.version>1.5.33</logback.version>
@@ -37,10 +37,10 @@
     <clean-plugin.version>3.5.0</clean-plugin.version>
     <compiler-plugin.version>3.15.0</compiler-plugin.version>
     <coveralls-plugin.version>4.3.0</coveralls-plugin.version>
-    <dependency-plugin.version>3.10.0</dependency-plugin.version>
+    <dependency-plugin.version>3.11.0</dependency-plugin.version>
     <deploy-plugin.version>3.1.4</deploy-plugin.version>
     <exec-plugin.version>3.6.3</exec-plugin.version>
-    <failsafe-plugin.version>3.5.5</failsafe-plugin.version>
+    <failsafe-plugin.version>3.5.6</failsafe-plugin.version>
     <install-plugin.version>3.1.4</install-plugin.version>
     <jacoco-plugin.version>0.8.14</jacoco-plugin.version>
     <jar-plugin.version>3.5.0</jar-plugin.version>
@@ -50,7 +50,7 @@
     <site-plugin.version>3.22.0</site-plugin.version>
     <spotless-plugin.version>3.6.0 </spotless-plugin.version>
     <spotbugs-plugin.version>4.9.8.3</spotbugs-plugin.version>
-    <surefire-plugin.version>3.5.5</surefire-plugin.version>
+    <surefire-plugin.version>3.5.6</surefire-plugin.version>
   </properties>
 
   <dependencies>
