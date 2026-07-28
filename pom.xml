@@ -28,7 +28,7 @@
     <jaxb-runtime.version>4.0.9</jaxb-runtime.version>
     <jcommander.version>1.82</jcommander.version>
     <junit.version>4.13.2</junit.version>
-    <logback.version>1.6.0</logback.version>
+    <logback.version>1.6.1</logback.version>
     <lombok.version>1.18.46</lombok.version>
     <slf4j.version>2.0.18</slf4j.version>
 
@@ -48,7 +48,7 @@
     <project-info-reports-plugin.version>3.9.0</project-info-reports-plugin.version>
     <resources-plugin.version>3.5.0</resources-plugin.version>
     <site-plugin.version>3.22.0</site-plugin.version>
-    <spotless-plugin.version>3.8.0 </spotless-plugin.version>
+    <spotless-plugin.version>3.9.0 </spotless-plugin.version>
     <spotbugs-plugin.version>4.10.3.0</spotbugs-plugin.version>
     <surefire-plugin.version>3.5.6</surefire-plugin.version>
   </properties>
