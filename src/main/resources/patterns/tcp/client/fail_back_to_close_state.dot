@@ -1,0 +1,21 @@
+digraph G {
+label=""
+start [color="red"]
+bug [shape="doublecircle"]
+
+start -> start [label="other"]
+start -> syn_send [label="I_CONNECT"]
+
+syn_send -> syn_input_rcvd [label="I_SYN(V,V,0)"]
+
+syn_input_rcvd -> syn_rcvd [label="O_ACK_SYN(FRESH,NEXT,0)"]
+
+syn_rcvd -> after_rst_state [label="{I_RST(V,V,0), I_ACK_RST(V,V,0)}"]
+
+after_rst_state -> after_rst_state_rcv_connect [label="I_CONNECT"]
+after_rst_state_rcv_connect -> syn_send [label="O_SYN(FRESH,ZERO,0)"] 
+after_rst_state_rcv_connect -> bug [label="other"]
+
+__start0 [label="" shape="none" width="0" height="0"];
+__start0 -> start;
+}
