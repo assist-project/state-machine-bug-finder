@@ -15,6 +15,7 @@ import net.automatalib.serialization.dot.GraphDOT;
 import net.automatalib.util.automaton.copy.AutomatonCopyMethod;
 import net.automatalib.util.automaton.copy.AutomatonLowLevelCopy;
 import net.automatalib.util.automaton.fsa.DFAs;
+import net.automatalib.util.automaton.minimizer.HopcroftMinimizer;
 import net.automatalib.util.ts.acceptor.AcceptanceCombiner;
 import net.automatalib.word.Word;
 import se.uu.it.smbugfinder.utils.DFAUtils;
@@ -90,7 +91,7 @@ public class DFAAdapter {
      * Returns an adapter containing the DFA resulting from minimizing the underlying DFA using Hopcroft's minimization algorithm.
      */
     public DFAAdapter minimize() {
-        CompactDFA<Symbol> result = DFAs.minimize(dfa, new ListAlphabet<>(symbols));
+        CompactDFA<Symbol> result = HopcroftMinimizer.minimizeDFA(dfa, new ListAlphabet<>(symbols));
         FastDFA<Symbol> minimizedCopy = newDfa();
         AutomatonLowLevelCopy.copy(AutomatonCopyMethod.DFS, result, result.getInputAlphabet(), minimizedCopy);
         return new DFAAdapter(minimizedCopy, minimizedCopy.getInputAlphabet());
