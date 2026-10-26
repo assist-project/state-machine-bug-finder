@@ -32,12 +32,12 @@ import se.uu.it.smbugfinder.utils.AutomatonUtils.PredStruct;
  */
 public class ModelExplorer<S, I> {
     private PredMap<S, I> predMap;
-    private UniversalDeterministicAutomaton<S, I, ?, ?, ?>  model;
+    private UniversalDeterministicAutomaton.RegularAutomaton<S, I, ?, ?, ?>  model;
     private Predicate<S> startStateFilter = null;
     private Mapping<S, Word<I>> stateMapping;
     private Collection<I> inputs;
 
-    public ModelExplorer(UniversalDeterministicAutomaton<S, I, ?, ?, ?> model, Collection<I> inputs) {
+    public ModelExplorer(UniversalDeterministicAutomaton.RegularAutomaton<S, I, ?, ?, ?> model, Collection<I> inputs) {
         this.model = model;
         this.inputs = inputs;
         this.predMap = AutomatonUtils.generatePredecessorMap(model, inputs);
