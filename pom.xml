@@ -42,7 +42,7 @@
     <exec-plugin.version>3.6.4</exec-plugin.version>
     <failsafe-plugin.version>3.6.1</failsafe-plugin.version>
     <install-plugin.version>3.2.0</install-plugin.version>
-    <jacoco-plugin.version>0.8.15</jacoco-plugin.version>
+    <jacoco-plugin.version>0.8.16</jacoco-plugin.version>
     <jar-plugin.version>3.5.1</jar-plugin.version>
     <javacc-plugin.version>3.2.1</javacc-plugin.version>
     <project-info-reports-plugin.version>3.9.0</project-info-reports-plugin.version>
