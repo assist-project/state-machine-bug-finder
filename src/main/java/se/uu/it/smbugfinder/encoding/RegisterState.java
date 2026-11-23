@@ -3,6 +3,7 @@ package se.uu.it.smbugfinder.encoding;
 public class RegisterState<S> {
     private Valuation valuation;
     private S state;
+
     public RegisterState(S state, Valuation valuation) {
         this.valuation = valuation;
         this.state = state;
@@ -13,7 +14,6 @@ public class RegisterState<S> {
     public S getState() {
         return state;
     }
-
 
     @Override
     public int hashCode() {
@@ -30,9 +30,8 @@ public class RegisterState<S> {
             return true;
         if (obj == null)
             return false;
-        if (! (obj instanceof RegisterState<?>))
+        if (! (obj instanceof RegisterState<?> other))
             return false;
-        RegisterState<?> other = (RegisterState<?>) obj;
         if (state == null) {
             if (other.state != null)
                 return false;

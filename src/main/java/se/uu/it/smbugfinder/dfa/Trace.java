@@ -29,7 +29,7 @@ public class Trace<I,O> implements Iterable<Pair<I,O>> {
 
     public Stream<Pair<I,O>> getInputOutputStream() {
         Stream.Builder<Pair<I,O>> builder = Stream.builder();
-        for (int i=0; i<getLength(); i++) {
+        for (int i = 0; i < getLength(); i++) {
             builder.add(Pair.of(inputWord.getSymbol(i), outputWord.getSymbol(i)));
         }
         return builder.build();
@@ -43,7 +43,7 @@ public class Trace<I,O> implements Iterable<Pair<I,O>> {
     public String toCompactString() {
         StringBuilder builder = new StringBuilder();
         builder.append("Trace: ");
-        for (int i=0; i<getLength(); i++) {
+        for (int i = 0; i < getLength(); i++) {
             builder.append(inputWord.getSymbol(i) + "/" + outputWord.getSymbol(i)).append(' ');
         }
         return builder.toString();
@@ -69,9 +69,8 @@ public class Trace<I,O> implements Iterable<Pair<I,O>> {
             return true;
         if (obj == null)
             return false;
-        if (! (obj instanceof Trace))
+        if (! (obj instanceof Trace<?, ?> other))
             return false;
-        Trace<?,?> other = (Trace) obj;
         if (inputWord == null) {
             if (other.inputWord != null)
                 return false;
